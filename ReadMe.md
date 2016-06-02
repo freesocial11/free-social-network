@@ -1,5 +1,6 @@
 #Free open-source social network platform for building social stores and applications#
 
+###Looking for `nopCommerce` version? It has found a new home [here](https://github.com/mobsoftware/mobSocial.nopCommercePlugin).
 General Features
 =========
 Search, Friends, Timeline, Events, Business Pages, Video Battles™, Picture Battles™, SEO, and more!
