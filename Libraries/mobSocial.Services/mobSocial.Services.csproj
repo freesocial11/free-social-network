@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C5C9BABE-E078-4716-A5EE-B17B8DCEAD84}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mobSocial.Services</RootNamespace>
+    <AssemblyName>mobSocial.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageProcessor, Version=2.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.2.3.3.0\lib\net45\ImageProcessor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ImageProcessor.Web, Version=4.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageProcessor.Web.4.5.3.0\lib\net45\ImageProcessor.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NReco.VideoConverter, Version=1.1.0.0, Culture=neutral, PublicKeyToken=395ccb334978a0cd, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NReco.VideoConverter.1.1.0.0\lib\net20\NReco.VideoConverter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Addresses\AddressService.cs" />
+    <Compile Include="Addresses\IAddressService.cs" />
+    <Compile Include="ArtistPages\ArtistPageAPIService.cs" />
+    <Compile Include="ArtistPages\ArtistPageManagerService.cs" />
+    <Compile Include="ArtistPages\ArtistPagePaymentService.cs" />
+    <Compile Include="ArtistPages\ArtistPageService.cs" />
+    <Compile Include="ArtistPages\IArtistPageAPIService.cs" />
+    <Compile Include="ArtistPages\IArtistPageManagerService.cs" />
+    <Compile Include="ArtistPages\IArtistPagePaymentService.cs" />
+    <Compile Include="ArtistPages\IArtistPageService.cs" />
+    <Compile Include="Authentication\AuthenticationService.cs" />
+    <Compile Include="Authentication\IAuthenticationService.cs" />
+    <Compile Include="Battles\IVideoBattleGenreService.cs" />
+    <Compile Include="Battles\IVideoBattleParticipantService.cs" />
+    <Compile Include="Battles\IVideoBattlePrizeService.cs" />
+    <Compile Include="Battles\IVideoBattleService.cs" />
+    <Compile Include="Battles\IVideoBattleVideoService.cs" />
+    <Compile Include="Battles\IVideoBattleVoteService.cs" />
+    <Compile Include="Battles\VideBattlePrizeService.cs" />
+    <Compile Include="Battles\VideoBattleGenreService.cs" />
+    <Compile Include="Battles\VideoBattleParticipantService.cs" />
+    <Compile Include="Battles\VideoBattleService.cs" />
+    <Compile Include="Battles\VideoBattleVideoService.cs" />
+    <Compile Include="Battles\VideoBattleVoteService.cs" />
+    <Compile Include="BusinessPages\BusinessPageCouponService.cs" />
+    <Compile Include="BusinessPages\BusinessPageService.cs" />
+    <Compile Include="BusinessPages\IBusinessPageCouponService.cs" />
+    <Compile Include="BusinessPages\IBusinessPageService.cs" />
+    <Compile Include="Configuration\Mvc\IRouteMapperService.cs" />
+    <Compile Include="Configuration\Mvc\RouteMapperService.cs" />
+    <Compile Include="Configuration\XmlConfigurationFileService.cs" />
+    <Compile Include="Credits\CreditService.cs" />
+    <Compile Include="Credits\ICreditService.cs" />
+    <Compile Include="Emails\EmailAccountService.cs" />
+    <Compile Include="Emails\EmailSender.cs" />
+    <Compile Include="Emails\EmailTemplateService.cs" />
+    <Compile Include="Emails\IEmailAccountService.cs" />
+    <Compile Include="Emails\IEmailSender.cs" />
+    <Compile Include="Emails\IEmailTemplateService.cs" />
+    <Compile Include="EntityProperties\EntityPropertyService.cs" />
+    <Compile Include="EntityProperties\IEntityPropertyService.cs" />
+    <Compile Include="Extensions\EntityPropertyExtensions.cs" />
+    <Compile Include="Extensions\PaymentProcessorExtensions.cs" />
+    <Compile Include="Extensions\PermalinkExtensions.cs" />
+    <Compile Include="Extensions\PictureExtensions.cs" />
+    <Compile Include="Extensions\UserCapabilityExtensions.cs" />
+    <Compile Include="Formatter\FormatterService.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
+    <Compile Include="Helpers\PaymentCardHelper.cs" />
+    <Compile Include="Helpers\DatabaseHelpers.cs" />
+    <Compile Include="Helpers\FileHelpers.cs" />
+    <Compile Include="Helpers\HttpHelper.cs" />
+    <Compile Include="Helpers\PermalinkHelper.cs" />
+    <Compile Include="Helpers\PrizeDistributionHelper.cs" />
+    <Compile Include="Helpers\VideoBattleHelpers.cs" />
+    <Compile Include="Formatter\IFormatterService.cs" />
+    <Compile Include="Installation\IInstallationService.cs" />
+    <Compile Include="Installation\InstallationService.cs" />
+    <Compile Include="MediaServices\IMobSocialImageProcessor.cs" />
+    <Compile Include="MediaServices\IMobSocialVideoProcessor.cs" />
+    <Compile Include="MediaServices\MobSocialImageProcessor.cs" />
+    <Compile Include="MediaServices\MobSocialVideoProcessor.cs" />
+    <Compile Include="MobSocialEntityService.cs" />
+    <Compile Include="Music\EchoNestMusicService .cs" />
+    <Compile Include="Music\IMusicService.cs" />
+    <Compile Include="Payments\IPaymentTransactionService.cs" />
+    <Compile Include="Payments\PaymentTransactionService.cs" />
+    <Compile Include="Payments\UserPaymentMethodService.cs" />
+    <Compile Include="Payments\IUserPaymentMethodService.cs" />
+    <Compile Include="Payments\IPaymentProcessingService.cs" />
+    <Compile Include="Payments\PaymentProcessingService.cs" />
+    <Compile Include="Permalinks\IPermalinkService.cs" />
+    <Compile Include="Permalinks\PermalinkService.cs" />
+    <Compile Include="MediaServices\IMediaService.cs" />
+    <Compile Include="MediaServices\MediaService.cs" />
+    <Compile Include="Plugins\IPluginFinderService.cs" />
+    <Compile Include="Plugins\IPluginInstallerService.cs" />
+    <Compile Include="Plugins\PluginFinderService.cs" />
+    <Compile Include="Plugins\PluginInstallerService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Social\CommentService.cs" />
+    <Compile Include="Social\FollowService.cs" />
+    <Compile Include="Social\LikeService.cs" />
+    <Compile Include="Social\FriendService.cs" />
+    <Compile Include="Social\ICommentService.cs" />
+    <Compile Include="Social\ICustomerFavoriteSongService.cs" />
+    <Compile Include="Social\IFollowService.cs" />
+    <Compile Include="Social\ILikeService.cs" />
+    <Compile Include="Social\IFriendService.cs" />
+    <Compile Include="Songs\ISharedSongService.cs" />
+    <Compile Include="Songs\ISongService.cs" />
+    <Compile Include="Songs\SharedSongService.cs" />
+    <Compile Include="Songs\SongService.cs" />
+    <Compile Include="Sponsors\ISponsorService.cs" />
+    <Compile Include="Sponsors\SponsorService.cs" />
+    <Compile Include="TeamPages\ITeamPageService.cs" />
+    <Compile Include="TeamPages\TeamPageService.cs" />
+    <Compile Include="Timeline\ITimelineAutoPublisher.cs" />
+    <Compile Include="Timeline\ITimelineService.cs" />
+    <Compile Include="Timeline\TimelineAutoPublisher.cs" />
+    <Compile Include="Timeline\TimelineService.cs" />
+    <Compile Include="VerboseReporter\IVerboseReporterService.cs" />
+    <Compile Include="Security\CryptographyService.cs" />
+    <Compile Include="Security\ICryptographyService.cs" />
+    <Compile Include="Settings\ISettingService.cs" />
+    <Compile Include="Settings\SettingService.cs" />
+    <Compile Include="Users\CapabilityService.cs" />
+    <Compile Include="Users\ICapabilityService.cs" />
+    <Compile Include="Users\IRoleCapabilityService.cs" />
+    <Compile Include="Users\IRoleService.cs" />
+    <Compile Include="Users\IUserRegistrationService.cs" />
+    <Compile Include="Users\IUserService.cs" />
+    <Compile Include="Users\RoleCapabilityService.cs" />
+    <Compile Include="Users\RoleService.cs" />
+    <Compile Include="Users\UserRegistrationService.cs" />
+    <Compile Include="Users\UserService.cs" />
+    <Compile Include="VerboseReporter\VerboseReporterService.cs" />
+    <Compile Include="Videos\IVideoGenreService.cs" />
+    <Compile Include="Videos\IWatchedVideoService.cs" />
+    <Compile Include="Videos\VideoGenreService.cs" />
+    <Compile Include="Videos\WatchedVideoService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\mobSocial.Core\mobSocial.Core.csproj">
+      <Project>{e92a5579-1ea2-4331-bd90-a4ec8bcc6657}</Project>
+      <Name>mobSocial.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\mobSocial.Data\mobSocial.Data.csproj">
+      <Project>{ee9e52c3-b0ed-4023-9c89-87e0c143dc20}</Project>
+      <Name>mobSocial.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="GroupPages\" />
+    <Folder Include="Notifications\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

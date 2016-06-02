@@ -1,0 +1,26 @@
+﻿@{
+    Html.RegisterResource("angularjs", "~/Content/Scripts/angular/angular.min.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("jquery", "~/Content/Scripts/jquery-1.10.2.min.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("bootstrap", "~/Content/Scripts/bootstrap.min.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("modernizr", "~/Content/Scripts/modernizr-2.6.2.js", ResourceRegistrationType.Script);
+
+        
+    Html.RegisterResource("app", "~/Content/app/app.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("ajaxInterceptor", "~/Content/app/interceptors/ajaxInterceptor.js", ResourceRegistrationType.Script);
+    
+    Html.RegisterResource("webClientService", "~/Content/app/services/webClientService.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("installService", "~/Content/app/services/installService.js", ResourceRegistrationType.Script);
+    Html.RegisterResource("installController", "~/Content/app/controllers/installController.js", ResourceRegistrationType.Script);
+    
+    //enqueue scripts
+    Html.EnqueueScripts(new[] { "app", "ajaxInterceptor", "webClientService" }, new[] { "jquery", "bootstrap", "modernizr", "angularjs" });
+    
+    Html.EnqueueScripts(new[] {"installService", "installController"}, new[] { "app" });
+    
+    //enqueue styles
+    Html.RegisterResource("bootstrap", "~/Content/Styles/bootstrap.min.css", ResourceRegistrationType.Style);
+    Html.RegisterResource("site", "~/Content/Styles/Site.css", ResourceRegistrationType.Style);
+
+    Html.EnqueueStyles(new[] {"bootstrap", "site"});
+    
+}

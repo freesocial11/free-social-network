@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="installController">
+    <table>
+        <tr>
+            <td>Administrator Email</td>
+            <td><input ng-model="dataModel.AdminEmail"/></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input ng-model="dataModel.Password"/></td>
+        </tr>
+        <tr>
+            <td>Confirm Password</td>
+            <td><input ng-model="dataModel.ConfirmPassword"/></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button ng-click="install()">Install</button>
+            </td>
+        </tr>
+    </table>
+</div>

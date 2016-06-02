@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html ng-app="mobSocialApp">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="/Content/Styles/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/Content/Styles/Site.css" rel="stylesheet"/>
+
+    <script type="text/javascript" src="/Content/Scripts/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="/Content/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/Content/Scripts/angular/angular.min.js"></script>
+
+    <script type="text/javascript" src="/Content/app/app.js"></script>
+    <script type="text/javascript" src="/Content/app/interceptors/ajaxInterceptor.js"></script>
+
+    <script type="text/javascript" src="/Content/app/services/webClientService.js"></script>
+    <script type="text/javascript" src="/Content/app/services/loginService.js"></script>
+    <script type="text/javascript" src="/Content/app/controllers/loginController.js"></script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+</body>
+</html>

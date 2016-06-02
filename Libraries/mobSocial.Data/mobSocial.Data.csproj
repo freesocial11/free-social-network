@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EE9E52C3-B0ED-4023-9C89-87E0C143DC20}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>mobSocial.Data</RootNamespace>
+    <AssemblyName>mobSocial.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Constants\CreditContextKeyNames.cs" />
+    <Compile Include="Constants\PaymentParameterNames.cs" />
+    <Compile Include="Constants\PictureSizeNames.cs" />
+    <Compile Include="Constants\PropertyNames.cs" />
+    <Compile Include="Constants\TimelineAutoPostTypeNames.cs" />
+    <Compile Include="Database\DatabaseConfiguration.cs" />
+    <Compile Include="Database\DatabaseContext.cs" />
+    <Compile Include="Database\DatabaseManager.cs" />
+    <Compile Include="Database\IDatabaseContext.cs" />
+    <Compile Include="Database\IDatabaseProvider.cs" />
+    <Compile Include="Database\IDatabaseSettings.cs" />
+    <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
+    <Compile Include="Database\Provider\SqlCeDatabaseProvider.cs" />
+    <Compile Include="Database\Provider\SqlServerDatabaseProvider.cs" />
+    <Compile Include="Entity\Addresses\Address.cs" />
+    <Compile Include="Entity\Addresses\EntityAddress.cs" />
+    <Compile Include="Entity\Albums\CustomerAlbum.cs" />
+    <Compile Include="Entity\Albums\CustomerAlbumPicture.cs" />
+    <Compile Include="Entity\ArtistPages\ArtistPage.cs" />
+    <Compile Include="Entity\ArtistPages\ArtistPageManager.cs" />
+    <Compile Include="Entity\ArtistPages\ArtistPagePayment.cs" />
+    <Compile Include="Entity\Battles\VideoBattle.cs" />
+    <Compile Include="Entity\Battles\VideoBattleGenre.cs" />
+    <Compile Include="Entity\Battles\VideoBattleParticipant.cs" />
+    <Compile Include="Entity\Battles\VideoBattlePrize.cs" />
+    <Compile Include="Entity\Battles\VideoBattleVideo.cs" />
+    <Compile Include="Entity\Battles\VideoBattleView.cs" />
+    <Compile Include="Entity\Battles\VideoBattleVote.cs" />
+    <Compile Include="Entity\Battles\VoterPass.cs" />
+    <Compile Include="Entity\BusinessPages\BusinessPage.cs" />
+    <Compile Include="Entity\BusinessPages\BusinessPageCoupon.cs" />
+    <Compile Include="Entity\Credits\Credit.cs" />
+    <Compile Include="Entity\Currency\Currency.cs" />
+    <Compile Include="Entity\Emails\EmailAccount.cs" />
+    <Compile Include="Entity\Emails\EmailTemplate.cs" />
+    <Compile Include="Entity\Emails\Token.cs" />
+    <Compile Include="Entity\EntityProperties\EntityProperty.cs" />
+    <Compile Include="Entity\EventPages\EventPage.cs" />
+    <Compile Include="Entity\EventPages\EventPageAttendance.cs" />
+    <Compile Include="Entity\EventPages\EventPageHotel.cs" />
+    <Compile Include="Entity\GroupPages\GroupPage.cs" />
+    <Compile Include="Entity\GroupPages\GroupPageMember.cs" />
+    <Compile Include="Entity\Payments\TransactionRequest.cs" />
+    <Compile Include="Entity\Payments\TransactionResult.cs" />
+    <Compile Include="Entity\Payments\UserPaymentMethod.cs" />
+    <Compile Include="Entity\MediaEntities\EntityMedia.cs" />
+    <Compile Include="Entity\MediaEntities\Media.cs" />
+    <Compile Include="Entity\Payments\PaymentTransaction.cs" />
+    <Compile Include="Entity\Settings\BattleSettings.cs" />
+    <Compile Include="Entity\Settings\DateTimeSettings.cs" />
+    <Compile Include="Entity\Settings\GeneralSettings.cs" />
+    <Compile Include="Entity\Settings\PaymentSettings.cs" />
+    <Compile Include="Entity\Settings\SecuritySettings.cs" />
+    <Compile Include="Entity\Settings\Setting.cs" />
+    <Compile Include="Entity\Settings\MediaSettings.cs" />
+    <Compile Include="Entity\Settings\SystemSettings.cs" />
+    <Compile Include="Entity\Settings\ThirdPartySettings.cs" />
+    <Compile Include="Entity\Settings\UserSettings.cs" />
+    <Compile Include="Entity\Permalinks\Permalink.cs" />
+    <Compile Include="Entity\Social\Comment.cs" />
+    <Compile Include="Entity\Social\UserFavoriteSong.cs" />
+    <Compile Include="Entity\Social\UserFollow.cs" />
+    <Compile Include="Entity\Social\Friend.cs" />
+    <Compile Include="Entity\Social\UserLike.cs" />
+    <Compile Include="Entity\Songs\SharedSong.cs" />
+    <Compile Include="Entity\Songs\Song.cs" />
+    <Compile Include="Entity\Sponsors\Sponsor.cs" />
+    <Compile Include="Entity\Sponsors\SponsorData.cs" />
+    <Compile Include="Entity\Sponsors\SponsorPass.cs" />
+    <Compile Include="Entity\TeamPages\TeamPage.cs" />
+    <Compile Include="Entity\Timeline\TimelinePost.cs" />
+    <Compile Include="Entity\Timeline\TimelinePostOwnerTypeNames.cs" />
+    <Compile Include="Entity\Users\CapabilityNames.cs" />
+    <Compile Include="Entity\Users\RoleCapability.cs" />
+    <Compile Include="Entity\Users\SystemRoleNames.cs" />
+    <Compile Include="Entity\Users\User.cs" />
+    <Compile Include="EntityRepository.cs" />
+    <Compile Include="Entity\MappingConfiguration.cs" />
+    <Compile Include="Entity\BaseEntityConfiguration.cs" />
+    <Compile Include="Entity\Users\Capability.cs" />
+    <Compile Include="Entity\Users\Role.cs" />
+    <Compile Include="Entity\Users\UserRole.cs" />
+    <Compile Include="Entity\Videos\CustomerVideo.cs" />
+    <Compile Include="Entity\Videos\CustomerVideoAlbum.cs" />
+    <Compile Include="Entity\Videos\CustomerVideoLike.cs" />
+    <Compile Include="Entity\Videos\VideoGenre.cs" />
+    <Compile Include="Entity\Videos\WatchedVideo.cs" />
+    <Compile Include="Enum\AttendanceStatus.cs" />
+    <Compile Include="Enum\BattlesSortBy.cs" />
+    <Compile Include="Enum\BattleType.cs" />
+    <Compile Include="Enum\CreditTransactionType.cs" />
+    <Compile Include="Enum\CreditType.cs" />
+    <Compile Include="Enum\FriendStatus.cs" />
+    <Compile Include="Enum\LoginStatus.cs" />
+    <Compile Include="Enum\MediaType.cs" />
+    <Compile Include="Enum\NotificationRecipientType.cs" />
+    <Compile Include="Enum\PassStatus.cs" />
+    <Compile Include="Enum\PasswordFormat.cs" />
+    <Compile Include="Enum\PaymentMethodSelectionType.cs" />
+    <Compile Include="Enum\MediaSaveLocation.cs" />
+    <Compile Include="Enum\PaymentStatus.cs" />
+    <Compile Include="Enum\PurchaseType.cs" />
+    <Compile Include="Enum\RegistrationMode.cs" />
+    <Compile Include="Enum\SortOrder.cs" />
+    <Compile Include="Enum\SponsoredCashDistributionType.cs" />
+    <Compile Include="Enum\SponsorshipStatus.cs" />
+    <Compile Include="Enum\SponsorshipType.cs" />
+    <Compile Include="Enum\UserRegistrationStatus.cs" />
+    <Compile Include="Enum\BattleParticipantStatus.cs" />
+    <Compile Include="Enum\BattlePrizeType.cs" />
+    <Compile Include="Enum\BattleStatus.cs" />
+    <Compile Include="Enum\BattleParticipationType.cs" />
+    <Compile Include="Enum\BattleVoteStatus.cs" />
+    <Compile Include="Enum\BattleVoteType.cs" />
+    <Compile Include="Enum\VideoStatus.cs" />
+    <Compile Include="Enum\VideoType.cs" />
+    <Compile Include="Enum\VideoViewMode.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeConversionExtensions.cs" />
+    <Compile Include="Extensions\SettingExtensions.cs" />
+    <Compile Include="Helpers\PathUtility.cs" />
+    <Compile Include="Helpers\PictureUtility.cs" />
+    <Compile Include="Helpers\SimpleEncryptor.cs" />
+    <Compile Include="Helpers\VideoUtility.cs" />
+    <Compile Include="Interfaces\IHasEntityProperties.cs" />
+    <Compile Include="Interfaces\IPermalinkSupported.cs" />
+    <Compile Include="Interfaces\IPicturesSupported.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\MigrationsContextFactory.cs" />
+    <Compile Include="Migrations\mobSocialDbMigrator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\DatabaseSetupTask.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\mobSocial.Core\mobSocial.Core.csproj">
+      <Project>{e92a5579-1ea2-4331-bd90-a4ec8bcc6657}</Project>
+      <Name>mobSocial.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

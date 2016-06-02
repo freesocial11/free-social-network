@@ -1,0 +1,24 @@
+﻿@{
+   // var resourceUrl = "~/Content/app";
+   // Html.RegisterResource("loginController", resourceUrl + "/controllers/loginController.js", ResourceRegistrationType.Script);
+  //  Html.RegisterResource("loginService", resourceUrl + "/services/loginService.js", ResourceRegistrationType.Script);
+
+ //   Html.EnqueueScripts(new[] { "loginService", "loginController" }, new[] { "app" });
+
+    
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="loginController" ng-init="dataModel.ReturnUrl='@Request.QueryString.Get("ReturnUrl")'">
+    @Html.Partial("_Notifications", (object)"login")
+
+    <form ng-submit="login()">
+        <input type="text" ng-model="dataModel.Email" />
+        <input type="text" ng-model="dataModel.Password" />
+        <input type="checkbox" ng-model="dataModel.Persist" /><text>Persist</text>
+        <input type="submit" value="Login" />
+    </form>
+
+</div>
