@@ -1,4 +1,4 @@
-﻿app.controller("loginController", ["$scope", "loginService", function ($scope, loginService) {
+﻿window.mobSocial.controller("loginController", ["$scope", "loginService", function ($scope, loginService) {
     $scope.init = function(dataModel) {
         $scope.dataModel = dataModel;
     }

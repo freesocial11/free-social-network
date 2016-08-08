@@ -49,8 +49,12 @@
 
 	__webpack_require__(/*! ./libraries/angular/angular.min.js */1);
 	__webpack_require__(/*! ./libraries/angular/angular-ui-router.js */2);
-	__webpack_require__(/*! ./app/app.js */3);
-	module.exports = __webpack_require__(/*! ./app/common/authProvider.js */4);
+	__webpack_require__(/*! ./config.js */3);
+	__webpack_require__(/*! ./app/app.js */4);
+	__webpack_require__(/*! ./app/common/authProvider.js */5);
+	__webpack_require__(/*! ./app/common/webClientService.js */6);
+	__webpack_require__(/*! ./app/public/authentication/loginService.js */7);
+	module.exports = __webpack_require__(/*! ./app/public/authentication/loginController.js */8);
 
 
 /***/ },
@@ -5598,6 +5602,24 @@
 
 /***/ },
 /* 3 */
+/*!*******************!*\
+  !*** ./config.js ***!
+  \*******************/
+/***/ function(module, exports) {
+
+	/**
+	 * Created by Apexol on 06-Aug-16.
+	 */
+	const Configuration = {
+	    themeName: "AdminLTE",
+	    rootApiUrl: ""
+	};
+	
+	window.Configuration = Configuration;
+
+
+/***/ },
+/* 4 */
 /*!********************!*\
   !*** ./app/app.js ***!
   \********************/
@@ -5618,13 +5640,13 @@
 	window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
 	    $urlRouterProvider.otherwise("/");
 	    $stateProvider
-	        .state("login",
+	        .state("layoutZero",
 	        {
-	            views: {
-	                "_layout-none": {
-	                    templateUrl: "pages/login.html"
-	                }
-	            },
+	            templateUrl: "pages/layouts/_layout-none.html"
+	        })
+	        .state("layoutZero.login",
+	        {
+	            templateUrl: "pages/login.html",
 	            url: "/login"
 	        })
 	        .state("dashboard",
@@ -5653,13 +5675,23 @@
 	}]);
 	
 	//attach some global functions to rootScope
-	window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", function ($rootScope, $sce, authProvider, $state) {
+	window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
 	    //whenever a route changes, check if authentication is required, if yes, better redirect to login page
 	    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 	        if (error === 'Not Authenticated') {
 	            event.preventDefault();
 	            window.location.href = "/login";
 	        }
+	    });
+	    //execute some theme callbacks on view content loaded
+	    $rootScope.$on('$viewContentLoaded',
+	        function (event, viewConfig) {
+	            if (viewConfig !== "@") {
+	                if ($window['viewContentLoaded']) {
+	                    $window['viewContentLoaded']();
+	                }
+	            }
+	            
 	    });
 	
 	    $rootScope.login = function (returnUrl) {
@@ -5712,7 +5744,7 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /*!************************************!*\
   !*** ./app/common/authProvider.js ***!
   \************************************/
@@ -5736,6 +5768,99 @@
 	        }
 	    };
 	}]);
+
+/***/ },
+/* 6 */
+/*!****************************************!*\
+  !*** ./app/common/webClientService.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.service("webClientService", ["$http", function ($http) {
+	
+	    this._connect = function (method, url, params, success, error) {
+	        var config = {
+	            method: method,
+	            url: url
+	        };
+	        if (method === "GET")
+	            config["params"] = params;
+	        else {
+	            config["data"] = params;
+	            config["dataType"] = "json";
+	        }
+	
+	        $http(config).then(function(response) {
+	            if (success)
+	                success(response.data);
+	        }, function(response) {
+	            if (error)
+	                error(response.data);
+	        });
+	    }
+	
+	    this.get = function (url, params, success, error) {
+	        this._connect("GET", url, params, success, error);
+	    };
+	
+	    this.post = function (url, params, success, error) {
+	        this._connect("POST", url, params, success, error);
+	    };
+	
+	    this.put = function (url, params, success, error) {
+	        this._connect("PUT", url, params, success, error);
+	    };
+	
+	    this.patch = function (url, params, success, error) {
+	        this._connect("PATCH", url, params, success, error);
+	    };
+	
+	    this.delete = function (url, params, success, error) {
+	        this._connect("DELETE", url, params, success, error);
+	    };
+	}]);
+
+/***/ },
+/* 7 */
+/*!***************************************************!*\
+  !*** ./app/public/authentication/loginService.js ***!
+  \***************************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.service("loginService", [
+	    "webClientService", "$global", function (webClientService, $global) {
+	       this.login = function (loginRequest, success, error) {
+	            var loginUrl = $global.getApiUrl("/authentication/login");
+	            webClientService.post(loginUrl, loginRequest, success, error);
+	        }
+	    }
+	]);
+
+/***/ },
+/* 8 */
+/*!******************************************************!*\
+  !*** ./app/public/authentication/loginController.js ***!
+  \******************************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.controller("loginController", ["$scope", "loginService", function ($scope, loginService) {
+	    $scope.init = function(dataModel) {
+	        $scope.dataModel = dataModel;
+	    }
+	    $scope.login = function () {
+	        loginService.login($scope.dataModel, function (response) {
+	            if (response.Success) {
+	                if (response.AdditionalData && response.AdditionalData.ReturnUrl)
+	                    window.location.href = response.AdditionalData.ReturnUrl;
+	                else
+	                    window.location.href = "/";
+	            }
+	        }, function (response) {
+	
+	        });
+	    }
+	}
+	]);
 
 /***/ }
 /******/ ]);

@@ -13,7 +13,11 @@
 window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider
-        .state("login",
+        .state("layoutZero",
+        {
+            templateUrl: "pages/layouts/_layout-none.html"
+        })
+        .state("layoutZero.login",
         {
             templateUrl: "pages/login.html",
             url: "/login"
@@ -44,13 +48,23 @@ window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvi
 }]);
 
 //attach some global functions to rootScope
-window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", function ($rootScope, $sce, authProvider, $state) {
+window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
     //whenever a route changes, check if authentication is required, if yes, better redirect to login page
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         if (error === 'Not Authenticated') {
             event.preventDefault();
             window.location.href = "/login";
         }
+    });
+    //execute some theme callbacks on view content loaded
+    $rootScope.$on('$viewContentLoaded',
+        function (event, viewConfig) {
+            if (viewConfig !== "@") {
+                if ($window['viewContentLoaded']) {
+                    $window['viewContentLoaded']();
+                }
+            }
+            
     });
 
     $rootScope.login = function (returnUrl) {

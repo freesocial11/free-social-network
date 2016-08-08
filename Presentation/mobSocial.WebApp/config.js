@@ -5,3 +5,5 @@ const Configuration = {
     themeName: "AdminLTE",
     rootApiUrl: ""
 };
+
+window.Configuration = Configuration;

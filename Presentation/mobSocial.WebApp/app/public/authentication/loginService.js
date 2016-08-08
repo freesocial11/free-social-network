@@ -1,4 +1,4 @@
-﻿app.service("loginService", [
+﻿window.mobSocial.service("loginService", [
     "webClientService", "$global", function (webClientService, $global) {
        this.login = function (loginRequest, success, error) {
             var loginUrl = $global.getApiUrl("/authentication/login");
