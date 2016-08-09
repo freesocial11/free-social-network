@@ -1,18 +1,29 @@
-﻿window.mobSocial.controller("loginController", ["$scope", "loginService", function ($scope, loginService) {
-    $scope.init = function(dataModel) {
-        $scope.dataModel = dataModel;
-    }
-    $scope.login = function () {
-        loginService.login($scope.dataModel, function (response) {
-            if (response.Success) {
-                if (response.AdditionalData && response.AdditionalData.ReturnUrl)
-                    window.location.href = response.AdditionalData.ReturnUrl;
-                else
-                    window.location.href = "/";
-            }
-        }, function (response) {
+﻿window.mobSocial.controller("loginController",[
+    "$scope", "loginService", "authProvider", "$location", function ($scope, loginService, authProvider, $location) {
+       
+        $scope.init = function() {
+            $scope.dataModel = {
+                Email: "",
+                Password: "",
+                Persist: false,
+                ReturnUrl: $location.search().ReturnUrl
+            };
+        };
 
-        });
+        $scope.login = function() {
+            loginService.login($scope.dataModel,
+                function(response) {
+                    if (response.Success) {
+                        authProvider.markLoggedIn(true); //mark as logged in
+                        if (response.ResponseData && response.ResponseData.ReturnUrl)
+                            window.location.href = response.ResponseData.ReturnUrl;
+                        else
+                            window.location.href = "/";
+                    }
+                },
+                function(response) {
+
+                });
+        }
     }
-}
 ]);

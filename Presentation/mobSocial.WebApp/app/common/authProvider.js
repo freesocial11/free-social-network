@@ -1,13 +1,12 @@
-﻿window.mobSocial.factory('authProvider', ['$q', function ($q) {
-    var user;
+﻿window.mobSocial.factory('authProvider', ['$q', 'localStorageService', function ($q, localStorageService) {
+    const loggedinKey = "loggedin";
     return {
-        setUser: function (aUser) {
-            user = aUser;
+        markLoggedIn: function() {
+            localStorageService.set(loggedinKey, true);
         },
         isLoggedIn: function () {
             //Authentication logic here
-            if (window['auth'] !== undefined) {
-                //If authenticated, return anything you want, probably a user object
+            if (localStorageService.get(loggedinKey)) {
                 return true;
             } else {
                 //Else send a rejection

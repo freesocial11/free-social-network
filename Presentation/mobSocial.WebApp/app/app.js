@@ -1,4 +1,4 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router'])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule'])
     .constant('globalApiEndPoint', 'http://mobsocial.com/api')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
@@ -10,7 +10,10 @@
         }
     ]);
 
-window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
+window.mobSocial.config(["$stateProvider",
+    "$urlRouterProvider",
+    "$locationProvider",
+    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
     $urlRouterProvider.otherwise("/");
     $stateProvider
         .state("layoutZero",
@@ -45,6 +48,9 @@ window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvi
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
+
+        //local storage
+    localStorageServiceProvider.setPrefix('mobSocial');
 }]);
 
 //attach some global functions to rootScope
@@ -53,7 +59,7 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         if (error === 'Not Authenticated') {
             event.preventDefault();
-            window.location.href = "/login";
+            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(toState.url);
         }
     });
     //execute some theme callbacks on view content loaded
