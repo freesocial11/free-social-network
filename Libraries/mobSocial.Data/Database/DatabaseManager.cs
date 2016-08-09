@@ -17,6 +17,18 @@ namespace mobSocial.Data.Database
             return !string.IsNullOrEmpty(dbSettings.ConnectionString) && !string.IsNullOrEmpty(dbSettings.ProviderName);
         }
 
-        
+        public static string GetProviderName(string providerAbstractName)
+        {
+            switch (providerAbstractName.ToLower())
+            {
+
+                case "sqlserver":
+                    return "System.Data.SqlClient";
+                case "sqlce":
+                    return "System.Data.SqlServerCe.4.0";
+            }
+            return string.Empty;
+        }
+
     }
 }
