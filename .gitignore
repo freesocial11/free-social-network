@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# Configuration files
+Presentation\mobSocial.WebApi\App_Data
