@@ -246,3 +246,4 @@ ModelManifest.xml
 
 # Configuration files
 Presentation\mobSocial.WebApi\App_Data
+Presentation/mobSocial.WebApi/App_Data/
