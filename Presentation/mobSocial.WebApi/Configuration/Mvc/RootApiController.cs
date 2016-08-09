@@ -10,10 +10,10 @@ namespace mobSocial.WebApi.Configuration.Mvc
     {
         protected RootApiController()
         {
-            
+            VerboseReporter = mobSocialEngine.ActiveEngine.Resolve<IVerboseReporterService>();
         }
        
-        protected IVerboseReporterService VerboseReporter => mobSocialEngine.ActiveEngine.Resolve<IVerboseReporterService>();
+        protected IVerboseReporterService VerboseReporter;
 
         public IHttpActionResult Response(dynamic obj)
         {

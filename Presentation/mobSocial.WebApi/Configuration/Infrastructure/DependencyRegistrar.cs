@@ -53,7 +53,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.RegisterMany(serviceTypes, reuse: Reuse.Singleton);
 
             //we need a trasient reporter service rather than singleton
-            container.Register<IVerboseReporterService, VerboseReporterService>(ifAlreadyRegistered:IfAlreadyRegistered.Replace);
+            container.Register<IVerboseReporterService, VerboseReporterService>(reuse: Reuse.InResolutionScope, ifAlreadyRegistered:IfAlreadyRegistered.Replace);
 
             //settings
             var allSettingTypes = TypeFinder.ClassesOfType<ISettingGroup>();
