@@ -27,7 +27,7 @@ namespace mobSocial.Plugins.OAuth
 
             //override authentication service
             container.Register<IAuthenticationService, OAuthAuthenticationService>(
-                ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+                ifAlreadyRegistered: IfAlreadyRegistered.Replace, reuse: Reuse.Singleton);
         }
 
         public int Priority => 0;
