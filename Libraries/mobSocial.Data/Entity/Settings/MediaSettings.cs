@@ -70,6 +70,16 @@ namespace mobSocial.Data.Entity.Settings
         /// The medium cover size of a picture in pixels. Value should be written as WidthxHeight e.g. 800x600
         /// </summary>
         public string MediumCoverPictureSize { get; set; }
+        
+        /// <summary>
+        /// Default image that'll be used for user's profile if no image has been set
+        /// </summary>
+        public string DefaultUserProfileImageUrl { get; set; }
+
+        /// <summary>
+        /// Default image that'll be used for user's cover if no image has been set
+        /// </summary>
+        public string DefaultUserProfileCoverUrl { get; set; }
 
     }
 

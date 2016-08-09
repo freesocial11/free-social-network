@@ -227,6 +227,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Extensions\UtilityExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +278,7 @@
     <Compile Include="Models\Timeline\TimelinePostDisplayModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
+    <Compile Include="Models\Users\UserResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

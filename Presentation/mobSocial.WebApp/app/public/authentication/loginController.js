@@ -14,7 +14,7 @@
             loginService.login($scope.dataModel,
                 function(response) {
                     if (response.Success) {
-                        authProvider.markLoggedIn(true); //mark as logged in
+                        authProvider.markLoggedIn(response.ResponseData.User); //mark as logged in
                         if (response.ResponseData && response.ResponseData.ReturnUrl)
                             window.location.href = response.ResponseData.ReturnUrl;
                         else

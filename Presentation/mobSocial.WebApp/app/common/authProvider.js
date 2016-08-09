@@ -1,8 +1,13 @@
 ﻿window.mobSocial.factory('authProvider', ['$q', 'localStorageService', function ($q, localStorageService) {
     const loggedinKey = "loggedin";
+    const userInfoKey = "userinfo";
     return {
-        markLoggedIn: function() {
+        markLoggedIn: function(user) {
             localStorageService.set(loggedinKey, true);
+            localStorageService.set(userInfoKey, user);
+        },
+        getLoggedInUser: function() {
+            return localStorageService.get(userInfoKey);
         },
         isLoggedIn: function () {
             //Authentication logic here

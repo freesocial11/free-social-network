@@ -4,6 +4,7 @@ using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Authentication;
 
 namespace mobSocial.WebApi.Controllers
@@ -37,51 +38,25 @@ namespace mobSocial.WebApi.Controllers
         {
             var redirect = false;
 
-            if (loginModel == null || !ModelState.IsValid)
+            if (loginModel == null || !ModelState.IsValid || !ShouldSignIn(loginModel.Email, loginModel.Password))
             {
-                if (!ModelState.IsValid && loginModel != null)
-                    redirect = loginModel.Redirect;
-
-                if (!redirect)
-                {
-                    VerboseReporter.ReportError("The email or password is invalid", "login");
-                    return RespondFailure();
-                }
-                return RespondRedirect(Request.RequestUri);
-
-            }
-
-            redirect = loginModel.Redirect;
-            if (!ShouldSignIn(loginModel.Email, loginModel.Password))
-            {
-                if (!redirect)
-                {
-                    VerboseReporter.ReportError("The email or password is invalid", "login");
-                    return RespondFailure();
-                }
-                return RespondRedirect(Request.RequestUri);
+                VerboseReporter.ReportError("The email or password is invalid", "login");
+                return RespondFailure();
             }
 
             //sign in the current user
             var loginStatus = ApplicationContext.Current.SignIn(loginModel.Email, loginModel.Persist);
             if (loginStatus == LoginStatus.Success)
             {
-                if (!redirect)
-                {
-                    VerboseReporter.ReportSuccess("Your login was successful", "login");
-                    return RespondSuccess(new {
-                        ReturnUrl = loginModel.ReturnUrl
-                    });
-                }
-                return RespondRedirect(loginModel.ReturnUrl);
+                VerboseReporter.ReportSuccess("Your login was successful", "login");
+                return RespondSuccess(new {
+                    ReturnUrl = loginModel.ReturnUrl,
+                    User = ApplicationContext.Current.CurrentUser.ToModel()
+                });
 
             }
-            if (!redirect)
-            {
-                VerboseReporter.ReportError("The login attempt failed due to unknown error", "login");
-                return RespondFailure();
-            }
-            return RespondRedirect(Request.RequestUri);
+            VerboseReporter.ReportError("The login attempt failed due to unknown error", "login");
+            return RespondFailure();
 
         }
         #endregion

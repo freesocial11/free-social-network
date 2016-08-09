@@ -15,6 +15,5 @@ namespace mobSocial.WebApi.Models.Authentication
 
         public string ReturnUrl { get; set; }
 
-        public bool Redirect { get; set; }
     }
 }

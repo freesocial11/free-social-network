@@ -15,36 +15,32 @@ window.mobSocial.config(["$stateProvider",
     "$locationProvider",
     "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
     $urlRouterProvider.otherwise("/");
-    $stateProvider
-        .state("layoutZero",
-        {
-            templateUrl: "pages/layouts/_layout-none.html"
-        })
-        .state("layoutZero.login",
-        {
-            templateUrl: "pages/login.html",
-            url: "/login"
-        })
-        .state("dashboard",
-        {
-            resolve: {
-                auth: function(authProvider) {
-                    return authProvider.isLoggedIn();
-                }
-            },
-            url: "/dashboard",
-
-            templateUrl: "pages/dashboard.html"
-        })
-        .state("test",
-        {
-            views: {
-                "_layout-loggedin": {
-                    templateUrl: "pages/dashboard.html"
-                }
-            },
-            url: "/test"
-        });
+        $stateProvider
+            .state("layoutZero",
+            {
+                templateUrl: "pages/layouts/_layout-none.html"
+            })
+            .state("layoutZero.login",
+            {
+                templateUrl: "pages/login.html",
+                url: "/login"
+            });
+        $stateProvider
+            .state("layoutDashboard",
+            {
+                resolve: {
+                    auth: function(authProvider) {
+                        return authProvider.isLoggedIn();
+                    }
+                },
+                templateUrl: "pages/layouts/_layout-dashboard.html"
+            })
+            .state("layoutDashboard.dashboard",
+            {
+                url: "/dashboard",
+                templateUrl: "pages/dashboard.html"
+            });
+           
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
@@ -72,6 +68,9 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
             }
             
     });
+
+    //set logged in user for use throughout
+    $rootScope.CurrentUser = authProvider.getLoggedInUser();
 
     $rootScope.login = function (returnUrl) {
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
