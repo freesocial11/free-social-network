@@ -49,12 +49,13 @@
 
 	__webpack_require__(/*! ./libraries/angular/angular.min.js */1);
 	__webpack_require__(/*! ./libraries/angular/angular-ui-router.js */2);
-	__webpack_require__(/*! ./config.js */3);
-	__webpack_require__(/*! ./app/app.js */4);
-	__webpack_require__(/*! ./app/common/authProvider.js */5);
-	__webpack_require__(/*! ./app/common/webClientService.js */6);
-	__webpack_require__(/*! ./app/public/authentication/loginService.js */7);
-	module.exports = __webpack_require__(/*! ./app/public/authentication/loginController.js */8);
+	__webpack_require__(/*! ./libraries/angular/angular-local-storage.min.js */3);
+	__webpack_require__(/*! ./config.js */4);
+	__webpack_require__(/*! ./app/app.js */5);
+	__webpack_require__(/*! ./app/common/authProvider.js */6);
+	__webpack_require__(/*! ./app/common/webClientService.js */7);
+	__webpack_require__(/*! ./app/public/authentication/loginService.js */8);
+	module.exports = __webpack_require__(/*! ./app/public/authentication/loginController.js */9);
 
 
 /***/ },
@@ -5602,6 +5603,23 @@
 
 /***/ },
 /* 3 */
+/*!********************************************************!*\
+  !*** ./libraries/angular/angular-local-storage.min.js ***!
+  \********************************************************/
+/***/ function(module, exports) {
+
+	/**
+	 * An Angular module that gives you access to the browsers local storage
+	 * @version v0.3.0 - 2016-07-29
+	 * @link https://github.com/grevory/angular-local-storage
+	 * @author grevory <greg@gregpike.ca>
+	 * @license MIT License, http://www.opensource.org/licenses/MIT
+	 */
+	!function(a,b){var c=b.isDefined,d=b.isUndefined,e=b.isNumber,f=b.isObject,g=b.isArray,h=b.extend,i=b.toJson;b.module("LocalStorageModule",[]).provider("localStorageService",function(){this.prefix="ls",this.storageType="localStorage",this.cookie={expiry:30,path:"/"},this.defaultToCookie=!0,this.notify={setItem:!0,removeItem:!1},this.setPrefix=function(a){return this.prefix=a,this},this.setStorageType=function(a){return this.storageType=a,this},this.setDefaultToCookie=function(a){return this.defaultToCookie=!!a,this},this.setStorageCookie=function(a,b){return this.cookie.expiry=a,this.cookie.path=b,this},this.setStorageCookieDomain=function(a){return this.cookie.domain=a,this},this.setNotify=function(a,b){return this.notify={setItem:a,removeItem:b},this},this.$get=["$rootScope","$window","$document","$parse","$timeout",function(a,b,j,k,l){function m(c){if(c||(c=b.event),r.setItem&&v(c.key)){var d=u(c.key);l(function(){a.$broadcast("LocalStorageModule.notification.changed",{key:d,newvalue:c.newValue,storageType:o.storageType})})}}var n,o=this,p=o.prefix,q=o.cookie,r=o.notify,s=o.storageType;j?j[0]&&(j=j[0]):j=document,"."!==p.substr(-1)&&(p=p?p+".":"");var t=function(a){return p+a},u=function(a){return a.replace(new RegExp("^"+p,"g"),"")},v=function(a){return 0===a.indexOf(p)},w=function(){try{var c=s in b&&null!==b[s],d=t("__"+Math.round(1e7*Math.random()));return c&&(n=b[s],n.setItem(d,""),n.removeItem(d)),c}catch(b){return o.defaultToCookie&&(s="cookie"),a.$broadcast("LocalStorageModule.notification.error",b.message),!1}},x=w(),y=function(b,c,e){if(J(e),c=d(c)?null:i(c),!x&&o.defaultToCookie||"cookie"===o.storageType)return x||a.$broadcast("LocalStorageModule.notification.warning","LOCAL_STORAGE_NOT_SUPPORTED"),r.setItem&&a.$broadcast("LocalStorageModule.notification.setitem",{key:b,newvalue:c,storageType:"cookie"}),E(b,c);try{n&&n.setItem(t(b),c),r.setItem&&a.$broadcast("LocalStorageModule.notification.setitem",{key:b,newvalue:c,storageType:o.storageType})}catch(d){return a.$broadcast("LocalStorageModule.notification.error",d.message),E(b,c)}return!0},z=function(b,c){if(J(c),!x&&o.defaultToCookie||"cookie"===o.storageType)return x||a.$broadcast("LocalStorageModule.notification.warning","LOCAL_STORAGE_NOT_SUPPORTED"),F(b);var d=n?n.getItem(t(b)):null;if(!d||"null"===d)return null;try{return JSON.parse(d)}catch(a){return d}},A=function(){var b=0;arguments.length>=1&&("localStorage"===arguments[arguments.length-1]||"sessionStorage"===arguments[arguments.length-1])&&(b=1,J(arguments[arguments.length-1]));var c,d;for(c=0;c<arguments.length-b;c++)if(d=arguments[c],!x&&o.defaultToCookie||"cookie"===o.storageType)x||a.$broadcast("LocalStorageModule.notification.warning","LOCAL_STORAGE_NOT_SUPPORTED"),r.removeItem&&a.$broadcast("LocalStorageModule.notification.removeitem",{key:d,storageType:"cookie"}),G(d);else try{n.removeItem(t(d)),r.removeItem&&a.$broadcast("LocalStorageModule.notification.removeitem",{key:d,storageType:o.storageType})}catch(b){a.$broadcast("LocalStorageModule.notification.error",b.message),G(d)}},B=function(b){if(J(b),!x)return a.$broadcast("LocalStorageModule.notification.warning","LOCAL_STORAGE_NOT_SUPPORTED"),[];var c=p.length,d=[];for(var e in n)if(e.substr(0,c)===p)try{d.push(e.substr(c))}catch(b){return a.$broadcast("LocalStorageModule.notification.error",b.Description),[]}return d},C=function(b,c){J(c);var d=p?new RegExp("^"+p):new RegExp,e=b?new RegExp(b):new RegExp;if(!x&&o.defaultToCookie||"cookie"===o.storageType)return x||a.$broadcast("LocalStorageModule.notification.warning","LOCAL_STORAGE_NOT_SUPPORTED"),H();if(!x&&!o.defaultToCookie)return!1;var f=p.length;for(var g in n)if(d.test(g)&&e.test(g.substr(f)))try{A(g.substr(f))}catch(b){return a.$broadcast("LocalStorageModule.notification.error",b.message),H()}return!0},D=function(){try{return b.navigator.cookieEnabled||"cookie"in j&&(j.cookie.length>0||(j.cookie="test").indexOf.call(j.cookie,"test")>-1)}catch(b){return a.$broadcast("LocalStorageModule.notification.error",b.message),!1}}(),E=function(b,c,h){if(d(c))return!1;if((g(c)||f(c))&&(c=i(c)),!D)return a.$broadcast("LocalStorageModule.notification.error","COOKIES_NOT_SUPPORTED"),!1;try{var k="",l=new Date,m="";if(null===c?(l.setTime(l.getTime()+-864e5),k="; expires="+l.toGMTString(),c=""):e(h)&&0!==h?(l.setTime(l.getTime()+24*h*60*60*1e3),k="; expires="+l.toGMTString()):0!==q.expiry&&(l.setTime(l.getTime()+24*q.expiry*60*60*1e3),k="; expires="+l.toGMTString()),b){var n="; path="+q.path;q.domain&&(m="; domain="+q.domain),j.cookie=t(b)+"="+encodeURIComponent(c)+k+n+m}}catch(b){return a.$broadcast("LocalStorageModule.notification.error",b.message),!1}return!0},F=function(b){if(!D)return a.$broadcast("LocalStorageModule.notification.error","COOKIES_NOT_SUPPORTED"),!1;for(var c=j.cookie&&j.cookie.split(";")||[],d=0;d<c.length;d++){for(var e=c[d];" "===e.charAt(0);)e=e.substring(1,e.length);if(0===e.indexOf(t(b)+"=")){var f=decodeURIComponent(e.substring(p.length+b.length+1,e.length));try{return JSON.parse(f)}catch(a){return f}}}return null},G=function(a){E(a,null)},H=function(){for(var a=null,b=p.length,c=j.cookie.split(";"),d=0;d<c.length;d++){for(a=c[d];" "===a.charAt(0);)a=a.substring(1,a.length);var e=a.substring(b,a.indexOf("="));G(e)}},I=function(){return s},J=function(a){return a&&s!==a&&(s=a,x=w()),x},K=function(a,b,d,e,g){e=e||b;var i=z(e,g);return null===i&&c(d)?i=d:f(i)&&f(d)&&(i=h(i,d)),k(b).assign(a,i),a.$watch(b,function(a){y(e,a,g)},f(a[b]))};x&&(b.addEventListener?b.addEventListener("storage",m,!1):b.attachEvent&&b.attachEvent("onstorage",m));var L=function(a){J(a);for(var c=0,d=b[s],e=0;e<d.length;e++)0===d.key(e).indexOf(p)&&c++;return c};return{isSupported:x,getStorageType:I,setStorageType:J,set:y,add:y,get:z,keys:B,remove:A,clearAll:C,bind:K,deriveKey:t,underiveKey:u,length:L,defaultToCookie:this.defaultToCookie,cookie:{isSupported:D,set:E,add:E,get:F,remove:G,clearAll:H}}}]})}(window,window.angular);
+	//# sourceMappingURL=angular-local-storage.min.js.map
+
+/***/ },
+/* 4 */
 /*!*******************!*\
   !*** ./config.js ***!
   \*******************/
@@ -5619,13 +5637,13 @@
 
 
 /***/ },
-/* 4 */
+/* 5 */
 /*!********************!*\
   !*** ./app/app.js ***!
   \********************/
 /***/ function(module, exports) {
 
-	window.mobSocial = angular.module("mobSocialApp", ['ui.router'])
+	window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule'])
 	    .constant('globalApiEndPoint', 'http://mobsocial.com/api')
 	    .factory('$global', [
 	        'globalApiEndPoint', function (globalApiEndPoint) {
@@ -5637,7 +5655,10 @@
 	        }
 	    ]);
 	
-	window.mobSocial.config(["$stateProvider", "$urlRouterProvider", "$locationProvider", function ($stateProvider, $urlRouterProvider, $locationProvider) {
+	window.mobSocial.config(["$stateProvider",
+	    "$urlRouterProvider",
+	    "$locationProvider",
+	    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
 	    $urlRouterProvider.otherwise("/");
 	    $stateProvider
 	        .state("layoutZero",
@@ -5672,6 +5693,9 @@
 	
 	    // use the HTML5 History API
 	    $locationProvider.html5Mode(true);
+	
+	        //local storage
+	    localStorageServiceProvider.setPrefix('mobSocial');
 	}]);
 	
 	//attach some global functions to rootScope
@@ -5680,7 +5704,7 @@
 	    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 	        if (error === 'Not Authenticated') {
 	            event.preventDefault();
-	            window.location.href = "/login";
+	            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(toState.url);
 	        }
 	    });
 	    //execute some theme callbacks on view content loaded
@@ -5744,22 +5768,21 @@
 
 
 /***/ },
-/* 5 */
+/* 6 */
 /*!************************************!*\
   !*** ./app/common/authProvider.js ***!
   \************************************/
 /***/ function(module, exports) {
 
-	window.mobSocial.factory('authProvider', ['$q', function ($q) {
-	    var user;
+	window.mobSocial.factory('authProvider', ['$q', 'localStorageService', function ($q, localStorageService) {
+	    const loggedinKey = "loggedin";
 	    return {
-	        setUser: function (aUser) {
-	            user = aUser;
+	        markLoggedIn: function() {
+	            localStorageService.set(loggedinKey, true);
 	        },
 	        isLoggedIn: function () {
 	            //Authentication logic here
-	            if (window['auth'] !== undefined) {
-	                //If authenticated, return anything you want, probably a user object
+	            if (localStorageService.get(loggedinKey)) {
 	                return true;
 	            } else {
 	                //Else send a rejection
@@ -5770,7 +5793,7 @@
 	}]);
 
 /***/ },
-/* 6 */
+/* 7 */
 /*!****************************************!*\
   !*** ./app/common/webClientService.js ***!
   \****************************************/
@@ -5821,7 +5844,7 @@
 	}]);
 
 /***/ },
-/* 7 */
+/* 8 */
 /*!***************************************************!*\
   !*** ./app/public/authentication/loginService.js ***!
   \***************************************************/
@@ -5837,29 +5860,40 @@
 	]);
 
 /***/ },
-/* 8 */
+/* 9 */
 /*!******************************************************!*\
   !*** ./app/public/authentication/loginController.js ***!
   \******************************************************/
 /***/ function(module, exports) {
 
-	window.mobSocial.controller("loginController", ["$scope", "loginService", function ($scope, loginService) {
-	    $scope.init = function(dataModel) {
-	        $scope.dataModel = dataModel;
-	    }
-	    $scope.login = function () {
-	        loginService.login($scope.dataModel, function (response) {
-	            if (response.Success) {
-	                if (response.AdditionalData && response.AdditionalData.ReturnUrl)
-	                    window.location.href = response.AdditionalData.ReturnUrl;
-	                else
-	                    window.location.href = "/";
-	            }
-	        }, function (response) {
+	window.mobSocial.controller("loginController",[
+	    "$scope", "loginService", "authProvider", "$location", function ($scope, loginService, authProvider, $location) {
+	       
+	        $scope.init = function() {
+	            $scope.dataModel = {
+	                Email: "",
+	                Password: "",
+	                Persist: false,
+	                ReturnUrl: $location.search().ReturnUrl
+	            };
+	        };
 	
-	        });
+	        $scope.login = function() {
+	            loginService.login($scope.dataModel,
+	                function(response) {
+	                    if (response.Success) {
+	                        authProvider.markLoggedIn(true); //mark as logged in
+	                        if (response.ResponseData && response.ResponseData.ReturnUrl)
+	                            window.location.href = response.ResponseData.ReturnUrl;
+	                        else
+	                            window.location.href = "/";
+	                    }
+	                },
+	                function(response) {
+	
+	                });
+	        }
 	    }
-	}
 	]);
 
 /***/ }
