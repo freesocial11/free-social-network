@@ -10,6 +10,10 @@ namespace mobSocial.Services.Authentication
         /// </summary>
         LoginStatus SignIn(string email, bool isPersistent = false,  bool forceCreateNewAccount = false);
 
+        /// <summary>
+        /// Signs out the current logged in user
+        /// </summary>
+        void SignOut();
 
         /// <summary>
         /// Creates an authentication ticket for the user

@@ -72,6 +72,14 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
         }
 
         /// <summary>
+        /// Signs out the current logged in user
+        /// </summary>
+        public void SignOut()
+        {
+            _authenticationService.SignOut();
+        }
+
+        /// <summary>
         /// Gets the current application context
         /// </summary>
         public static ApplicationContext Current

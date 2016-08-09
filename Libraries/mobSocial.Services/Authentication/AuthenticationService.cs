@@ -69,6 +69,11 @@ namespace mobSocial.Services.Authentication
             return LoginStatus.Success;
         }
 
+        public void SignOut()
+        {
+            ClearAuthenticationTicket();
+        }
+
         public virtual void CreateAuthenticationTicket(User user, bool isPersistent = false)
         {
             var now = DateTime.UtcNow.ToLocalTime();
