@@ -205,6 +205,7 @@
     <Compile Include="Configuration\Mvc\UI\ResourcePlacementType.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourceRegistrationType.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
+    <Compile Include="Configuration\Security\Attributes\AdminAuthorizeAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\RequireFeatureEnabledAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\CapabilityRequiredAttribute.cs" />
     <Compile Include="Configuration\Tasks\DatabaseSetupTask.cs" />
@@ -278,6 +279,7 @@
     <Compile Include="Models\Timeline\TimelinePostDisplayModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
+    <Compile Include="Models\Users\UserGetModel.cs" />
     <Compile Include="Models\Users\UserResponseModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
