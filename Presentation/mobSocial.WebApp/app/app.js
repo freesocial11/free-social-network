@@ -10,44 +10,7 @@
         }
     ]);
 
-window.mobSocial.config(["$stateProvider",
-    "$urlRouterProvider",
-    "$locationProvider",
-    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
-    $urlRouterProvider.otherwise("/");
-        $stateProvider
-            .state("layoutZero",
-            {
-                templateUrl: "pages/layouts/_layout-none.html"
-            })
-            .state("layoutZero.login",
-            {
-                templateUrl: "pages/login.html",
-                url: "/login"
-            });
-        $stateProvider
-            .state("layoutDashboard",
-            {
-                resolve: {
-                    auth: function(authProvider) {
-                        return authProvider.isLoggedIn();
-                    }
-                },
-                templateUrl: "pages/layouts/_layout-dashboard.html"
-            })
-            .state("layoutDashboard.dashboard",
-            {
-                url: "/dashboard",
-                templateUrl: "pages/dashboard.html"
-            });
-           
 
-    // use the HTML5 History API
-    $locationProvider.html5Mode(true);
-
-        //local storage
-    localStorageServiceProvider.setPrefix('mobSocial');
-}]);
 
 //attach some global functions to rootScope
 window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
@@ -55,7 +18,7 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         if (error === 'Not Authenticated') {
             event.preventDefault();
-            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(toState.url);
+            $rootScope.login(toState.url);
         }
     });
     //execute some theme callbacks on view content loaded
@@ -73,6 +36,7 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     $rootScope.CurrentUser = authProvider.getLoggedInUser();
 
     $rootScope.login = function (returnUrl) {
+        returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
         var a = document.createElement("a");
         a.href = returnUrl;

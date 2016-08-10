@@ -8,11 +8,16 @@ module.exports = {
             "./libraries/angular/angular-local-storage.min.js",
             "./config.js",
             "./app/app.js",
+            "./app/common/router.js",
             "./app/common/authProvider.js",
+            "./app/common/requestInterceptor.js",
             "./app/common/webClientService.js",
             //login
             "./app/public/authentication/loginService.js",
-            "./app/public/authentication/loginController.js"
+            "./app/public/authentication/loginController.js",
+            //user
+            "./app/admin/users/userService.js",
+            "./app/admin/users/userController.js"
         ],
     output: {
         filename: "bundle.js"
