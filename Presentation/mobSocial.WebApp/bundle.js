@@ -52,10 +52,14 @@
 	__webpack_require__(/*! ./libraries/angular/angular-local-storage.min.js */3);
 	__webpack_require__(/*! ./config.js */4);
 	__webpack_require__(/*! ./app/app.js */5);
-	__webpack_require__(/*! ./app/common/authProvider.js */6);
-	__webpack_require__(/*! ./app/common/webClientService.js */7);
-	__webpack_require__(/*! ./app/public/authentication/loginService.js */8);
-	module.exports = __webpack_require__(/*! ./app/public/authentication/loginController.js */9);
+	__webpack_require__(/*! ./app/common/router.js */6);
+	__webpack_require__(/*! ./app/common/authProvider.js */7);
+	__webpack_require__(/*! ./app/common/requestInterceptor.js */8);
+	__webpack_require__(/*! ./app/common/webClientService.js */9);
+	__webpack_require__(/*! ./app/public/authentication/loginService.js */10);
+	__webpack_require__(/*! ./app/public/authentication/loginController.js */11);
+	__webpack_require__(/*! ./app/admin/users/userService.js */12);
+	module.exports = __webpack_require__(/*! ./app/admin/users/userController.js */13);
 
 
 /***/ },
@@ -5655,44 +5659,7 @@
 	        }
 	    ]);
 	
-	window.mobSocial.config(["$stateProvider",
-	    "$urlRouterProvider",
-	    "$locationProvider",
-	    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
-	    $urlRouterProvider.otherwise("/");
-	        $stateProvider
-	            .state("layoutZero",
-	            {
-	                templateUrl: "pages/layouts/_layout-none.html"
-	            })
-	            .state("layoutZero.login",
-	            {
-	                templateUrl: "pages/login.html",
-	                url: "/login"
-	            });
-	        $stateProvider
-	            .state("layoutDashboard",
-	            {
-	                resolve: {
-	                    auth: function(authProvider) {
-	                        return authProvider.isLoggedIn();
-	                    }
-	                },
-	                templateUrl: "pages/layouts/_layout-dashboard.html"
-	            })
-	            .state("layoutDashboard.dashboard",
-	            {
-	                url: "/dashboard",
-	                templateUrl: "pages/dashboard.html"
-	            });
-	           
 	
-	    // use the HTML5 History API
-	    $locationProvider.html5Mode(true);
-	
-	        //local storage
-	    localStorageServiceProvider.setPrefix('mobSocial');
-	}]);
 	
 	//attach some global functions to rootScope
 	window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
@@ -5700,7 +5667,7 @@
 	    $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
 	        if (error === 'Not Authenticated') {
 	            event.preventDefault();
-	            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(toState.url);
+	            $rootScope.login(toState.url);
 	        }
 	    });
 	    //execute some theme callbacks on view content loaded
@@ -5718,6 +5685,7 @@
 	    $rootScope.CurrentUser = authProvider.getLoggedInUser();
 	
 	    $rootScope.login = function (returnUrl) {
+	        returnUrl = returnUrl || window.location.href;
 	        //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
 	        var a = document.createElement("a");
 	        a.href = returnUrl;
@@ -5768,6 +5736,63 @@
 
 /***/ },
 /* 6 */
+/*!******************************!*\
+  !*** ./app/common/router.js ***!
+  \******************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.config(["$stateProvider",
+	    "$urlRouterProvider",
+	    "$locationProvider",
+	    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
+	        $urlRouterProvider.otherwise("/");
+	        $stateProvider
+	            .state("layoutZero",
+	            {
+	                templateUrl: "pages/layouts/_layout-none.html"
+	            })
+	            .state("layoutZero.login",
+	            {
+	                templateUrl: "pages/login.html",
+	                url: "/login"
+	            });
+	        $stateProvider
+	            .state("layoutDashboard",
+	            {
+	                resolve: {
+	                    auth: function (authProvider) {
+	                        return authProvider.isLoggedIn();
+	                    }
+	                },
+	                templateUrl: "pages/layouts/_layout-dashboard.html"
+	            })
+	            .state("layoutDashboard.dashboard",
+	            {
+	                url: "/dashboard",
+	                templateUrl: "pages/dashboard.html"
+	            })
+	            .state("layoutDashboard.userlist",
+	            {
+	                url: "/users",
+	                templateUrl: "pages/users/users.list.html",
+	                controller: "userController"
+	            })
+	            .state("layoutDashboard.useredit",
+	            {
+	                url: "/user/edit?id",
+	                templateUrl: "pages/users/user.edit.html"
+	            });
+	
+	
+	        // use the HTML5 History API
+	        $locationProvider.html5Mode(true);
+	
+	        //local storage
+	        localStorageServiceProvider.setPrefix('mobSocial');
+	    }]);
+
+/***/ },
+/* 7 */
 /*!************************************!*\
   !*** ./app/common/authProvider.js ***!
   \************************************/
@@ -5792,12 +5817,44 @@
 	                //Else send a rejection
 	                return $q.reject('Not Authenticated');
 	            }
+	        },
+	        logout: function() {
+	            localStorageService.set(loggedinKey, false);
+	            localStorageService.set(userInfoKey, null);
 	        }
 	    };
 	}]);
 
 /***/ },
-/* 7 */
+/* 8 */
+/*!******************************************!*\
+  !*** ./app/common/requestInterceptor.js ***!
+  \******************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.service("MobSocialInterceptor", ["authProvider", "$rootScope",
+	    function (authProvider, $rootScope) {
+	        this.request = function(config) {
+	            return config;
+	        };
+	        this.responseError = function (response) {
+	            
+	            if (response.status === 401) {
+	                authProvider.logout();
+	                $rootScope.login();
+	                return;
+	            }
+	            
+	            return response;
+	        };
+	    }
+	]);
+	window.mobSocial.config(['$httpProvider', function ($httpProvider) {
+	    $httpProvider.interceptors.push('MobSocialInterceptor');
+	}]);
+
+/***/ },
+/* 9 */
 /*!****************************************!*\
   !*** ./app/common/webClientService.js ***!
   \****************************************/
@@ -5848,7 +5905,7 @@
 	}]);
 
 /***/ },
-/* 8 */
+/* 10 */
 /*!***************************************************!*\
   !*** ./app/public/authentication/loginService.js ***!
   \***************************************************/
@@ -5864,7 +5921,7 @@
 	]);
 
 /***/ },
-/* 9 */
+/* 11 */
 /*!******************************************************!*\
   !*** ./app/public/authentication/loginController.js ***!
   \******************************************************/
@@ -5897,6 +5954,57 @@
 	
 	                });
 	        }
+	    }
+	]);
+
+/***/ },
+/* 12 */
+/*!****************************************!*\
+  !*** ./app/admin/users/userService.js ***!
+  \****************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.service("userService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
+	
+	    var apiEndPoint = globalApiEndPoint + "/users";
+	    // get
+	    this.get = function (userGetModel, success, error) {
+	        webClientService.get(apiEndPoint + "/get", userGetModel, success, error);
+	    }
+	
+	}]);
+
+/***/ },
+/* 13 */
+/*!*******************************************!*\
+  !*** ./app/admin/users/userController.js ***!
+  \*******************************************/
+/***/ function(module, exports) {
+
+	window.mobSocial.controller("userController", [
+	    "$scope", "userService", function ($scope, userService) {
+	
+	        $scope.get = function () {
+	            userService.get($scope.requestModel,
+	                function (response) {
+	                    if (response.Success) {
+	                        $scope.users = response.ResponseData.Users;
+	                    }
+	                },
+	                function (response) {
+	
+	                });
+	        }
+	
+	        $scope.init = function () {
+	            $scope.requestModel = {
+	                SearchText: "",
+	                Page: 1,
+	                Count: 15
+	            };
+	            //request data
+	            $scope.get();
+	        }();
 	    }
 	]);
 
