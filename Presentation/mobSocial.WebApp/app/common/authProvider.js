@@ -17,6 +17,10 @@
                 //Else send a rejection
                 return $q.reject('Not Authenticated');
             }
+        },
+        logout: function() {
+            localStorageService.set(loggedinKey, false);
+            localStorageService.set(userInfoKey, null);
         }
     };
 }]);
