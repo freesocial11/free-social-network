@@ -13,6 +13,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
         {
             var model = new UserResponseModel()
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Name = user.Name,

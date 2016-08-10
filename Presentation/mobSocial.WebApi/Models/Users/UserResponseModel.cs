@@ -3,7 +3,7 @@ using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Users
 {
-    public class UserResponseModel : RootModel
+    public class UserResponseModel : RootEntityModel
     {
         public string FirstName { get; set; }
 
