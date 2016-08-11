@@ -70,13 +70,7 @@ namespace mobSocial.Services.Installation
                 IsActive = true,
                 SystemName = SystemRoleNames.Visitor
             });
-
-            roleService.Insert(new Role() {
-                RoleName = SystemRoleNames.Agent,
-                IsSystemRole = false,
-                IsActive = true,
-                SystemName = SystemRoleNames.Agent
-            });
+            
         }
 
         /// <summary>

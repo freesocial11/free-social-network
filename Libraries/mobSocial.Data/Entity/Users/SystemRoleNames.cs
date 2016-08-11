@@ -7,7 +7,5 @@
         public const string Visitor = "Visitor";
 
         public const string Registered = "Registered";
-
-        public const string Agent = "Agent";
     }
 }
