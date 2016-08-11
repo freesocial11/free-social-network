@@ -35,6 +35,21 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             return model;
         }
 
+        public static UserEntityModel ToEntityModel(this User user)
+        {
+            var model = new UserEntityModel() {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Name = user.Name,
+                UserName = user.UserName,
+                Email = user.Email,
+                Active = user.Active,
+                Remarks = user.Remarks
+            };
+
+            return model;
+        }
 
     }
 }

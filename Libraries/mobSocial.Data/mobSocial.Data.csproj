@@ -182,6 +182,7 @@
     <Compile Include="Interfaces\IHasEntityProperties.cs" />
     <Compile Include="Interfaces\IPermalinkSupported.cs" />
     <Compile Include="Interfaces\IPicturesSupported.cs" />
+    <Compile Include="Interfaces\IUserResource.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
     <Compile Include="Migrations\mobSocialDbMigrator.cs" />
