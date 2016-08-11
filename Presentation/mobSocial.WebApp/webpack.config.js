@@ -17,7 +17,8 @@ module.exports = {
             "./app/public/authentication/loginController.js",
             //user
             "./app/admin/users/userService.js",
-            "./app/admin/users/userController.js"
+            "./app/admin/users/userController.js",
+            "./app/admin/users/userEditController.js"
         ],
     output: {
         filename: "bundle.js"

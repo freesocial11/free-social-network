@@ -6,4 +6,12 @@
         webClientService.get(apiEndPoint + "/get", userGetModel, success, error);
     }
 
+    this.getById = function (id, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + id, null, success, error);
+    }
+
+    this.post = function(userEntityModel, success, error) {
+        webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
+    }
+
 }]);

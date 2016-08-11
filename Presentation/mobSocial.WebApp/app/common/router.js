@@ -2,10 +2,11 @@
     "$urlRouterProvider",
     "$locationProvider",
     "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
-        $urlRouterProvider.otherwise("/");
+        
         $stateProvider
             .state("layoutZero",
             {
+                abstract:true,
                 templateUrl: "pages/layouts/_layout-none.html"
             })
             .state("layoutZero.login",
@@ -16,6 +17,7 @@
         $stateProvider
             .state("layoutDashboard",
             {
+                abstract:true,
                 resolve: {
                     auth: function (authProvider) {
                         return authProvider.isLoggedIn();
@@ -25,7 +27,7 @@
             })
             .state("layoutDashboard.dashboard",
             {
-                url: "/dashboard",
+                url: "/",
                 templateUrl: "pages/dashboard.html"
             })
             .state("layoutDashboard.userlist",
@@ -36,10 +38,21 @@
             })
             .state("layoutDashboard.useredit",
             {
-                url: "/user/edit?id",
-                templateUrl: "pages/users/user.edit.html"
+                abstract:true,
+                url: "/user/edit/:id",
+                templateUrl: "pages/users/user.edit.html",
+                controller: "userEditController"
             });
 
+        $stateProvider.state("layoutZero.404",
+        {
+            templateUrl: "pages/common/404.html"
+        });
+        $urlRouterProvider.otherwise(function ($injector, $location) {
+            var state = $injector.get('$state');
+            state.go('layoutZero.404');
+            return $location.path();
+        });
 
         // use the HTML5 History API
         $locationProvider.html5Mode(true);

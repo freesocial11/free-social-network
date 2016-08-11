@@ -59,7 +59,8 @@
 	__webpack_require__(/*! ./app/public/authentication/loginService.js */10);
 	__webpack_require__(/*! ./app/public/authentication/loginController.js */11);
 	__webpack_require__(/*! ./app/admin/users/userService.js */12);
-	module.exports = __webpack_require__(/*! ./app/admin/users/userController.js */13);
+	__webpack_require__(/*! ./app/admin/users/userController.js */13);
+	module.exports = __webpack_require__(/*! ./app/admin/users/userEditController.js */14);
 
 
 /***/ },
@@ -5745,10 +5746,11 @@
 	    "$urlRouterProvider",
 	    "$locationProvider",
 	    "localStorageServiceProvider", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider) {
-	        $urlRouterProvider.otherwise("/");
+	        
 	        $stateProvider
 	            .state("layoutZero",
 	            {
+	                abstract:true,
 	                templateUrl: "pages/layouts/_layout-none.html"
 	            })
 	            .state("layoutZero.login",
@@ -5759,6 +5761,7 @@
 	        $stateProvider
 	            .state("layoutDashboard",
 	            {
+	                abstract:true,
 	                resolve: {
 	                    auth: function (authProvider) {
 	                        return authProvider.isLoggedIn();
@@ -5768,7 +5771,7 @@
 	            })
 	            .state("layoutDashboard.dashboard",
 	            {
-	                url: "/dashboard",
+	                url: "/",
 	                templateUrl: "pages/dashboard.html"
 	            })
 	            .state("layoutDashboard.userlist",
@@ -5779,10 +5782,21 @@
 	            })
 	            .state("layoutDashboard.useredit",
 	            {
-	                url: "/user/edit?id",
-	                templateUrl: "pages/users/user.edit.html"
+	                abstract:true,
+	                url: "/user/edit/:id",
+	                templateUrl: "pages/users/user.edit.html",
+	                controller: "userEditController"
 	            });
 	
+	        $stateProvider.state("layoutZero.404",
+	        {
+	            templateUrl: "pages/common/404.html"
+	        });
+	        $urlRouterProvider.otherwise(function ($injector, $location) {
+	            var state = $injector.get('$state');
+	            state.go('layoutZero.404');
+	            return $location.path();
+	        });
 	
 	        // use the HTML5 History API
 	        $locationProvider.html5Mode(true);
@@ -5972,6 +5986,14 @@
 	        webClientService.get(apiEndPoint + "/get", userGetModel, success, error);
 	    }
 	
+	    this.getById = function (id, success, error) {
+	        webClientService.get(apiEndPoint + "/get/" + id, null, success, error);
+	    }
+	
+	    this.post = function(userEntityModel, success, error) {
+	        webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
+	    }
+	
 	}]);
 
 /***/ },
@@ -6001,6 +6023,68 @@
 	                SearchText: "",
 	                Page: 1,
 	                Count: 15
+	            };
+	            //request data
+	            $scope.get();
+	        }();
+	    }
+	]);
+
+/***/ },
+/* 14 */
+/*!***********************************************!*\
+  !*** ./app/admin/users/userEditController.js ***!
+  \***********************************************/
+/***/ function(module, exports) {
+
+	//tab setup
+	window.mobSocial.config([
+	    "$stateProvider", function ($stateProvider) {
+	        $stateProvider
+	            .state('layoutDashboard.useredit.basic', {
+	                url: '',
+	                templateUrl: 'pages/users/user.edit.basic.html'
+	            })
+	            .state('layoutDashboard.useredit.roles', {
+	                url: '/roles',
+	                templateUrl: 'pages/users/user.edit.roles.html'
+	            })
+	            .state('layoutDashboard.useredit.timeline', {
+	                url: '/timeline',
+	                templateUrl: 'pages/users/user.edit.timeline.html'
+	            });
+	    }
+	]);
+	
+	window.mobSocial.controller("userEditController", [
+	    "$scope", "userService", "$stateParams", function ($scope, userService, $stateParams) {
+	
+	        $scope.get = function () {
+	            if ($stateParams.id == 0)
+	                return;
+	            userService.getById($stateParams.id,
+	                function (response) {
+	                    if (response.Success) {
+	                        $scope.user = response.ResponseData.User;
+	                    }
+	                },
+	                function (response) {
+	
+	                });
+	        }
+	
+	        $scope.save = function() {
+	            userService.post($scope.user,
+	                function(response) {
+	
+	                },
+	                function(response) {
+	
+	                });
+	        }
+	        $scope.init = function () {
+	            $scope.user = {
+	
 	            };
 	            //request data
 	            $scope.get();

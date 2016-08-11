@@ -1,0 +1,49 @@
+﻿<form role="form" class="form-horizontal">
+    <fieldset>
+        <div class="box-body">
+            <div class="form-group">
+                <label for="firstName" class="col-md-2 control-label">First Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="firstName" placeholder="First Name" ng-model="user.FirstName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-md-2 control-label">Last Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="lastName" placeholder="Last Name" ng-model="user.LastName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="userName" class="col-md-2 control-label">User Name</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" id="userName" placeholder="User Name" ng-model="user.UserName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="email" class="col-md-2 control-label">Email address</label>
+                <div class="col-md-10">
+                    <input type="email" class="form-control" id="email" placeholder="Enter email" ng-model="user.Email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-md-2 control-label">Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="user.Password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="active" class="col-md-2 control-label">Active</label>
+                <div class="col-md-10">
+                    <input type="checkbox" id="active" ng-model="user.Active">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
+                    <button type="button" class="btn btn-secondary" ui-sref="layoutDashboard.userlist">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    
+</form>
