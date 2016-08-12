@@ -6,5 +6,7 @@ namespace mobSocial.Data.Entity.Settings
     public class UserSettings: ISettingGroup
     {
         public RegistrationMode UserRegistrationDefaultMode { get; set; }
+
+        public bool AreUserNamesEnabled { get; set; }
     }
 }
