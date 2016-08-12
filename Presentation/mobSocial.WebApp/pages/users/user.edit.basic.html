@@ -1,4 +1,4 @@
-﻿<form role="form" class="form-horizontal">
+﻿<form role="form" name="formUserEditor" class="form-horizontal">
     <fieldset>
         <div class="box-body">
             <span ng-bind-html="_Notifications('post_user') "></span>
@@ -23,9 +23,8 @@
             <div class="form-group">
                 <label for="roles" class="col-md-2 control-label">Roles</label>
                 <div class="col-md-10">
-                    <select id="roles" class="select2 form-control" multiple="multiple">
-                        <option>Administrator</option>
-                        <option>Agent</option>
+                    <select id="roles" class="select2 form-control" multiple="multiple" ng-model="user.RoleIds" ng-required>
+                        <option ng-selected="{{user.RoleIds.indexOf(role.Id) > -1}}" ng-repeat="role in user.AvailableRoles" ng-value="role.Id">{{role.RoleName}}</option>
                     </select>
                 </div>
             </div>

@@ -6,10 +6,6 @@ window.mobSocial.config([
                 url: '',
                 templateUrl: 'pages/users/user.edit.basic.html'
             })
-            .state('layoutDashboard.useredit.roles', {
-                url: '/roles',
-                templateUrl: 'pages/users/user.edit.roles.html'
-            })
             .state('layoutDashboard.useredit.timeline', {
                 url: '/timeline',
                 templateUrl: 'pages/users/user.edit.timeline.html'
