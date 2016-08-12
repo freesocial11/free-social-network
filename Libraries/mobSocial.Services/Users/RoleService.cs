@@ -43,6 +43,25 @@ namespace mobSocial.Services.Users
             AssignRoleToUser(role, user);
         }
 
+        public void UnassignRoleToUser(Role role, User user)
+        {
+            var userRole = GetUserRoles(user).FirstOrDefault(x => x.Id == role.Id);
+            if (userRole == null)
+                return;
+
+            _userRoleDataRepository.Delete(x => x.UserId == user.Id && x.RoleId == role.Id);
+
+        }
+
+        public void UnassignRoleToUser(string roleName, User user)
+        {
+            var userRole = GetUserRoles(user).FirstOrDefault(x => x.SystemName == roleName);
+            if (userRole == null)
+                return;
+
+            _userRoleDataRepository.Delete(x => x.UserId == user.Id && x.Role.SystemName == roleName);
+        }
+
         public IList<Role> GetUserRoles(int userId)
         {
             var userRoles = _userRoleDataRepository.Get(x => x.UserId == userId).Select(x => x.Role).ToList();
