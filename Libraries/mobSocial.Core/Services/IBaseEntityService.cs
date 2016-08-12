@@ -22,10 +22,10 @@ namespace mobSocial.Core.Services
 
         T FirstOrDefault(Expression<Func<T, bool>> where);
 
-        IQueryable<T> Get(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderBy, bool ascending = true,
+        IQueryable<T> Get(Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true,
             int page = 1, int count = int.MaxValue);
 
-        Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderBy, bool ascending = true,
+        Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true,
             int page = 1, int count = int.MaxValue);
 
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> where);

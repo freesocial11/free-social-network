@@ -93,7 +93,7 @@ namespace mobSocial.Core.Services
             return _dataRepository.Get(where).FirstOrDefault();
         }
 
-        public virtual IQueryable<T> Get(Expression<Func<T, bool>> where, Expression<Func<T, object>> orderBy, bool ascending = true, int page = 1, int count = int.MaxValue)
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true, int page = 1, int count = int.MaxValue)
         {
             if (where == null)
                 where = (x => true);
@@ -112,7 +112,7 @@ namespace mobSocial.Core.Services
             
         }
 
-        public virtual async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where, Expression<Func<T, object>> orderBy, bool @ascending = true, int page = 1, int count = Int32.MaxValue)
+        public virtual async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1, int count = Int32.MaxValue)
         {
             return await Task.Run(() => Get(@where, orderBy, ascending, page, count));
         }
