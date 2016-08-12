@@ -1,4 +1,5 @@
-﻿using mobSocial.Core.Infrastructure.AppEngine;
+﻿using System.Linq;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
@@ -45,7 +46,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 UserName = user.UserName,
                 Email = user.Email,
                 Active = user.Active,
-                Remarks = user.Remarks
+                Remarks = user.Remarks,
+                RoleIds = user.UserRoles.Select(x => x.RoleId).ToList()
             };
 
             return model;

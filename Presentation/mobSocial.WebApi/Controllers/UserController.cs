@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
@@ -16,13 +18,17 @@ using mobSocial.WebApi.Models.Users;
 namespace mobSocial.WebApi.Controllers
 {
     [RoutePrefix("users")]
-    public class UserController: RootApiController
+    public class UserController : RootApiController
     {
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
+        private readonly UserSettings _userSettings;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings)
         {
             _userService = userService;
+            _userSettings = userSettings;
+            _roleService = roleService;
         }
 
         [Route("get")]
@@ -36,14 +42,13 @@ namespace mobSocial.WebApi.Controllers
 
             //do the needful
             var users = await _userService.GetAsync(x =>
-                (!string.IsNullOrEmpty(requestModel.SearchText) && 
+                (!string.IsNullOrEmpty(requestModel.SearchText) &&
                 (x.FirstName.StartsWith(requestModel.SearchText) ||
                 x.LastName.StartsWith(requestModel.SearchText) ||
                 x.Email == requestModel.SearchText)) || true, null, true, requestModel.Page, requestModel.Count);
 
             var model = users.ToList().Select(user => user.ToModel());
-            return RespondSuccess(new
-            {
+            return RespondSuccess(new {
                 Users = model
             });
         }
@@ -62,9 +67,28 @@ namespace mobSocial.WebApi.Controllers
             if (user == null)
                 return NotFound();
 
-            return RespondSuccess(new
+            var model = user.ToEntityModel();
+
+            //get all the available roles
+            var availableRoles = _roleService.Get(x => x.IsActive).ToList();
+            //we need to send the id and role name only to client 
+            model.AvailableRoles = availableRoles.Select(x =>
             {
-                User = user.ToEntityModel()
+                dynamic newObject = new ExpandoObject();
+                newObject.RoleName = x.RoleName;
+                newObject.Id = x.Id;
+                return newObject;
+            }).ToList();
+            return RespondSuccess(new {
+                User = model
+            });
+        }
+        [Route("get/{userName}")]
+        public async Task<IHttpActionResult> Get(string userName)
+        {
+            var userNameUser = await _userService.GetAsync(x => x.UserName == userName, null);
+            return RespondSuccess(new {
+                Available = userNameUser.Any()
             });
         }
 
@@ -79,6 +103,32 @@ namespace mobSocial.WebApi.Controllers
             if (user == null)
                 return NotFound();
 
+            //check if the email has already been registered
+            var emailUser = _userService.Get(x => x.Email == entityModel.Email, null).FirstOrDefault();
+            if (emailUser != null && emailUser.Id != user.Id)
+            {
+                VerboseReporter.ReportError("The email is already registered with another user", "post_user");
+                return RespondFailure();
+            }
+
+            //same for user name
+            if (_userSettings.AreUserNamesEnabled)
+            {
+                var userNameUser = _userService.Get(x => x.UserName == entityModel.UserName, null).FirstOrDefault();
+                if (userNameUser != null && userNameUser.Id != user.Id)
+                {
+                    VerboseReporter.ReportError("The username is already taken by another user", "post_user");
+                    return RespondFailure();
+                }
+            }
+
+            //we should have at least one role
+            if (entityModel.RoleIds.Count == 0)
+            {
+                VerboseReporter.ReportError("At least one role must be assigned to the user", "post_user");
+                return RespondFailure();
+            }
+
             user.FirstName = entityModel.FirstName;
             user.LastName = entityModel.LastName;
             user.Email = entityModel.Email;
@@ -86,6 +136,8 @@ namespace mobSocial.WebApi.Controllers
             user.Active = entityModel.Active;
             user.DateUpdated = DateTime.UtcNow;
             user.Name = string.Concat(user.FirstName, user.LastName);
+            user.UserName = entityModel.UserName;
+
             if (entityModel.Id == 0)
             {
                 user.Guid = Guid.NewGuid();
@@ -100,8 +152,35 @@ namespace mobSocial.WebApi.Controllers
             {
                 _userService.Update(user);
             }
-            return RespondSuccess(new
+
+            //assign the roles now
+            var roles = _roleService.Get(x => x.IsActive);
+            //current roles
+            var currentRoleIds = user.UserRoles.Select(x => x.RoleId).ToList();
+            //roles to unassign
+            var rolesToUnassign = currentRoleIds.Except(entityModel.RoleIds);
+            foreach (var roleId in rolesToUnassign)
             {
+                var role = roles.FirstOrDefault(x => x.Id == roleId);
+                if(role == null)
+                    continue;
+
+                _roleService.UnassignRoleToUser(role, user);
+            }
+
+            //roles to assign
+            var rolesToAssign = entityModel.RoleIds.Except(currentRoleIds);
+            foreach (var roleId in rolesToAssign)
+            {
+                var role = roles.FirstOrDefault(x => x.Id == roleId);
+                if (role == null)
+                    continue;
+
+                _roleService.AssignRoleToUser(role, user);
+            }
+
+            VerboseReporter.ReportSuccess("User saved successfully", "post_user");
+            return RespondSuccess(new {
                 User = user.ToEntityModel()
             });
         }

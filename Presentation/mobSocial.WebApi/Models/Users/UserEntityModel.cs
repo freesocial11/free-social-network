@@ -1,10 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Users
 {
     public class UserEntityModel: RootEntityModel
     {
+        public UserEntityModel()
+        {
+            AvailableRoles = new List<dynamic>();
+        }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -24,6 +30,10 @@ namespace mobSocial.WebApi.Models.Users
         public string Remarks { get; set; }
 
         public string LastLoginIpAddress { get; set; }
+
+        public List<dynamic> AvailableRoles { get; set; }
+
+        public List<int> RoleIds { get; set; }
 
     }
 }

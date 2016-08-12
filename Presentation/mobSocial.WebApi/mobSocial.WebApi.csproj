@@ -221,6 +221,7 @@
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
+    <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Extensions\UtilityExtensions.cs" />
@@ -279,6 +281,7 @@
     <Compile Include="Models\Timeline\TimelinePostDisplayModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
+    <Compile Include="Models\Users\RoleResponseModel.cs" />
     <Compile Include="Models\Users\UserEntityModel.cs" />
     <Compile Include="Models\Users\UserGetModel.cs" />
     <Compile Include="Models\Users\UserResponseModel.cs" />
