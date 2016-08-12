@@ -5698,12 +5698,18 @@
 	        if (!errors)
 	            return "";
 	
+	        var container = '<div class="alert alert-danger alert-dismissible">' +
+	             '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+	             '<h4><i class="icon fa fa-ban"></i>Error</h4>' +
+	             '{MESSAGES}' +
+	             '</div>';
+	
 	        var str = "<ul>";
 	        for (var i = 0; i < errors.length; i++) {
 	            str += "<li>" + errors[i] + "</li>";
 	        }
 	        str += "</ul>";
-	        return $sce.trustAsHtml(str);
+	        return $sce.trustAsHtml(container.replace("{MESSAGES}", str));
 	    }
 	
 	    $rootScope.displayMessages = function (contextName) {
@@ -5711,14 +5717,19 @@
 	        if (!msgs)
 	            return "";
 	
+	        var container = '<div class="alert alert-success alert-dismissible">' +
+	                '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+	                '<h4><i class="icon fa fa-check"></i>Success</h4>' +
+	                '{MESSAGES}' +
+	                '</div>';
 	        var str = "<ul>";
 	        for (var i = 0; i < msgs.length; i++) {
 	            str += "<li>" + msgs[i] + "</li>";
 	        }
 	        str += "</ul>";
-	        return $sce.trustAsHtml(str);
+	        return $sce.trustAsHtml(container.replace("{MESSAGES}", str));
 	    }
-	    $rootScope.displayNotifications = function (contextName) {
+	    $rootScope._Notifications = function (contextName) {
 	        return $sce.trustAsHtml($rootScope.displayErrors(contextName) + $rootScope.displayMessages(contextName));
 	    }
 	    $rootScope.clearMessages = function () {
@@ -5848,9 +5859,23 @@
 
 	window.mobSocial.service("MobSocialInterceptor", ["authProvider", "$rootScope",
 	    function (authProvider, $rootScope) {
-	        this.request = function(config) {
+	        this.request = function (config) {
+	            $rootScope.clearMessages();
 	            return config;
 	        };
+	        this.response = function (response) {
+	            if (response.data) {
+	
+	                if (response.data.Messages) {
+	                    $rootScope._responseMessages = response.data.Messages;
+	                }
+	                if (response.data.ErrorMessages) {
+	                    $rootScope._errorMessages = response.data.ErrorMessages;
+	                }
+	            }
+	            return response;
+	        };
+	
 	        this.responseError = function (response) {
 	            
 	            if (response.status === 401) {
@@ -6044,10 +6069,6 @@
 	            .state('layoutDashboard.useredit.basic', {
 	                url: '',
 	                templateUrl: 'pages/users/user.edit.basic.html'
-	            })
-	            .state('layoutDashboard.useredit.roles', {
-	                url: '/roles',
-	                templateUrl: 'pages/users/user.edit.roles.html'
 	            })
 	            .state('layoutDashboard.useredit.timeline', {
 	                url: '/timeline',
