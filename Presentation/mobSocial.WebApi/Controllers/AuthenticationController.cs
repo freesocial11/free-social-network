@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
+using mobSocial.Core;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
@@ -48,6 +50,12 @@ namespace mobSocial.WebApi.Controllers
             var loginStatus = ApplicationContext.Current.SignIn(loginModel.Email, loginModel.Persist);
             if (loginStatus == LoginStatus.Success)
             {
+                //update the last login date & ip address
+                var currentUser = ApplicationContext.Current.CurrentUser;
+                currentUser.LastLoginDate = DateTime.UtcNow;
+                currentUser.LastLoginIpAddress = WebHelper.GetClientIpAddress();
+                _userService.Update(currentUser);
+
                 VerboseReporter.ReportSuccess("Your login was successful", "login");
                 return RespondSuccess(new {
                     ReturnUrl = loginModel.ReturnUrl,
