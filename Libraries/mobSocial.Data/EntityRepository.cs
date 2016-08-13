@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using mobSocial.Core.Data;
+using mobSocial.Core.Helpers;
 using mobSocial.Data.Database;
 
 namespace mobSocial.Data
@@ -27,11 +28,13 @@ namespace mobSocial.Data
 
         public IQueryable<T> Get(Expression<Func<T, bool>> @where)
         {
+            where = AppendSoftDeletableCondition(where);
             return _entityDbSet.Where(where);
         }
 
         public int Count(Expression<Func<T, bool>> @where)
         {
+            where = AppendSoftDeletableCondition(where);
             return _entityDbSet.Count(where);
         }
 
@@ -121,6 +124,22 @@ namespace mobSocial.Data
             {
 
             }
+        }
+
+        private Expression<Func<T, bool>> AppendSoftDeletableCondition(Expression<Func<T, bool>> where)
+        {
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(T)))
+            {
+                //the parameter
+                var param = Expression.Parameter(typeof(T), "x");
+                var deletedWhere =
+                    Expression.Lambda<Func<T, bool>>(
+                        Expression.Equal(Expression.Property(param, "Deleted"), Expression.Constant(false)), param);
+
+                //combine these to create a single expression
+                where = ExpressionHelpers.CombineAnd<T>(where, deletedWhere);
+            }
+            return where;
         }
     }
 }
