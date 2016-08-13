@@ -1,9 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
+using mobSocial.Services.Helpers;
 using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
@@ -19,9 +21,11 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 LastName = user.LastName,
                 Name = user.Name,
                 DateCreatedUtc = user.DateCreated,
+                DateCreatedLocal = DateTimeHelper.GetDateInUserTimeZone(user.DateCreated, DateTimeKind.Utc, user),
                 UserName = user.UserName,
                 CoverImageUrl = user.GetPropertyValueAs<string>(PropertyNames.DefaultCoverId),
-                ProfileImageUrl = user.GetPropertyValueAs<string>(PropertyNames.DefaultPictureId)
+                ProfileImageUrl = user.GetPropertyValueAs<string>(PropertyNames.DefaultPictureId),
+                Active = user.Active
             };
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))
@@ -47,7 +51,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Email = user.Email,
                 Active = user.Active,
                 Remarks = user.Remarks,
-                RoleIds = user.UserRoles.Select(x => x.RoleId).ToList()
+                RoleIds = user.UserRoles.Select(x => x.RoleId).ToList(),
+                LastLoginDateUtc = user.LastLoginDate,
+                LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate, DateTimeKind.Utc, user)
             };
 
             return model;

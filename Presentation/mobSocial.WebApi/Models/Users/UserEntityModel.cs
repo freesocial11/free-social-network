@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 
@@ -30,6 +31,10 @@ namespace mobSocial.WebApi.Models.Users
         public string Remarks { get; set; }
 
         public string LastLoginIpAddress { get; set; }
+
+        public DateTime LastLoginDateUtc { get; set; }
+
+        public DateTime LastLoginDateLocal { get; set; }
 
         public List<dynamic> AvailableRoles { get; set; }
 

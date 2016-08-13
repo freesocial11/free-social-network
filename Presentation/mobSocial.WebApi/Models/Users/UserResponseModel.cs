@@ -23,6 +23,8 @@ namespace mobSocial.WebApi.Models.Users
 
         public DateTime DateCreatedLocal { get; set; }
 
+        public bool Active { get; set; }
+
 
     }
 }
