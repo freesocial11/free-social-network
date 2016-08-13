@@ -33,7 +33,9 @@ window.mobSocial.controller("userEditController", [
         $scope.save = function() {
             userService.post($scope.user,
                 function(response) {
-
+                    if (response.Success) {
+                        $scope.user = response.ResponseData.User;
+                    }
                 },
                 function(response) {
 
