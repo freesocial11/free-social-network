@@ -25,5 +25,17 @@
 
                 });
         }
+
+        $scope.logout = function() {
+            loginService.logout(function (response) {
+                    if (response.Success) {
+                        authProvider.logout(); //logout current user
+                        window.location.href = "/";
+                    }
+                },
+                function (response) {
+
+                });
+        }
     }
 ]);

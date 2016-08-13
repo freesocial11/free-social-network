@@ -5955,7 +5955,12 @@
 	       this.login = function (loginRequest, success, error) {
 	            var loginUrl = $global.getApiUrl("/authentication/login");
 	            webClientService.post(loginUrl, loginRequest, success, error);
-	        }
+	       }
+	
+	       this.logout = function(success, error) {
+	           var logoutUrl = $global.getApiUrl("/authentication/logout");
+	           webClientService.post(logoutUrl, null, success, error);
+	       }
 	    }
 	]);
 
@@ -5990,6 +5995,18 @@
 	                    }
 	                },
 	                function(response) {
+	
+	                });
+	        }
+	
+	        $scope.logout = function() {
+	            loginService.logout(function (response) {
+	                    if (response.Success) {
+	                        authProvider.logout(); //logout current user
+	                        window.location.href = "/";
+	                    }
+	                },
+	                function (response) {
 	
 	                });
 	        }
@@ -6097,7 +6114,9 @@
 	        $scope.save = function() {
 	            userService.post($scope.user,
 	                function(response) {
-	
+	                    if (response.Success) {
+	                        $scope.user = response.ResponseData.User;
+	                    }
 	                },
 	                function(response) {
 	

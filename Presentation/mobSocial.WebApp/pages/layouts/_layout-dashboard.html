@@ -231,19 +231,19 @@
                 </li>
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <a href="#" class="dropdown-toggle" target="_self" data-toggle="dropdown">
                         <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="user-image" alt="User Image">
                         <span class="hidden-xs">{{CurrentUser.Name}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="themes/admin/AdminLTE/img/user2-160x160.jpg" class="img-circle"
+                            <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="img-circle"
                                  alt="User Image">
 
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                {{CurrentUser.Name}}
+                                <small>Member since {{CurrentUser.DateCreatedUtc}}</small>
                             </p>
                         </li>
                         <!-- Menu Body -->
@@ -264,10 +264,10 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a ui-sref="layoutDashboard.useredit({ id: CurrentUser.Id })" href="#" class="btn btn-default btn-flat">Edit</a>
                             </div>
-                            <div class="pull-right">
-                                <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                            <div class="pull-right" ng-controller="loginController">
+                                <a href="#" class="btn btn-default btn-flat" ng-click="logout()">Sign out</a>
                             </div>
                         </li>
                     </ul>
