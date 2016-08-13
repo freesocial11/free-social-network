@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Web;
 using mobSocial.Data.Entity.Settings;
@@ -7,6 +8,7 @@ using mobSocial.Services.Authentication;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
 
 namespace mobSocial.Plugins.OAuth.Services
@@ -14,7 +16,6 @@ namespace mobSocial.Plugins.OAuth.Services
     public class OAuthAuthenticationService : AuthenticationService
     {
         private readonly IUserService _userService;
-
         private User _user;
 
         public OAuthAuthenticationService(IUserService userService,
@@ -40,6 +41,22 @@ namespace mobSocial.Plugins.OAuth.Services
             {
                 new Claim(ClaimTypes.Email, user.Email)
             }, "Application"));
+        }
+
+        public override void ClearAuthenticationTicket()
+        {
+            ApplicationContext.Current.CurrentOwinContext.Authentication.SignOut("Application");
+            // clear authentication cookie
+            // delete cookie from applicationcookiemanager is not working somehow. let's delete the cookie manually
+            var cookie = new HttpCookie(".AspNet.Application", "") { Expires = DateTime.Now.AddYears(-1), HttpOnly = true, Domain = "mobSocial.com", Path = "/"};
+            ApplicationContext.Current.CurrentOwinContext.Response.Cookies.Append(".AspNet.Application", "", new CookieOptions()
+            {
+                Expires = DateTime.Now.AddYears(-1),
+                HttpOnly = true,
+                Domain = "mobSocial.com",
+                Path = "/"
+            });
+            ApplicationContext.Current.CurrentHttpContext.Response.Cookies.Add(cookie);
         }
 
         public override User GetCurrentUser()
