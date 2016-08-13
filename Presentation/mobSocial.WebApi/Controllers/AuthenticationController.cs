@@ -67,6 +67,15 @@ namespace mobSocial.WebApi.Controllers
             return RespondFailure();
 
         }
+
+        [HttpPost]
+        [Route("logout")]
+        public IHttpActionResult Logout()
+        {
+            ApplicationContext.Current.SignOut();
+            VerboseReporter.ReportSuccess("You have been successfully logged out", "logout");
+            return RespondSuccess();
+        }
         #endregion
 
         #region utilities
