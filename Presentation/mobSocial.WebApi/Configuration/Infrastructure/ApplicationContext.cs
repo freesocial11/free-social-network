@@ -5,6 +5,7 @@ using mobSocial.Data.Entity.Currency;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Authentication;
+using mobSocial.Services.Users;
 using Microsoft.Owin;
 
 namespace mobSocial.WebApi.Configuration.Infrastructure
@@ -68,7 +69,13 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
         /// <param name="forceCreate"></param>
         public LoginStatus SignIn(string email, bool isPersistent, bool forceCreate = false)
         {
-            return _authenticationService.SignIn(email, isPersistent, forceCreate);
+            var loginStatus = _authenticationService.SignIn(email, isPersistent, forceCreate);
+            //set current user if login succeeded
+            if (loginStatus == LoginStatus.Success)
+            {
+                _user = mobSocialEngine.ActiveEngine.Resolve<IUserService>().First(x => x.Email == email);
+            }
+            return loginStatus;
         }
 
         /// <summary>
