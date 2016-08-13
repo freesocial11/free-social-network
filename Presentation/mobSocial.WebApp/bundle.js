@@ -5906,7 +5906,7 @@
 	            method: method,
 	            url: url
 	        };
-	        if (method === "GET")
+	        if (method === "GET" || method === "DELETE")
 	            config["params"] = params;
 	        else {
 	            config["data"] = params;
@@ -6036,6 +6036,9 @@
 	        webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
 	    }
 	
+	    this.delete = function (id, success, error) {
+	        webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
+	    }
 	}]);
 
 /***/ },
@@ -6095,7 +6098,7 @@
 	]);
 	
 	window.mobSocial.controller("userEditController", [
-	    "$scope", "userService", "$stateParams", function ($scope, userService, $stateParams) {
+	    "$scope", "userService", "$stateParams", "$state", function ($scope, userService, $stateParams, $state) {
 	
 	        $scope.get = function () {
 	            if ($stateParams.id == 0)
@@ -6111,17 +6114,35 @@
 	                });
 	        }
 	
-	        $scope.save = function() {
+	        $scope.save = function () {
 	            userService.post($scope.user,
-	                function(response) {
+	                function (response) {
 	                    if (response.Success) {
 	                        $scope.user = response.ResponseData.User;
 	                    }
 	                },
-	                function(response) {
+	                function (response) {
 	
 	                });
 	        }
+	
+	        $scope.delete = function() {
+	            confirm("Are you sure you wish to delete this user?",
+	                function(result) {
+	                    if (!result)
+	                        return;
+	                    userService.delete($scope.user.Id,
+	                        function(response) {
+	                            if (response.Success) {
+	                                $state.go("layoutDashboard.userlist");
+	                            }
+	                        },
+	                        function(response) {
+	
+	                        });
+	                });
+	        }
+	
 	        $scope.init = function () {
 	            $scope.user = {
 	

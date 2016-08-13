@@ -14,7 +14,7 @@ window.mobSocial.config([
 ]);
 
 window.mobSocial.controller("userEditController", [
-    "$scope", "userService", "$stateParams", function ($scope, userService, $stateParams) {
+    "$scope", "userService", "$stateParams", "$state", function ($scope, userService, $stateParams, $state) {
 
         $scope.get = function () {
             if ($stateParams.id == 0)
@@ -30,17 +30,35 @@ window.mobSocial.controller("userEditController", [
                 });
         }
 
-        $scope.save = function() {
+        $scope.save = function () {
             userService.post($scope.user,
-                function(response) {
+                function (response) {
                     if (response.Success) {
                         $scope.user = response.ResponseData.User;
                     }
                 },
-                function(response) {
+                function (response) {
 
                 });
         }
+
+        $scope.delete = function() {
+            confirm("Are you sure you wish to delete this user?",
+                function(result) {
+                    if (!result)
+                        return;
+                    userService.delete($scope.user.Id,
+                        function(response) {
+                            if (response.Success) {
+                                $state.go("layoutDashboard.userlist");
+                            }
+                        },
+                        function(response) {
+
+                        });
+                });
+        }
+
         $scope.init = function () {
             $scope.user = {
 

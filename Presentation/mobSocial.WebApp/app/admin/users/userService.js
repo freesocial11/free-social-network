@@ -14,4 +14,7 @@
         webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
     }
 
+    this.delete = function (id, success, error) {
+        webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
+    }
 }]);
