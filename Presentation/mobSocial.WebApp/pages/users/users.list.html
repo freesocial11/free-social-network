@@ -32,12 +32,16 @@
                             <img ng-src="{{user.ProfileImageUrl}}" class="img-circle" /> {{user.Name}}
                         </a>
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td>
+                       
+                    </td>
+                    <td>
+                        <span class="badge" ng-class="{'bg-green' : user.Active, 'bg-red': !user.Active}">{{user.Active ? "Active" : "Not Active"}}</span>
+                        
+                    </td>
                     <td>
                         <span class="pull-right">
-                            <a ui-sref="layoutDashboard.useredit({ id: user.Id })"><i class="fa fa-pencil"></i> Edit</a> &middot;
-                            <a><i class="fa fa-times"></i> Delete</a>
+                            <a ui-sref="layoutDashboard.useredit.basic({ id: user.Id })" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
                         </span>
 
                     </td>
