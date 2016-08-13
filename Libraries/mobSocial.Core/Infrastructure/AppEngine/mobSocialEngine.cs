@@ -35,7 +35,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
                 }
             var typedInstance = Resolve<T>(true);
             if (typedInstance == null)
-                IocContainer.RegisterInstance(instance, new SingletonReuse());
+                IocContainer.RegisterInstance<T>(instance as T, new SingletonReuse());
             return instance as T;
         }
 
