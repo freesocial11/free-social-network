@@ -135,7 +135,7 @@ namespace mobSocial.WebApi.Controllers
             user.Remarks = entityModel.Remarks;
             user.Active = entityModel.Active;
             user.DateUpdated = DateTime.UtcNow;
-            user.Name = string.Concat(user.FirstName, user.LastName);
+            user.Name = string.Concat(user.FirstName, " ", user.LastName);
             user.UserName = entityModel.UserName;
 
             if (entityModel.Id == 0)
@@ -184,5 +184,7 @@ namespace mobSocial.WebApi.Controllers
                 User = user.ToEntityModel()
             });
         }
+
+
     }
 }
