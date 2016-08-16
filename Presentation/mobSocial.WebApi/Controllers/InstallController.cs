@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Web;
+using System.Web.Http;
+using mobSocial.Core;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 using mobSocial.Services.Installation;
@@ -29,17 +31,17 @@ namespace mobSocial.WebApi.Controllers
             //lets save the database settings to config file
             var connectionString = "";
             var providerName = "";
-            connectionString = @"Data Source=.\sqlexpress;Initial Catalog=roasteddesk;Integrated Security=False;Persist Security Info=False;User ID=iis_user;Password=iis_user";
+            connectionString = @"Data Source=.\sqlexpress;Initial Catalog=mobsocial_standalone;Integrated Security=False;Persist Security Info=False;User ID=iis_user;Password=iis_user";
             providerName = "SqlServer";
 
             var databaseSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
-            databaseSettings.WriteSettings(connectionString, providerName);
+            databaseSettings.WriteSettings(connectionString, DatabaseManager.GetProviderName(providerName));
 
             //perform the installation
             _installationService.Install();
 
            //then feed the data
-            _installationService.FillRequiredSeedData(model.AdminEmail, model.Password);
+            _installationService.FillRequiredSeedData(model.AdminEmail, model.Password, HttpContext.Current.Request.Url.Host);
 
             return Response(new { Success = true });
         }
