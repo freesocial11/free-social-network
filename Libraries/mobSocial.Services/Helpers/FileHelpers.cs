@@ -12,7 +12,7 @@ namespace mobSocial.Services.Helpers
                 return string.Empty;
 
             var newFileName = "";
-            const string renamePattern = "{0}_{1}_{2}.{3}";
+            const string renamePattern = "{0}_{1}_{2}{3}";
 
             var extensionIndex = fileName.LastIndexOf(".", StringComparison.InvariantCulture);
             if (extensionIndex == -1)
