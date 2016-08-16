@@ -55,7 +55,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             }
 
             //setup picture sizes
-            //SetupPictureSizes(testMode);
+            SetupPictureSizes(testMode);
 
         }
 
