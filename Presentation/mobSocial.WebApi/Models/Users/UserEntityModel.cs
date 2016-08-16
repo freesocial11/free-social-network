@@ -23,8 +23,9 @@ namespace mobSocial.WebApi.Models.Users
 
         public string UserName { get; set; }
 
-        [Required]
         public string Password { get; set; }
+
+        public string ConfirmPassword { get; set; }
 
         public bool Active { get; set; }
 

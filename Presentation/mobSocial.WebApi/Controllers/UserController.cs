@@ -8,6 +8,7 @@ using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
+using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
@@ -23,11 +24,17 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly UserSettings _userSettings;
+        private readonly SecuritySettings _securitySettings;
+        private readonly IUserRegistrationService _userRegistrationService;
+        private readonly ICryptographyService _cryptographyService;
 
-        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService)
         {
             _userService = userService;
             _userSettings = userSettings;
+            _securitySettings = securitySettings;
+            _userRegistrationService = userRegistrationService;
+            _cryptographyService = cryptographyService;
             _roleService = roleService;
         }
 
@@ -128,6 +135,18 @@ namespace mobSocial.WebApi.Controllers
                 VerboseReporter.ReportError("At least one role must be assigned to the user", "post_user");
                 return RespondFailure();
             }
+            //is this a new user, we'll require password
+            if (string.IsNullOrEmpty(entityModel.Password) && entityModel.Id == 0)
+            {
+                VerboseReporter.ReportError("You must specify the password for the user", "post_user");
+                return RespondFailure();
+            }
+            //are passwords same?
+            if (string.Compare(entityModel.Password, entityModel.ConfirmPassword, StringComparison.Ordinal) != 0)
+            {
+                VerboseReporter.ReportError("The passwords do not match", "post_user");
+                return RespondFailure();
+            }
 
             user.FirstName = entityModel.FirstName;
             user.LastName = entityModel.LastName;
@@ -137,19 +156,16 @@ namespace mobSocial.WebApi.Controllers
             user.DateUpdated = DateTime.UtcNow;
             user.Name = string.Concat(user.FirstName, " ", user.LastName);
             user.UserName = entityModel.UserName;
-
             if (entityModel.Id == 0)
             {
-                user.Guid = Guid.NewGuid();
-                user.DateCreated = DateTime.UtcNow;
-                user.IsSystemAccount = false;
-                user.LastLoginDate = DateTime.UtcNow;
                 user.Password = entityModel.Password;
-                user.PasswordFormat = PasswordFormat.Md5Hashed;
-                _userService.Insert(user);
+                _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
             }
             else
             {
+                if (!string.IsNullOrEmpty(user.Password)) // update password if provided
+                    user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
+                        _securitySettings.DefaultPasswordStorageFormat);
                 _userService.Update(user);
             }
 
@@ -185,6 +201,16 @@ namespace mobSocial.WebApi.Controllers
             });
         }
 
+        [Route("delete/{id:int}")]
+        [AdminAuthorize]
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            //the users are automatically soft deletable. That means they won't be deleted actually. Instead the deleted flag is set to true
+            _userService.Delete(x => x.Id == id);
+            VerboseReporter.ReportSuccess("Successfully deleted the user", "delete");
+            return RespondSuccess();
+        }
 
     }
 }
