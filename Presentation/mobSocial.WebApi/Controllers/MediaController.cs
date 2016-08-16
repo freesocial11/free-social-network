@@ -73,7 +73,8 @@ namespace mobSocial.WebApi.Controllers
                 };
 
                 _mediaService.WritePictureBytes(picture, _mediaSettings.PictureSaveLocation);
-
+                //save it
+                _mediaService.Insert(picture);
                 newImages.Add(new {
                     ImageUrl = _mediaService.GetPictureUrl(picture.Id),
                     ThumbnailUrl = _mediaService.GetPictureUrl(picture.Id, PictureSizeNames.ThumbnailImage),
