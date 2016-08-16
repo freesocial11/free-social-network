@@ -51,5 +51,24 @@ namespace mobSocial.Services.Users
             _userService.Insert(user);
             return UserRegistrationStatus.Success;
         }
+
+        public UserRegistrationStatus Register(User user, PasswordFormat passwordFormat)
+        {
+            //does the user exist already?
+            var existingUser = _userService.FirstOrDefault(x => x.Email == user.Email);
+            if (existingUser != null)
+                return UserRegistrationStatus.FailedAsEmailAlreadyExists;
+
+            //we can create a user now, we'll need to hash the password
+            var salt = _cryptographyService.CreateSalt(8); //64 bits...should be good enough
+
+            var hashedPassword = _cryptographyService.GetHashedPassword(user.Password, salt, passwordFormat);
+
+            user.Password = hashedPassword;
+            user.PasswordSalt = salt;
+            user.PasswordFormat = passwordFormat;
+            _userService.Insert(user);
+            return UserRegistrationStatus.Success;
+        }
     }
 }
