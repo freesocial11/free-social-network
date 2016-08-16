@@ -179,7 +179,7 @@ namespace mobSocial.Services.MediaServices
 
                 //clear bytes
                 picture.Binary = null;
-                picture.LocalPath = filePath;
+                picture.LocalPath = ServerHelper.GetRelativePathFromLocalPath(filePath);
 
                 picture.ThumbnailPath = ServerHelper.GetRelativePathFromLocalPath(filePath);
             }           
