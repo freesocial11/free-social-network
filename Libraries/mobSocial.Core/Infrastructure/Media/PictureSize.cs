@@ -48,6 +48,8 @@ namespace mobSocial.Core.Infrastructure.Media
         {
             if (pictureSizes == null)
                 throw new mobSocialException("Can't map size to null collection");
+            if (size == null)
+                return;
             var pictureSize = pictureSizes.FirstOrDefault(x => x.Name == size.Name);
             if (pictureSize == null)
                 MapSize(pictureSizes, size);
