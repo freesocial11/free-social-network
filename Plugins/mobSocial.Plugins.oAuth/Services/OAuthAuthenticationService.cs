@@ -39,7 +39,8 @@ namespace mobSocial.Plugins.OAuth.Services
                 IsPersistent = isPersistent
             }, new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Guid.ToString())
             }, "Application"));
         }
 
@@ -66,16 +67,18 @@ namespace mobSocial.Plugins.OAuth.Services
 
             var ctx = ApplicationContext.Current.CurrentOwinContext;
             var user = ctx.Authentication.User;
-            var claims = user.Claims;
+            var claims = user.Claims.ToList();
 
             //find claim which stores the email
             var emailClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Email);
-
-            if (emailClaim == null)
+            //also verify if user's GUID hasn't changed
+            var uidClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+            if (emailClaim == null || uidClaim == null)
                 return base.GetCurrentUser();
+           
 
             _user = _userService.FirstOrDefault(x => x.Email == emailClaim.Value) ?? base.GetCurrentUser();
-            return _user;
+            return _user.Guid.ToString() == uidClaim.Value ? _user : null;
         }
     }
 }
