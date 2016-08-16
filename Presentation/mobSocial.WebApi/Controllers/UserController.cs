@@ -163,9 +163,14 @@ namespace mobSocial.WebApi.Controllers
             }
             else
             {
-                if (!string.IsNullOrEmpty(user.Password)) // update password if provided
+                if (!string.IsNullOrEmpty(entityModel.Password)) // update password if provided
+                {
+                    if (string.IsNullOrEmpty(user.PasswordSalt))
+                        user.PasswordSalt = _cryptographyService.CreateSalt(8);
                     user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
                         _securitySettings.DefaultPasswordStorageFormat);
+                }
+                    
                 _userService.Update(user);
             }
 
