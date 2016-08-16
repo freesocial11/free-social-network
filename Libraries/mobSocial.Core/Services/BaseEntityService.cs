@@ -48,10 +48,10 @@ namespace mobSocial.Core.Services
 
         public virtual void Delete(Expression<Func<T, bool>> where)
         {
-            if (typeof (T) is ISoftDeletable)
+            if (typeof (ISoftDeletable).IsAssignableFrom(typeof(T)))
             {
                 //it's soft deletable so it's better to retrive them all and mark them deleted
-                var allEntities = Get(where, null);
+                var allEntities = Get(where, null).AsEnumerable();
                 foreach (var entity in allEntities)
                 {
                     var deletable = entity as ISoftDeletable;
