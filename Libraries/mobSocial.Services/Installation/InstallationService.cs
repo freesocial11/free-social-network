@@ -31,10 +31,10 @@ namespace mobSocial.Services.Installation
             migrator.Update();
         }
 
-        public void FillRequiredSeedData(string defaultUserEmail, string defaultUserPassword)
+        public void FillRequiredSeedData(string defaultUserEmail, string defaultUserPassword, string installDomain)
         {
             //first the settings
-            SeedSettings();
+            SeedSettings(installDomain);
             
             //seed the roles
             SeedRoles();
@@ -103,19 +103,33 @@ namespace mobSocial.Services.Installation
         /// <summary>
         /// Seed settings
         /// </summary>
-        private void SeedSettings()
+        private void SeedSettings(string installDomain)
         {
             var settingService = mobSocialEngine.ActiveEngine.Resolve<ISettingService>();
 
             //general settings
             settingService.Save(new GeneralSettings()
             {
-                
+                ImageServerDomain = string.Concat(installDomain, "/api"),
+                VideoServerDomain = string.Concat(installDomain, "/api"),
+                ApplicationApiRoot = string.Concat(installDomain, "/api"),
+                ApplicationUiDomain = installDomain,
+                ApplicationCookieDomain = installDomain
             });
 
             //media settings
             settingService.Save(new MediaSettings() {
-
+                ThumbnailPictureSize = "100x100",
+                SmallProfilePictureSize = "64x64",
+                MediumProfilePictureSize = "128x128",
+                SmallCoverPictureSize = "300x50",
+                MediumCoverPictureSize = "800x300",
+                PictureSaveLocation = MediaSaveLocation.FileSystem,
+                PictureSavePath = "~/Content/Media/Uploads/Images",
+                VideoSavePath = "~/Content/Media/Uploads/Videos",
+                OtherMediaSaveLocation = MediaSaveLocation.FileSystem,
+                OtherMediaSavePath = "~/Content/Media/Uploads/Others",
+                DefaultUserProfileImageUrl = "/api/Content/Media/d_male.jpg"
             });
 
             //system settings
