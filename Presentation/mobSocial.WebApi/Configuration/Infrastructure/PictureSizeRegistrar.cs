@@ -2,6 +2,7 @@
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Core.Infrastructure.Media;
 using mobSocial.Data.Constants;
+using mobSocial.Data.Database;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Helpers;
 
@@ -11,6 +12,9 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
     {
         public void RegisterPictureSize(IList<PictureSize> pictureSizes)
         {
+            //we won't have media settings available if database is not installed, so let's check for that first
+            if (!DatabaseManager.IsDatabaseInstalled())
+                return;
             var mediaSettings = mobSocialEngine.ActiveEngine.Resolve<MediaSettings>();
 
             //register default sizes
