@@ -1,4 +1,4 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule'])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularFileUpload'])
     .constant('globalApiEndPoint', 'http://mobsocial.com/api')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
