@@ -25,6 +25,9 @@ namespace mobSocial.WebApi.Models.Users
 
         public bool Active { get; set; }
 
+        public DateTime? LastLoginDateUtc { get; set; }
+
+        public DateTime? LastLoginDateLocal { get; set; }
 
     }
 }

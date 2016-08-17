@@ -165,6 +165,7 @@ namespace mobSocial.WebApi.Controllers
             if (entityModel.Id == 0)
             {
                 user.Password = entityModel.Password;
+                user.LastLoginDate = null;
                 _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
             }
             else

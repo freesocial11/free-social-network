@@ -35,7 +35,7 @@ namespace mobSocial.Data.Entity.Users
 
         public DateTime DateUpdated { get; set; }
 
-        public DateTime LastLoginDate { get; set; }
+        public DateTime? LastLoginDate { get; set; }
 
         public bool IsSystemAccount { get; set; }
 
