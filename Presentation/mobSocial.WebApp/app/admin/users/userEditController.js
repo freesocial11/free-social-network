@@ -14,7 +14,7 @@ window.mobSocial.config([
 ]);
 
 window.mobSocial.controller("userEditController", [
-    "$scope", "userService", "$stateParams", "$state", function ($scope, userService, $stateParams, $state) {
+    "$scope", "userService", "$stateParams", "$state", "authProvider", "$rootScope", function ($scope, userService, $stateParams, $state, authProvider, $rootScope) {
 
         $scope.get = function () {
             if ($stateParams.id == 0)
@@ -35,6 +35,9 @@ window.mobSocial.controller("userEditController", [
                 function (response) {
                     if (response.Success) {
                         $scope.user = response.ResponseData.User;
+                        if ($scope.user.Id == $rootScope.CurrentUser.Id) {
+                            authProvider.markLoggedIn($scope.user);
+                        }
                     }
                 },
                 function (response) {

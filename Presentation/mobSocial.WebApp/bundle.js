@@ -7174,13 +7174,18 @@
   \************************************/
 /***/ function(module, exports) {
 
-	window.mobSocial.factory('authProvider', ['$q', 'localStorageService', function ($q, localStorageService) {
+	window.mobSocial.factory('authProvider', ['$q', 'localStorageService', '$rootScope', function ($q, localStorageService, $rootScope) {
 	    const loggedinKey = "loggedin";
 	    const userInfoKey = "userinfo";
 	    return {
 	        markLoggedIn: function(user) {
 	            localStorageService.set(loggedinKey, true);
 	            localStorageService.set(userInfoKey, user);
+	            this.setLoggedInUser(user);
+	        },
+	        setLoggedInUser: function (user) {
+	            console.log("setting now");
+	            $rootScope.CurrentUser = user;
 	        },
 	        getLoggedInUser: function() {
 	            return localStorageService.get(userInfoKey);
@@ -7616,7 +7621,7 @@
 	]);
 	
 	window.mobSocial.controller("userEditController", [
-	    "$scope", "userService", "$stateParams", "$state", function ($scope, userService, $stateParams, $state) {
+	    "$scope", "userService", "$stateParams", "$state", "authProvider", "$rootScope", function ($scope, userService, $stateParams, $state, authProvider, $rootScope) {
 	
 	        $scope.get = function () {
 	            if ($stateParams.id == 0)
@@ -7637,6 +7642,9 @@
 	                function (response) {
 	                    if (response.Success) {
 	                        $scope.user = response.ResponseData.User;
+	                        if ($scope.user.Id == $rootScope.CurrentUser.Id) {
+	                            authProvider.markLoggedIn($scope.user);
+	                        }
 	                    }
 	                },
 	                function (response) {
