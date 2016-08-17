@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Core.Infrastructure.AppEngine;
@@ -61,7 +62,7 @@ namespace mobSocial.Services.Extensions
         public static T GetPropertyValueAs<T>(this IHasEntityProperties entity, string propertyName, T defaultValue = default(T))
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
-            var typeName = entity.GetType().Name;
+            var typeName = entity.GetType().BaseType?.Name;
             var entityProperty =  entityPropertyService.Get(
                     x => x.EntityName == typeName && x.EntityId == entity.Id && x.PropertyName == propertyName,
                     null).FirstOrDefault();
@@ -69,7 +70,7 @@ namespace mobSocial.Services.Extensions
             if (entityProperty == null)
                 return defaultValue;
 
-            return (T) entityProperty.Value;
+            return (T) Convert.ChangeType(entityProperty.Value, typeof(T));
         }
 
         public static void SetPropertyValue<T>(this IHasEntityProperties<T> entity, string propertyName, object value)
@@ -84,7 +85,7 @@ namespace mobSocial.Services.Extensions
             };
             
 
-            property.Value = value;
+            property.Value = value?.ToString();
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
             if (property.Id == 0)
                 entityPropertyService.Insert(property);

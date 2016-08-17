@@ -10,7 +10,7 @@ namespace mobSocial.Data.Entity.EntityProperties
 
         public string PropertyName { get; set; }
 
-        public object Value { get; set; }
+        public string Value { get; set; }
     }
 
     public class EntityPropertyMap : BaseEntityConfiguration<EntityProperty> { }
