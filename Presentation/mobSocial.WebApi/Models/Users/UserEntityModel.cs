@@ -41,5 +41,13 @@ namespace mobSocial.WebApi.Models.Users
 
         public List<int> RoleIds { get; set; }
 
+        public string ProfileImageUrl { get; set; }
+
+        public int ProfileImageId { get; set; }
+
+        public string CoverImageUrl { get; set; }
+
+        public int CoverImageId { get; set; }
+
     }
 }

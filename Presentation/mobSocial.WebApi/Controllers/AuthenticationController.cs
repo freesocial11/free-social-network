@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Web.Http;
 using mobSocial.Core;
+using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Enum;
+using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
@@ -18,15 +20,19 @@ namespace mobSocial.WebApi.Controllers
 
         private readonly IUserService _userService;
         private readonly ICryptographyService _cryptographyService;
+        private readonly IMediaService _mediaService;
+        private readonly MediaSettings _mediaSettings;
         #endregion
 
         #region ctor
 
         public AuthenticationController(IUserService userService,
-            ICryptographyService cryptographyService)
+            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings)
         {
             _userService = userService;
             _cryptographyService = cryptographyService;
+            _mediaService = mediaService;
+            _mediaSettings = mediaSettings;
         }
 
         #endregion
@@ -59,7 +65,7 @@ namespace mobSocial.WebApi.Controllers
                 VerboseReporter.ReportSuccess("Your login was successful", "login");
                 return RespondSuccess(new {
                     ReturnUrl = loginModel.ReturnUrl,
-                    User = ApplicationContext.Current.CurrentUser.ToModel()
+                    User = ApplicationContext.Current.CurrentUser.ToModel(_mediaService, _mediaSettings)
                 });
 
             }

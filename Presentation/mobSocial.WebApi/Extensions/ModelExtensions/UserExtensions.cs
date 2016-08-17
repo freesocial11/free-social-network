@@ -6,13 +6,14 @@ using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
+using mobSocial.Services.MediaServices;
 using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
 {
     public static class UserExtensions
     {
-        public static UserResponseModel ToModel(this User user)
+        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings)
         {
             var model = new UserResponseModel()
             {
@@ -23,15 +24,14 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 DateCreatedUtc = user.DateCreated,
                 DateCreatedLocal = DateTimeHelper.GetDateInUserTimeZone(user.DateCreated, DateTimeKind.Utc, user),
                 UserName = user.UserName,
-                CoverImageUrl = user.GetPropertyValueAs<string>(PropertyNames.DefaultCoverId),
-                ProfileImageUrl = user.GetPropertyValueAs<string>(PropertyNames.DefaultPictureId),
+                CoverImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId), PictureSizeNames.MediumCover),
+                ProfileImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage),
                 Active = user.Active
             };
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))
                 return model;
 
-            var mediaSettings = mobSocialEngine.ActiveEngine.Resolve<MediaSettings>();
             if (string.IsNullOrEmpty(model.CoverImageUrl))
                 model.CoverImageUrl = mediaSettings.DefaultUserProfileCoverUrl;
             if (string.IsNullOrEmpty(model.ProfileImageUrl))
@@ -40,8 +40,10 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             return model;
         }
 
-        public static UserEntityModel ToEntityModel(this User user)
+        public static UserEntityModel ToEntityModel(this User user, IMediaService mediaService, MediaSettings mediaSettings)
         {
+            var userCoverId = user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId);
+            var userProfileImageId = user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId);
             var model = new UserEntityModel() {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -53,9 +55,12 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Remarks = user.Remarks,
                 RoleIds = user.UserRoles.Select(x => x.RoleId).ToList(),
                 LastLoginDateUtc = user.LastLoginDate,
-                LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate, DateTimeKind.Utc, user)
+                LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate, DateTimeKind.Utc, user),
+                CoverImageId = userCoverId,
+                ProfileImageId = userProfileImageId
             };
-
+            model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover);
+            model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage);
             return model;
         }
 

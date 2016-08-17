@@ -4,10 +4,12 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
+using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
@@ -25,16 +27,20 @@ namespace mobSocial.WebApi.Controllers
         private readonly IRoleService _roleService;
         private readonly UserSettings _userSettings;
         private readonly SecuritySettings _securitySettings;
+        private readonly MediaSettings _mediaSettings;
         private readonly IUserRegistrationService _userRegistrationService;
         private readonly ICryptographyService _cryptographyService;
+        private readonly IMediaService _mediaService;
 
-        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings)
         {
             _userService = userService;
             _userSettings = userSettings;
             _securitySettings = securitySettings;
             _userRegistrationService = userRegistrationService;
             _cryptographyService = cryptographyService;
+            _mediaService = mediaService;
+            _mediaSettings = mediaSettings;
             _roleService = roleService;
         }
 
@@ -54,7 +60,7 @@ namespace mobSocial.WebApi.Controllers
                 x.LastName.StartsWith(requestModel.SearchText) ||
                 x.Email == requestModel.SearchText)) || true, null, true, requestModel.Page, requestModel.Count);
 
-            var model = users.ToList().Select(user => user.ToModel());
+            var model = users.ToList().Select(user => user.ToModel(_mediaService, _mediaSettings));
             return RespondSuccess(new {
                 Users = model
             });
@@ -74,7 +80,7 @@ namespace mobSocial.WebApi.Controllers
             if (user == null)
                 return NotFound();
 
-            var model = user.ToEntityModel();
+            var model = user.ToEntityModel(_mediaService, _mediaSettings);
 
             //get all the available roles
             var availableRoles = _roleService.Get(x => x.IsActive).ToList();
@@ -200,9 +206,15 @@ namespace mobSocial.WebApi.Controllers
                 _roleService.AssignRoleToUser(role, user);
             }
 
+            //any images to assign
+            if(entityModel.CoverImageId != 0)
+                user.SetPropertyValue(PropertyNames.DefaultCoverId, entityModel.CoverImageId);
+            if(entityModel.ProfileImageId != 0)
+                user.SetPropertyValue(PropertyNames.DefaultPictureId, entityModel.ProfileImageId);
+
             VerboseReporter.ReportSuccess("User saved successfully", "post_user");
             return RespondSuccess(new {
-                User = user.ToEntityModel()
+                User = user.ToEntityModel(_mediaService, _mediaSettings)
             });
         }
 
