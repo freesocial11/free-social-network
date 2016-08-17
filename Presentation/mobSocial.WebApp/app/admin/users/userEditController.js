@@ -59,6 +59,13 @@ window.mobSocial.controller("userEditController", [
                 });
         }
 
+        $scope.uploadProfilePictureSuccess = function (fileItem, data, status, headers) {
+            if (data.Success && data.ResponseData.Images.length > 0) {
+                $scope.user.ProfileImageId = data.ResponseData.Images[0].ImageId;
+                $scope.user.ProfileImageUrl = data.ResponseData.Images[0].ThumbnailUrl;
+            }
+        };
+
         $scope.init = function () {
             $scope.user = {
 

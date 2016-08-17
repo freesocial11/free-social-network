@@ -41,9 +41,32 @@
                 </div>
             </div>
             <div class="form-group">
+                <label for="confirmPassword" class="col-md-2 control-label">Confirm Password</label>
+                <div class="col-md-10">
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Password" ng-model="user.ConfirmPassword">
+                </div>
+            </div>
+            <div class="form-group">
                 <label for="active" class="col-md-2 control-label">Active</label>
                 <div class="col-md-10">
                     <input type="checkbox" id="active" ng-model="user.Active">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="active" class="col-md-2 control-label">Profile Picture</label>
+                <div class="col-md-10">
+                    <img ng-src="{{user.ProfileImageUrl}}"/>
+                    <p class="t">
+                        <button file-upload-button
+                                id="profile-picture-{{user.Id}}"
+                                class="btn btn-warning"
+                                uploadtype="image"
+                                onsuccessitem="uploadProfilePictureSuccess"
+                                url="/api/media/uploadpictures">
+                            Change
+                        </button>
+                    </p>
+                    
                 </div>
             </div>
             <div class="form-group">
