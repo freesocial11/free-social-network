@@ -22,6 +22,8 @@ module.exports = {
             "./app/common/webClientService.js",
             //directives
             "./app/common/directives/fileUploadButton.js",
+            //controllers
+            "./app/common/controllers/navigationController.js",
             //login
             "./app/public/authentication/loginService.js",
             "./app/public/authentication/loginController.js",

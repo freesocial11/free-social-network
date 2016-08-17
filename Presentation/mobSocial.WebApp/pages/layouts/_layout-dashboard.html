@@ -308,14 +308,14 @@
         </form>
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
-        <ul class="sidebar-menu">
+        <ul class="sidebar-menu" ng-controller="navigationController">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="active">
+            <li>
                 <a ui-sref="layoutDashboard.dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview">
+            <li class="treeview" ng-class='{"active": $state.includes("layoutDashboard.userlist") || $state.includes("layoutDashboard.useredit.basic")}'>
                 <a href="">
                     <i class="fa fa-users"></i> <span>Users</span>
                     <span class="pull-right-container">
@@ -323,8 +323,8 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a ui-sref="layoutDashboard.userlist" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
-                    <li><a href=""><i class="fa fa-user-plus"></i> Add User</a></li>
+                    <li ui-sref-active="active"><a ui-sref="layoutDashboard.userlist" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
+                    <li ui-sref-active="active"><a ui-sref="layoutDashboard.useredit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>
             <li class="treeview">
