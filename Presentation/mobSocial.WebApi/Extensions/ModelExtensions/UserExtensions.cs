@@ -7,6 +7,7 @@ using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
@@ -15,8 +16,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
     {
         public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings)
         {
-            var model = new UserResponseModel()
-            {
+            var model = new UserResponseModel() {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -28,6 +28,13 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 ProfileImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage),
                 Active = user.Active
             };
+            //TODO: Put capability check instead of administration check, that'd be more scalable
+            if (ApplicationContext.Current.CurrentUser.IsAdministrator() && user.LastLoginDate.HasValue)
+            {
+                model.LastLoginDateUtc = user.LastLoginDate;
+                model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
+                    DateTimeKind.Utc, user);
+            }
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))
                 return model;
@@ -54,11 +61,16 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Active = user.Active,
                 Remarks = user.Remarks,
                 RoleIds = user.UserRoles.Select(x => x.RoleId).ToList(),
-                LastLoginDateUtc = user.LastLoginDate,
-                LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate, DateTimeKind.Utc, user),
                 CoverImageId = userCoverId,
                 ProfileImageId = userProfileImageId
             };
+            //TODO: Put capability check instead of administration check, that'd be more scalable
+            if (ApplicationContext.Current.CurrentUser.IsAdministrator() && user.LastLoginDate.HasValue)
+            {
+                model.LastLoginDateUtc = user.LastLoginDate;
+                model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
+                    DateTimeKind.Utc, user);
+            }
             model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover);
             model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage);
             return model;
