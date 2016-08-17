@@ -1,15 +1,19 @@
 /// <binding Clean='Run - Development' />
 "use strict";
-
+//require("./libraries/moment/moment.min.js");
 module.exports = {
     externals: {
-        'angular': 'angular'
+        'angular': 'angular',
+        'moment': 'moment'
     },
     entry: [
+           "./libraries/moment/moment.min.js",
+           //angular
             "./libraries/angular/angular.min.js",
             "./libraries/angular/angular-ui-router.js",
             "./libraries/angular/angular-local-storage.min.js",
             "./libraries/angular/angular-file-upload.min.js",
+            "./libraries/angular/angular-moment.min.js",
             "./config.js",
             "./app/app.js",
             "./app/common/router.js",
