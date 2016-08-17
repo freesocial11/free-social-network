@@ -248,3 +248,5 @@ ModelManifest.xml
 Presentation\mobSocial.WebApi\App_Data
 Presentation/mobSocial.WebApi/App_Data/
 Presentation/mobSocial.WebApi/Content/Media/Uploads/
+Presentation/mobSocial.WebApp/bundle.js
+Presentation/mobSocial.WebApp/bundle.js.map
