@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace mobSocial.Core.Infrastructure.Utils
@@ -24,7 +25,7 @@ namespace mobSocial.Core.Infrastructure.Utils
             }
             //boolean?
             if (property.PropertyType == typeof(bool))
-                return value == "1" || value == "true" || value == "on" || value == "checked";
+                return (new[] {"1", "true", "on", "checked"}).Contains(value.ToLower());
 
             //uri?
             if (property.PropertyType == typeof(Uri))
