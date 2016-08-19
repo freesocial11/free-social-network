@@ -1,4 +1,7 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Web;
 
 namespace mobSocial.Core
 {
@@ -57,6 +60,14 @@ namespace mobSocial.Core
             var appPath = HttpContext.Current.Server.MapPath("~");
             var res = $"~{localPath.Replace(appPath, "").Replace("\\", "/")}";
             return res;
+        }
+        /// <summary>
+        /// Gets available timezones on the server
+        /// </summary>
+        public static ReadOnlyCollection<TimeZoneInfo> GetAvailableTimezones()
+        {
+            var availableTimezones = TimeZoneInfo.GetSystemTimeZones();
+            return availableTimezones;
         }
     }
 }
