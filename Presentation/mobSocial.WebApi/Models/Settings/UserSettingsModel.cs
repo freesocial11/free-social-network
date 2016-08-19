@@ -1,10 +1,15 @@
-﻿using mobSocial.Core.Config;
+﻿using System.Collections.Generic;
 using mobSocial.Data.Enum;
 
-namespace mobSocial.Data.Entity.Settings
+namespace mobSocial.WebApi.Models.Settings
 {
-    public class UserSettings: ISettingGroup
+    public class UserSettingsModel
     {
+        public UserSettingsModel()
+        {
+            AvailableUserRegistrationModes = new List<dynamic>();
+        }
+
         /// <summary>
         /// Default registration mode for users
         /// </summary>
@@ -14,5 +19,7 @@ namespace mobSocial.Data.Entity.Settings
         /// Specifies if user names are enabled for site
         /// </summary>
         public bool AreUserNamesEnabled { get; set; }
+
+        public List<dynamic> AvailableUserRegistrationModes { get; set; }
     }
 }

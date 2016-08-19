@@ -222,6 +222,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\SettingExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Extensions\UtilityExtensions.cs" />
@@ -261,6 +263,15 @@
     <Compile Include="Models\Pictures\PictureEntityModel.cs" />
     <Compile Include="Models\Pictures\PictureResponseModel.cs" />
     <Compile Include="Models\Plugin\PluginInfoModel.cs" />
+    <Compile Include="Models\Settings\BattleSettingsModel.cs" />
+    <Compile Include="Models\Settings\DateTimeSettingsModel.cs" />
+    <Compile Include="Models\Settings\GeneralSettingsModel.cs" />
+    <Compile Include="Models\Settings\MediaSettingsModel.cs" />
+    <Compile Include="Models\Settings\PaymentSettingsModel.cs" />
+    <Compile Include="Models\Settings\SecuritySettingsModel.cs" />
+    <Compile Include="Models\Settings\SettingEntityModel.cs" />
+    <Compile Include="Models\Settings\ThirdPartySettingsModel.cs" />
+    <Compile Include="Models\Settings\UserSettingsModel.cs" />
     <Compile Include="Models\Social\UserCommentModel.cs" />
     <Compile Include="Models\Social\UserCommentPublicModel.cs" />
     <Compile Include="Models\Social\UserCommentRequestModel.cs" />
