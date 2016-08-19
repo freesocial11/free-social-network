@@ -327,6 +327,40 @@
                     <li ng-class='{"active": $state.includes("layoutDashboard.useredit.basic", { id:0 })}'><a ui-sref="layoutDashboard.useredit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>
+            <li class="treeview" ng-class='{"active": $state.includes("layoutDashboard.settings")}'>
+                <a href="" ui-sref="layoutDashboard.settings({ settingType: 'general' })" ui-sref-opts="{reload: true}">
+                    <i class="fa fa-gear"></i> <span>Settings</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "general" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'general' })"><i class="fa fa-circle-o"></i> General Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "user" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'user' })"><i class="fa fa-circle-o"></i> User Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "media" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'media' })"><i class="fa fa-circle-o"></i> Media Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "security" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'security' })"><i class="fa fa-circle-o"></i> Security Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "datetime" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'datetime' })"><i class="fa fa-circle-o"></i> Localization Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "payment" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'payment' })"><i class="fa fa-circle-o"></i> Payment Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "battle" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'battle' })"><i class="fa fa-circle-o"></i> Battle Settings</a>
+                    </li>
+                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "thirdparty" })}'>
+                        <a ui-sref="layoutDashboard.settings({ settingType: 'thirdparty' })"><i class="fa fa-circle-o"></i> Third Party Settings</a>
+                    </li>
+                </ul>
+            </li>
             <li class="treeview">
                 <a href="#">
                     <i class="fa fa-file-picture-o"></i> <span>Media</span>

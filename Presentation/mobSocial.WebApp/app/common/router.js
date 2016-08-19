@@ -42,6 +42,12 @@
                 url: "/user/edit/:id",
                 templateUrl: "pages/users/user.edit.html",
                 controller: "userEditController"
+            })
+            .state("layoutDashboard.settings",
+            {
+                url: "/settings/:settingType",
+                templateUrl: function(stateParams) { return "pages/settings/"+ stateParams.settingType + "Settings.edit.html" },
+                controller: "settingEditController"
             });
 
         $stateProvider.state("layoutZero.404",

@@ -30,7 +30,10 @@ module.exports = {
             //user
             "./app/admin/users/userService.js",
             "./app/admin/users/userController.js",
-            "./app/admin/users/userEditController.js"
+            "./app/admin/users/userEditController.js",
+            //setting
+            "./app/admin/settings/settingService.js",
+            "./app/admin/settings/settingEditController.js"
         ],
     output: {
         filename: "bundle.js"
