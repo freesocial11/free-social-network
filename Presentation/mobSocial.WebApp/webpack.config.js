@@ -22,6 +22,7 @@ module.exports = {
             "./app/common/webClientService.js",
             //directives
             "./app/common/directives/fileUploadButton.js",
+            "./app/common/directives/blockUi.js",
             //controllers
             "./app/common/controllers/navigationController.js",
             //login

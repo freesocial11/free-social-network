@@ -1,4 +1,4 @@
-﻿window.mobSocial.service("webClientService", ["$http", function ($http) {
+﻿window.mobSocial.service("webClientService", ["$http", "$rootScope", function ($http, $rootScope) {
 
     this._connect = function (method, url, params, success, error) {
         var config = {
@@ -11,13 +11,15 @@
             config["data"] = params;
             config["dataType"] = "json";
         }
-
+        $rootScope.BlockUi = true;
         $http(config).then(function(response) {
             if (success)
                 success(response.data);
+            $rootScope.BlockUi = false;
         }, function(response) {
             if (error)
                 error(response.data);
+            $rootScope.BlockUi = false;
         });
     }
 
