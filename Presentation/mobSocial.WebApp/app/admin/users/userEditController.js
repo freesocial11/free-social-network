@@ -2,11 +2,11 @@
 window.mobSocial.config([
     "$stateProvider", function ($stateProvider) {
         $stateProvider
-            .state('layoutDashboard.useredit.basic', {
+            .state('layoutAdministration.useredit.basic', {
                 url: '',
                 templateUrl: 'pages/users/user.edit.basic.html'
             })
-            .state('layoutDashboard.useredit.timeline', {
+            .state('layoutAdministration.useredit.timeline', {
                 url: '/timeline',
                 templateUrl: 'pages/users/user.edit.timeline.html'
             });
@@ -53,7 +53,7 @@ window.mobSocial.controller("userEditController", [
                     userService.delete($scope.user.Id,
                         function(response) {
                             if (response.Success) {
-                                $state.go("layoutDashboard.userlist");
+                                $state.go("layoutAdministration.userlist");
                             }
                         },
                         function(response) {

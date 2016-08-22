@@ -264,7 +264,7 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a ui-sref="layoutDashboard.useredit.basic({ id: CurrentUser.Id })" href="#" class="btn btn-default btn-flat">Edit</a>
+                                <a ui-sref="layoutAdministration.useredit.basic({ id: CurrentUser.Id })" href="#" class="btn btn-default btn-flat">Edit</a>
                             </div>
                             <div class="pull-right" ng-controller="loginController">
                                 <a href="#" class="btn btn-default btn-flat" ng-click="logout()">Sign out</a>
@@ -311,53 +311,53 @@
         <ul class="sidebar-menu" ng-controller="navigationController">
             <li class="header">MAIN NAVIGATION</li>
             <li>
-                <a ui-sref="layoutDashboard.dashboard">
+                <a ui-sref="layoutAdministration.dashboard">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview" ng-class='{"active": $state.includes("layoutDashboard.userlist") || $state.includes("layoutDashboard.useredit.basic")}'>
-                <a href="" ui-sref="layoutDashboard.userlist" ui-sref-opts="{reload: true}">
+            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.userlist") || $state.includes("layoutAdministration.useredit.basic")}'>
+                <a href="" ui-sref="layoutAdministration.userlist" ui-sref-opts="{reload: true}">
                     <i class="fa fa-users"></i> <span>Users</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li ng-class='{"active": $state.includes("layoutDashboard.userlist")}'><a ui-sref="layoutDashboard.userlist" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.useredit.basic", { id:0 })}'><a ui-sref="layoutDashboard.useredit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.userlist")}'><a ui-sref="layoutAdministration.userlist" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.useredit.basic", { id:0 })}'><a ui-sref="layoutAdministration.useredit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>
-            <li class="treeview" ng-class='{"active": $state.includes("layoutDashboard.settings")}'>
-                <a href="" ui-sref="layoutDashboard.settings({ settingType: 'general' })" ui-sref-opts="{reload: true}">
+            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.settings")}'>
+                <a href="" ui-sref="layoutAdministration.settings({ settingType: 'general' })" ui-sref-opts="{reload: true}">
                     <i class="fa fa-gear"></i> <span>Settings</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "general" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'general' })"><i class="fa fa-circle-o"></i> General Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "general" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'general' })"><i class="fa fa-circle-o"></i> General Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "user" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'user' })"><i class="fa fa-circle-o"></i> User Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "user" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'user' })"><i class="fa fa-circle-o"></i> User Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "media" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'media' })"><i class="fa fa-circle-o"></i> Media Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "media" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'media' })"><i class="fa fa-circle-o"></i> Media Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "security" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'security' })"><i class="fa fa-circle-o"></i> Security Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "security" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'security' })"><i class="fa fa-circle-o"></i> Security Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "datetime" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'datetime' })"><i class="fa fa-circle-o"></i> Localization Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "datetime" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'datetime' })"><i class="fa fa-circle-o"></i> Localization Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "payment" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'payment' })"><i class="fa fa-circle-o"></i> Payment Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "payment" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'payment' })"><i class="fa fa-circle-o"></i> Payment Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "battle" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'battle' })"><i class="fa fa-circle-o"></i> Battle Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "battle" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'battle' })"><i class="fa fa-circle-o"></i> Battle Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutDashboard.settings", { settingType: "thirdparty" })}'>
-                        <a ui-sref="layoutDashboard.settings({ settingType: 'thirdparty' })"><i class="fa fa-circle-o"></i> Third Party Settings</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "thirdparty" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'thirdparty' })"><i class="fa fa-circle-o"></i> Third Party Settings</a>
                     </li>
                 </ul>
             </li>

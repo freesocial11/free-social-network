@@ -4,7 +4,7 @@
         &nbsp;
     </h1>
     <ol class="breadcrumb">
-        <li><a ui-sref="layoutDashboard.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a ui-sref="layoutAdministration.dashboard"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Users</li>
     </ol>
 </section>
@@ -14,7 +14,7 @@
             Manage Users
         </h1>
         <div class="pull-right">
-            <a ui-sref="layoutDashboard.useredit.basic({ id:0 })" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</a>
+            <a ui-sref="layoutAdministration.useredit.basic({ id:0 })" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</a>
         </div>
     </div>
     <div class="box-body no-padding">
@@ -28,7 +28,7 @@
                 </tr>
                 <tr ng-repeat="user in users">
                     <td>
-                        <a ui-sref="layoutDashboard.useredit.basic({ id: user.Id })">
+                        <a ui-sref="layoutAdministration.useredit.basic({ id: user.Id })">
                             <img ng-src="{{user.ProfileImageUrl}}" class="img-circle" /> {{user.Name}}
                         </a>
                     </td>
@@ -41,7 +41,7 @@
                     </td>
                     <td>
                         <span class="pull-right">
-                            <a ui-sref="layoutDashboard.useredit.basic({ id: user.Id })" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                            <a ui-sref="layoutAdministration.useredit.basic({ id: user.Id })" class="btn btn-sm btn-primary"><i class="fa fa-pencil"></i> Edit</a>
                         </span>
 
                     </td>

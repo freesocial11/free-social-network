@@ -15,7 +15,7 @@
                 url: "/login"
             });
         $stateProvider
-            .state("layoutDashboard",
+            .state("layoutAdministration",
             {
                 abstract:true,
                 resolve: {
@@ -23,27 +23,27 @@
                         return authProvider.isLoggedIn();
                     }
                 },
-                templateUrl: "pages/layouts/_layout-dashboard.html"
+                templateUrl: "pages/layouts/_layout-administration.html"
             })
-            .state("layoutDashboard.dashboard",
+            .state("layoutAdministration.dashboard",
             {
                 url: "/",
                 templateUrl: "pages/dashboard.html"
             })
-            .state("layoutDashboard.userlist",
+            .state("layoutAdministration.userlist",
             {
                 url: "/users",
                 templateUrl: "pages/users/users.list.html",
                 controller: "userController"
             })
-            .state("layoutDashboard.useredit",
+            .state("layoutAdministration.useredit",
             {
                 abstract:true,
                 url: "/user/edit/:id",
                 templateUrl: "pages/users/user.edit.html",
                 controller: "userEditController"
             })
-            .state("layoutDashboard.settings",
+            .state("layoutAdministration.settings",
             {
                 url: "/settings/:settingType",
                 templateUrl: function(stateParams) { return "pages/settings/"+ stateParams.settingType + "Settings.edit.html" },

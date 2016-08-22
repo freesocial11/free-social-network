@@ -1,7 +1,7 @@
 ﻿<div class="box">
     <div class="box-header with-border">
         <h1 class="box-title">
-            Edit User - {{user.Name}} <small><a ui-sref="layoutDashboard.userlist" ui-sref-opts="{reload: true}"> <i class="fa fa fa-arrow-circle-left"></i> back to user list</a></small>
+            Edit User - {{user.Name}} <small><a ui-sref="layoutAdministration.userlist" ui-sref-opts="{reload: true}"> <i class="fa fa fa-arrow-circle-left"></i> back to user list</a></small>
         </h1>
         <div class="pull-right">
             <a class="btn btn-danger btn-block" ng-click="delete()"><i class="fa fa-times"></i> Delete</a>
@@ -11,8 +11,8 @@
         <!-- Custom Tabs -->
         <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-                <li ui-sref-active="active"><a ui-sref="layoutDashboard.useredit.basic" ui-sref-opts="{reload: true}">Basic Details</a></li>
-                <li ui-sref-active="active"><a ui-sref="layoutDashboard.useredit.timeline" ui-sref-opts="{reload: true}">Timeline</a></li>
+                <li ui-sref-active="active"><a ui-sref="layoutAdministration.useredit.basic" ui-sref-opts="{reload: true}">Basic Details</a></li>
+                <li ui-sref-active="active"><a ui-sref="layoutAdministration.useredit.timeline" ui-sref-opts="{reload: true}">Timeline</a></li>
                 
             </ul>
             <div class="tab-content">
