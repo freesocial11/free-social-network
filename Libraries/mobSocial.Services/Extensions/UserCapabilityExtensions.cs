@@ -72,7 +72,7 @@ namespace mobSocial.Services.Extensions
 
         public static bool IsRegistered(this User user)
         {
-            return user.Is(SystemRoleNames.Registered);
+            return user.Is(SystemRoleNames.Registered) || user.IsAdministrator();
         }
        
         /// <summary>
