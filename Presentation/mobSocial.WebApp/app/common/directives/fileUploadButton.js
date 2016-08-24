@@ -1,4 +1,4 @@
-﻿window.mobSocial.directive("fileUploadButton", ['FileUploader', '$compile', function (FileUploader, $compile) {
+﻿window.mobSocial.lazy.directive("fileUploadButton", ['FileUploader', '$compile', function (FileUploader, $compile) {
     return {
         restrict: 'A',
         scope: false,

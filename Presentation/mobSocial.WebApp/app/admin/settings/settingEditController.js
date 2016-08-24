@@ -1,4 +1,4 @@
-﻿window.mobSocial.controller("settingEditController",
+﻿window.mobSocial.lazy.controller("settingEditController",
 [
     "$scope", "settingService", "$stateParams", "$state",
     function ($scope, settingService, $stateParams, $state) {

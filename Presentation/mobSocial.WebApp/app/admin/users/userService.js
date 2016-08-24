@@ -1,4 +1,4 @@
-﻿window.mobSocial.service("userService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
+﻿window.mobSocial.lazy.service("userService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
 
     var apiEndPoint = globalApiEndPoint + "/users";
     // get

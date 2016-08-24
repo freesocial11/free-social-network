@@ -1,4 +1,4 @@
-﻿window.mobSocial.controller("userController", [
+﻿window.mobSocial.lazy.controller("userController", [
     "$scope", "userService", function ($scope, userService) {
 
         $scope.get = function () {

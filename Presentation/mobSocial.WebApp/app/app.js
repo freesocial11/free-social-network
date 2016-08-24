@@ -1,4 +1,4 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularFileUpload', 'angularMoment'])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad"])
     .constant('globalApiEndPoint', '/api')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
@@ -21,6 +21,11 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
             $rootScope.login(toState.url);
         }
     });
+    //whenever state changes, see if we are in administration area or registered area
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams, error) {
+        $rootScope.isAdministrationArea = $window.location.pathname.startsWith($window.Configuration.adminUrlPathPrefix);
+    });
+
     //execute some theme callbacks on view content loaded
     $rootScope.$on('$viewContentLoaded',
         function (event, viewConfig) {

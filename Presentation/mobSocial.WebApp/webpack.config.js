@@ -1,43 +1,50 @@
 /// <binding Clean='Run - Development' />
 "use strict";
-//require("./libraries/moment/moment.min.js");
+var webpack = require("webpack");
 module.exports = {
     externals: {
         'angular': 'angular',
         'moment': 'moment'
     },
-    entry: [
-           "./libraries/moment/moment.min.js",
-           //angular
+    entry: {
+        essentials: [
+            "./libraries/moment/moment.min.js",
+            //angular
             "./libraries/angular/angular.min.js",
             "./libraries/angular/angular-ui-router.js",
             "./libraries/angular/angular-local-storage.min.js",
-            "./libraries/angular/angular-file-upload.min.js",
             "./libraries/angular/angular-moment.min.js",
+             "./libraries/ocLazyLoad/ocLazyLoad.min.js",
+            //mobSocial app
             "./config.js",
             "./app/app.js",
             "./app/common/router.js",
             "./app/common/authProvider.js",
+            "./app/common/controllerProvider.js",
             "./app/common/requestInterceptor.js",
             "./app/common/webClientService.js",
-            //directives
-            "./app/common/directives/fileUploadButton.js",
             "./app/common/directives/blockUi.js",
             //controllers
             "./app/common/controllers/navigationController.js",
-            //login
             "./app/public/authentication/loginService.js",
-            "./app/public/authentication/loginController.js",
-            //user
+            "./app/public/authentication/loginController.js"
+        ],
+        fileUpload: [
+            "./libraries/angular/angular-file-upload.min.js",
+            "./app/common/directives/fileUploadButton.js"
+        ],
+        users: [
             "./app/admin/users/userService.js",
             "./app/admin/users/userController.js",
-            "./app/admin/users/userEditController.js",
-            //setting
+            "./app/admin/users/userEditController.js"
+        ],
+        settings: [
             "./app/admin/settings/settingService.js",
             "./app/admin/settings/settingEditController.js"
-        ],
+        ]
+    },
     output: {
-        filename: "bundle.js"
+        filename: "scripts/bundles/[name].bundle.js"
     },
     devServer: {
         contentBase: ".",
@@ -49,7 +56,7 @@ module.exports = {
     },
     module: {
         loaders: [
-            
         ]
-    }
+    },
+    plugins: [new webpack.optimize.CommonsChunkPlugin("scripts/bundles/init.js")]
 };

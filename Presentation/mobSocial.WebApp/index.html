@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>mobSocial Administration</title>
+    <title>mobSocial {{isAdministrationArea ? "Administration" : ""}}</title>
     <base href="/">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -35,7 +35,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition skin-blue">
+<body class="hold-transition skin-blue" ng-class="{'layout-top-nav': !isAdministrationArea}">
     <div ui-view></div>
 
     <!-- jQuery 2.2.3 -->
@@ -62,9 +62,10 @@
     <!-- select2-->
     <script src="plugins/select2/select2.min.js"></script>
     <!-- bootbox-->
-    <script src="plugins/bootbox/bootbox.min.js"></script>
+<script src="plugins/bootbox/bootbox.min.js"></script>
+    <script src="scripts/bundles/init.js"></script>
     <!--mobSocial begins now-->
-    <script src="bundle.js"></script>
+    <script src="scripts/bundles/essentials.bundle.js"></script>
 
     <script src="themes/admin/AdminLTE/js/functions.js"></script>
 </body>

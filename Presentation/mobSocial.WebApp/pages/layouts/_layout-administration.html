@@ -1,7 +1,7 @@
 ﻿<header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="{{window.Configuration.adminUrlPathPrefix}}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
         <span class="logo-mini"><b>mob</b>Social</span>
         <!-- logo for regular state and mobile devices -->
@@ -315,16 +315,16 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.userlist") || $state.includes("layoutAdministration.useredit.basic")}'>
-                <a href="" ui-sref="layoutAdministration.userlist" ui-sref-opts="{reload: true}">
+            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.users.list") || $state.includes("layoutAdministration.users.edit.basic")}'>
+                <a href="" ui-sref="layoutAdministration.users.list" ui-sref-opts="{reload: true}">
                     <i class="fa fa-users"></i> <span>Users</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li ng-class='{"active": $state.includes("layoutAdministration.userlist")}'><a ui-sref="layoutAdministration.userlist" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
-                    <li ng-class='{"active": $state.includes("layoutAdministration.useredit.basic", { id:0 })}'><a ui-sref="layoutAdministration.useredit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.users.list")}'><a ui-sref="layoutAdministration.users.list" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.users.edit.basic", { id:0 })}'><a ui-sref="layoutAdministration.users.edit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>
             <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.settings")}'>
