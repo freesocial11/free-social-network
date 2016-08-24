@@ -1,4 +1,4 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad"])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize"])
     .constant('globalApiEndPoint', '/api')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {

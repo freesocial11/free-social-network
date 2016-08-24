@@ -1,0 +1,118 @@
+﻿<div class="row">
+    <div class="col-md-3">
+        <!-- Profile Image -->
+        <div class="box box-primary">
+            <div class="box-body box-profile">
+                <img class="profile-user-img img-responsive img-circle" ng-src="{{CurrentUser.ProfileImageUrl}}" alt="User profile picture">
+                <h3 class="profile-username text-center">{{CurrentUser.Name}}</h3>
+                <ul class="list-group list-group-unbordered">
+                    <li class="list-group-item">
+                        <b>Followers</b> <a class="pull-right">1,322</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Following</b> <a class="pull-right">543</a>
+                    </li>
+                    <li class="list-group-item">
+                        <b>Friends</b> <a class="pull-right">13,287</a>
+                    </li>
+                </ul>
+                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+        <!-- About Me Box -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">About Me</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                <p class="text-muted">
+                    B.S. in Computer Science from the University of Tennessee at Knoxville
+                </p>
+                <hr>
+                <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                <p class="text-muted">Malibu, California</p>
+                <hr>
+                <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+                <p>
+                    <span class="label label-danger">UI Design</span>
+                    <span class="label label-success">Coding</span>
+                    <span class="label label-info">Javascript</span>
+                    <span class="label label-warning">PHP</span>
+                    <span class="label label-primary">Node.js</span>
+                </p>
+                <hr>
+                <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="box ">
+            <div class="box-body  no-padding activity-list">
+                <div class="post post-form">
+                    <div class="user-block row">
+                        <div class="col-xs-1">
+                            <img class="img-circle img-bordered-sm" ng-src="{{CurrentUser.ProfileImageUrl}}" alt="user image" />
+                        </div>
+                        <div class="post-box col-xs-11">
+                            <div class="form-group">
+                                <textarea ng-model="PostData.Message" placeholder="What's on your mind" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group text-right">
+                                <button ng-click="PostToTimeline()" class="btn btn-primary">Post</button>
+                            </div>
+                            <div class="post-preview-area">
+                                <div ng-show="ProcessingPreview" class="preview-loader">
+                                    Please wait...
+                                </div>
+                                <div ng-switch on="PostData.PostTypeName">
+                                </div>
+                            </div>
+                            <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()" class="btn btn-secondary">Clear</button>
+                        </div>
+                    </div>
+                    <!-- /.user-block -->
+                </div>
+                <!-- Post -->
+                <div class="post" ng-repeat="Post in TimelinePosts">
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" ng-src="{{Post.OwnerImageUrl}}" alt="user image">
+                        <span class="username">
+                            <a href="#">{{Post.OwnerName}}</a>
+                            <a ng-if="Post.CanDelete" href="" ng-click="DeletePost(Post.Id)" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
+                        </span>
+                        <span class="description"><span class="time"><i class="fa fa-clock-o"></i> <time am-time-ago="Post.DateCreated"></time></span></span>
+                    </div>
+                    <!-- /.user-block -->
+                    <p ng-bind-html="Post.Message"></p>
+                    <div ng-switch on="Post.PostTypeName">
+                        <div ng-switch-default ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
+
+                        </div>
+                    </div>
+                    <ul class="list-inline">
+                        <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
+                        <li>
+                            <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
+                        </li>
+                        <li class="pull-right">
+                            <a href="#" class="link-black text-sm">
+                                <i class="fa fa-comments-o margin-r-5"></i> Comments
+                                (5)
+                            </a>
+                        </li>
+                    </ul>
+                    <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                </div>
+                <!-- /.post -->
+            </div>
+        </div>
+    </div>
+</div>

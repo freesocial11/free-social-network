@@ -100,7 +100,13 @@
             .state("layoutMobSocial.activity",
             {
                 url: "/",
-                templateUrl: "pages/users/activity.html"
+                templateUrl: "pages/users/activity.html",
+                controller: "timelineController",
+                resolve: {
+                    resolver: function (controllerProvider) {
+                        return controllerProvider.resolveBundles(["videogular", "social",  "timeline"]);
+                    }
+                }
             });
         $stateProvider.state("layoutZero.404",
         {

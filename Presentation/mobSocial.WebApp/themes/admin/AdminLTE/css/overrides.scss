@@ -55,3 +55,29 @@
         }
     }
 }
+
+.activity-list {
+    .post {
+        padding:10px;
+
+        &.post-form {
+            padding-bottom:0!important;
+            .post-box {
+                padding-left: 0;
+                .user-block{
+                    margin-bottom:0!important;
+                }
+                .form-group {
+                    margin-bottom: 0px;
+                }
+
+                textarea {
+                    border: none;
+                    resize: none;
+                    padding: 0;
+                    font-size: 1.1em;
+                }
+            }
+        }
+    }
+}

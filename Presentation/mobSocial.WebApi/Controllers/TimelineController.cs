@@ -27,7 +27,7 @@ using NReco.VideoConverter;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("api/timeline")]
+    [RoutePrefix("timeline")]
     public class TimelineController : RootApiController
     {
         private readonly ITimelineService _timelineService;
@@ -70,6 +70,8 @@ namespace mobSocial.WebApi.Controllers
             //TODO: check OwnerId for valid values and store entity name accordingly, these can be customer, artist page, videobattle page etc.
             model.OwnerId = ApplicationContext.Current.CurrentUser.Id;
             model.OwnerEntityType = TimelinePostOwnerTypeNames.Customer;
+            if(model.PublishDate < DateTime.UtcNow)
+                model.PublishDate = DateTime.UtcNow;
 
             //create new timeline post
             var post = new TimelinePost() {
@@ -318,13 +320,8 @@ namespace mobSocial.WebApi.Controllers
                 //get the customer to retrieve info such a profile image, profile url etc.
                 var user = _userService.Get(post.OwnerId);
 
-                postModel.OwnerName = user.GetPropertyValueAs<string>(PropertyNames.DisplayName);
+                postModel.OwnerName = user.Name;
                 postModel.OwnerImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
-
-                postModel.OwnerProfileUrl = Url.Route("CustomerProfileUrl", new RouteValueDictionary()
-                    {
-                        {"SeName", user.GetPermalink()}
-                    });
             }
             //depending on the posttype, we may need to extract additional data e.g. in case of autopublished posts, we may need to query the linked entity
             switch (post.PostTypeName)

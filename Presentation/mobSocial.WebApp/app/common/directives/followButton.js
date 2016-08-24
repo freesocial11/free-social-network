@@ -1,7 +1,7 @@
-﻿window.mobSocial.directive("followButton", ['$http', 'FollowService', '$compile', function ($http, FollowService, $compile) {
+﻿window.mobSocial.lazy.directive("followButton", ['followService', function (followService) {
     return{
         restrict: "E",
-        templateUrl: "/CustomerFollowButton",
+        templateUrl: "/pages/components/followButton.html",
         replace:true,
         scope: {
             EntityId: "@entityid",
@@ -10,7 +10,7 @@
         },
         link: function($scope, elem, attr) {
             $scope.Follow = function () {
-                FollowService.Follow($scope.EntityName, $scope.EntityId, function(response) {
+                followService.Follow($scope.EntityName, $scope.EntityId, function(response) {
                     $scope.FollowStatus = response.NewStatus;
                 }, function() {
 
@@ -18,7 +18,7 @@
             }
 
             $scope.Unfollow = function () {
-                FollowService.Unfollow($scope.EntityName, $scope.EntityId, function (response) {
+                followService.Unfollow($scope.EntityName, $scope.EntityId, function (response) {
                     $scope.FollowStatus = response.NewStatus;
                 }, function () {
 

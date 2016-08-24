@@ -40,3 +40,19 @@
       -o-animation: pace-spinner 400ms linear infinite;
       animation: pace-spinner 400ms linear infinite; }
 
+.activity-list .post {
+  padding: 10px; }
+  .activity-list .post.post-form {
+    padding-bottom: 0 !important; }
+    .activity-list .post.post-form .post-box {
+      padding-left: 0; }
+      .activity-list .post.post-form .post-box .user-block {
+        margin-bottom: 0 !important; }
+      .activity-list .post.post-form .post-box .form-group {
+        margin-bottom: 0px; }
+      .activity-list .post.post-form .post-box textarea {
+        border: none;
+        resize: none;
+        padding: 0;
+        font-size: 1.1em; }
+

@@ -1,7 +1,7 @@
-﻿window.mobSocial.directive("likeButton", ['$http', 'CustomerLikeService', function ($http, CustomerLikeService) {
+﻿window.mobSocial.lazy.directive("likeButton", ['CustomerLikeService', function (CustomerLikeService) {
     return{
         restrict: "E",
-        templateUrl: "/CustomerLikeButton",
+        templateUrl: "/pages/components/likeButton.html",
         replace:true,
         scope: {
             EntityId: "@entityid",

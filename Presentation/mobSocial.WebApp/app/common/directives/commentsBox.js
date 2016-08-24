@@ -1,7 +1,7 @@
-﻿window.mobSocial.directive("commentsBox", ['CustomerCommentsService', function (CustomerCommentsService) {
+﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', function (commentService) {
     return{
         restrict: "E",
-        templateUrl: "/CustomerComments",
+        templateUrl: "/pages/components/commentsBox.html",
         replace:true,
         scope: {
             EntityName: "@entityname",
@@ -23,7 +23,7 @@
             $scope.CommentList = [];
             $scope.Post = function () {
               
-                CustomerCommentsService.Post($scope.Comment, function (response) {
+                commentService.Post($scope.Comment, function (response) {
                     if (response.Success) {
                         $scope.CommentList.push(response.Comment);
                         $scope.TotalComments++;
@@ -37,7 +37,7 @@
             $scope.Get = function () {
                 $scope.CommentRequest.Page++;
                 $scope.CommentsLoading = true;
-                CustomerCommentsService.Get($scope.CommentRequest, function (response) {
+                commentService.Get($scope.CommentRequest, function (response) {
                     $scope.CommentsLoading = false;
                     if (response.Success) {
                         if (response.Comments.length == 0) {
@@ -55,7 +55,7 @@
                 if (!confirm("Are you sure you wish to delete this comment?")) {
                     return;
                 }
-                CustomerCommentsService.Delete(id, function(response) {
+                commentService.Delete(id, function(response) {
                     //if the operation succeeds, we'll need to remove the appropriate comment from the list
                     if (response.Success) {
                         for (var i = 0; i < $scope.CommentList.length; i++) {
