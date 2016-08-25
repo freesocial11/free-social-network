@@ -122,7 +122,7 @@ namespace mobSocial.WebApi.Controllers
             }
             
             var bytes = new byte[file.ContentLength];
-            file.InputStream.Write(bytes, 0, file.ContentLength);
+            file.InputStream.Read(bytes, 0, bytes.Length);
 
             //create a new media
             var media = new Media()
@@ -134,7 +134,8 @@ namespace mobSocial.WebApi.Controllers
             };
 
             _mediaService.WriteVideoBytes(media);
-
+            //insert now
+            _mediaService.Insert(media);
            return RespondSuccess(new {
                 VideoId = media.Id,
                 VideoUrl = WebHelper.GetUrlFromPath(media.LocalPath, _generalSettings.VideoServerDomain),
