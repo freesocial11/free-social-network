@@ -77,8 +77,9 @@ namespace mobSocial.WebApi.Controllers
             var comments = _customerCommentService.GetEntityComments(model.EntityId, model.EntityName, model.Page, model.Count);
             var commentModels = new List<UserCommentPublicModel>();
 
+            var allCustomerIds = comments.Select(x => x.UserId).ToList();
             //retrieve all the associated customers at ones for performance reasons
-            var customers = _customerService.Get(x => comments.Select(y => y.UserId).Contains(x.Id), null);
+            var customers = _customerService.Get(x => allCustomerIds.Contains(x.Id), null).ToList();
 
             foreach (var comment in comments)
             {
@@ -131,11 +132,7 @@ namespace mobSocial.WebApi.Controllers
                 CanDelete = comment.UserId == ApplicationContext.Current.CurrentUser.Id || ApplicationContext.Current.CurrentUser.IsAdministrator(),
                 IsSpam = false, //TODO: change it when spam system has been implemented
                 LikeCount = _customerLikeService.GetLikeCount<Comment>(comment.Id),
-                UserName = user.GetPropertyValueAs<string>(PropertyNames.DisplayName),
-                UserProfileUrl = Url.Route("CustomerProfileUrl", new RouteValueDictionary()
-                    {
-                        {"SeName", user.GetPermalink().ToString() }
-                    }),
+                UserName = user.Name,
                 UserProfileImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.SmallProfileImage),
                 LikeStatus = likeStatus
             };
