@@ -1,5 +1,5 @@
-﻿app.service("likeService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
-    var apiEndPoint = globalApiEndPoint + "/customerlike";
+﻿window.mobSocial.lazy.service("likeService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
+    var apiEndPoint = globalApiEndPoint + "/social";
     this.Like = function (type, id, success, error) {
         webClientService.post(apiEndPoint + "/like/" + type + "/" + id, null, success, error);
     };

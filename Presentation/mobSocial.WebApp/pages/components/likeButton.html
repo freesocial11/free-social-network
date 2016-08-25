@@ -1,12 +1,12 @@
-﻿<span ng-switch on="LikeStatus">
+﻿<span ng-switch on="LikeStatus" class=" margin-r-5">
     <span ng-switch-when="0">
-        <a ng-click="Like()">
-            <i class="fa fa-thumbs-up"></i> Like ({{TotalLikes}})
+        <a href="#" class="link-black text-sm" ng-click="Like()">
+            <i class="fa fa-thumbs-o-up margin-r-5"></i> Like ({{TotalLikes}})
         </a>
     </span>
     <span ng-switch-when="1">
-        <a ng-click="Unlike()">
-            <i class="fa fa-thumbs-up"></i> Unlike ({{TotalLikes}})
+        <a href="#" class="text-sm" ng-click="Unlike()">
+            <i class="fa fa-thumbs-o-up margin-r-5"></i> Like ({{TotalLikes}})
         </a>
     </span>
 </span>

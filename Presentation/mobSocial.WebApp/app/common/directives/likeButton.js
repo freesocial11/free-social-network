@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("likeButton", ['CustomerLikeService', function (CustomerLikeService) {
+﻿window.mobSocial.lazy.directive("likeButton", ['likeService', function (likeService) {
     return{
         restrict: "E",
         templateUrl: "/pages/components/likeButton.html",
@@ -11,7 +11,7 @@
         },
         link: function($scope, elem, attr) {
             $scope.Like = function () {
-                CustomerLikeService.Like($scope.EntityName, $scope.EntityId, function (response) {
+                likeService.Like($scope.EntityName, $scope.EntityId, function (response) {
                     if (response.Success) {
                         $scope.LikeStatus = response.NewStatus;
                         $scope.TotalLikes++;
@@ -23,7 +23,7 @@
             }
 
             $scope.Unlike = function () {
-                CustomerLikeService.Unlike($scope.EntityName, $scope.EntityId, function (response) {
+                likeService.Unlike($scope.EntityName, $scope.EntityId, function (response) {
                     if (response.Success) {
                         $scope.LikeStatus = response.NewStatus;
                         $scope.TotalLikes--;
