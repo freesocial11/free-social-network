@@ -85,3 +85,24 @@
 .post-content-display {
   margin-bottom: 15px; }
 
+.url-preview {
+  min-height: 150px;
+  padding: 10px;
+  background-color: #eef;
+  overflow: hidden; }
+  .url-preview .image {
+    float: left;
+    width: 160px;
+    text-align: center; }
+    .url-preview .image img {
+      max-width: 100%;
+      margin: 5px 10px; }
+  .url-preview .url-data {
+    padding-left: 180px; }
+    .url-preview .url-data a {
+      font-size: 1.5em; }
+    .url-preview .url-data .description {
+      margin: 7px 0; }
+    .url-preview .url-data .host-name {
+      color: gray; }
+

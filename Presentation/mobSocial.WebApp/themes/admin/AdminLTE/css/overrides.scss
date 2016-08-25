@@ -125,3 +125,36 @@
 .post-content-display{
     margin-bottom:15px;
 }
+
+.url-preview {
+    min-height: 150px;
+    padding: 10px;
+    background-color:#eef;
+    overflow:hidden;
+    .image {
+        float: left;
+        width: 160px;
+        text-align: center;
+
+        img {
+            max-width: 100%;
+            margin: 5px 10px;
+        }
+    }
+
+    .url-data {
+        padding-left: 180px;
+
+        a {
+            font-size: 1.5em;
+        }
+
+        .description {
+            margin: 7px 0;
+        }
+
+        .host-name {
+            color: gray;
+        }
+    }
+}

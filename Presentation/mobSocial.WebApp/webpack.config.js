@@ -18,6 +18,7 @@ module.exports = {
             "./libraries/angular/angular-sanitize.min.js",
             //mobSocial app
             "./config.js",
+            "./app/common/functions.js",
             "./app/app.js",
             "./app/common/router.js",
             "./app/common/authProvider.js",

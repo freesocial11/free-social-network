@@ -93,13 +93,15 @@
                         <span class="description"><span class="time"><i class="fa fa-clock-o"></i> <time am-time-ago="Post.DateCreated"></time></span></span>
                     </div>
                     <!-- /.user-block -->
-                    <p ng-bind-html="Post.Message"></p>
+                    <p ng-bind-html="Post.Message | linky:'_blank'"></p>
                     <div class="post-content-display">
                         <ng-include src="'/pages/components/timelinePostDisplay.html'"></ng-include>
                     </div>
-                    <a href="#" class="link-black text-sm  margin-r-5"><i class="fa fa-share margin-r-5"></i> Share</a>
-                    <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus" totallikes="{{Post.TotalLikes}}"></like-button>
-                    <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
+                    <div>
+                        <a href="#" class="link-black text-sm  margin-r-5"><i class="fa fa-share margin-r-5"></i> Share</a>
+                        <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus" totallikes="{{Post.TotalLikes}}"></like-button>
+                        <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
+                    </div>
                 </div>
                 <!-- /.post -->
             </div>
