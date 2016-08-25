@@ -22,16 +22,7 @@
     </script>
 </div>
 <div ng-if="Post.PostTypeName == 'url'"  ng-init="FilterFunction['url'](Post)">
-    <div class="url-preview">
-        <div class="image">
-            <img ng-src="{{PostPreview.Images[0]}}" />
-        </div>
-        <div class="url-data">
-            <a href="{{PostPreview.AbsoluteUrl}}">{{PostPreview.Title}}</a>
-            <div class="description">{{PostPreview.Description}}</div>
-            <div class="host-name">{{PostPreview.HostName}}</div>
-        </div>
-    </div>
+   
     <div class="url-preview" ng-if="!Post.YoutubeVideo">
         <div class="image">
             <img ng-src="{{Post.PostData.Images[0]}}" />
@@ -68,6 +59,7 @@
                 } catch (e) {
                     return;
                 }
+                jsonValue = jsonValue.ResponseData;
                 Post.PostData = jsonValue;
                 //if it's a youtube video
                 var isYoutubeUrl = isValidYouTubeUrl(Post.PostData.AbsoluteUrl);
