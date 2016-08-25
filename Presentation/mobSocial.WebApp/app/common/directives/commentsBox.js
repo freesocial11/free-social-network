@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', function (commentService) {
+﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', '$rootScope', function (commentService, $rootScope) {
     return{
         restrict: "E",
         templateUrl: "/pages/components/commentsBox.html",
@@ -21,6 +21,7 @@
                 Count : $scope.SinglePageCommentCount
             }
             $scope.CommentList = [];
+            $scope.CurrentUser = $rootScope.CurrentUser;
             $scope.Post = function () {
               
                 commentService.Post($scope.Comment, function (response) {

@@ -1,15 +1,15 @@
-﻿window.mobSocial.lazy.service("commentService", ["globalApiEndPoint", "WebClientService", function (globalApiEndPoint, WebClientService) {
+﻿window.mobSocial.lazy.service("commentService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
     var apiEndPoint = globalApiEndPoint + "/comments";
     this.Post = function (commentPostModel, success, error) {
-        WebClientService.post(apiEndPoint + "/post", commentPostModel, success, error);
+        webClientService.post(apiEndPoint + "/post", commentPostModel, success, error);
     };
 
     this.Delete = function (id, success, error) {
-        WebClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
+        webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     };
 
     this.Get = function (commentRequestModel, success, error) {
-        WebClientService.get(apiEndPoint + "/get", commentRequestModel, success, error);
+        webClientService.get(apiEndPoint + "/get", commentRequestModel, success, error);
     };
 
 }]);
