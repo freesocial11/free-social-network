@@ -1,11 +1,10 @@
 ﻿"use strict";
 
-var attachFunctionToTimelineScope = function(name, func) {
+window.attachFunctionToTimelineScope = function(name, func) {
     //to make things pluggable, we have created a function so that other plugin vendors can inject their functions to timeline without 
     //having to modify timeline.js core file
 
-    //get the element scope, the id of timeline controller is mobSocialTimeline
-    var $scope = angular.element(document.getElementById("mobSocialTimeline")).scope();
+    var $scope = angular.element(".activity-list").scope();
 
     //in this scope variable, set the function
     $scope[name] = func;
