@@ -62,17 +62,17 @@ namespace mobSocial.Services.Extensions
 
         public static bool IsAdministrator(this User user)
         {
-            return user.Is(SystemRoleNames.Administrator);
+            return user != null && user.Is(SystemRoleNames.Administrator);
         }
 
         public static bool IsVisitor(this User user)
         {
-            return user.Is(SystemRoleNames.Visitor);
+            return user == null || user.Is(SystemRoleNames.Visitor);
         }
 
         public static bool IsRegistered(this User user)
         {
-            return user.Is(SystemRoleNames.Registered) || user.IsAdministrator();
+            return user != null && (user.Is(SystemRoleNames.Registered) || user.IsAdministrator());
         }
        
         /// <summary>
