@@ -9,7 +9,7 @@ using mobSocial.WebApi.Configuration.Mvc;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("like")]
+    [RoutePrefix("social")]
     public class LikeController : RootApiController
     {
         
