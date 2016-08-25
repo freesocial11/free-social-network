@@ -56,3 +56,32 @@
         padding: 0;
         font-size: 1.1em; }
 
+.comment-list .comment-box {
+  background-color: #eef;
+  padding: 10px;
+  margin-top: 3px; }
+  .comment-list .comment-box .username, .comment-list .comment-box .description, .comment-list .comment-box .comment-text {
+    display: block;
+    margin-left: 35px; }
+  .comment-list .comment-box .description {
+    color: #999;
+    font-size: 13px; }
+
+.comment-form {
+  margin-top: 7px; }
+
+.post-preview-area {
+  border: dashed 1px #ccc;
+  float: left;
+  width: 100%;
+  margin: 5px 0; }
+  .post-preview-area:empty {
+    display: none; }
+  .post-preview-area img {
+    height: auto !important;
+    width: auto !important;
+    max-width: 100% !important; }
+
+.post-content-display {
+  margin-bottom: 15px; }
+

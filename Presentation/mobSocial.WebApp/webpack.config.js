@@ -24,7 +24,10 @@ module.exports = {
             "./app/common/controllerProvider.js",
             "./app/common/requestInterceptor.js",
             "./app/common/webClientService.js",
+            //directives
             "./app/common/directives/blockUi.js",
+            //filters
+            "./app/common/filters/ms2timestr.js",
             //controllers
             "./app/common/controllers/navigationController.js",
             "./app/public/authentication/loginService.js",

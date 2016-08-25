@@ -66,6 +66,7 @@
                                 <textarea ng-model="PostData.Message" placeholder="What's on your mind" class="form-control"></textarea>
                             </div>
                             <div class="form-group text-right">
+                                <span ng-include="'/pages/components/timelinePostFormWidgets.html'"></span>
                                 <button ng-click="PostToTimeline()" class="btn btn-primary">Post</button>
                             </div>
                             <div class="post-preview-area">
@@ -73,6 +74,7 @@
                                     Please wait...
                                 </div>
                                 <div ng-switch on="PostData.PostTypeName">
+                                    <ng-include src="'/pages/components/timelinePostFormWidgetsPreview.html'"></ng-include>
                                 </div>
                             </div>
                             <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()" class="btn btn-secondary">Clear</button>
@@ -92,24 +94,12 @@
                     </div>
                     <!-- /.user-block -->
                     <p ng-bind-html="Post.Message"></p>
-                    <div ng-switch on="Post.PostTypeName">
-                        <div ng-switch-default ng-init="FilterFunction[Post.PostTypeName] ? FilterFunction[Post.PostTypeName](Post) : []">
-
-                        </div>
+                    <div class="post-content-display">
+                        <ng-include src="'/pages/components/timelinePostDisplay.html'"></ng-include>
                     </div>
-                    <ul class="list-inline">
-                        <li><a href="#" class="link-black text-sm"><i class="fa fa-share margin-r-5"></i> Share</a></li>
-                        <li>
-                            <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up margin-r-5"></i> Like</a>
-                        </li>
-                        <li class="pull-right">
-                            <a href="#" class="link-black text-sm">
-                                <i class="fa fa-comments-o margin-r-5"></i> Comments
-                                (5)
-                            </a>
-                        </li>
-                    </ul>
-                    <input class="form-control input-sm" type="text" placeholder="Type a comment">
+                    <a href="#" class="link-black text-sm  margin-r-5"><i class="fa fa-share margin-r-5"></i> Share</a>
+                    <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus" totallikes="{{Post.TotalLikes}}"></like-button>
+                    <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
                 </div>
                 <!-- /.post -->
             </div>

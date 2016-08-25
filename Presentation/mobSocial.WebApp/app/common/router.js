@@ -104,7 +104,7 @@
                 controller: "timelineController",
                 resolve: {
                     resolver: function (controllerProvider) {
-                        return controllerProvider.resolveBundles(["videogular", "social",  "timeline"]);
+                        return controllerProvider.resolveBundles(["videogular", "social", "fileUpload",  "timeline"]);
                     }
                 }
             });

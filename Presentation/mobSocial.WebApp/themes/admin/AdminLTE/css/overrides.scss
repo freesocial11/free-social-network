@@ -58,15 +58,18 @@
 
 .activity-list {
     .post {
-        padding:10px;
+        padding: 10px;
 
         &.post-form {
-            padding-bottom:0!important;
+            padding-bottom: 0 !important;
+
             .post-box {
                 padding-left: 0;
-                .user-block{
-                    margin-bottom:0!important;
+
+                .user-block {
+                    margin-bottom: 0 !important;
                 }
+
                 .form-group {
                     margin-bottom: 0px;
                 }
@@ -80,4 +83,45 @@
             }
         }
     }
+}
+
+.comment-list {
+    .comment-box {
+        background-color: #eef;
+        padding: 10px;
+        margin-top: 3px;
+
+        .username, .description, .comment-text {
+            display: block;
+            margin-left: 35px;
+        }
+
+        .description {
+            color: #999;
+            font-size: 13px;
+        }
+    }
+}
+
+.comment-form {
+    margin-top: 7px;
+}
+
+.post-preview-area {
+    &:empty{
+        display:none;
+    }
+    border: dashed 1px #ccc;
+    float: left;
+    width: 100%;
+    margin: 5px 0;
+
+    img {
+        height: auto !important;
+        width: auto !important;
+        max-width: 100% !important;
+    }
+}
+.post-content-display{
+    margin-bottom:15px;
 }
