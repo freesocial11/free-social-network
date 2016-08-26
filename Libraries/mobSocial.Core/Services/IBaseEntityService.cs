@@ -22,6 +22,8 @@ namespace mobSocial.Core.Services
 
         T FirstOrDefault(Expression<Func<T, bool>> where);
 
+        int Count(Expression<Func<T, bool>> where = null);
+
         IQueryable<T> Get(Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true,
             int page = 1, int count = int.MaxValue);
 

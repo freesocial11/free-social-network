@@ -93,6 +93,11 @@ namespace mobSocial.Core.Services
             return _dataRepository.Get(where).FirstOrDefault();
         }
 
+        public int Count(Expression<Func<T, bool>> @where = null)
+        {
+            return where == null ? _dataRepository.Count(x => true) : _dataRepository.Count(where);
+        }
+
         public virtual IQueryable<T> Get(Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true, int page = 1, int count = int.MaxValue)
         {
             if (where == null)
