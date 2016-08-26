@@ -24,14 +24,14 @@ module.exports = {
             "./app/common/authProvider.js",
             "./app/common/controllerProvider.js",
             "./app/common/requestInterceptor.js",
-            "./app/common/webClientService.js",
+            "./app/common/services/webClientService.js",
             //directives
             "./app/common/directives/blockUi.js",
             //filters
             "./app/common/filters/ms2timestr.js",
             //controllers
             "./app/common/controllers/navigationController.js",
-            "./app/public/authentication/loginService.js",
+            "./app/common/services/loginService.js",
             "./app/public/authentication/loginController.js"
         ],
         fileUpload: [
@@ -50,22 +50,22 @@ module.exports = {
             "./libraries/angular/angular-timer.js"
         ],
         users: [
-            "./app/admin/users/userService.js",
+            "./app/common/services/userService.js",
             "./app/admin/users/userController.js",
             "./app/admin/users/userEditController.js"
         ],
         settings: [
-            "./app/admin/settings/settingService.js",
+            "./app/common/services/settingService.js",
             "./app/admin/settings/settingEditController.js"
         ],
         timeline: [
-            "./app/public/timeline/timelineService.js",
+            "./app/common/services/timelineService.js",
             "./app/public/timeline/timelineController.js"
         ],
         social: [
-            "./app/public/social/commentService.js",
-            "./app/public/social/followService.js",
-            "./app/public/social/likeService.js",
+            "./app/common/services/commentService.js",
+            "./app/common/services/followService.js",
+            "./app/common/services/likeService.js",
             "./app/common/directives/commentsBox.js",
             "./app/common/directives/followButton.js",
             "./app/common/directives/likeButton.js"

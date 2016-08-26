@@ -10,6 +10,10 @@
         webClientService.get(apiEndPoint + "/get/" + id, null, success, error);
     }
 
+    this.getBasicInfoById = function (id, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + id + "/basic", null, success, error);
+    }
+
     this.post = function(userEntityModel, success, error) {
         webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
     }
