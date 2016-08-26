@@ -1,16 +1,16 @@
-﻿app.service("TimelineService", ["globalApiEndPoint", "WebClientService", function (globalApiEndPoint, WebClientService) {
+﻿window.mobSocial.lazy.service("timelineService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
 
     var apiEndPoint = globalApiEndPoint + "/timeline";
 
     this.PostToTimeline = function (post, success, error) {
-        WebClientService.post(apiEndPoint + "/post", post, success, error);
+        webClientService.post(apiEndPoint + "/post", post, success, error);
     }
 
     this.GetTimelinePosts = function (timelinePostsRequest, success,error) {
-        WebClientService.get(apiEndPoint + "/get", timelinePostsRequest, success, error);
+        webClientService.get(apiEndPoint + "/get", timelinePostsRequest, success, error);
     }
 
     this.DeletePost = function(postId, success, error) {
-        WebClientService.delete(apiEndPoint + "/delete/" + postId, null, success, error);
+        webClientService.delete(apiEndPoint + "/delete/" + postId, null, success, error);
     }
 }]);
