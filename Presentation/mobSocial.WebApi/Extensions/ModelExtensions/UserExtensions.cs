@@ -7,6 +7,7 @@ using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Social;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Models.Users;
 
@@ -14,7 +15,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
 {
     public static class UserExtensions
     {
-        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings)
+        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
         {
             var model = new UserResponseModel() {
                 Id = user.Id,
@@ -43,6 +44,11 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.CoverImageUrl = mediaSettings.DefaultUserProfileCoverUrl;
             if (string.IsNullOrEmpty(model.ProfileImageUrl))
                 model.ProfileImageUrl = mediaSettings.DefaultUserProfileImageUrl;
+
+            model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
+            model.FollowingCount = followService.Count(x => x.UserId == user.Id);
+            model.FriendCount =
+                friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
 
             return model;
         }

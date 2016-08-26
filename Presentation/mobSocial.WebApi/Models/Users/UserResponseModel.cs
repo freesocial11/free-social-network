@@ -29,5 +29,11 @@ namespace mobSocial.WebApi.Models.Users
 
         public DateTime? LastLoginDateLocal { get; set; }
 
+        public int FollowerCount { get; set; }
+
+        public int FollowingCount { get; set; }
+
+        public int FriendCount { get; set; }
+
     }
 }

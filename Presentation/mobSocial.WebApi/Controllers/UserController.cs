@@ -11,9 +11,11 @@ using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
+using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Users;
@@ -31,8 +33,10 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserRegistrationService _userRegistrationService;
         private readonly ICryptographyService _cryptographyService;
         private readonly IMediaService _mediaService;
+        private readonly IFollowService _followService;
+        private readonly IFriendService _friendService;
 
-        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
         {
             _userService = userService;
             _userSettings = userSettings;
@@ -41,6 +45,8 @@ namespace mobSocial.WebApi.Controllers
             _cryptographyService = cryptographyService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
+            _followService = followService;
+            _friendService = friendService;
             _roleService = roleService;
         }
 
@@ -60,7 +66,7 @@ namespace mobSocial.WebApi.Controllers
                 x.LastName.StartsWith(requestModel.SearchText) ||
                 x.Email == requestModel.SearchText)) || true, null, true, requestModel.Page, requestModel.Count);
 
-            var model = users.ToList().Select(user => user.ToModel(_mediaService, _mediaSettings));
+            var model = users.ToList().Select(user => user.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
             return RespondSuccess(new {
                 Users = model
             });
@@ -71,31 +77,55 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         public async Task<IHttpActionResult> Get(int id)
         {
-            //we need to make sure that logged in user has capability to view user
-            if (!(ApplicationContext.Current.CurrentUser.IsAdministrator() || ApplicationContext.Current.CurrentUser.Id != id))
+            //first get the user
+            var user = await _userService.GetAsync(id);
+            if (user == null)
                 return NotFound();
+            //depending on the logged in user, we send either entitymodel or response model because certain information
+            //will be removed from response if the user is not authorized to see them
+            var isAdminOrCurrentUser = ApplicationContext.Current.CurrentUser.IsAdministrator() ||
+                                       ApplicationContext.Current.CurrentUser.Id == id;
 
+            RootModel model;
+            if (isAdminOrCurrentUser)
+            {
+                model = user.ToEntityModel(_mediaService, _mediaSettings);
+                //get all the available roles
+                var availableRoles = _roleService.Get(x => x.IsActive).ToList();
+                //we need to send the id and role name only to client 
+                ((UserEntityModel) model).AvailableRoles = availableRoles.Select(x =>
+                {
+                    dynamic newObject = new ExpandoObject();
+                    newObject.RoleName = x.RoleName;
+                    newObject.Id = x.Id;
+                    return newObject;
+                }).ToList();
+            }
+            else
+                model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
+
+          
+            return RespondSuccess(new {
+                User = model
+            });
+        }
+
+        [Route("get/{id:int}/basic")]
+        [HttpGet]
+        [Authorize]
+        public async Task<IHttpActionResult> GetBasic(int id)
+        {
             //first get the user
             var user = await _userService.GetAsync(id);
             if (user == null)
                 return NotFound();
 
-            var model = user.ToEntityModel(_mediaService, _mediaSettings);
-
-            //get all the available roles
-            var availableRoles = _roleService.Get(x => x.IsActive).ToList();
-            //we need to send the id and role name only to client 
-            model.AvailableRoles = availableRoles.Select(x =>
-            {
-                dynamic newObject = new ExpandoObject();
-                newObject.RoleName = x.RoleName;
-                newObject.Id = x.Id;
-                return newObject;
-            }).ToList();
+           var model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
             return RespondSuccess(new {
                 User = model
             });
         }
+
         [Route("get/{userName}")]
         public async Task<IHttpActionResult> Get(string userName)
         {
@@ -177,7 +207,7 @@ namespace mobSocial.WebApi.Controllers
                     user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
                         _securitySettings.DefaultPasswordStorageFormat);
                 }
-                    
+
                 _userService.Update(user);
             }
 
@@ -190,7 +220,7 @@ namespace mobSocial.WebApi.Controllers
             foreach (var roleId in rolesToUnassign)
             {
                 var role = roles.FirstOrDefault(x => x.Id == roleId);
-                if(role == null)
+                if (role == null)
                     continue;
 
                 _roleService.UnassignRoleToUser(role, user);
@@ -208,9 +238,9 @@ namespace mobSocial.WebApi.Controllers
             }
 
             //any images to assign
-            if(entityModel.CoverImageId != 0)
+            if (entityModel.CoverImageId != 0)
                 user.SetPropertyValue(PropertyNames.DefaultCoverId, entityModel.CoverImageId);
-            if(entityModel.ProfileImageId != 0)
+            if (entityModel.ProfileImageId != 0)
                 user.SetPropertyValue(PropertyNames.DefaultPictureId, entityModel.ProfileImageId);
 
             VerboseReporter.ReportSuccess("User saved successfully", "post_user");
