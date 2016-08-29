@@ -27,16 +27,5 @@ namespace mobSocial.WebApi
             ViewEngines.Engines.Add(new MobSocialRazorProviderViewEngine());
 
         }
-
-        protected void Application_PostAuthenticateRequest(object sender, EventArgs e)
-        {
-            //to avoid any kind of cookie replay attacks, we'd make sure that we have a valid user
-            if (DatabaseManager.IsDatabaseInstalled() && ApplicationContext.Current.CurrentUser == null)
-            {
-                HttpContext.Current.User = null;
-                HttpContext.Current.GetOwinContext().Authentication.User = null;
-            }
-        }
-       
     }
 }
