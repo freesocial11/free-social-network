@@ -4,47 +4,65 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using DryIoc;
 using mobSocial.Core.Data;
 using mobSocial.Core.Helpers;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 
 namespace mobSocial.Data
 {
     public class EntityRepository<T> : IDataRepository<T> where T : BaseEntity
     {
-        private readonly IDatabaseContext _databaseContext;
-        private readonly IDbSet<T> _entityDbSet;
+        private IDatabaseContext _databaseContext;
+        private IDbSet<T> _entityDbSet;
 
-        public EntityRepository(IDatabaseContext databaseContext)
+        private readonly string _contextServiceKey = string.Empty;
+
+        public EntityRepository() { }
+
+        public EntityRepository(string contextServiceKey)
         {
-            _databaseContext = databaseContext;
+            _contextServiceKey = contextServiceKey;
+        }
+
+        private void _SetupContexts()
+        {
+            var scopedContainer = mobSocialEngine.ActiveEngine.IocContainer;
+            _databaseContext = _contextServiceKey == string.Empty ? scopedContainer.Resolve<IDatabaseContext>() : scopedContainer.Resolve<IDatabaseContext>(serviceKey: _contextServiceKey);
+
             _entityDbSet = _databaseContext.Set<T>();
         }
 
         public T Get(int id)
         {
+            _SetupContexts();
             return _entityDbSet.FirstOrDefault(x => x.Id == id);
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> @where)
         {
+            _SetupContexts();
             where = AppendSoftDeletableCondition(where);
             return _entityDbSet.Where(where);
         }
 
         public int Count(Expression<Func<T, bool>> @where)
         {
+            _SetupContexts();
             where = AppendSoftDeletableCondition(where);
             return _entityDbSet.Count(where);
         }
 
         public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where)
         {
+            _SetupContexts();
             return await Task.Run(() => Get(@where));
         }
 
         public void Insert(T entity)
         {
+            _SetupContexts();
             if (entity == null)
                 throw new ArgumentNullException();
 
@@ -61,6 +79,7 @@ namespace mobSocial.Data
 
         public void Update(T entity)
         {
+            _SetupContexts();
             if (entity == null)
                 throw new ArgumentNullException();
 
@@ -76,6 +95,7 @@ namespace mobSocial.Data
 
         public void Delete(T entity)
         {
+            _SetupContexts();
             if (entity == null)
                 throw new ArgumentNullException();
 
@@ -98,10 +118,10 @@ namespace mobSocial.Data
 
             }
         }
-
+        
         public void Delete(Expression<Func<T, bool>> @where)
         {
-
+            _SetupContexts();
             try
             {
                 var entities = _entityDbSet.Where(where);

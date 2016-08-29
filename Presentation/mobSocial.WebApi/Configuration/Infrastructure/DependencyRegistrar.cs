@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net.PeerToPeer.Collaboration;
 using System.Web;
 using DryIoc;
 using mobSocial.Core.Caching;
@@ -35,10 +36,10 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.Register<IDatabaseProvider>(made: Made.Of(() => new SqlServerDatabaseProvider()), reuse: Reuse.Singleton);
 
             //database context
-            container.Register<IDatabaseContext>(made: Made.Of(() => DatabaseContextManager.GetDatabaseContext()), reuse: Reuse.Singleton);
+            container.Register<IDatabaseContext>(made: Made.Of(() => DatabaseContextManager.GetDatabaseContext()), reuse: Reuse.InWebRequest);
 
             //and respositories
-            container.Register(typeof(IDataRepository<>), typeof(EntityRepository<>));
+            container.Register(typeof(IDataRepository<>), typeof(EntityRepository<>), made: Made.Of(FactoryMethod.ConstructorWithResolvableArguments), reuse: Reuse.Singleton);
 
             var asm = AssemblyLoader.LoadBinDirectoryAssemblies();
 
