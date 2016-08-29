@@ -194,6 +194,8 @@
     <Compile Include="Configuration\Infrastructure\ApplicationContext.cs" />
     <Compile Include="Configuration\Infrastructure\DependencyRegistrar.cs" />
     <Compile Include="Configuration\Infrastructure\PictureSizeRegistrar.cs" />
+    <Compile Include="Configuration\Middlewares\MobAuthenticationMiddleware.cs" />
+    <Compile Include="Configuration\Middlewares\PictureSizeRegistrar.cs" />
     <Compile Include="Configuration\Mvc\Models\RootEntityModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootRequestModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootResponseModel.cs" />
