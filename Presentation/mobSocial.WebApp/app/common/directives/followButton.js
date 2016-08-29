@@ -6,6 +6,7 @@
         scope: {
             EntityId: "@entityid",
             EntityName: "@entityname",
+            CanFollow: "@canfollow",
             FollowStatus: "=followstatus"
         },
         link: function($scope, elem, attr) {

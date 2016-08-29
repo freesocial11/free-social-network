@@ -1,12 +1,15 @@
-﻿<div ng-switch on="FollowStatus">
-    <div ng-switch-when="0">
-        <a class="button-primary button" ng-click="Follow()">
-            Follow
-        </a>
-    </div>
-    <div ng-switch-when="1">
-        <a class="button-primary button" ng-click="Unfollow()">
-            Unfollow
-        </a>
+﻿<div ng-if="CanFollow">
+    {{CanFollow}}
+    <div ng-switch on="FollowStatus">
+        <div ng-switch-when="0">
+            <a class="btn btn-primary btn-block" ng-click="Follow()">
+                Follow
+            </a>
+        </div>
+        <div ng-switch-when="1">
+            <a class="btn btn-danger btn-block" ng-click="Unfollow()">
+                Unfollow
+            </a>
+        </div>
     </div>
 </div>
