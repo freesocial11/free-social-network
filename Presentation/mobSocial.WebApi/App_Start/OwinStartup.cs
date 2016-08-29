@@ -20,7 +20,7 @@ namespace mobSocial.WebApi
 
             app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
             
-            app.UseMobAuthentication();
+            //app.UseMobAuthentication();
 
             app.UsePictureSizeRegistrar();
 
