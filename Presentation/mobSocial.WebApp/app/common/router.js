@@ -101,10 +101,9 @@
             {
                 url: "/",
                 templateUrl: "pages/users/activity.html",
-                controller: "timelineController",
                 resolve: {
                     resolver: function (controllerProvider) {
-                        return controllerProvider.resolveBundles(["videogular", "social", "fileUpload",  "timeline"]);
+                        return controllerProvider.resolveBundles(["videogular", "social", "fileUpload", "users",  "timeline"]);
                     }
                 }
             });
