@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using DryIoc;
 using DryIoc.Mvc;
+using DryIoc.Web;
 using mobSocial.Core.Exception;
 using mobSocial.Core.Infrastructure.DependencyManagement;
 using mobSocial.Core.Infrastructure.Media;
@@ -17,7 +18,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
     {
         public Container IocContainer { get; private set; }
 
-        public IList<PictureSize> PictureSizes { get; private set; }
+        public static IList<PictureSize> PictureSizes { get; private set; }
 
         public T Resolve<T>(bool returnDefaultIfNotResolved = false) where T : class
         {
@@ -54,14 +55,11 @@ namespace mobSocial.Core.Infrastructure.AppEngine
                 RunStartupTasks();
             }
 
-            //setup picture sizes
-            SetupPictureSizes(testMode);
-
         }
 
         public void SetupContainer()
         {
-            IocContainer = new Container();
+            IocContainer = new Container(rules => rules.WithoutThrowIfDependencyHasShorterReuseLifespan(), new AsyncExecutionFlowScopeContext());
         }
 
         private void SetupDependencies(bool testMode = false)
@@ -100,9 +98,12 @@ namespace mobSocial.Core.Infrastructure.AppEngine
 
         }
 
-        private void SetupPictureSizes(bool testMode = false)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void SetupPictureSizes(bool testMode = false)
         {
-            PictureSizes = new List<PictureSize>();
+            if (PictureSizes != null && PictureSizes.Count > 0)
+                return; //already registered
+            PictureSizes = PictureSizes ?? new List<PictureSize>();
             if (testMode)
                 return;
             var allPictureSizeRegistrars = TypeFinder.ClassesOfType<IPictureSizeRegistrar>();

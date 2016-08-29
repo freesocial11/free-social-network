@@ -136,7 +136,7 @@ namespace mobSocial.Services.MediaServices
         public string GetPictureUrl(Media picture, string sizeName, bool returnDefaultIfNotFound = false)
         {
             //find the width and height from size name
-            var size = mobSocialEngine.ActiveEngine.PictureSizes.FirstOrDefault(x => x.Name == sizeName);
+            var size = mobSocialEngine.PictureSizes.FirstOrDefault(x => x.Name == sizeName);
             if (size == null)
                 return GetPictureUrl(picture, returnDefaultIfNotFound: returnDefaultIfNotFound);
 
