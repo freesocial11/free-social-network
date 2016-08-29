@@ -1,6 +1,10 @@
 ﻿.no-margin {
   margin: 0; }
 
+.layout-top-nav .content {
+  padding-left: 0 !important;
+  padding-right: 0 !important; }
+
 .user-list img {
   max-width: 50px;
   margin-right: 5px; }
