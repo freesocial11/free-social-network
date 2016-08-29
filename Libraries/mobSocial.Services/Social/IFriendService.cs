@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Social;
+using mobSocial.Data.Enum;
 
 namespace mobSocial.Services.Social
 {
@@ -9,6 +10,8 @@ namespace mobSocial.Services.Social
         Friend GetCustomerFriendship(int customer1Id, int customer2Id);
 
         Friend GetCustomerFriend(int fromCustomerId, int toCustomerId);
+
+        FriendStatus GetFriendStatus(int currentUserId, int friendId);
 
         IList<Friend> GetCustomerFriendRequests(int customerId);
 

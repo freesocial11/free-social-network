@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Data.Entity.Social;
+using mobSocial.Data.Enum;
 
 namespace mobSocial.Services.Social
 {
@@ -26,6 +27,21 @@ namespace mobSocial.Services.Social
         {
             return
                 Repository.Get(x => (x.FromCustomerId == fromCustomerId && x.ToCustomerId == toCustomerId)).FirstOrDefault();
+        }
+
+        public FriendStatus GetFriendStatus(int currentUserId, int friendId)
+        {
+            if(currentUserId == friendId)
+                return FriendStatus.Self;
+
+            var friend = GetCustomerFriendship(currentUserId, friendId);
+            if(friend == null)
+                return FriendStatus.None;
+
+            if(friend.Confirmed)
+                return FriendStatus.Friends;
+
+            return friend.FromCustomerId == currentUserId ? FriendStatus.FriendRequestSent : FriendStatus.NeedsConfirmed;
         }
 
 

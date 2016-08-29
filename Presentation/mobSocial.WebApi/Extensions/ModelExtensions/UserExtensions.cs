@@ -17,6 +17,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
     {
         public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
         {
+            var currentUser = ApplicationContext.Current.CurrentUser;
             var model = new UserResponseModel() {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -30,7 +31,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Active = user.Active
             };
             //TODO: Put capability check instead of administration check, that'd be more scalable
-            if (ApplicationContext.Current.CurrentUser.IsAdministrator() && user.LastLoginDate.HasValue)
+            if (currentUser.IsAdministrator() && user.LastLoginDate.HasValue)
             {
                 model.LastLoginDateUtc = user.LastLoginDate;
                 model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
@@ -49,7 +50,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             model.FollowingCount = followService.Count(x => x.UserId == user.Id);
             model.FriendCount =
                 friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
-
+            model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
+            model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1; 
+            model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
             return model;
         }
 

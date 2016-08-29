@@ -1,4 +1,5 @@
 ﻿using System;
+using mobSocial.Data.Enum;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Users
@@ -34,6 +35,12 @@ namespace mobSocial.WebApi.Models.Users
         public int FollowingCount { get; set; }
 
         public int FriendCount { get; set; }
+
+        public bool CanFollow { get; set; }
+
+        public int FollowStatus { get; set; }
+
+        public FriendStatus FriendStatus { get; set; }
 
     }
 }
