@@ -1,9 +1,10 @@
 ﻿using mobSocial.Core.Data;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Interfaces;
 
 namespace mobSocial.Data.Entity.MediaEntities
 {
-    public class Media : BaseEntity
+    public class Media : BaseEntity, IUserResource
     {
         public string Name { get; set; }
 
@@ -22,6 +23,8 @@ namespace mobSocial.Data.Entity.MediaEntities
         public byte[] Binary { get; set; }
 
         public MediaType MediaType { get; set; }
+
+        public int UserId { get; set; }
     }
 
     public class MediaMap: BaseEntityConfiguration<Media> { }

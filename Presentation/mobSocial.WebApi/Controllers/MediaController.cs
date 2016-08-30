@@ -10,6 +10,7 @@ using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Helpers;
 using mobSocial.Services.MediaServices;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 
 namespace mobSocial.WebApi.Controllers
@@ -69,7 +70,8 @@ namespace mobSocial.WebApi.Controllers
                 var picture = new Media() {
                     Binary = pictureBytes,
                     MimeType = contentType,
-                    Name = fileName
+                    Name = fileName,
+                    UserId = ApplicationContext.Current.CurrentUser.Id
                 };
 
                 _mediaService.WritePictureBytes(picture, _mediaSettings.PictureSaveLocation);
@@ -130,7 +132,8 @@ namespace mobSocial.WebApi.Controllers
                 MediaType = MediaType.Video,
                 Binary = bytes,
                 MimeType = contentType,
-                Name = fileName
+                Name = fileName,
+                UserId = ApplicationContext.Current.CurrentUser.Id
             };
 
             _mediaService.WriteVideoBytes(media);

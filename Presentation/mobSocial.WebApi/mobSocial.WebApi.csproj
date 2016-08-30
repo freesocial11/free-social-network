@@ -220,6 +220,7 @@
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
+    <Compile Include="Controllers\EntityPropertyController.cs" />
     <Compile Include="Controllers\FollowController.cs" />
     <Compile Include="Controllers\LikeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
     <Compile Include="Models\Credits\PurchaseCreditModel.cs" />
+    <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
     <Compile Include="Models\Payment\UserPaymentModel.cs" />
     <Compile Include="Models\Payment\UserPaymentPublicModel.cs" />

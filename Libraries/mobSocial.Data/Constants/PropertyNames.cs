@@ -1,4 +1,7 @@
-﻿namespace mobSocial.Data.Constants
+﻿using System;
+using System.Linq;
+
+namespace mobSocial.Data.Constants
 {
     public class PropertyNames
     {
@@ -9,5 +12,29 @@
         public const string DefaultCoverId = "DefaultCoverId";
 
         public const string DefaultTimeZoneId = "DefaultTimeZoneId";
+
+        public static bool IsSystemPropertyName(string propertyName)
+        {
+            return new[]
+            {
+                DisplayName, DefaultPictureId, DefaultCoverId
+            }.Contains(propertyName);
+        }
+
+        public static bool IsMediaPropertyName(string propertyName)
+        {
+            return new[]
+           {
+                DefaultPictureId, DefaultCoverId
+            }.Contains(propertyName);
+        }
+
+        public static string ParseToValidSystemPropertyName(string propertyName)
+        {
+            return new[]
+            {
+                DisplayName, DefaultPictureId, DefaultCoverId
+            }.FirstOrDefault(x => string.Compare(x, propertyName, StringComparison.InvariantCultureIgnoreCase) == 0);
+        }
     }
 }
