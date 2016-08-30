@@ -14,6 +14,7 @@
 
 //attach some global functions to rootScope
 window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
+    $rootScope.$state = $state;
     //whenever a route changes, check if authentication is required, if yes, better redirect to login page
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
         if (error === 'Not Authenticated') {
@@ -40,6 +41,9 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     //set logged in user for use throughout
     $rootScope.CurrentUser = authProvider.getLoggedInUser();
 
+    $rootScope.currentUserIs = function(id) {
+        return $rootScope.CurrentUser.Id == id;
+    }
     $rootScope.login = function (returnUrl) {
         returnUrl = returnUrl || window.location.href;
         //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
