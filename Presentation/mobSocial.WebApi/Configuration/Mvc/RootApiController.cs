@@ -40,6 +40,12 @@ namespace mobSocial.WebApi.Configuration.Mvc
             return RespondFailure(null);
         }
 
+        public IHttpActionResult RespondFailure(string errorMessage, string contextName = "", dynamic additionalData = null)
+        {
+            VerboseReporter.ReportError(errorMessage, contextName);
+            return RespondFailure(additionalData);
+        }
+
         public IHttpActionResult RespondFailure(dynamic additionalData)
         {
             return Response(new RootResponseModel() {
@@ -50,6 +56,7 @@ namespace mobSocial.WebApi.Configuration.Mvc
             });
         }
 
+        
         public IHttpActionResult RespondRedirect(Uri redirectUrl)
         {
             return Redirect(redirectUrl);
