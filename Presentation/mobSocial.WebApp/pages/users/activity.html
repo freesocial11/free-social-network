@@ -1,111 +1,83 @@
-﻿<div class="row">
-    <div class="col-md-3" ng-controller="userProfileController" ng-init="init(CurrentUser.Id)">
-        <!-- Profile Image -->
-        <div class="box box-primary">
-            <div class="box-body box-profile">
-                <img class="profile-user-img img-responsive img-circle" ng-src="{{user.ProfileImageUrl}}" alt="User profile picture">
-                <h3 class="profile-username text-center">{{user.Name}}</h3>
-                <ul class="list-group list-group-unbordered">
-                    <li class="list-group-item">
-                        <b>Followers</b> <a class="pull-right">{{user.FollowerCount}}</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Following</b> <a class="pull-right">{{user.FollowingCount}}</a>
-                    </li>
-                    <li class="list-group-item">
-                        <b>Friends</b> <a class="pull-right">{{user.FriendCount}}</a>
-                    </li>
-                </ul>
-                <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
-                <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-        <!-- About Me Box -->
-        <div class="box box-primary">
-            <div class="box-header with-border">
-                <h3 class="box-title">About Me</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-                <p class="text-muted">
-                    B.S. in Computer Science from the University of Tennessee at Knoxville
-                </p>
-                <hr>
-                <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-                <p class="text-muted">Malibu, California</p>
-                <hr>
-                <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-                <p>
-                    <span class="label label-danger">UI Design</span>
-                    <span class="label label-success">Coding</span>
-                    <span class="label label-info">Javascript</span>
-                    <span class="label label-warning">PHP</span>
-                    <span class="label label-primary">Node.js</span>
-                </p>
-                <hr>
-                <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-            </div>
-            <!-- /.box-body -->
-        </div>
-        <!-- /.box -->
-    </div>
-    <!-- /.col -->
-    <div class="col-md-9">
-        <div class="box ">
-            <div class="box-body  no-padding activity-list" ng-controller="timelineController">
-                <div class="post post-form">
-                    <div class="user-block row">
-                        <div class="col-xs-1">
-                            <img class="img-circle img-bordered-sm" ng-src="{{CurrentUser.ProfileImageUrl}}" alt="user image" />
+﻿<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper no-margin">
+    <div class="container">
+        <!-- Main content -->
+        <section class="content">
+            <div id="main-content">
+                <div class="row">
+                    <div class="col-md-3" ng-controller="userProfileController" ng-init="init(CurrentUser.Id)">
+                        <!-- Profile Image -->
+                        <div class="box box-primary">
+                            <div class="box-body box-profile">
+                                <img class="profile-user-img img-responsive img-circle" ng-src="{{user.ProfileImageUrl}}" alt="User profile picture">
+                                <h3 class="profile-username text-center">
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        {{user.Name}}
+                                    </a>
+                                </h3>
+                                <ul class="list-group list-group-unbordered">
+                                    <li class="list-group-item">
+                                        <b>Followers</b> <a class="pull-right">{{user.FollowerCount}}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Following</b> <a class="pull-right">{{user.FollowingCount}}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <b>Friends</b> <a class="pull-right">{{user.FriendCount}}</a>
+                                    </li>
+                                </ul>
+                                <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
+                                <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
+                            </div>
+                            <!-- /.box-body -->
                         </div>
-                        <div class="post-box col-xs-11">
-                            <div class="form-group">
-                                <textarea ng-model="PostData.Message" placeholder="What's on your mind" class="form-control"></textarea>
+                        <!-- /.box -->
+                        <!-- About Me Box -->
+                        <div class="box box-primary">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">About Me</h3>
                             </div>
-                            <div class="form-group text-right">
-                                <span ng-include="'/pages/components/timelinePostFormWidgets.html'"></span>
-                                <button ng-click="PostToTimeline()" class="btn btn-primary">Post</button>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                                <p class="text-muted">
+                                    B.S. in Computer Science from the University of Tennessee at Knoxville
+                                </p>
+                                <hr>
+                                <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                                <p class="text-muted">Malibu, California</p>
+                                <hr>
+                                <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+                                <p>
+                                    <span class="label label-danger">UI Design</span>
+                                    <span class="label label-success">Coding</span>
+                                    <span class="label label-info">Javascript</span>
+                                    <span class="label label-warning">PHP</span>
+                                    <span class="label label-primary">Node.js</span>
+                                </p>
+                                <hr>
+                                <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
                             </div>
-                            <div class="post-preview-area">
-                                <div ng-show="ProcessingPreview" class="preview-loader">
-                                    Please wait...
-                                </div>
-                                <div ng-switch on="PostData.PostTypeName">
-                                    <ng-include src="'/pages/components/timelinePostFormWidgetsPreview.html'"></ng-include>
-                                </div>
+                            <!-- /.box-body -->
+                        </div>
+                        <!-- /.box -->
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-md-9">
+                        <div class="box ">
+                            <div class="box-body no-padding">
+                                <ng-include src="'/pages/components/timeline.html'"></ng-include>
                             </div>
-                            <button ng-if="PostData.AdditionalAttributeValue" ng-click="ClearPostFormExtraData()" class="btn btn-secondary">Clear</button>
+                            
                         </div>
                     </div>
-                    <!-- /.user-block -->
                 </div>
-                <!-- Post -->
-                <div class="post" ng-repeat="Post in TimelinePosts">
-                    <div class="user-block">
-                        <img class="img-circle img-bordered-sm" ng-src="{{Post.OwnerImageUrl}}" alt="user image">
-                        <span class="username">
-                            <a href="#">{{Post.OwnerName}}</a>
-                            <a ng-if="Post.CanDelete" href="" ng-click="DeletePost(Post.Id)" class="pull-right btn-box-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                        <span class="description"><span class="time"><i class="fa fa-clock-o"></i> <time am-time-ago="Post.DateCreated"></time></span></span>
-                    </div>
-                    <!-- /.user-block -->
-                    <p ng-bind-html="Post.Message | linky:'_blank'"></p>
-                    <div class="post-content-display">
-                        <ng-include src="'/pages/components/timelinePostDisplay.html'"></ng-include>
-                    </div>
-                    <div>
-                        <a href="#" class="link-black text-sm  margin-r-5"><i class="fa fa-share margin-r-5"></i> Share</a>
-                        <like-button entityid="{{Post.Id}}" entityname="TimelinePost" likestatus="Post.LikeStatus" totallikes="{{Post.TotalLikes}}"></like-button>
-                        <comments-box entityid="{{Post.Id}}" entityname="TimelinePost" canedit="{{Post.CanEdit}}" totalcomments="{{Post.TotalComments}}"></comments-box>
-                    </div>
-                </div>
-                <!-- /.post -->
             </div>
-        </div>
+        </section>
+        <!-- /.content -->
     </div>
+
 </div>
+<!-- /.content-wrapper -->
+
