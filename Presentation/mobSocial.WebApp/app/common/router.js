@@ -5,7 +5,8 @@
     "$controllerProvider",
     "$compileProvider",
     "$filterProvider",
-    "$provide", function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider, $controllerProvider, $compileProvider, $filterProvider, $provider) {
+    "$provide",
+     function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider, $controllerProvider, $compileProvider, $filterProvider, $provider) {
         const adminPrefix = window.Configuration.adminUrlPathPrefix;
         window.mobSocial.lazy = {
             controller: $controllerProvider.register,
@@ -14,6 +15,7 @@
             factory: $provider.factory,
             service: $provider.service
         };
+        
         $stateProvider
             .state("layoutZero",
             {
@@ -67,9 +69,9 @@
                 controller: "userEditController"
             })
             .state('layoutAdministration.users.edit.basic', {
-                 url: '',
-                 templateUrl: 'pages/users/user.edit.basic.html'
-             })
+                url: '',
+                templateUrl: 'pages/users/user.edit.basic.html'
+            })
             .state('layoutAdministration.users.edit.timeline', {
                 url: '/timeline',
                 templateUrl: 'pages/users/user.edit.timeline.html'
@@ -91,7 +93,7 @@
             {
                 abstract: true,
                 resolve: {
-                    auth: function (authProvider) {
+                    auth: function(authProvider) {
                         return authProvider.isLoggedIn();
                     }
                 },
@@ -102,9 +104,32 @@
                 url: "/",
                 templateUrl: "pages/users/activity.html",
                 resolve: {
-                    resolver: function (controllerProvider) {
-                        return controllerProvider.resolveBundles(["videogular", "social", "fileUpload", "users",  "timeline"]);
+                    resolver: function(controllerProvider) {
+                        return controllerProvider
+                            .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline"]);
                     }
+                }
+            })
+            .state("layoutMobSocial.userprofile",
+            {
+                abstract: true,
+                url: "/u/:idOrUserName?tab",
+                templateUrl: "pages/users/user.profile.html",
+                resolve: {
+                    resolver: function(controllerProvider) {
+                        return controllerProvider
+                            .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline"]);
+                    }
+                }
+            })
+            .state("layoutMobSocial.userprofile.tabs",
+            {
+                url: "",
+                templateUrl: function (stateParams, state) {
+                    if ([undefined, "main", "pictures", "vidoes", "friends", "followers", "following"].indexOf(stateParams.tab) == -1) {
+                        return "pages/common/404.html";
+                    }
+                    return "pages/users/user.profile." + (stateParams.tab || "main") + ".html";
                 }
             });
         $stateProvider.state("layoutZero.404",

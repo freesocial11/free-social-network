@@ -1,4 +1,7 @@
-﻿.no-margin {
+﻿*[file-upload-button] {
+  cursor: pointer; }
+
+.no-margin {
   margin: 0; }
 
 .layout-top-nav .content {
@@ -112,4 +115,82 @@
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important; }
+
+.cover-area .cover {
+  overflow: hidden;
+  width: 100%;
+  height: 260px;
+  position: relative;
+  background-color: #eee; }
+  .cover-area .cover .bgcover > img {
+    z-index: 1;
+    width: 100%;
+    position: absolute; }
+  .cover-area .cover .cover-upload-area {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: white;
+    z-index: 3; }
+  .cover-area .cover .quick-info {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white; }
+    .cover-area .cover .quick-info h1, .cover-area .cover .quick-info h2, .cover-area .cover .quick-info h3, .cover-area .cover .quick-info h4, .cover-area .cover .quick-info h5, .cover-area .cover .quick-info h6, .cover-area .cover .quick-info td, .cover-area .cover .quick-info span, .cover-area .cover .quick-info a, .cover-area .cover .quick-info button, .cover-area .cover .quick-info i {
+      color: white; }
+    .cover-area .cover .quick-info .cover-buttons {
+      float: right;
+      margin-right: 15px; }
+      .cover-area .cover .quick-info .cover-buttons .friend-button, .cover-area .cover .quick-info .cover-buttons .follow-button, .cover-area .cover .quick-info .cover-buttons .edit-button {
+        float: left;
+        margin: 15px 5px; }
+    .cover-area .cover .quick-info .battle-info {
+      float: left;
+      padding: 0 20px;
+      text-align: left;
+      border-right: solid 1px #333;
+      height: 70px; }
+      .cover-area .cover .quick-info .battle-info .battle-status-name span {
+        color: gray;
+        font-size: 15px; }
+    .cover-area .cover .quick-info .battle-prize {
+      float: left;
+      padding: 0 20px;
+      text-align: left;
+      height: 70px;
+      border-left: solid 1px #666; }
+  .cover-area .cover .profile-picture {
+    z-index: 2;
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 15px 0;
+    margin: 0 auto;
+    width: 150px;
+    height: 150px; }
+    .cover-area .cover .profile-picture img {
+      max-width: 100%;
+      max-height: 100%; }
+    .cover-area .cover .profile-picture .profile-upload-button {
+      visibility: hidden;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      padding: 7px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      font-size: 0.7em;
+      text-transform: uppercase; }
+      .cover-area .cover .profile-picture .profile-upload-button a {
+        color: white;
+        cursor: pointer; }
+    .cover-area .cover .profile-picture:hover .profile-upload-button {
+      visibility: visible; }
 
