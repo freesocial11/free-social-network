@@ -86,13 +86,16 @@ namespace mobSocial.Services.Extensions
             return user?.UserRoles != null && user.UserRoles.Any(x => x.Role.SystemName == roleSystemName);
         }
 
+        public static bool CanEditUser(this User user, User resource)
+        {
+            return user.IsAdministrator() || user.Id == resource.Id;
+        }
         public static bool CanEditResource<T>(this User user, T resource) where T : IUserResource
         {
             var resourceName = typeof(T).Name;
             var insertCapabilityName = resourceName + "Insert";
             return (user.IsAdministrator()
                 || resource.UserId == user.Id/*owner?*/
-                || (resource.Id == user.Id && typeof(T) == typeof(User))
                 || (resource.Id == 0 && user.Can(insertCapabilityName)) /*new resource?*/); /*agent and has capability to update?*/
         }
     }

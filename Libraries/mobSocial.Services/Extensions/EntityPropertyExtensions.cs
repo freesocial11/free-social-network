@@ -72,7 +72,9 @@ namespace mobSocial.Services.Extensions
 
             return (T) Convert.ChangeType(entityProperty.Value, typeof(T));
         }
-
+        /// <summary>
+        /// Sets the property value of the provided entity
+        /// </summary>
         public static void SetPropertyValue<T>(this IHasEntityProperties<T> entity, string propertyName, object value)
             where T : BaseEntity
         {
