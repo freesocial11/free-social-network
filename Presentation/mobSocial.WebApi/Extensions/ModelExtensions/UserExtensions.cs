@@ -80,8 +80,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
                     DateTimeKind.Utc, user);
             }
-            model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover);
-            model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage);
+            model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover) ?? mediaSettings.DefaultUserProfileCoverUrl;
+            model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage) ?? mediaSettings.DefaultUserProfileImageUrl;
             return model;
         }
 
