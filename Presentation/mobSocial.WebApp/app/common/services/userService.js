@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.service("userService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
+﻿window.mobSocial.lazy.service("userService", ["globalApiEndPoint", "webClientService", "entityPropertyService", function (globalApiEndPoint, webClientService, entityPropertyService) {
 
     var apiEndPoint = globalApiEndPoint + "/users";
     // get
@@ -21,4 +21,16 @@
     this.delete = function (id, success, error) {
         webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     }
+
+    this.setPictureAs = function (uploadType, pictureId, userId, success, error) {
+        entityPropertyService.post({
+            propertyName: uploadType,
+            value: pictureId,
+            entityId: userId,
+            entityName: "user"
+        },
+            success,
+            error);
+    }
+
 }]);

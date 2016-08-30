@@ -25,6 +25,7 @@ module.exports = {
             "./app/common/controllerProvider.js",
             "./app/common/requestInterceptor.js",
             "./app/common/services/webClientService.js",
+            "./app/common/services/entityPropertyService.js",
             //directives
             "./app/common/directives/blockUi.js",
             //filters
