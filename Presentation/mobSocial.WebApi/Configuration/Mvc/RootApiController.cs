@@ -40,7 +40,7 @@ namespace mobSocial.WebApi.Configuration.Mvc
             return RespondFailure(null);
         }
 
-        public IHttpActionResult RespondFailure(string errorMessage, string contextName = "", dynamic additionalData = null)
+        public IHttpActionResult RespondFailure(string errorMessage, string contextName, dynamic additionalData = null)
         {
             VerboseReporter.ReportError(errorMessage, contextName);
             return RespondFailure(additionalData);
