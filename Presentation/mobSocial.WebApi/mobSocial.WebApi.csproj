@@ -252,6 +252,7 @@
     <Compile Include="Models\ArtistPages\ArtistPageModel.cs" />
     <Compile Include="Models\ArtistPages\ArtistPagePaymentModel.cs" />
     <Compile Include="Models\Authentication\LoginModel.cs" />
+    <Compile Include="Models\Authentication\RegisterModel.cs" />
     <Compile Include="Models\Battles\BattleUploadModel.cs" />
     <Compile Include="Models\Battles\InviteParticipantsModel.cs" />
     <Compile Include="Models\Battles\InviteVotersModel.cs" />

@@ -1,8 +1,29 @@
-﻿*[file-upload-button] {
+﻿body {
+  background-color: #ecf0f5; }
+
+*[file-upload-button] {
   cursor: pointer; }
 
 .no-margin {
   margin: 0; }
+
+.login-box, .register-box {
+  margin: 2% auto !important; }
+
+.clear-padding.left {
+  padding-left: 0 !important; }
+
+.clear-padding.right {
+  padding-right: 0 !important; }
+
+.clear-padding.top {
+  padding-top: 0 !important; }
+
+.clear-padding.bottom {
+  padding-bottom: 0 !important; }
+
+.clear-padding.all {
+  padding: 0 !important; }
 
 .layout-top-nav .content {
   padding-left: 0 !important;

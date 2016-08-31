@@ -2,6 +2,7 @@
 using System.Web.Http;
 using mobSocial.Core;
 using mobSocial.Data.Entity.Settings;
+using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
@@ -20,17 +21,21 @@ namespace mobSocial.WebApi.Controllers
         #region variables
 
         private readonly IUserService _userService;
+        private readonly IUserRegistrationService _userRegistrationService;
         private readonly ICryptographyService _cryptographyService;
         private readonly IMediaService _mediaService;
         private readonly IFollowService _followService;
         private readonly IFriendService _friendService;
+        private readonly IRoleService _roleService;
         private readonly MediaSettings _mediaSettings;
+        private readonly SecuritySettings _securitySettings;
+        private readonly UserSettings _userSettings;
         #endregion
 
         #region ctor
 
         public AuthenticationController(IUserService userService,
-            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
+            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService)
         {
             _userService = userService;
             _cryptographyService = cryptographyService;
@@ -38,6 +43,10 @@ namespace mobSocial.WebApi.Controllers
             _mediaSettings = mediaSettings;
             _followService = followService;
             _friendService = friendService;
+            _userRegistrationService = userRegistrationService;
+            _securitySettings = securitySettings;
+            _userSettings = userSettings;
+            _roleService = roleService;
         }
 
         #endregion
@@ -87,6 +96,49 @@ namespace mobSocial.WebApi.Controllers
             VerboseReporter.ReportSuccess("You have been successfully logged out", "logout");
             return RespondSuccess();
         }
+
+        [HttpPost]
+        [Route("register")]
+        public IHttpActionResult Register(RegisterModel registerModel)
+        {
+            const string contextName = "register";
+
+            if (!ModelState.IsValid)
+                return RespondFailure("All the fields are required to complete the registration", contextName);
+
+            if(string.Compare(registerModel.Password, registerModel.ConfirmPassword, StringComparison.InvariantCulture) != 0)
+                return RespondFailure("The passwords do not match", contextName);
+
+            if(!registerModel.Agreement)
+                return RespondFailure("You must agree to the terms & conditions to complete the registration", contextName);
+
+            //we can now try to register this user
+            //so create a new object
+            var user = new User()
+            {
+                Email = registerModel.Email,
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName,
+                Name = $"{registerModel.FirstName} {registerModel.LastName}",
+                Password = registerModel.Password,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                IsSystemAccount = false,
+                ReferrerId = registerModel.ReferrerId,
+                Guid = Guid.NewGuid(),
+                Active = _userSettings.UserRegistrationDefaultMode == RegistrationMode.Immediate
+            };
+            //register this user
+            var registrationStatus = _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
+            if(registrationStatus == UserRegistrationStatus.FailedAsEmailAlreadyExists)
+                return RespondFailure("A user with this email is already registered", contextName);
+
+            //assign role to the user
+            _roleService.AssignRoleToUser(SystemRoleNames.Registered, user);
+            return RespondSuccess();
+
+        }
+
         #endregion
 
         #region utilities
