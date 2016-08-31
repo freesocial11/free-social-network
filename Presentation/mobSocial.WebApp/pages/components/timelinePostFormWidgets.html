@@ -102,7 +102,8 @@
         });
 
         $scope.$watch("PostData.Message", function (newValue, oldValue) {
-
+            if (!newValue)
+                return;
             var urls = newValue.match(/\b((http|https)?(:\/\/)?(\S*)\.(\w{2,4})(\/?\S)*)\b/g);
 
             if (!urls || urls.length == 0)
