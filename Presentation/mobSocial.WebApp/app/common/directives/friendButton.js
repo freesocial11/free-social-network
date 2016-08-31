@@ -1,7 +1,7 @@
-﻿window.mobSocial.directive("friendButton", ['$http', 'FriendService', '$compile', function ($http, FriendService, $compile) {
+﻿window.mobSocial.lazy.directive("friendButton", ['$http', 'friendService', '$compile', function ($http, friendService, $compile) {
     return{
         restrict: "E",
-        templateUrl: "/Friends/FriendButton",
+        templateUrl: "/pages/components/friendButton.html",
         replace:true,
         scope: {
             CustomerId: "=customerid",
@@ -11,7 +11,7 @@
             $scope.UpdateFriendship = function (type) {
                
                 if (type == "add") {
-                    FriendService.AddFriend($scope.CustomerId, function (response) {
+                    friendService.AddFriend($scope.CustomerId, function (response) {
                         if (response.Success) {
                             $scope.FriendStatus = response.NewStatus;
                         } else {
@@ -22,7 +22,7 @@
                     });
                 }
                 else if (type == "confirm") {
-                    FriendService.ConfirmFriend($scope.CustomerId, function (response) {
+                    friendService.ConfirmFriend($scope.CustomerId, function (response) {
                         if (response.Success) {
                             $scope.FriendStatus = response.NewStatus;
                         } else {
@@ -33,7 +33,7 @@
                     });
                 }
                 else if (type == "decline") {
-                    FriendService.DeclineFriend($scope.CustomerId, function (response) {
+                    friendService.DeclineFriend($scope.CustomerId, function (response) {
                         if (response.Success) {
                             $scope.FriendStatus = response.NewStatus;
                         } else {

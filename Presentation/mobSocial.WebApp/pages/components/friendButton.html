@@ -1,0 +1,27 @@
+﻿<div ng-switch on="FriendStatus">
+    <div ng-switch-when="0"><!--none-->
+        <a class="btn btn-primary" ng-click="UpdateFriendship('add')">
+            Add Friend
+        </a>
+    </div>
+    <div ng-switch-when="1"><!--friend request sent-->
+        <a class="btn btn-danger" ng-click="UpdateFriendship('decline')">
+            Cancel Friendship Request
+        </a>
+    </div>
+    <div ng-switch-when="2">
+        <!--needs confirmed-->
+        <a class="btn btn-primary" ng-click="UpdateFriendship('confirm')">
+            Accept
+        </a>
+        <a class="btn btn-danger" ng-click="UpdateFriendship('decline')">
+            Decline
+        </a>
+    </div>
+    <div ng-switch-when="3"><!--friends-->
+        <a class="btn btn-danger" ng-click="UpdateFriendship('decline')">
+            Cancel Friendship
+        </a>
+    </div>
+    
+</div>

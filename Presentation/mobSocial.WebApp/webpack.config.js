@@ -74,9 +74,11 @@ module.exports = {
             "./app/common/services/commentService.js",
             "./app/common/services/followService.js",
             "./app/common/services/likeService.js",
+            "./app/common/services/friendService.js",
             "./app/common/directives/commentsBox.js",
             "./app/common/directives/followButton.js",
-            "./app/common/directives/likeButton.js"
+            "./app/common/directives/likeButton.js",
+            "./app/common/directives/friendButton.js"
         ]
     },
     output: {
