@@ -27,6 +27,17 @@
                 templateUrl: "pages/login.html",
                 url: "/login",
                 controller: "loginController"
+            })
+            .state("layoutZero.register",
+            {
+                templateUrl: "pages/common/register.html",
+                url: "/register",
+                resolve: {
+                    resolver: function (controllerProvider) {
+                        return controllerProvider.resolveBundles(["register"]);
+                    }
+                },
+                controller: "registerController"
             });
         $stateProvider
             .state("layoutAdministration",

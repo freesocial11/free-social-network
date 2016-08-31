@@ -28,12 +28,18 @@ module.exports = {
             "./app/common/services/entityPropertyService.js",
             //directives
             "./app/common/directives/blockUi.js",
+            "./app/common/directives/iCheck.js",
+            "./app/common/directives/userProfileMini.js",
             //filters
             "./app/common/filters/ms2timestr.js",
             //controllers
             "./app/common/controllers/navigationController.js",
             "./app/common/services/loginService.js",
             "./app/public/authentication/loginController.js"
+        ],
+        register: [
+            "./app/common/services/registerService.js",
+            "./app/public/authentication/registerController.js"
         ],
         fileUpload: [
             "./libraries/angular/angular-file-upload.min.js",
