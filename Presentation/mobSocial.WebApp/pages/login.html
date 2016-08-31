@@ -18,10 +18,8 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                                <input class="icheck" type="checkbox" ng-model="dataModel.Persist"> Remember Me
-                            </label>
+                        <div class="checkbox">
+                            <input icheck type="checkbox" ng-model="dataModel.Persist"> Remember Me
                         </div>
                     </div>
                     <!-- /.col -->
@@ -35,7 +33,7 @@
         </form>
         <!-- /.social-auth-links -->
         <a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a ui-sref="layoutZero.register" class="text-center">Register a new membership</a>
     </div>
     <!-- /.login-box-body -->
 </div>
