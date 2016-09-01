@@ -12,7 +12,7 @@ window.attachFunctionToTimelineScope = function (name, func) {
 }
 
 window.mobSocial.lazy.controller("timelineController", [
-    '$scope', '$sce', 'timelineService', function ($scope, $sce, TimelineService) {
+    '$scope', '$sce', 'timelineService', "$rootScope", function ($scope, $sce, TimelineService, $rootScope) {
 
 
         $scope.ClearPostFormExtraData = function () {
@@ -105,22 +105,10 @@ window.mobSocial.lazy.controller("timelineController", [
                 $scope.FilterFunction = [];
             }
 
-            if ($scope.$parent && $scope.$parent.user && $scope.$parent.user.id == 0) {
-                //we need to wait for parent to get data. we need user id to complete the task
-                const timer = setInterval(function () {
-                    if ($scope.$parent.user.Id) {
-                        clearInterval(timer);
-                        _init($scope.$parent.user.Id);
-                    } else {
-                        return;
-                    }
-                },
-                    300);
-            } else {
-                //return 0 if no parent user is found
-                _init(0);
-            }
-
+            $rootScope.waitFromParent($scope, "user", { id: 0 })
+                .then(function (user) {
+                    _init(user.Id);
+                });
         }();
 
     }

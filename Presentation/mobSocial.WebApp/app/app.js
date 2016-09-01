@@ -13,7 +13,7 @@
 
 
 //attach some global functions to rootScope
-window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", function ($rootScope, $sce, authProvider, $state, $window) {
+window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window", "$q", "$interval", function ($rootScope, $sce, authProvider, $state, $window, $q, $interval) {
     $rootScope.$state = $state;
     //whenever a route changes, check if authentication is required, if yes, better redirect to login page
     $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
@@ -96,6 +96,27 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
         $rootScope._errorMessages = {};
     };
     $rootScope.clearMessages();
+
+    //helper to wait a callback until the parent scope of provided scope provides it
+    $rootScope.waitFromParent = function($scope, objectNameToLookFor, defaultObjectValue) {
+        var deferred = $q.defer();
+        var checker;
+        if ($scope.$parent) {
+            //we need to wait for parent to get data. we need user id to complete the task
+            checker = $interval(function() {
+                if ($scope.$parent[objectNameToLookFor]) {
+                    $interval.cancel(checker);
+                    const returnValue = $scope.$parent[objectNameToLookFor];
+                    deferred.resolve(returnValue);
+                } else {
+                    return;
+                }
+            }, 300); //check every 300 ms if anything has been provided by parent
+        } else {
+            deferred.resolve(defaultObjectValue);
+        }
+        return deferred.promise;
+    }
 }]);
 
 //todo: move to a separate file
