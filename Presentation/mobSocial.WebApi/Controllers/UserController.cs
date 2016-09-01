@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,6 +21,7 @@ using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
+using mobSocial.WebApi.Models.Media;
 using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Controllers
@@ -135,6 +137,83 @@ namespace mobSocial.WebApi.Controllers
             var userNameUser = await _userService.GetAsync(x => x.UserName == userName, null);
             return RespondSuccess(new {
                 Available = userNameUser.Any()
+            });
+        }
+
+        [Route("get/{idOrUserName}/followers")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetFollowers(string idOrUserName, int page = 1, int count = 15)
+        {
+            //first get the user
+            var user = await GetUser(idOrUserName);
+            if (user == null)
+                return NotFound();
+
+            var followers = _followService.GetFollowers<User>(user.Id, page, count);
+
+            var allFollowerIds = followers.Select(x => x.UserId);
+
+            var followerUsers = await _userService.Get(x => allFollowerIds.Contains(x.Id)).ToListAsync();
+            var model = followerUsers.Select(x => x.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
+            return RespondSuccess(new {
+                Users = model
+            });
+
+        }
+
+        [Route("get/{idOrUserName}/following")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetFollowing(string idOrUserName, int page = 1, int count = 15)
+        {
+            //first get the user
+            var user = await GetUser(idOrUserName);
+            if (user == null)
+                return NotFound();
+
+            var followers = _followService.GetFollowing<User>(user.Id, page, count);//todo: use another overload if we need to query all types of followings rather than only User types
+
+            var allFollowingIds = followers.Select(x => x.FollowingEntityId);
+
+            var followerUsers = await _userService.Get(x => allFollowingIds.Contains(x.Id)).ToListAsync();
+            var model = followerUsers.Select(x => x.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
+            return RespondSuccess(new {
+                Users = model
+            });
+        }
+
+        [Route("get/{idOrUserName}/friends")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetFriends(string idOrUserName, int page = 1, int count = 15)
+        {
+            //first get the user
+            var user = await GetUser(idOrUserName);
+            if (user == null)
+                return NotFound();
+
+            var friends = _friendService.GetFriends(user.Id, page, count);
+            var friendUserIds =
+                await friends.Select(x => x.FromCustomerId == user.Id ? x.ToCustomerId : x.FromCustomerId).ToListAsync();
+
+            var friendUsers = _userService.Get(x => friendUserIds.Contains(x.Id));
+            var model = friendUsers.Select(x => x.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
+            return RespondSuccess(new {
+                Users = model
+            });
+        }
+
+        [Route("get/{idOrUserName}/media/{mediaType}")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetMedia(string idOrUserName, MediaType mediaType, int page = 1, int count = 15)
+        {
+            //first get the user
+            var user = await GetUser(idOrUserName);
+            if (user == null)
+                return NotFound();
+
+            var allMedia = await _mediaService.GetEntityMedia<User>(user.Id, mediaType, page, count).ToListAsync();
+            var model = allMedia.Select(x => x.ToModel(_mediaService));
+            return RespondSuccess(new {
+                Users = model
             });
         }
 
