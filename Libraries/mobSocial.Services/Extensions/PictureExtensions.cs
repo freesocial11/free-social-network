@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.MediaEntities;
@@ -14,7 +15,7 @@ namespace mobSocial.Services.Extensions
         {
             //resolve picture service to retrieve pictures
             var pictureService = mobSocialEngine.ActiveEngine.Resolve<IMediaService>();
-            return pictureService.GetEntityMedia<T>(pictureSupportedInstance.Id, MediaType.Image);
+            return pictureService.GetEntityMedia<T>(pictureSupportedInstance.Id, MediaType.Image).ToList();
         }
     }
 }
