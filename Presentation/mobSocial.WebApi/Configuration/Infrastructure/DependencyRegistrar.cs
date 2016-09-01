@@ -51,7 +51,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
                               !type.IsAbstract && // which are not interfaces nor abstract
                               type.GetInterfaces().Length != 0);// which implementing some interface(s)
 
-            container.RegisterMany(serviceTypes, reuse: Reuse.Singleton, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.RegisterMany(serviceTypes, reuse: Reuse.Singleton);
 
             //we need a trasient reporter service rather than singleton
             container.Register<IVerboseReporterService, VerboseReporterService>(reuse: Reuse.InResolutionScope, ifAlreadyRegistered:IfAlreadyRegistered.Replace);
@@ -81,7 +81,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
 
         public int Priority
         {
-            get { return 0; }
+            get { return -int.MaxValue; }
         }
     }
     
