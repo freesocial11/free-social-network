@@ -4,10 +4,12 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.WebPages;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Extensions;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
@@ -72,19 +74,19 @@ namespace mobSocial.WebApi.Controllers
             });
         }
 
-        [Route("get/{id:int}")]
+        [Route("get/{idOrUserName}")]
         [HttpGet]
         [Authorize]
-        public async Task<IHttpActionResult> Get(int id)
+        public async Task<IHttpActionResult> Get(string idOrUserName)
         {
             //first get the user
-            var user = await _userService.GetAsync(id);
+            var user = idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
             if (user == null)
                 return NotFound();
             //depending on the logged in user, we send either entitymodel or response model because certain information
             //will be removed from response if the user is not authorized to see them
             var isAdminOrCurrentUser = ApplicationContext.Current.CurrentUser.IsAdministrator() ||
-                                       ApplicationContext.Current.CurrentUser.Id == id;
+                                       ApplicationContext.Current.CurrentUser.Id == user.Id;
 
             RootModel model;
             if (isAdminOrCurrentUser)
@@ -110,13 +112,14 @@ namespace mobSocial.WebApi.Controllers
             });
         }
 
-        [Route("get/{id:int}/basic")]
+        [Route("get/{idOrUserName}/basic")]
         [HttpGet]
         [Authorize]
-        public async Task<IHttpActionResult> GetBasic(int id)
+        public async Task<IHttpActionResult> GetBasic(string idOrUserName)
         {
+            
             //first get the user
-            var user = await _userService.GetAsync(id);
+            var user = idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
             if (user == null)
                 return NotFound();
 
@@ -126,8 +129,8 @@ namespace mobSocial.WebApi.Controllers
             });
         }
 
-        [Route("get/{userName}")]
-        public async Task<IHttpActionResult> Get(string userName)
+        [Route("get/{userName}/available")]
+        public async Task<IHttpActionResult> GetAvailability(string userName)
         {
             var userNameUser = await _userService.GetAsync(x => x.UserName == userName, null);
             return RespondSuccess(new {
