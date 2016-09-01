@@ -80,7 +80,7 @@ namespace mobSocial.WebApi.Controllers
         public async Task<IHttpActionResult> Get(string idOrUserName)
         {
             //first get the user
-            var user = idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
+            var user = await GetUser(idOrUserName);
             if (user == null)
                 return NotFound();
             //depending on the logged in user, we send either entitymodel or response model because certain information
@@ -95,18 +95,18 @@ namespace mobSocial.WebApi.Controllers
                 //get all the available roles
                 var availableRoles = _roleService.Get(x => x.IsActive).ToList();
                 //we need to send the id and role name only to client 
-                ((UserEntityModel) model).AvailableRoles = availableRoles.Select(x =>
-                {
-                    dynamic newObject = new ExpandoObject();
-                    newObject.RoleName = x.RoleName;
-                    newObject.Id = x.Id;
-                    return newObject;
-                }).ToList();
+                ((UserEntityModel)model).AvailableRoles = availableRoles.Select(x =>
+               {
+                   dynamic newObject = new ExpandoObject();
+                   newObject.RoleName = x.RoleName;
+                   newObject.Id = x.Id;
+                   return newObject;
+               }).ToList();
             }
             else
                 model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
 
-          
+
             return RespondSuccess(new {
                 User = model
             });
@@ -117,13 +117,13 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         public async Task<IHttpActionResult> GetBasic(string idOrUserName)
         {
-            
+
             //first get the user
-            var user = idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
+            var user = await GetUser(idOrUserName);
             if (user == null)
                 return NotFound();
 
-           var model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
+            var model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
             return RespondSuccess(new {
                 User = model
             });
@@ -263,5 +263,12 @@ namespace mobSocial.WebApi.Controllers
             return RespondSuccess();
         }
 
+        #region helpers
+
+        private async Task<User> GetUser(string idOrUserName)
+        {
+            return idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
+        }
+        #endregion
     }
 }
