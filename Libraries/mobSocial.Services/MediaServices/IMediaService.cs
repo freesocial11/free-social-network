@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.MediaEntities;
@@ -40,6 +40,6 @@ namespace mobSocial.Services.MediaServices
 
         void WriteOtherMediaBytes(Media media, MediaSaveLocation saveLocation);
 
-        IList<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType) where TEntityType : BaseEntity;
+        IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity;
     }
 }

@@ -146,12 +146,21 @@ namespace mobSocial.Services.MediaServices
 
         public string GetVideoUrl(int mediaId)
         {
-            throw new NotImplementedException();
+            var media = Get(mediaId);
+            return GetVideoUrl(media);
         }
 
         public string GetVideoUrl(Media media)
         {
-            throw new NotImplementedException();
+            //check if picture is not null
+            if (media == null || media.Id == 0)
+                return string.Empty;
+
+            var expectedFile = media.LocalPath;
+            
+            //return the image url
+            var videoServeUrl = expectedFile.Replace("~", _generalSettings.VideoServerDomain);
+            return videoServeUrl;
         }
 
         public void WritePictureBytes(Media picture, MediaSaveLocation pictureSaveLocation)
@@ -243,11 +252,11 @@ namespace mobSocial.Services.MediaServices
             }
         }
 
-        public IList<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType) where TEntityType : BaseEntity
+        public IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity
         {
-            //first get the picture ids for this entity
-            var mediaIds = _entityMediaRepository.Get(x => x.EntityId == entityId).Select(x => x.MediaId);
-            return Repository.Get(x => mediaIds.Contains(x.Id) && x.MediaType == mediaType).ToList();
+            //first get the media ids for this entity
+            var mediaIds = _entityMediaRepository.Get(x => x.EntityId == entityId && x.EntityName == typeof(TEntityType).Name).Select(x => x.MediaId).ToList();
+            return Get(x => mediaIds.Contains(x.Id) && x.MediaType == mediaType, null, true, page, count);
         }
     }
 }

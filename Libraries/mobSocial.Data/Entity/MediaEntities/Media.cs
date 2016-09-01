@@ -1,4 +1,5 @@
-﻿using mobSocial.Core.Data;
+﻿using System;
+using mobSocial.Core.Data;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Interfaces;
 
@@ -25,6 +26,8 @@ namespace mobSocial.Data.Entity.MediaEntities
         public MediaType MediaType { get; set; }
 
         public int UserId { get; set; }
+
+        public DateTime DateCreated { get; set; }
     }
 
     public class MediaMap: BaseEntityConfiguration<Media> { }
