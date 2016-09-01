@@ -37,6 +37,13 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
                     DateTimeKind.Utc, user);
             }
+            model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
+            model.FollowingCount = followService.Count(x => x.UserId == user.Id);
+            model.FriendCount =
+                friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
+            model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
+            model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
+            model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))
                 return model;
@@ -46,13 +53,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             if (string.IsNullOrEmpty(model.ProfileImageUrl))
                 model.ProfileImageUrl = mediaSettings.DefaultUserProfileImageUrl;
 
-            model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
-            model.FollowingCount = followService.Count(x => x.UserId == user.Id);
-            model.FriendCount =
-                friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
-            model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
-            model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1; 
-            model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
+          
             return model;
         }
 
