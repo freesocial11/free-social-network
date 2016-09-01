@@ -239,6 +239,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\MediaExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\SettingExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Models\Credits\PurchaseCreditModel.cs" />
     <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
+    <Compile Include="Models\Media\MediaReponseModel.cs" />
     <Compile Include="Models\Payment\UserPaymentModel.cs" />
     <Compile Include="Models\Payment\UserPaymentPublicModel.cs" />
     <Compile Include="Models\Payment\UserPaymentRequestModel.cs" />
