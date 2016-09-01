@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-window.attachFunctionToTimelineScope = function(name, func) {
+window.attachFunctionToTimelineScope = function (name, func) {
     //to make things pluggable, we have created a function so that other plugin vendors can inject their functions to timeline without 
     //having to modify timeline.js core file
 
@@ -14,7 +14,7 @@ window.attachFunctionToTimelineScope = function(name, func) {
 window.mobSocial.lazy.controller("timelineController", [
     '$scope', '$sce', 'timelineService', function ($scope, $sce, TimelineService) {
 
-      
+
         $scope.ClearPostFormExtraData = function () {
             $scope.PostData.AdditionalAttributeValue = null;
             $scope.PostData.PostTypeName = "status";
@@ -35,15 +35,15 @@ window.mobSocial.lazy.controller("timelineController", [
                     AdditionalAttributeValue: null
 
                 };
-            }, function() {
+            }, function () {
                 alert("Error occured while processing the request");
             });
         };
 
-        $scope.GetTimelinePosts = function() {
+        $scope.GetTimelinePosts = function () {
             //next page
             $scope.timelinePostsRequestModel.page++;
-            
+
             TimelineService.GetTimelinePosts($scope.timelinePostsRequestModel, function (response) {
                 if (response.length == 0) {
                     $scope.NoMorePosts = true;
@@ -51,7 +51,7 @@ window.mobSocial.lazy.controller("timelineController", [
                 }
                 //append to existing list
                 $scope.TimelinePosts = $scope.TimelinePosts.concat(response);
-            }, function() {
+            }, function () {
                 alert("An error occured while processing request");
             });
         }
@@ -70,36 +70,57 @@ window.mobSocial.lazy.controller("timelineController", [
                         }
                     }
                 }
-            }, function(response) {
+            }, function (response) {
                 alert("An error occured while processing request");
             });
         }
-      
+
         //ctor
-        $scope.init = function() {
-            $scope.timelinePostsRequestModel = {
-                page: 0,
-                count: 15
-            };
-            $scope.PostData = {
-                Message: "",
-                PostTypeName: "status",
-                AdditionalAttributeValue: null
-            };
+        $scope.init = function () {
 
-            //the posts being shown
-            $scope.TimelinePosts = [];
+            const _init = function (userId) {
+                $scope.timelinePostsRequestModel = {
+                    page: 0,
+                    count: 15,
+                    customerId: userId
+                };
+                $scope.PostData = {
+                    Message: "",
+                    PostTypeName: "status",
+                    AdditionalAttributeValue: null
+                };
 
-            //the preview data for a post
-            $scope.PostPreview = {};
+                //the posts being shown
+                $scope.TimelinePosts = [];
 
-            //request posts so far
-            $scope.GetTimelinePosts();
+                //the preview data for a post
+                $scope.PostPreview = {};
 
-            //functions to execute before selecting a post to render
-            //plugin vendors can write their own functions to be executed before showing the post.
-            //this will help to deserialize the additionalattributevalue to be displayed in the post display view
-            $scope.FilterFunction = [];
+                //request posts so far
+                $scope.GetTimelinePosts();
+
+                //functions to execute before selecting a post to render
+                //plugin vendors can write their own functions to be executed before showing the post.
+                //this will help to deserialize the additionalattributevalue to be displayed in the post display view
+                $scope.FilterFunction = [];
+            }
+
+            if ($scope.$parent && $scope.$parent.user && $scope.$parent.user.id == 0) {
+                //we need to wait for parent to get data. we need user id to complete the task
+                const timer = setInterval(function () {
+                    if ($scope.$parent.user.Id) {
+                        clearInterval(timer);
+                        _init($scope.$parent.user.Id);
+                    } else {
+                        return;
+                    }
+                },
+                    300);
+            } else {
+                //return 0 if no parent user is found
+                _init(0);
+            }
+
         }();
 
     }
