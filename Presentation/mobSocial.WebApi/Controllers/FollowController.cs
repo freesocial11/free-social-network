@@ -7,7 +7,7 @@ using mobSocial.WebApi.Configuration.Mvc;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("follow")]
+    [RoutePrefix("social")]
     public class FollowController : RootApiController
     {
         

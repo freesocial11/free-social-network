@@ -1,5 +1,5 @@
 ﻿window.mobSocial.lazy.service("followService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
-    var apiEndPoint = globalApiEndPoint + "/customerfollow";
+    var apiEndPoint = globalApiEndPoint + "/social";
     this.Follow = function (type, id, success, error) {
         webClientService.post(apiEndPoint + "/follow/" + type + "/" + id, null, success, error);
     };
