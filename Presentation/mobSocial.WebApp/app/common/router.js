@@ -137,7 +137,7 @@
             {
                 url: "",
                 templateUrl: function (stateParams, state) {
-                    if ([undefined, "main", "pictures", "vidoes", "friends", "followers", "following"].indexOf(stateParams.tab) == -1) {
+                    if ([undefined, "main", "pictures", "videos", "friends", "followers", "following"].indexOf(stateParams.tab) == -1) {
                         return "pages/common/404.html";
                     }
                     return "pages/users/user.profile." + (stateParams.tab || "main") + ".html";
