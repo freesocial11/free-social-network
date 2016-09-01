@@ -194,7 +194,7 @@ namespace mobSocial.WebApi.Controllers
             var friendUserIds =
                 await friends.Select(x => x.FromCustomerId == user.Id ? x.ToCustomerId : x.FromCustomerId).ToListAsync();
 
-            var friendUsers = _userService.Get(x => friendUserIds.Contains(x.Id));
+            var friendUsers =  await _userService.Get(x => friendUserIds.Contains(x.Id)).ToListAsync();
             var model = friendUsers.Select(x => x.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
             return RespondSuccess(new {
                 Users = model
