@@ -2,12 +2,9 @@
     "$scope", "$rootScope", "userService", "$stateParams", "$state", function ($scope, $rootScope, userService, $stateParams, $state) {
         $scope.$state = $state;
 
-        $scope.user = {
-            id: $stateParams.idOrUserName,
-            userName: $stateParams.idOrUserName
-        };
-        $scope.getBasicInfoById = function (id) {
-            userService.getBasicInfoById(id,
+       
+        $scope.getBasicInfoByIdOrUserName = function (idOrUserName) {
+            userService.getBasicInfoById(idOrUserName,
                 function (response) {
                     if (response.Success) {
                         $scope.user = response.ResponseData.User;
@@ -72,9 +69,14 @@
         }
        
         $scope.init = function (id) {
-            id = id || $rootScope.CurrentUser.Id;
+            $scope.user = {
+                id: parseInt($stateParams.idOrUserName) || 0,
+                userName: $stateParams.idOrUserName
+            };
+
+            id = id || $scope.user.id || $scope.user.userName || $rootScope.CurrentUser.Id;
             //request data
-            $scope.getBasicInfoById(id);
+            $scope.getBasicInfoByIdOrUserName(id);
         };
     }
 ]);

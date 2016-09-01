@@ -10,10 +10,25 @@
         webClientService.get(apiEndPoint + "/get/" + id, null, success, error);
     }
 
-    this.getBasicInfoById = function (id, success, error) {
-        webClientService.get(apiEndPoint + "/get/" + id + "/basic", null, success, error);
+    this.getBasicInfoById = function (idOrUserName, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/basic", null, success, error);
     }
 
+    this.getFriends = function(idOrUserName, options, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/friends", options, success, error);
+    }
+    this.getFollowers = function (idOrUserName, options, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/followers", options, success, error);
+    }
+    this.getFollowing = function (idOrUserName, options, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/following", options, success, error);
+    }
+    this.getPictures = function (idOrUserName, options, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/media/image", options, success, error);
+    }
+    this.getVideos = function (idOrUserName, options, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + idOrUserName + "/media/video", options, success, error);
+    }
     this.post = function(userEntityModel, success, error) {
         webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
     }

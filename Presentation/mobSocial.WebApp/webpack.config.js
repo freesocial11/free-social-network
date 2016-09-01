@@ -78,7 +78,9 @@ module.exports = {
             "./app/common/directives/commentsBox.js",
             "./app/common/directives/followButton.js",
             "./app/common/directives/likeButton.js",
-            "./app/common/directives/friendButton.js"
+            "./app/common/directives/friendButton.js",
+            "./app/public/social/followController.js",
+            "./app/public/social/friendController.js"
         ]
     },
     output: {

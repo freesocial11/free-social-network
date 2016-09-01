@@ -8,7 +8,7 @@
                     </div>
                     <div class="profile-picture">
                         <img ng-src="{{user.TemporaryProfileImageUrl || user.ProfileImageUrl}}" class="img-circle img-bordered-sm" />
-                        <div ng-show="!user.TemporaryProfileImage" class="profile-upload-button">
+                        <div ng-show="!user.TemporaryProfileImage" class="profile-upload-button" ng-if="currentUserIs(user.Id)">
                             <a file-upload-button
                                id="profileimage_{{user.Id}}"
                                fieldname="CoverFile"
@@ -32,34 +32,35 @@
                     <div class="quick-info">
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-2">
-                                    <i class="fa fa-eye margin-r-5"></i>
-                                    {{user.ViewCount || 0}} Views
-                                </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 info-block">
                                     <i class="fa fa-users margin-r-5"></i>
-                                    {{user.FriendCount}} Friends
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'friends', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        {{user.FriendCount}} Friends
+                                    </a>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 info-block">
                                     <i class="fa fa-bell margin-r-5"></i>
-                                    {{user.FollowerCount}} Followers
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'followers', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        {{user.FollowerCount}} Followers
+                                    </a>
                                 </div>
-                                <div class="col-md-2">
-                                    <i class="fa fa-bell  margin-r-5"></i>
-                                    {{user.FollowingCount}} Following
+                                <div class="col-md-2 info-block">
+                                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: 'following', idOrUserName: user.UserName ? user.UserName : user.Id })">
+                                        <i class="fa fa-bell  margin-r-5"></i>
+                                        {{user.FollowingCount}} Following
+                                    </a>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-2 info-block">
                                     <i class="fa fa-map-marker margin-r-5"></i>
                                     Lives in <a>Indore</a>
 
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="text-right" ng-if="currentUserIs(user.Id)">
-                                        <a class="edit-button button"><i class="fa fa-pencil"></i> Edit Info</a>
-                                    </div>
-                                    <div ng-if="!isCurrentUser(user.Id)">
+                                <div class="col-md-4">
+                                    <a class="btn btn-default pull-right" ng-if="currentUserIs(user.Id)"><i class="fa fa-pencil"></i> Edit Info</a>
+                                    <div ng-if="!currentUserIs(user.Id)">
                                         <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
-                                        <follow-button class="follow-button" followstatus="user.FollowingStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
+                                        <span class="vertical-separator"></span>
+                                        <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +128,6 @@
                         <div class="tab-content">
                             <div class="tab-pane active">
                                 <div ui-view></div>
-
                             </div>
                             <!-- /.tab-pane -->
                         </div>

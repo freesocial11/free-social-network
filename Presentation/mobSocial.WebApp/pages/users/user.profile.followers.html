@@ -1,1 +1,5 @@
-﻿
+﻿<div class="row" ng-controller="followController" ng-init="getFollowers()">
+    <div class="col-md-4" ng-repeat="u in followers">
+        <user-profile-mini user="u"></user-profile-mini>
+    </div>
+</div>
