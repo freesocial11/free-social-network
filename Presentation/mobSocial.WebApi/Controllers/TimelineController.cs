@@ -126,7 +126,7 @@ namespace mobSocial.WebApi.Controllers
                 {
                     customerId = ApplicationContext.Current.CurrentUser.Id;
                     //we need to find he person she is following.
-                    var allFollows = _customerFollowService.GetCustomerFollows<User>(customerId);
+                    var allFollows = _customerFollowService.GetFollowing<User>(customerId);
 
                     //get all the customer's ids which she is following
                     var customerIds =

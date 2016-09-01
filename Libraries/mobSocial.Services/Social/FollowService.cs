@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Data.Entity.Social;
@@ -20,13 +19,18 @@ namespace mobSocial.Services.Social
                         x.FollowingEntityName == typeof(T).Name).FirstOrDefault();
         }
 
-        public IList<UserFollow> GetCustomerFollows<T>(int customerId)
+        public IQueryable<UserFollow> GetFollowing<T>(int customerId, int page = 1, int count = 15)
         {
             return
-                Repository.Get(x => x.UserId == customerId && x.FollowingEntityName == typeof(T).Name).ToList();
+                Get(x => x.UserId == customerId && x.FollowingEntityName == typeof(T).Name, null, true, page, count);
         }
 
-       
+        public IQueryable<UserFollow> GetFollowing(int customerId, int page = 1, int count = 15)
+        {
+            return
+                Get(x => x.UserId == customerId, null, true, page, count);
+        }
+
         public void Insert<T>(int customerId, int entityId)
         {
             //insert only if required
@@ -59,10 +63,10 @@ namespace mobSocial.Services.Social
             return GetFollowers<T>(entityId).Count();
         }
 
-        public IList<UserFollow> GetFollowers<T>(int entityId)
+        public IQueryable<UserFollow> GetFollowers<T>(int entityId, int page = 1, int count = 15)
         {
             return
-                Repository.Get(x => x.FollowingEntityId == entityId && x.FollowingEntityName == typeof (T).Name).ToList();
+               Get(x => x.FollowingEntityId == entityId && x.FollowingEntityName == typeof (T).Name, null, true, page, count);
         }
     }
 }

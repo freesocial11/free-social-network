@@ -17,7 +17,7 @@ namespace mobSocial.Services.Social
         public Friend GetCustomerFriendship(int customer1Id, int customer2Id)
         {
             return
-                Repository.Get(x =>
+                Get(x =>
                     (x.FromCustomerId == customer1Id && x.ToCustomerId == customer2Id) ||
                     (x.ToCustomerId == customer1Id && x.FromCustomerId == customer2Id)).FirstOrDefault();
         }
@@ -26,7 +26,7 @@ namespace mobSocial.Services.Social
         public Friend GetCustomerFriend(int fromCustomerId, int toCustomerId)
         {
             return
-                Repository.Get(x => (x.FromCustomerId == fromCustomerId && x.ToCustomerId == toCustomerId)).FirstOrDefault();
+                Get(x => (x.FromCustomerId == fromCustomerId && x.ToCustomerId == toCustomerId)).FirstOrDefault();
         }
 
         public FriendStatus GetFriendStatus(int currentUserId, int friendId)
@@ -45,27 +45,26 @@ namespace mobSocial.Services.Social
         }
 
 
-        public IList<Friend> GetCustomerFriendRequests(int customerId)
+        public IList<Friend> GetFriendRequests(int customerId)
         {
-            return Repository.Get(x => !x.Confirmed && x.ToCustomerId == customerId).ToList();
+            return Get(x => !x.Confirmed && x.ToCustomerId == customerId).ToList();
         }
 
-        public IList<Friend> GetCustomerFriends(int customerId, int count = 0, bool random = false)
+        public IQueryable<Friend> GetFriends(int customerId, int page = 1, int count = 15, bool random = false)
         {
             var friends =
-                Repository.Get(x => (x.FromCustomerId == customerId || x.ToCustomerId == customerId) && x.Confirmed);
+                Get(x => (x.FromCustomerId == customerId || x.ToCustomerId == customerId) && x.Confirmed, null, true,
+                    page, count);
 
             if (random)
                 friends = friends.OrderBy(x => Guid.NewGuid());
 
-            if (count > 0)
-                friends = friends.Take(count);
-            return friends.ToList();
+            return friends;
         }
 
         public IList<Friend> GetAllCustomerFriends(int customerId)
         {
-            return Repository.Get(x => x.FromCustomerId == customerId || x.ToCustomerId == customerId).ToList();
+            return Get(x => x.FromCustomerId == customerId || x.ToCustomerId == customerId).ToList();
         }
     }
 }

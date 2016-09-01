@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Social;
 using mobSocial.Data.Enum;
@@ -13,9 +14,9 @@ namespace mobSocial.Services.Social
 
         FriendStatus GetFriendStatus(int currentUserId, int friendId);
 
-        IList<Friend> GetCustomerFriendRequests(int customerId);
+        IList<Friend> GetFriendRequests(int customerId);
 
-        IList<Friend> GetCustomerFriends(int customerId, int count = 0, bool random = false);
+        IQueryable<Friend> GetFriends(int customerId, int page = 1, int count = 15, bool random = false);
 
         IList<Friend> GetAllCustomerFriends(int customerId);
     }

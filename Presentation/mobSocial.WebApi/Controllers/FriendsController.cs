@@ -126,7 +126,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("getfriendrequests")]
         public IHttpActionResult GetFriendRequests()
         {
-            var friendRequests = _friendService.GetCustomerFriendRequests(ApplicationContext.Current.CurrentUser.Id);
+            var friendRequests = _friendService.GetFriendRequests(ApplicationContext.Current.CurrentUser.Id);
 
             var friendRequestCustomers =
                 _customerService.Get(x => friendRequests.Select(r => r.FromCustomerId).ToArray().Contains(x.Id), null);
@@ -158,7 +158,7 @@ namespace mobSocial.WebApi.Controllers
             if (customerId == 0)
                 customerId = ApplicationContext.Current.CurrentUser.Id;
 
-            var friends = _friendService.GetCustomerFriends(customerId);
+            var friends = _friendService.GetFriends(customerId);
 
             var model = new List<UserFriendModel>();
 

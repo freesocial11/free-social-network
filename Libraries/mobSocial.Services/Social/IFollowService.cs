@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Social;
 
@@ -8,7 +8,9 @@ namespace mobSocial.Services.Social
     {
         UserFollow GetCustomerFollow<T>(int customerId, int entityId);
 
-        IList<UserFollow> GetCustomerFollows<T>(int customerId);
+        IQueryable<UserFollow> GetFollowing<T>(int customerId, int page = 1, int count = 15);
+
+        IQueryable<UserFollow> GetFollowing(int customerId, int page = 1, int count = 15);
 
         void Insert<T>(int customerId, int entityId);
 
@@ -16,6 +18,6 @@ namespace mobSocial.Services.Social
 
         int GetFollowerCount<T>(int entityId);
 
-        IList<UserFollow> GetFollowers<T>(int entityId);
+        IQueryable<UserFollow> GetFollowers<T>(int entityId, int page = 1, int count = 15);
     }
 }
