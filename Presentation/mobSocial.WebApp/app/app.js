@@ -102,8 +102,8 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
         var deferred = $q.defer();
         var checker;
         if ($scope.$parent) {
-            //we need to wait for parent to get data. we need user id to complete the task
-            checker = $interval(function() {
+            //we need to wait for parent to get data. we need objectNameToLookFor to complete the task
+            checker = $interval(function () {
                 if ($scope.$parent[objectNameToLookFor]) {
                     $interval.cancel(checker);
                     const returnValue = $scope.$parent[objectNameToLookFor];
