@@ -213,7 +213,7 @@ namespace mobSocial.WebApi.Controllers
             var allMedia = await _mediaService.GetEntityMedia<User>(user.Id, mediaType, page, count).ToListAsync();
             var model = allMedia.Select(x => x.ToModel(_mediaService));
             return RespondSuccess(new {
-                Users = model
+                Media = model
             });
         }
 
