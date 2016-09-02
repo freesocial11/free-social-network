@@ -20,12 +20,12 @@ namespace mobSocial.WebApi
 
             app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
             
-            //app.UseMobAuthentication();
-
             app.UsePictureSizeRegistrar();
 
             //route registrations & other configurations
             WebApiConfig.Register(config);
+
+            app.UseMobAuthentication();
 
 #if DEBUG
             app.UseErrorPage(new ErrorPageOptions());
@@ -36,9 +36,7 @@ namespace mobSocial.WebApi
 
             //webapi, last one always 
             app.UseWebApi(config);
-
-            //di handler
-            //app.UseDryIocWebApi(config);
+           
         }
     }
 }
