@@ -9,6 +9,8 @@ namespace mobSocial.WebApi.Models.Media
     {
         public string Url { get; set; }
 
+        public string ThumbnailUrl { get; set; }
+
         public MediaType MediaType { get; set; }
 
         public int Id { get; set; }

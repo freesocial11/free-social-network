@@ -1,7 +1,10 @@
 ﻿using System;
+using mobSocial.Core;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.MediaEntities;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Helpers;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Social;
@@ -15,6 +18,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
         public static MediaReponseModel ToModel(this Media media, 
             IMediaService mediaService, 
             MediaSettings mediaSettings = null, 
+            GeneralSettings generalSettings = null,
             IUserService userService = null, 
             IFollowService followService = null,
             IFriendService friendService = null,
@@ -25,7 +29,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Id = media.Id,
                 MediaType = media.MediaType,
                 Url = media.MediaType == MediaType.Image ? mediaService.GetPictureUrl(media) : mediaService.GetVideoUrl(media),
-                DateCreatedUtc = media.DateCreated
+                DateCreatedUtc = media.DateCreated,
+                ThumbnailUrl = media.MediaType == MediaType.Image ? mediaService.GetPictureUrl(media, PictureSizeNames.ThumbnailImage) : WebHelper.GetUrlFromPath(media.LocalPath, generalSettings?.ImageServerDomain)
             };
             if (withUserInfo && userService != null)
             {
