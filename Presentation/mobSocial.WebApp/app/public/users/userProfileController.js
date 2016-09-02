@@ -69,12 +69,12 @@
         }
        
         $scope.init = function (id) {
-            $scope.user = {
+            $scope.tempUser = {
                 id: parseInt($stateParams.idOrUserName) || 0,
                 userName: $stateParams.idOrUserName
             };
 
-            id = id || $scope.user.id || $scope.user.userName || $rootScope.CurrentUser.Id;
+            id = id || $scope.tempUser.id || $scope.tempUser.userName || $rootScope.CurrentUser.Id;
             //request data
             $scope.getBasicInfoByIdOrUserName(id);
         };
