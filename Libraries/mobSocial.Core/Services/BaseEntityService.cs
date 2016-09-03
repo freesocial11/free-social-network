@@ -42,13 +42,13 @@ namespace mobSocial.Core.Services
                 _eventPublisherService.Publish(entity, EventType.Delete);
 
                 _dataRepository.Delete(entity);
-                
+
             }
         }
 
         public virtual void Delete(Expression<Func<T, bool>> where)
         {
-            if (typeof (ISoftDeletable).IsAssignableFrom(typeof(T)))
+            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(T)))
             {
                 //it's soft deletable so it's better to retrive them all and mark them deleted
                 var allEntities = Get(where, null).AsEnumerable();
@@ -66,7 +66,7 @@ namespace mobSocial.Core.Services
             else
             {
                 _dataRepository.Delete(where);
-                
+
             }
         }
 
@@ -112,9 +112,9 @@ namespace mobSocial.Core.Services
                 resultSet = resultSet.OrderBy(x => x.Id);
 
             //pagination
-            resultSet = resultSet.Skip((page - 1)*count).Take(count);
+            resultSet = resultSet.Skip((page - 1) * count).Take(count);
             return resultSet;
-            
+
         }
 
         public virtual async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1, int count = Int32.MaxValue)
@@ -130,6 +130,19 @@ namespace mobSocial.Core.Services
         public virtual async Task<T> GetAsync(int id)
         {
             return await Task.Run(() => Get(id));
+        }
+
+        public T PreviousOrDefault(int currentEntityId, Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true)
+        {
+            return Get(where, orderBy, ascending)
+                .AsEnumerable()
+                .TakeWhile(x => x.Id != currentEntityId)
+                .LastOrDefault();
+        }
+
+        public T NextOrDefault(int currentEntityId, Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true)
+        {
+            return Get(where, orderBy, ascending).AsEnumerable().SkipWhile(x => x.Id != currentEntityId).Skip(1).FirstOrDefault();
         }
 
         protected IDataRepository<T> Repository => _dataRepository;

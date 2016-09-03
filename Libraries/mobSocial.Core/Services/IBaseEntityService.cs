@@ -33,6 +33,10 @@ namespace mobSocial.Core.Services
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> where);
 
         Task<T> GetAsync(int id);
+
+        T PreviousOrDefault(int currentEntityId, Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true);
+
+        T NextOrDefault(int currentEntityId, Expression<Func<T, bool>> where = null, Expression<Func<T, object>> orderBy = null, bool ascending = true);
     }
 
 }
