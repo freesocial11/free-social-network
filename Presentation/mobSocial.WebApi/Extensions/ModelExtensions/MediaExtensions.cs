@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using mobSocial.Core;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.MediaEntities;
 using mobSocial.Data.Entity.Settings;
+using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Helpers;
 using mobSocial.Services.Helpers;
@@ -22,7 +24,11 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             IUserService userService = null, 
             IFollowService followService = null,
             IFriendService friendService = null,
-            bool withUserInfo = true)
+            ICommentService commentService = null,
+            ILikeService likeService = null,
+            bool withUserInfo = true,
+            bool withSocialInfo = false,
+            bool withNextAndPreviousMedia = false)
         {
             var model = new MediaReponseModel()
             {
@@ -41,7 +47,32 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                     model.DateCreatedLocal = DateTimeHelper.GetDateInUserTimeZone(media.DateCreated, DateTimeKind.Utc, user);
                 }
             }
+            if (withSocialInfo)
+            {
+                if (likeService != null)
+                {
+                    model.TotalLikes = likeService.GetLikeCount<Media>(media.Id);
+                }
+
+                if (commentService != null)
+                {
+                    model.TotalComments = commentService.GetCommentsCount(media.Id, typeof(Media).Name);
+                    model.CanComment = true; //todo: perform check if comments are enabled or user has permission to comment
+                }
+            }
+
+            if (withNextAndPreviousMedia)
+            {
+                var allMedia = mediaService.GetEntityMedia<User>(media.UserId, media.MediaType, 1, int.MaxValue).ToList();
+                var mediaIndex = allMedia.FindIndex(x => x.Id == media.Id);
+
+                model.PreviousMediaId = mediaIndex == 0 ? 0 : allMedia[mediaIndex - 1].Id;
+                model.NextMediaId = mediaIndex == allMedia.Count - 1 ? 0 : allMedia[mediaIndex + 1].Id;
+            }
+
+            model.FullyLoaded = withSocialInfo && withNextAndPreviousMedia;
             return model;
+            ;
         }
     }
 }

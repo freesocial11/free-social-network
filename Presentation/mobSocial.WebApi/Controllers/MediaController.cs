@@ -10,8 +10,11 @@ using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Helpers;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Social;
+using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Extensions.ModelExtensions;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -22,12 +25,37 @@ namespace mobSocial.WebApi.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly IMobSocialVideoProcessor _videoProcessor;
         private readonly GeneralSettings _generalSettings;
-        public MediaController(MediaService mediaService, MediaSettings mediaSettings, IMobSocialVideoProcessor videoProcessor, GeneralSettings generalSettings)
+        private readonly IUserService _userService;
+        private readonly ICommentService _commentService;
+        private readonly ILikeService _likeService;
+
+        public MediaController(MediaService mediaService, MediaSettings mediaSettings, IMobSocialVideoProcessor videoProcessor, GeneralSettings generalSettings, IUserService userService, ICommentService commentService, ILikeService likeService)
         {
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
             _videoProcessor = videoProcessor;
             _generalSettings = generalSettings;
+            _userService = userService;
+            _commentService = commentService;
+            _likeService = likeService;
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("get/{id:int}")]
+        public IHttpActionResult Get(int id)
+        {
+            var media = _mediaService.Get(id);
+            if (media == null)
+                return NotFound();
+            //todo: verify permissions to see if media can be viewed by logged in user
+            var model = media.ToModel(_mediaService, _mediaSettings, _generalSettings, _userService,
+                commentService: _commentService,
+                likeService: _likeService,
+                withSocialInfo: true,
+                withNextAndPreviousMedia: true);
+
+            return RespondSuccess(new { Media = model });
         }
 
         [Authorize]

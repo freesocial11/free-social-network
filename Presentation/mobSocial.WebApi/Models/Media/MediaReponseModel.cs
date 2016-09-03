@@ -21,5 +21,17 @@ namespace mobSocial.WebApi.Models.Media
 
         public UserResponseModel CreatedBy { get; set; }
 
+        public int TotalLikes { get; set; }
+
+        public int TotalComments { get; set; }
+
+        public bool CanComment { get; set; }
+
+        public int NextMediaId { get; set; }
+
+        public int PreviousMediaId { get; set; }
+
+        public bool FullyLoaded { get; set; }
+
     }
 }
