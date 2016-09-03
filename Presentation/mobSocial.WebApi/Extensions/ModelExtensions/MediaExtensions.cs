@@ -73,7 +73,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 var mediaIndex = allMedia.FindIndex(x => x.Id == media.Id);
 
                 model.PreviousMediaId = mediaIndex <= 0 ? 0 : allMedia[mediaIndex - 1].Id;
-                model.NextMediaId = mediaIndex <= allMedia.Count - 1 ? 0 : allMedia[mediaIndex + 1].Id;
+                model.NextMediaId = mediaIndex < 0 || mediaIndex == allMedia.Count - 1 ? 0 : allMedia[mediaIndex + 1].Id;
             }
 
             model.FullyLoaded = withSocialInfo && withNextAndPreviousMedia;
