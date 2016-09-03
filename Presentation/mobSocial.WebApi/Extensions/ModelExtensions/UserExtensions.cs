@@ -15,7 +15,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
 {
     public static class UserExtensions
     {
-        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
+        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService = null, IFriendService friendService = null)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
             var model = new UserResponseModel() {
@@ -37,13 +37,21 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.LastLoginDateLocal = DateTimeHelper.GetDateInUserTimeZone(user.LastLoginDate.Value,
                     DateTimeKind.Utc, user);
             }
-            model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
-            model.FollowingCount = followService.Count(x => x.UserId == user.Id);
-            model.FriendCount =
+            if (followService != null)
+            {
+                model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
+                model.FollowingCount = followService.Count(x => x.UserId == user.Id);
+                model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
+                model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
+
+            }
+
+            if (friendService != null)
+            {
+                model.FriendCount =
                 friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
-            model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
-            model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
-            model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
+                model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
+            }
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))
                 return model;
