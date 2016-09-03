@@ -11,6 +11,7 @@ using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Social;
 using mobSocial.Services.Users;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Models.Media;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
@@ -52,6 +53,10 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 if (likeService != null)
                 {
                     model.TotalLikes = likeService.GetLikeCount<Media>(media.Id);
+                    model.LikeStatus =
+                        likeService.GetCustomerLike<Media>(ApplicationContext.Current.CurrentUser.Id, media.Id) != null
+                            ? 1
+                            : 0;
                 }
 
                 if (commentService != null)

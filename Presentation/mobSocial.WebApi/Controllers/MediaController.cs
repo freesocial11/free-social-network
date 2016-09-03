@@ -99,7 +99,8 @@ namespace mobSocial.WebApi.Controllers
                     Binary = pictureBytes,
                     MimeType = contentType,
                     Name = fileName,
-                    UserId = ApplicationContext.Current.CurrentUser.Id
+                    UserId = ApplicationContext.Current.CurrentUser.Id,
+                    DateCreated = DateTime.UtcNow
                 };
 
                 _mediaService.WritePictureBytes(picture, _mediaSettings.PictureSaveLocation);
@@ -161,7 +162,8 @@ namespace mobSocial.WebApi.Controllers
                 Binary = bytes,
                 MimeType = contentType,
                 Name = fileName,
-                UserId = ApplicationContext.Current.CurrentUser.Id
+                UserId = ApplicationContext.Current.CurrentUser.Id,
+                DateCreated = DateTime.UtcNow
             };
 
             _mediaService.WriteVideoBytes(media);

@@ -27,6 +27,8 @@ namespace mobSocial.WebApi.Models.Media
 
         public bool CanComment { get; set; }
 
+        public int LikeStatus { get; set; }
+
         public int NextMediaId { get; set; }
 
         public int PreviousMediaId { get; set; }
