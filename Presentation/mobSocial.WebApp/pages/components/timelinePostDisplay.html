@@ -92,8 +92,8 @@
 </div>
 <div ng-if="Post.PostTypeName == 'video'"  ng-init="FilterFunction['video'](Post)">
     <div class="video-container">
-        <videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="Post.Config.theme">
-            <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="metadata"></vg-media>
+        <videogular vg-player-ready="PlayerReadyForDisplay($API, Post)" vg-responsive="true" vg-theme="videogularConfig.theme">
+            <vg-media vg-src="Post.VideoSource" vg-tracks="" preload="videogularConfig.preload"></vg-media>
 
             <vg-controls>
                 <vg-play-pause-button></vg-play-pause-button>
@@ -128,9 +128,7 @@
                     src: $sce.trustAsResourceUrl(jsonValue.VideoUrl),
                     type: jsonValue.MimeType
                 }];
-                Post.Config = {
-                    theme: "/libraries/videogular/theme/videogular.css"
-                }
+                
                 Post.VideoSource = source;
                 $API.changeSource(Post.VideoSource);
                 $API.sources = Post.VideoSource;

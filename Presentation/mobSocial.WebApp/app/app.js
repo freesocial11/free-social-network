@@ -117,6 +117,11 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
         }
         return deferred.promise;
     }
+
+    $rootScope.videogularConfig = {
+        theme: "/libraries/videogular/theme/videogular.css",
+        preload: "metadata"
+    };
 }]);
 
 //todo: move to a separate file
