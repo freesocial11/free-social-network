@@ -1,14 +1,14 @@
 ﻿<span>
 
-    <a class="link-black text-sm  margin-r-5" ng-click="CommentRequest.Page == 0 ? Get() : return;" onclick="$(this).next('.comment-list').toggle()" href="">
+    <a class="link-black text-sm  margin-r-5" ng-click="toggleComments()" href="">
         <i class="fa fa-comments-o margin-r-5"></i> Comments({{TotalComments}})
     </a>
-    <div class="comment-list" style="display: none">
+    <div class="comment-list" ng-show="commmentsVisible">
         <div ng-repeat="comment in CommentList" class="comment-box">
             <div class="commenter-info">
-                <img ng-src="{{comment.UserProfileImageUrl}}" class="img-circle img-sm img-bordered-sm" />
+                <img ng-src="{{comment.User.ProfileImageUrl}}" class="img-circle img-sm img-bordered-sm" />
                 <span class="username">
-                    <a href="{{comment.CustomerProfileUrl}}">{{comment.UserName}}</a>
+                    <a ui-sref="layoutMobSocial.userprofile.tabs({ tab: null, idOrUserName: comment.User.UserName ? comment.User.UserName : comment.User.Id })">{{comment.User.Name}}</a>
                     <a ng-if="comment.CanDelete" class="comment-delete pull-right btn-box-tool" ng-click="Delete(comment.Id)"><i class="fa fa-times"></i></a>
 
                 </span>
