@@ -1,8 +1,11 @@
 ﻿body {
   background-color: #ecf0f5; }
 
-*[file-upload-button] {
+*[file-upload-button], *[ng-click], *[media-button] {
   cursor: pointer; }
+
+img {
+  max-width: 100%; }
 
 .no-margin {
   margin: 0; }
@@ -224,4 +227,24 @@
 
 .widget-user .widget-user-header a {
   color: white; }
+
+.modal-media .media-contents {
+  background-color: black;
+  text-align: center;
+  position: relative; }
+  .modal-media .media-contents .prev, .modal-media .media-contents .next {
+    position: absolute;
+    font-size: 3em;
+    color: white;
+    top: 35%; }
+  .modal-media .media-contents .prev {
+    left: 10px; }
+  .modal-media .media-contents .next {
+    right: 10px; }
+
+.modal-media .modal-body img {
+  max-width: 100%; }
+
+.media-list .media-item {
+  margin-bottom: 15px; }
 

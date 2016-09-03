@@ -49,6 +49,7 @@ window.mobSocial.lazy.controller("timelineController", [
                     $scope.NoMorePosts = true;
                     return;
                 }
+                $scope.TimelinePosts = $scope.TimelinePosts || [];
                 //append to existing list
                 $scope.TimelinePosts = $scope.TimelinePosts.concat(response);
             }, function () {
@@ -90,9 +91,6 @@ window.mobSocial.lazy.controller("timelineController", [
                     AdditionalAttributeValue: null
                 };
 
-                //the posts being shown
-                $scope.TimelinePosts = [];
-
                 //the preview data for a post
                 $scope.PostPreview = {};
 
@@ -105,7 +103,7 @@ window.mobSocial.lazy.controller("timelineController", [
                 $scope.FilterFunction = [];
             }
 
-            $rootScope.waitFromParent($scope, "user", { id: 0 })
+            $rootScope.waitFromParent($scope, "user", { Id: 0 })
                 .then(function (user) {
                     _init(user.Id);
                 });

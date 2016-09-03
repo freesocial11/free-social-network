@@ -81,6 +81,12 @@ module.exports = {
             "./app/common/directives/friendButton.js",
             "./app/public/social/followController.js",
             "./app/public/social/friendController.js"
+        ],
+        media: [
+            "./app/common/services/mediaService.js",
+            "./app/public/media/mediaController.js",
+            "./app/common/directives/mediaButton.js",
+            "./app/common/directives/mediaModal.js"
         ]
     },
     output: {

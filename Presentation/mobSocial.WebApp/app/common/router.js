@@ -129,7 +129,7 @@
                 resolve: {
                     resolver: function(controllerProvider) {
                         return controllerProvider
-                            .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline"]);
+                            .resolveBundles(["videogular", "social", "media", "fileUpload", "users", "timeline"]);
                     }
                 }
             })
