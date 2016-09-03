@@ -122,6 +122,17 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
         theme: "/libraries/videogular/theme/videogular.css",
         preload: "metadata"
     };
+    /*
+     * Updates videogular source
+     */
+    $rootScope.updatedVideoSource = function($api, url, mimeType) {
+        const source = [{
+            src: $sce.trustAsResourceUrl(url),
+            type: mimeType
+        }];
+        $api.changeSource(source);
+        $api.sources = source;
+    }
 }]);
 
 //todo: move to a separate file

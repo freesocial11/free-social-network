@@ -5,9 +5,11 @@
 *[file-upload-button], *[ng-click], *[media-button] {
     cursor: pointer;
 }
-img{
-    max-width:100%;
+
+img {
+    max-width: 100%;
 }
+
 .no-margin {
     margin: 0;
 }
@@ -340,31 +342,50 @@ img{
 }
 
 .modal-media {
-    .media-contents{
-        background-color:black;
-        text-align:center;
-        position:relative;
-        .prev, .next{
-            position:absolute;
-            font-size:3em;
-            color:white;
-            top:35%;
+    .media-contents {
+        background-color: black;
+        text-align: center;
+        position: relative;
+
+        .prev, .next {
+            position: absolute;
+            font-size: 3em;
+            color: white;
+            top: 35%;
         }
-        .prev{
-            left:10px;
+
+        .prev {
+            left: 10px;
         }
-        .next{
-            right:10px;
+
+        .next {
+            right: 10px;
         }
     }
+
     .modal-body {
         img {
             max-width: 100%;
         }
     }
 }
-.media-list{
-    .media-item{
-        margin-bottom:15px;
+
+.media-list {
+    .media-item {
+        margin-bottom: 15px;
+        position: relative;
+
+        .action {
+            position: absolute;
+            left: 45%;
+            top: 35%;
+            color: white;
+            font-size: 2em;
+            opacity: 0.8;
+        }
     }
+}
+
+videogular vg-overlay-play, [videogular] vg-overlay-play {
+    left: 0;
 }

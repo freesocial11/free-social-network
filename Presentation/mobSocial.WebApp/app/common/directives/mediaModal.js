@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("mediaModal", ["mediaService", "$timeout" , function (mediaService, $timeout) {
+﻿window.mobSocial.lazy.directive("mediaModal", ["mediaService", "$rootScope", "$timeout" , function (mediaService, $rootScope, $timeout) {
     return {
         restrict: "E",
         templateUrl: "/pages/components/mediaModal.html",
@@ -16,8 +16,15 @@
             scope.reloadMedia = function(id) {
                 mediaService.get(id,
                        function (response) {
-                           if (response.Success)
-                               scope.media = response.ResponseData.Media;
+                           if (response.Success) {
+                               $timeout(function() {
+                                   scope.media = response.ResponseData.Media;
+                                   if(scope.media.MediaType == 1 && scope.$API)//video
+                                       $rootScope.updatedVideoSource(scope.$API, scope.media.Url, scope.media.MimeType);
+                                   },
+                                   0);
+
+                           }
                            
                        },
                        function (response) {
@@ -25,6 +32,10 @@
                        });
             }
 
+            scope.videoPlayerReady = function ($API) {
+                scope.$API = $API;
+                $rootScope.updatedVideoSource(scope.$API, scope.media.Url, scope.media.MimeType);
+            }
 
         }
     }

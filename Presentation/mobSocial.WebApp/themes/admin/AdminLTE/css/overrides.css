@@ -246,5 +246,16 @@ img {
   max-width: 100%; }
 
 .media-list .media-item {
-  margin-bottom: 15px; }
+  margin-bottom: 15px;
+  position: relative; }
+  .media-list .media-item .action {
+    position: absolute;
+    left: 45%;
+    top: 35%;
+    color: white;
+    font-size: 2em;
+    opacity: 0.8; }
+
+videogular vg-overlay-play, [videogular] vg-overlay-play {
+  left: 0; }
 
