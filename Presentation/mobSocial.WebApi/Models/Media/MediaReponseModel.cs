@@ -13,6 +13,8 @@ namespace mobSocial.WebApi.Models.Media
 
         public MediaType MediaType { get; set; }
 
+        public string MimeType { get; set; }
+
         public int Id { get; set; }
 
         public DateTime DateCreatedUtc { get; set; }

@@ -36,8 +36,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Id = media.Id,
                 MediaType = media.MediaType,
                 Url = media.MediaType == MediaType.Image ? mediaService.GetPictureUrl(media) : mediaService.GetVideoUrl(media),
+                MimeType = media.MimeType,
                 DateCreatedUtc = media.DateCreated,
-                ThumbnailUrl = media.MediaType == MediaType.Image ? mediaService.GetPictureUrl(media, PictureSizeNames.ThumbnailImage) : WebHelper.GetUrlFromPath(media.LocalPath, generalSettings?.ImageServerDomain)
+                ThumbnailUrl = media.MediaType == MediaType.Image ? mediaService.GetPictureUrl(media, PictureSizeNames.ThumbnailImage) : WebHelper.GetUrlFromPath(media.ThumbnailPath, generalSettings?.ImageServerDomain)
             };
             if (withUserInfo && userService != null)
             {
@@ -71,8 +72,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 var allMedia = mediaService.GetEntityMedia<User>(media.UserId, media.MediaType, 1, int.MaxValue).ToList();
                 var mediaIndex = allMedia.FindIndex(x => x.Id == media.Id);
 
-                model.PreviousMediaId = mediaIndex == 0 ? 0 : allMedia[mediaIndex - 1].Id;
-                model.NextMediaId = mediaIndex == allMedia.Count - 1 ? 0 : allMedia[mediaIndex + 1].Id;
+                model.PreviousMediaId = mediaIndex <= 0 ? 0 : allMedia[mediaIndex - 1].Id;
+                model.NextMediaId = mediaIndex <= allMedia.Count - 1 ? 0 : allMedia[mediaIndex + 1].Id;
             }
 
             model.FullyLoaded = withSocialInfo && withNextAndPreviousMedia;

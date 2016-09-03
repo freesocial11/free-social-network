@@ -34,13 +34,14 @@ namespace mobSocial.WebApi.Controllers
         private readonly UserSettings _userSettings;
         private readonly SecuritySettings _securitySettings;
         private readonly MediaSettings _mediaSettings;
+        private readonly GeneralSettings _generalSettings;
         private readonly IUserRegistrationService _userRegistrationService;
         private readonly ICryptographyService _cryptographyService;
         private readonly IMediaService _mediaService;
         private readonly IFollowService _followService;
         private readonly IFriendService _friendService;
 
-        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, GeneralSettings generalSettings)
         {
             _userService = userService;
             _userSettings = userSettings;
@@ -51,6 +52,7 @@ namespace mobSocial.WebApi.Controllers
             _mediaSettings = mediaSettings;
             _followService = followService;
             _friendService = friendService;
+            _generalSettings = generalSettings;
             _roleService = roleService;
         }
 
@@ -211,7 +213,7 @@ namespace mobSocial.WebApi.Controllers
                 return NotFound();
 
             var allMedia = await _mediaService.GetEntityMedia<User>(user.Id, mediaType, page, count).ToListAsync();
-            var model = allMedia.Select(x => x.ToModel(_mediaService));
+            var model = allMedia.Select(x => x.ToModel(_mediaService, generalSettings: _generalSettings));
             return RespondSuccess(new {
                 Media = model
             });
