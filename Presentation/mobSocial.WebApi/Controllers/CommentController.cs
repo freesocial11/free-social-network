@@ -14,6 +14,7 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Social;
 
 namespace mobSocial.WebApi.Controllers
@@ -24,18 +25,18 @@ namespace mobSocial.WebApi.Controllers
         private readonly ICommentService _customerCommentService;
         private readonly ILikeService _customerLikeService;
         private readonly IUserService _customerService;
-        private readonly IMediaService _pictureService;
+        private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
 
         public CommentController(ICommentService customerCommentService,
             IUserService customerService,
             ILikeService customerLikeService,
-            IMediaService pictureService, MediaSettings mediaSettings)
+            IMediaService mediaService, MediaSettings mediaSettings)
         {
             _customerCommentService = customerCommentService;
             _customerService = customerService;
             _customerLikeService = customerLikeService;
-            _pictureService = pictureService;
+            _mediaService = mediaService;
             _mediaSettings = mediaSettings;
         }
 
@@ -132,9 +133,8 @@ namespace mobSocial.WebApi.Controllers
                 CanDelete = comment.UserId == ApplicationContext.Current.CurrentUser.Id || ApplicationContext.Current.CurrentUser.IsAdministrator(),
                 IsSpam = false, //TODO: change it when spam system has been implemented
                 LikeCount = _customerLikeService.GetLikeCount<Comment>(comment.Id),
-                UserName = user.Name,
-                UserProfileImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.SmallProfileImage),
-                LikeStatus = likeStatus
+                LikeStatus = likeStatus,
+                User = user.ToModel(_mediaService, _mediaSettings)
             };
             return cModel;
         }

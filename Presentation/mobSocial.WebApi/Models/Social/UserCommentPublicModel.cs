@@ -1,5 +1,6 @@
 ﻿using System;
 using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Models.Social
 {
@@ -27,11 +28,7 @@ namespace mobSocial.WebApi.Models.Social
 
         public bool IsSpam { get; set; }
 
-        public string UserName { get; set; }
-
-        public string UserProfileUrl { get; set; }
-
-        public string UserProfileImageUrl { get; set; }
+        public UserResponseModel User { get; set; }
 
     }
 }
