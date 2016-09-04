@@ -49,12 +49,11 @@ namespace mobSocial.Plugins.OAuth.Services
             ApplicationContext.Current.CurrentOwinContext.Authentication.SignOut("Application");
             // clear authentication cookie
             // delete cookie from applicationcookiemanager is not working somehow. let's delete the cookie manually
-            var cookie = new HttpCookie(".AspNet.Application", "") { Expires = DateTime.Now.AddYears(-1), HttpOnly = true, Domain = "mobSocial.com", Path = "/"};
+            var cookie = new HttpCookie(".AspNet.Application", "") { Expires = DateTime.Now.AddYears(-1), HttpOnly = true, Path = "/"};
             ApplicationContext.Current.CurrentOwinContext.Response.Cookies.Append(".AspNet.Application", "", new CookieOptions()
             {
                 Expires = DateTime.Now.AddYears(-1),
-                HttpOnly = true,
-                Domain = "mobSocial.com",
+                HttpOnly = true,                
                 Path = "/"
             });
             ApplicationContext.Current.CurrentHttpContext.Response.Cookies.Add(cookie);
