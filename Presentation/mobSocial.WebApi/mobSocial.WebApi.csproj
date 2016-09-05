@@ -305,7 +305,9 @@
     <Compile Include="Models\Timeline\TimelinePostDisplayModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
+    <Compile Include="Models\Users\ChangePasswordModel.cs" />
     <Compile Include="Models\Users\RoleResponseModel.cs" />
+    <Compile Include="Models\Users\UserEntityPublicModel.cs" />
     <Compile Include="Models\Users\UserEntityModel.cs" />
     <Compile Include="Models\Users\UserGetModel.cs" />
     <Compile Include="Models\Users\UserResponseModel.cs" />

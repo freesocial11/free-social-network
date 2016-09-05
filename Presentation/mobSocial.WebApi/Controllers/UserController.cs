@@ -95,17 +95,25 @@ namespace mobSocial.WebApi.Controllers
             RootModel model;
             if (isAdminOrCurrentUser)
             {
-                model = user.ToEntityModel(_mediaService, _mediaSettings);
-                //get all the available roles
-                var availableRoles = _roleService.Get(x => x.IsActive).ToList();
-                //we need to send the id and role name only to client 
-                ((UserEntityModel)model).AvailableRoles = availableRoles.Select(x =>
-               {
-                   dynamic newObject = new ExpandoObject();
-                   newObject.RoleName = x.RoleName;
-                   newObject.Id = x.Id;
-                   return newObject;
-               }).ToList();
+                if (ApplicationContext.Current.CurrentUser.IsAdministrator())
+                {
+                    model = user.ToEntityModel(_mediaService, _mediaSettings);
+                    //get all the available roles
+                    var availableRoles = _roleService.Get(x => x.IsActive).ToList();
+                    //we need to send the id and role name only to client 
+                    ((UserEntityModel)model).AvailableRoles = availableRoles.Select(x =>
+                    {
+                        dynamic newObject = new ExpandoObject();
+                        newObject.RoleName = x.RoleName;
+                        newObject.Id = x.Id;
+                        return newObject;
+                    }).ToList();
+                }
+                else
+                {
+                    model = user.ToEntityPublicModel(_mediaService, _mediaSettings);
+                }
+                
             }
             else
                 model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
@@ -262,7 +270,7 @@ namespace mobSocial.WebApi.Controllers
                 return RespondFailure();
             }
             //are passwords same?
-            if (string.Compare(entityModel.Password, entityModel.ConfirmPassword, StringComparison.Ordinal) != 0)
+            if (!string.IsNullOrEmpty(entityModel.Password) && string.Compare(entityModel.Password, entityModel.ConfirmPassword, StringComparison.Ordinal) != 0)
             {
                 VerboseReporter.ReportError("The passwords do not match", "post_user");
                 return RespondFailure();
@@ -276,24 +284,16 @@ namespace mobSocial.WebApi.Controllers
             user.DateUpdated = DateTime.UtcNow;
             user.Name = string.Concat(user.FirstName, " ", user.LastName);
             user.UserName = entityModel.UserName;
-            if (entityModel.Id == 0)
-            {
-                user.Password = entityModel.Password;
-                user.LastLoginDate = null;
-                _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
-            }
-            else
-            {
-                if (!string.IsNullOrEmpty(entityModel.Password)) // update password if provided
-                {
-                    if (string.IsNullOrEmpty(user.PasswordSalt))
-                        user.PasswordSalt = _cryptographyService.CreateSalt(8);
-                    user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
-                        _securitySettings.DefaultPasswordStorageFormat);
-                }
 
-                _userService.Update(user);
+            if (!string.IsNullOrEmpty(entityModel.Password)) // update password if provided
+            {
+                if (string.IsNullOrEmpty(user.PasswordSalt))
+                    user.PasswordSalt = _cryptographyService.CreateSalt(8);
+                user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
+                    _securitySettings.DefaultPasswordStorageFormat);
             }
+
+            _userService.Update(user);
 
             //assign the roles now
             var roles = _roleService.Get(x => x.IsActive);
@@ -331,6 +331,78 @@ namespace mobSocial.WebApi.Controllers
             return RespondSuccess(new {
                 User = user.ToEntityModel(_mediaService, _mediaSettings)
             });
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("put")]
+        public IHttpActionResult Put(UserEntityPublicModel entityModel)
+        {
+            var user = _userService.Get(entityModel.Id);
+
+            if (user == null)
+                return NotFound();
+
+            //check if the email has already been registered
+            var emailUser = _userService.Get(x => x.Email == entityModel.Email, null).FirstOrDefault();
+            if (emailUser != null && emailUser.Id != user.Id)
+            {
+                VerboseReporter.ReportError("The email is already registered with another user", "post_user");
+                return RespondFailure();
+            }
+
+            //same for user name
+            if (_userSettings.AreUserNamesEnabled)
+            {
+                var userNameUser = _userService.Get(x => x.UserName == entityModel.UserName, null).FirstOrDefault();
+                if (userNameUser != null && userNameUser.Id != user.Id)
+                {
+                    VerboseReporter.ReportError("The username is already taken by another user", "post_user");
+                    return RespondFailure();
+                }
+            }
+
+            user.FirstName = entityModel.FirstName;
+            user.LastName = entityModel.LastName;
+            user.Email = entityModel.Email;
+            user.DateUpdated = DateTime.UtcNow;
+            user.Name = string.Concat(user.FirstName, " ", user.LastName);
+            user.UserName = entityModel.UserName;
+           
+            _userService.Update(user);
+
+            //any images to assign
+            if (entityModel.CoverImageId != 0)
+                user.SetPropertyValue(PropertyNames.DefaultCoverId, entityModel.CoverImageId);
+            if (entityModel.ProfileImageId != 0)
+                user.SetPropertyValue(PropertyNames.DefaultPictureId, entityModel.ProfileImageId);
+
+            VerboseReporter.ReportSuccess("Successfully saved profile", "post_user");
+            return RespondSuccess(new {
+                User = user.ToEntityPublicModel(_mediaService, _mediaSettings)
+            });
+        }
+
+        [HttpPut]
+        [Authorize]
+        [Route("put/change-password")]
+        public IHttpActionResult Put(ChangePasswordModel model)
+        {
+            var password = model.Password;
+            var confirmPassword = model.ConfirmPassword;
+            //are passwords same?
+            if (string.IsNullOrEmpty(password) || string.Compare(password, confirmPassword, StringComparison.Ordinal) != 0)
+            {
+                return RespondFailure("The passwords do not match", "change_password");
+            }
+
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            if (string.IsNullOrEmpty(currentUser.PasswordSalt))
+                currentUser.PasswordSalt = _cryptographyService.CreateSalt(8);
+            currentUser.Password = _cryptographyService.GetHashedPassword(password, currentUser.PasswordSalt, _securitySettings.DefaultPasswordStorageFormat);
+            _userService.Update(currentUser);
+            VerboseReporter.ReportSuccess("Successfully changed password", "change_password");
+            return RespondSuccess();
         }
 
         [Route("delete/{id:int}")]

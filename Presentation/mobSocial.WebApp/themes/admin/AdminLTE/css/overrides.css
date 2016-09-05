@@ -228,6 +228,10 @@ img {
 .widget-user .widget-user-header a {
   color: white; }
 
+.modal-media .post-time {
+  color: #999;
+  font-size: 12px; }
+
 .modal-media .media-contents {
   background-color: black;
   text-align: center;

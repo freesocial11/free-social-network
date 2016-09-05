@@ -94,5 +94,23 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             return model;
         }
 
+        public static UserEntityPublicModel ToEntityPublicModel(this User user, IMediaService mediaService, MediaSettings mediaSettings)
+        {
+            var userCoverId = user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId);
+            var userProfileImageId = user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId);
+            var model = new UserEntityPublicModel() {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Name = user.Name,
+                UserName = user.UserName,
+                Email = user.Email,
+                CoverImageId = userCoverId,
+                ProfileImageId = userProfileImageId
+            };
+            model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover) ?? mediaSettings.DefaultUserProfileCoverUrl;
+            model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage) ?? mediaSettings.DefaultUserProfileImageUrl;
+            return model;
+        }
     }
 }

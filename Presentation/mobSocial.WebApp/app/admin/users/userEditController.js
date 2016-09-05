@@ -2,9 +2,10 @@
    "$scope", "userService", "$stateParams", "$state", "authProvider", "$rootScope", function ($scope, userService, $stateParams, $state, authProvider, $rootScope) {
 
        $scope.get = function () {
-           if ($stateParams.id == 0)
+           var userId = $stateParams.id || $rootScope.CurrentUser.Id;
+           if (!userId)
                return;
-           userService.getById($stateParams.id,
+           userService.getById(userId,
                function (response) {
                    if (response.Success) {
                        $scope.user = response.ResponseData.User;
@@ -15,7 +16,7 @@
                });
        }
 
-       $scope.save = function () {
+       $scope.saveFull = function () {
            userService.post($scope.user,
                function (response) {
                    if (response.Success) {
@@ -26,6 +27,39 @@
                    }
                },
                function (response) {
+
+               });
+       }
+
+       $scope.save = function () {
+           userService.put($scope.user,
+               function (response) {
+                   if (response.Success) {
+                       $scope.user = response.ResponseData.User;
+                       if ($scope.user.Id == $rootScope.CurrentUser.Id) {
+                           authProvider.markLoggedIn($scope.user);
+                       }
+                   }
+               },
+               function (response) {
+
+               });
+       }
+
+       $scope.changePassword = function () {
+           
+           if ($scope.user.Password != $scope.user.ConfirmPassword) {
+               alert("The passwords do not match");
+               return;
+           }
+           userService.changePassword({
+                   password: $scope.user.Password,
+                   confirmPassword: $scope.user.ConfirmPassword
+               },
+               function(response) {
+
+               },
+               function(resonse) {
 
                });
        }

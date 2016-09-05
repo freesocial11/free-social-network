@@ -33,6 +33,14 @@
         webClientService.post(apiEndPoint + "/post", userEntityModel, success, error);
     }
 
+    this.put = function (userEntityModel, success, error) {
+        webClientService.put(apiEndPoint + "/put", userEntityModel, success, error);
+    }
+
+    this.changePassword = function (passwordModel, success, error) {
+        webClientService.put(apiEndPoint + "/put/change-password", passwordModel, success, error);
+    }
+
     this.delete = function (id, success, error) {
         webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     }
