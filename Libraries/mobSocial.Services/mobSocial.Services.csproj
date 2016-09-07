@@ -99,6 +99,10 @@
     <Compile Include="Configuration\XmlConfigurationFileService.cs" />
     <Compile Include="Credits\CreditService.cs" />
     <Compile Include="Credits\ICreditService.cs" />
+    <Compile Include="Education\EducationService.cs" />
+    <Compile Include="Education\IEducationService.cs" />
+    <Compile Include="Education\ISchoolService.cs" />
+    <Compile Include="Education\SchoolService.cs" />
     <Compile Include="Emails\EmailAccountService.cs" />
     <Compile Include="Emails\EmailSender.cs" />
     <Compile Include="Emails\EmailTemplateService.cs" />

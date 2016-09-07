@@ -109,6 +109,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Api\AuthenticationControllerTests.cs" />
+    <Compile Include="Api\EducationControllerTests.cs" />
     <Compile Include="Api\VideoBattleControllerTests.cs" />
     <Compile Include="Mock\MockHelper.cs" />
     <Compile Include="Services\EventPublisherServiceTests.cs" />

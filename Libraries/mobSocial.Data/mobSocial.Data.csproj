@@ -88,6 +88,8 @@
     <Compile Include="Entity\BusinessPages\BusinessPageCoupon.cs" />
     <Compile Include="Entity\Credits\Credit.cs" />
     <Compile Include="Entity\Currency\Currency.cs" />
+    <Compile Include="Entity\Education\School.cs" />
+    <Compile Include="Entity\Education\Education.cs" />
     <Compile Include="Entity\Emails\EmailAccount.cs" />
     <Compile Include="Entity\Emails\EmailTemplate.cs" />
     <Compile Include="Entity\Emails\Token.cs" />
@@ -147,6 +149,7 @@
     <Compile Include="Enum\BattleType.cs" />
     <Compile Include="Enum\CreditTransactionType.cs" />
     <Compile Include="Enum\CreditType.cs" />
+    <Compile Include="Enum\EducationType.cs" />
     <Compile Include="Enum\FriendStatus.cs" />
     <Compile Include="Enum\LoginStatus.cs" />
     <Compile Include="Enum\MediaType.cs" />

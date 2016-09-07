@@ -220,6 +220,7 @@
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
+    <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\EntityPropertyController.cs" />
     <Compile Include="Controllers\FollowController.cs" />
     <Compile Include="Controllers\LikeController.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\SchoolController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
@@ -239,8 +241,10 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\MediaExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\SchoolExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\SettingExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
@@ -267,6 +271,10 @@
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
     <Compile Include="Models\Credits\PurchaseCreditModel.cs" />
+    <Compile Include="Models\Education\EducationEntityModel.cs" />
+    <Compile Include="Models\Education\EducationResponseModel.cs" />
+    <Compile Include="Models\Education\SchoolEntityModel.cs" />
+    <Compile Include="Models\Education\SchoolResponseModel.cs" />
     <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
     <Compile Include="Models\Media\MediaReponseModel.cs" />
