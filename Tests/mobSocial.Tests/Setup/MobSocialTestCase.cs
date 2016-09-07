@@ -14,6 +14,7 @@ using mobSocial.Data.Database;
 using mobSocial.Data.Database.Provider;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Services.Installation;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using mobSocial.Tests.Mock;
@@ -69,8 +70,11 @@ namespace mobSocial.Tests.Setup
             DatabaseContext.Database.Delete();
             
             DatabaseContext.Database.Create();
-            //Resolve<IInstallationService>().Install(GetTestConnectionString(), "System.Data.SqlServerCe.4.0");
 
+            //fill the required seed data
+            Resolve<IInstallationService>().FillRequiredSeedData("admin@test.com", "admin123", "localhost");
+            //Resolve<IInstallationService>().Install(GetTestConnectionString(), "System.Data.SqlServerCe.4.0");
+            mobSocialEngine.SetupPictureSizes();
         }
         protected string GetTestConnectionString()
         {
