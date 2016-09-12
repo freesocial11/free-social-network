@@ -1,0 +1,30 @@
+﻿<div class="box box-primary">
+    <div class="box-body">
+        <form role="form" name="formEducationEditor" class="form-horizontal">
+            <fieldset block-ui>
+                <div class="box-body no-padding">
+                    <table ng-if="education==null" class="table">
+                        <tr>
+                            <td colspan="2">
+                                <a class="btn btn-primary pull-right" ng-click="add()">Add New</a>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="education in educations">
+                            <td>
+                                <strong class="margin-r-5">{{education.Name}}</strong><small class="text-muted">{{education.FromDate | date: 'yyyy'}} - {{education.ToDate | date: 'yyyy'}}</small>
+                            </td>
+                            <td>
+                                <a class="btn btn-default btn-sm pull-right" ng-click="getEducation(education.Id)">Edit</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div ng-if="education">
+                        <ng-include src="'/pages/education/education.editor.html'"></ng-include>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+    
+</div>

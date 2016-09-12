@@ -87,6 +87,11 @@ module.exports = {
             "./app/public/media/mediaController.js",
             "./app/common/directives/mediaButton.js",
             "./app/common/directives/mediaModal.js"
+        ],
+        education: [
+            "./app/common/services/schoolService.js",
+            "./app/common/services/educationService.js",
+            "./app/public/education/educationController.js"
         ]
     },
     output: {

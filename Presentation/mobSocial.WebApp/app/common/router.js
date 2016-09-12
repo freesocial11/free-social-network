@@ -136,11 +136,11 @@
              .state("layoutMobSocial.userprofile.tabs",
              {
                  url: "",
-                 templateUrl: function (stateParams, state) {
-                     if ([undefined, "main", "pictures", "videos", "friends", "followers", "following"].indexOf(stateParams.tab) == -1) {
+                 templateUrl: function ($stateParams, state) {
+                     if ([undefined, "main", "pictures", "videos", "friends", "followers", "following"].indexOf($stateParams.tab) == -1) {
                          return "pages/common/404.html";
                      }
-                     return "pages/users/user.profile." + (stateParams.tab || "main") + ".html";
+                     return "pages/users/user.profile." + ($stateParams.tab || "main") + ".html";
                  }
              });
 
@@ -156,7 +156,7 @@
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider
-                             .resolveBundles(["fileUpload", "users"]);
+                             .resolveBundles(["fileUpload", "users", "education"]);
                      }
                  },
                  views: {
@@ -164,13 +164,29 @@
                          templateUrl: "pages/users/user.profile.edit.navigation.html"
                      },
                      "right": {
-                         templateUrl: function (stateParams, state) {
-                             if ([undefined, "basic"].indexOf(stateParams.tab) == -1) {
+                         templateUrl: function ($stateParams, state) {
+                             if ([undefined, "basic", "education"].indexOf($stateParams.tab) == -1) {
                                  return "pages/common/404.html";
                              }
-                             return "pages/users/user.profile.edit." + (stateParams.tab || "basic") + ".html";
+                             return "pages/users/user.profile.edit." + ($stateParams.tab || "basic") + ".html";
                          },
-                         controller: "userEditController"
+                         resolve: {
+                             resolver: function (controllerProvider) {
+                                 return controllerProvider
+                                     .resolveBundles(["education"]);
+                             }
+                         },
+                         controllerProvider: function($stateParams) {
+                             if (!$stateParams.tab)
+                                 return "userEditController";
+                             switch($stateParams.tab) {
+                                 case "basic":
+                                     return "userEditController";
+                                 case "education":
+                                     return "educationController";
+
+                             }
+                         }
                      }
                  }
              });
