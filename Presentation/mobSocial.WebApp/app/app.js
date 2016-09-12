@@ -36,6 +36,12 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
                 }
             }
             
+        });
+
+    $rootScope.$on("$includeContentLoaded", function (event, templateName) {
+        if ($window['viewContentLoaded']) {
+            $window['viewContentLoaded']();
+        }
     });
 
     //set logged in user for use throughout
