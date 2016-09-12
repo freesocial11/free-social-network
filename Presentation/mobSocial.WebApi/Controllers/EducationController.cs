@@ -57,10 +57,10 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/{id:int}")]
         [HttpGet]
-        public async Task<IHttpActionResult> Get(int id)
+        public IHttpActionResult Get(int id)
         {
             //first get the education
-            var education = await _educationService.GetAsync(id);
+            var education =  _educationService.Get(id);
             return education == null ? NotFound() : GetResponseModel(education);
         }
 
