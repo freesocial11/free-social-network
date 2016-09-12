@@ -275,6 +275,7 @@
     <Compile Include="Models\Education\EducationResponseModel.cs" />
     <Compile Include="Models\Education\SchoolEntityModel.cs" />
     <Compile Include="Models\Education\SchoolResponseModel.cs" />
+    <Compile Include="Models\Education\SchoolSearchModel.cs" />
     <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
     <Compile Include="Models\Media\MediaReponseModel.cs" />
