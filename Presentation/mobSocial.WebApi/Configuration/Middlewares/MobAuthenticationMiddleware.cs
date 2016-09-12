@@ -16,6 +16,14 @@ namespace mobSocial.WebApi.Configuration.Middlewares
             {
                 if (DatabaseManager.IsDatabaseInstalled() && ApplicationContext.Current.CurrentUser == null)
                 {
+                    //avoid login page from this check, otherwise, we won't be able to login ever
+                    if (HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/login") ||
+                        HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/register"))
+                    {
+                        await next();
+                        return;
+
+                    }
                     HttpContext.Current.User = null;
                     HttpContext.Current.GetOwinContext().Authentication.User = null;
                 }
