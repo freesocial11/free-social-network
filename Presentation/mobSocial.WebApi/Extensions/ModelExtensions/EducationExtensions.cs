@@ -29,7 +29,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 FromDate = education.FromDate,
                 ToDate = education.ToDate,
                 EducationType = education.EducationType,
-                SchoolId = education.SchoolId
+                SchoolId = education.SchoolId,
+                Id = education.Id
             };
            
             return model;

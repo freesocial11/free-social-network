@@ -83,7 +83,8 @@ namespace mobSocial.WebApi.Controllers
                 EducationType = entityModel.EducationType,
                 FromDate = entityModel.FromDate,
                 ToDate = entityModel.ToDate,
-                SchoolId = entityModel.SchoolId
+                SchoolId = entityModel.SchoolId,
+                UserId = ApplicationContext.Current.CurrentUser.Id
             };
 
             _educationService.Insert(education);

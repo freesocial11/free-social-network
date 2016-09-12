@@ -75,7 +75,10 @@ namespace mobSocial.WebApi.Controllers
             };
             _schoolService.Insert(school);
 
-            return RespondSuccess();
+            return RespondSuccess(new
+            {
+                School = school.ToModel(_mediaService)
+            });
         } 
         #endregion
     }
