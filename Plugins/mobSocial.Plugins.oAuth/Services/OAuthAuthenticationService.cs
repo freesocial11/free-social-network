@@ -66,7 +66,7 @@ namespace mobSocial.Plugins.OAuth.Services
 
             var ctx = ApplicationContext.Current.CurrentOwinContext;
             var user = ctx.Authentication.User;
-            if (user == null)
+            if (user?.Claims == null)
                 return null;
             var claims = user.Claims.ToList();
 
