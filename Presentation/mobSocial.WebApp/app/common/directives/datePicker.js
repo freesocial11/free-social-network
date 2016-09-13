@@ -8,8 +8,9 @@
             elem.datepicker({
                 autoclose: true
             });
+            if (scope.ngModel)
             //set default date
-            elem.datepicker("setDate", new Date(scope.ngModel));
+                elem.datepicker("setDate", new Date(scope.ngModel));
         }
     }
 }]);
