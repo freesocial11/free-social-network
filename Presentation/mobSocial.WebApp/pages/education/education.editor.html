@@ -1,6 +1,6 @@
 ﻿<div>
-    <span ng-bind-html="_Notifications('post_education') "></span>
-    <span ng-bind-html="_Notifications('put_education') "></span>
+    <span ng-if="education.Id == 0" ng-bind-html="_Notifications('post_education') "></span>
+    <span ng-if="education.Id != 0" ng-bind-html="_Notifications('put_education') "></span>
     <div class="form-group">
         <label for="name" class="col-md-3 control-label">Name</label>
         <div class="col-md-9">

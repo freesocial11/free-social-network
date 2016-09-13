@@ -59,7 +59,7 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     };
 
     $rootScope.displayErrors = function (contextName) {
-        var errors = $rootScope._errorMessages[contextName];
+        var errors = $rootScope._errorMessages[contextName] || $rootScope._errorMessages["_global"];
         if (!errors)
             return "";
 
@@ -78,7 +78,7 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     }
 
     $rootScope.displayMessages = function (contextName) {
-        var msgs = $rootScope._responseMessages[contextName];
+        var msgs = $rootScope._responseMessages[contextName] || $rootScope._responseMessages["_global"];
         if (!msgs)
             return "";
 

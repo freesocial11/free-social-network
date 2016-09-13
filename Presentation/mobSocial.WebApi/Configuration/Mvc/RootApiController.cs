@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Http;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.VerboseReporter;
@@ -65,6 +66,11 @@ namespace mobSocial.WebApi.Configuration.Mvc
         public IHttpActionResult RespondRedirect(string redirectUrl)
         {
             return Redirect(redirectUrl);
+        }
+
+        protected new IHttpActionResult BadRequest()
+        {
+            return base.BadRequest(string.Join(",", ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage))));
         }
     }
 }

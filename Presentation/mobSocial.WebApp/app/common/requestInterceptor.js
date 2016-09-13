@@ -18,8 +18,12 @@
         };
 
         this.responseError = function (response) {
-            
-            if (response.status === 401) {
+            if (response.status === 400) { //bad request
+                $rootScope._errorMessages = {
+                    "_global": [response.data.message || "Oops, something went wrong"]
+                };
+            }
+            else if (response.status === 401) { //unauthorized
                 authProvider.logout();
                 $rootScope.login();
                 return;
