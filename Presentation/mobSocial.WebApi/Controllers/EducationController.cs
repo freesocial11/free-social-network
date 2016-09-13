@@ -109,6 +109,13 @@ namespace mobSocial.WebApi.Controllers
             if (school == null)
                 return RespondFailure("The school must be provided to save education", "put_education");
 
+            education.Name = entityModel.Name;
+            education.Description = entityModel.Description;
+            education.FromDate = entityModel.FromDate;
+            education.ToDate = entityModel.ToDate;
+            education.EducationType = entityModel.EducationType;
+            education.SchoolId = entityModel.SchoolId;
+            
             _educationService.Update(education);
             return GetResponseModel(education);
         }
