@@ -42,7 +42,7 @@
                         $scope.education = response.ResponseData.Education;
                         var found = false;
                         //update education in the list
-                        for (let i = 0; i < $scope.educations[i]; i++) {
+                        for (let i = 0; i < $scope.educations.length; i++) {
                             let e = $scope.educations[i];
                             if (e.Id != $scope.education.Id)
                                 continue;
@@ -118,6 +118,20 @@
 
         $scope.init = function () {
             $scope.availableSchools = [];
+            $scope.availableEducationTypes = [
+                {
+                    Id: 0,
+                    Text: "School"
+                },
+                {
+                    Id: 1,
+                    Text: "College"
+                },
+                {
+                    Id: 2,
+                    Text: "Graduation"
+                }
+            ];
             $scope.getUserEducations();
         }();
     }

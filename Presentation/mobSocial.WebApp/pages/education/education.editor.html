@@ -1,5 +1,6 @@
 ﻿<div>
     <span ng-bind-html="_Notifications('post_education') "></span>
+    <span ng-bind-html="_Notifications('put_education') "></span>
     <div class="form-group">
         <label for="name" class="col-md-3 control-label">Name</label>
         <div class="col-md-9">
@@ -28,17 +29,15 @@
         <label for="schoolName" class="col-md-3 control-label">School Name</label>
         <div class="col-md-9">
             <select id="schoolName" name="schoolName" ng-model="education.SchoolId" class="form-control">
-                <option ng-repeat="s in availableSchools" ng-value="s.Id" ng-selected="{{ s.Id == education.SchoolId }}">{{s.Text}}</option>
+                <option ng-repeat="s in availableSchools track by s.Id" ng-value="s.Id" ng-selected="{{ s.Id == education.SchoolId }}">{{s.Text}}</option>
             </select>
         </div>
     </div>
     <div class="form-group">
         <label for="attendedFor" class="col-md-3 control-label">Attended For</label>
         <div class="col-md-9">
-            <select class="select2" id="attendedFor">
-                <option value="0">School</option>
-                <option value="1">College</option>
-                <option value="2">Graduation</option>
+            <select class="form-control" id="attendedFor" ng-model="education.EducationType">
+                <option ng-repeat="e in availableEducationTypes track by e.Id" ng-value="e.Id" ng-selected="{{ e.Id == education.EducationType }}">{{e.Text}}</option>
             </select>
         </div>
     </div>
@@ -69,12 +68,16 @@
     <script type="text/javascript">
         jQuery(document)
             .ready(function () {
+                var expectedSchoolName = "";
                 var $elem = angular.element("#schoolName");
                 var $scope = $elem.scope();
                 $scope.$watch("education.SchoolId",
                     function (newValue, oldValue) {
                         if (newValue == 0) {
                             $scope.schoolEditing = true;
+                            $scope.school = {
+                                Name: expectedSchoolName
+                            };
                             jQuery("#modal-school-editor").modal('show');
                         } else {
                             $scope.schoolEditing = false;
@@ -87,7 +90,8 @@
                         ajax: {
                             url: "/api/schools/get",
                             delay: 250,
-                            data: function(params) {
+                            data: function (params) {
+                                expectedSchoolName = params.term;
                                 return {
                                     searchtext: params.term, // search term
                                     page: params.page || 1,
