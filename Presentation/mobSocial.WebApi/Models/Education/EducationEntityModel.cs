@@ -19,6 +19,8 @@ namespace mobSocial.WebApi.Models.Education
         [Required]
         public int SchoolId { get; set; }
 
+        public virtual SchoolResponseModel School { get; set; }
+
         public EducationType EducationType { get; set; }
     }
 }

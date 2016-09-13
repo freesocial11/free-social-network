@@ -19,6 +19,13 @@
                 function(response) {
                     if (response.Success) {
                         $scope.education = response.ResponseData.Education;
+                        $scope.school = $scope.education.School;
+                        $scope.availableSchools = [
+                            {
+                                Text: $scope.school.Name,
+                                Id: $scope.school.Id
+                            }
+                        ];
                     }
                 },
                 function() {

@@ -14,7 +14,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Id = school.Id,
                 Name = school.Name,
                 City = school.City,
-                LogoUrl = _mediaService.GetPictureUrl(school.LogoId, PictureSizeNames.ThumbnailImage, true)
+                LogoUrl = _mediaService?.GetPictureUrl(school.LogoId, PictureSizeNames.ThumbnailImage, true)
             };
             return model;
         }
@@ -25,7 +25,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Id = school.Id,
                 Name = school.Name,
                 City = school.City,
-                LogoUrl = _mediaService.GetPictureUrl(school.LogoId, PictureSizeNames.ThumbnailImage, true)
+                LogoUrl = _mediaService?.GetPictureUrl(school.LogoId, PictureSizeNames.ThumbnailImage, true)
             };
             return model;
         }
