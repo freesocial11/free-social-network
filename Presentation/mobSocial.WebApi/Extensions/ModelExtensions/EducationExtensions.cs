@@ -15,7 +15,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 FromDate = education.FromDate,
                 ToDate = education.ToDate,
                 EducationType = education.EducationType,
-                School = education.School.ToModel(mediaService)
+                School = education.School?.ToModel(mediaService)
             };
             return model;
         }
@@ -31,7 +31,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 EducationType = education.EducationType,
                 SchoolId = education.SchoolId,
                 Id = education.Id,
-                School = education.School.ToModel(null)
+                School = education.School?.ToModel(null)
             };
            
             return model;

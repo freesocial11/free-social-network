@@ -133,7 +133,7 @@ namespace mobSocial.Services.Authentication
             if (!int.TryParse(ticket.UserData, out userId))
                 return null;
 
-            var userEntity = _userService.Get(userId);
+            var userEntity = _userService.Get(userId, x => x.UserRoles);
             if (userEntity == null || !userEntity.Active || userEntity.Deleted || userEntity.IsSystemAccount || !userEntity.IsRegistered())
                 return null;
 

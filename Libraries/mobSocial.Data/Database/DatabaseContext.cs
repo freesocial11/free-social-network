@@ -11,7 +11,7 @@ namespace mobSocial.Data.Database
        
         public DatabaseContext(string nameOrConnectionString) : base(nameOrConnectionString)
         {
-            
+            Configuration.LazyLoadingEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

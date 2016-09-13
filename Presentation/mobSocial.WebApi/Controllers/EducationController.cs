@@ -41,7 +41,7 @@ namespace mobSocial.WebApi.Controllers
             userId = userId == 0 ? currentUser.Id : userId;
 
             //first get the education
-            var educationEntities = await _educationService.Get(x => x.UserId == userId).ToListAsync();
+            var educationEntities = await _educationService.Get(x => x.UserId == userId, earlyLoad: x => x.School).ToListAsync();
             if (currentUser.Id == userId)
             {
                 return RespondSuccess(new {
@@ -60,7 +60,7 @@ namespace mobSocial.WebApi.Controllers
         public IHttpActionResult Get(int id)
         {
             //first get the education
-            var education =  _educationService.Get(id);
+            var education = _educationService.Get(id, x => x.School);
             return education == null ? NotFound() : GetResponseModel(education);
         }
 

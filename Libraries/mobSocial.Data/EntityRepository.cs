@@ -40,11 +40,29 @@ namespace mobSocial.Data
             return _entityDbSet.FirstOrDefault(x => x.Id == id);
         }
 
+        public T Get<TProperty>(int id, params Expression<Func<T, TProperty>>[] earlyLoad)
+        {
+           _SetupContexts();
+            var dbSet = _entityDbSet.AsQueryable();
+            dbSet = earlyLoad.Aggregate(dbSet, (current, el) => current.Include(el));
+
+            return dbSet.FirstOrDefault(x => x.Id == id);
+        }
+
         public IQueryable<T> Get(Expression<Func<T, bool>> @where)
         {
             _SetupContexts();
             where = AppendSoftDeletableCondition(where);
             return _entityDbSet.Where(where);
+        }
+
+        public IQueryable<T> Get<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
+        {
+            _SetupContexts();
+            where = AppendSoftDeletableCondition(where);
+            var dbSet = _entityDbSet.AsQueryable();
+            dbSet = earlyLoad.Aggregate(dbSet, (current, el) => current.Include(el));
+            return dbSet.Where(where);
         }
 
         public int Count(Expression<Func<T, bool>> @where)
@@ -56,8 +74,12 @@ namespace mobSocial.Data
 
         public async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where)
         {
-            _SetupContexts();
             return await Task.Run(() => Get(@where));
+        }
+
+        public async Task<IQueryable<T>> GetAsync<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
+        {
+            return await Task.Run(() => Get(@where, earlyLoad));
         }
 
         public void Insert(T entity)
