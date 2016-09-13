@@ -34,7 +34,7 @@
         }
 
         $scope.post = function () {
-            var method = $scope.education.Id == 0 ? "post" : "put";
+            var method = $scope.education.Id ? "put" : "post";
             educationService[method]($scope.education,
                 function(response) {
                     if (response.Success) {
