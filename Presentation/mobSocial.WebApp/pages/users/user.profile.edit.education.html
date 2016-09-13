@@ -11,7 +11,7 @@
                         </tr>
                         <tr ng-repeat="education in educations">
                             <td>
-                                <strong class="margin-r-5">{{education.Name}}</strong><small class="text-muted">{{education.FromDate | date: 'yyyy'}} - {{education.ToDate | date: 'yyyy'}}</small>
+                                <strong class="margin-r-5">{{education.Name}}</strong><small class="text-muted">{{education.FromDate | date: 'MMMM yyyy'}} - {{education.ToDate | date: 'MMMM yyyy'}}</small>
                             </td>
                             <td>
                                 <a class="btn btn-default btn-sm pull-right" ng-click="getEducation(education.Id)">Edit</a>

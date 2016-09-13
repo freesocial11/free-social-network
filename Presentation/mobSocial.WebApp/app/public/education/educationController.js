@@ -47,6 +47,8 @@
                         if (!found) {
                             $scope.educations.push($scope.education);
                         }
+
+                        $scope.education = null;
                     }
                 },
                 function() {
