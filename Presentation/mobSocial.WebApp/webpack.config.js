@@ -29,6 +29,7 @@ module.exports = {
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",
+            "./app/common/directives/datePicker.js",
             "./app/common/directives/userProfileMini.js",
             //filters
             "./app/common/filters/ms2timestr.js",
