@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\TokenFieldAttribute.cs" />
     <Compile Include="Constants\CreditContextKeyNames.cs" />
     <Compile Include="Constants\PaymentParameterNames.cs" />
     <Compile Include="Constants\PictureSizeNames.cs" />

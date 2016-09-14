@@ -171,6 +171,8 @@
     <Compile Include="Timeline\ITimelineService.cs" />
     <Compile Include="Timeline\TimelineAutoPublisher.cs" />
     <Compile Include="Timeline\TimelineService.cs" />
+    <Compile Include="Tokens\ITokenProcessor.cs" />
+    <Compile Include="Tokens\TokenProcessor.cs" />
     <Compile Include="VerboseReporter\IVerboseReporterService.cs" />
     <Compile Include="Security\CryptographyService.cs" />
     <Compile Include="Security\ICryptographyService.cs" />
