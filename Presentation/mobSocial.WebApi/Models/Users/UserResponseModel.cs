@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using mobSocial.Data.Enum;
 using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Models.Education;
 
 namespace mobSocial.WebApi.Models.Users
 {
@@ -41,6 +43,8 @@ namespace mobSocial.WebApi.Models.Users
         public int FollowStatus { get; set; }
 
         public FriendStatus FriendStatus { get; set; }
+
+        public IList<EducationResponseModel> Educations { get; set; }
 
     }
 }

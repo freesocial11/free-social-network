@@ -131,7 +131,7 @@ namespace mobSocial.WebApi.Controllers
         {
 
             //first get the user
-            var user = await GetUser(idOrUserName);
+            var user = await GetUser(idOrUserName, true);
             if (user == null)
                 return NotFound();
 
@@ -418,9 +418,18 @@ namespace mobSocial.WebApi.Controllers
 
         #region helpers
 
-        private async Task<User> GetUser(string idOrUserName)
+        private async Task<User> GetUser(string idOrUserName, bool loadRelated = false)
         {
-            return idOrUserName.IsInt() ? await _userService.GetAsync(idOrUserName.GetInteger()) : await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName);
+            return idOrUserName.IsInt()
+                ? (!loadRelated
+                    ? await _userService.GetAsync(idOrUserName.GetInteger())
+                    : await
+                        _userService.GetAsync(idOrUserName.GetInteger(), user => user.Educations.Select(x => x.School)))
+                : (!loadRelated
+                    ? await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName)
+                    : await
+                        _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName,
+                            user => user.Educations.Select(x => x.School)));
         }
         #endregion
     }

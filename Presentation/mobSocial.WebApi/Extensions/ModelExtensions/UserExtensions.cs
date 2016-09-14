@@ -28,7 +28,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 UserName = user.UserName,
                 CoverImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId), PictureSizeNames.MediumCover),
                 ProfileImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage),
-                Active = user.Active
+                Active = user.Active,
+                Educations = user.Educations?.Select(x => x.ToModel(mediaService)).ToList()
             };
             //TODO: Put capability check instead of administration check, that'd be more scalable
             if (currentUser.IsAdministrator() && user.LastLoginDate.HasValue)

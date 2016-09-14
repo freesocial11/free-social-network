@@ -48,6 +48,8 @@ namespace mobSocial.Data.Entity.Users
         public bool Deleted { get; set; }
 
         public virtual IList<UserRole> UserRoles { get; set; }
+
+        public virtual IList<Education.Education> Educations { get; set; }
     }
 
     public class UserMap : BaseEntityConfiguration<User>
