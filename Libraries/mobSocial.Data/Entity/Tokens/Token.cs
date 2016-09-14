@@ -1,4 +1,4 @@
-﻿namespace mobSocial.Data.Entity.Emails
+﻿namespace mobSocial.Data.Entity.Tokens
 {
     public class Token
     {
