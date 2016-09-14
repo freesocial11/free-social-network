@@ -5,6 +5,10 @@ namespace mobSocial.Data.Entity.Emails
 {
     public class EmailTemplate : BaseEntity
     {
+        public string TemplateName { get; set; }
+
+        public string TemplateSystemName { get; set; }
+
         [AllowHtml]
         public string Template { get; set; }     
 

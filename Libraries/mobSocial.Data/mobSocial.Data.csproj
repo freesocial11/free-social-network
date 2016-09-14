@@ -93,6 +93,7 @@
     <Compile Include="Entity\Education\School.cs" />
     <Compile Include="Entity\Education\Education.cs" />
     <Compile Include="Entity\Emails\EmailAccount.cs" />
+    <Compile Include="Entity\Emails\EmailMessage.cs" />
     <Compile Include="Entity\Emails\EmailTemplate.cs" />
     <Compile Include="Entity\Tokens\Token.cs" />
     <Compile Include="Entity\EntityProperties\EntityProperty.cs" />
