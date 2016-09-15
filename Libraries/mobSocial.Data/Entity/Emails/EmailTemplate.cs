@@ -17,6 +17,14 @@ namespace mobSocial.Data.Entity.Emails
         public int? ParentEmailTemplateId { get; set; }
 
         public virtual EmailTemplate ParentEmailTemplate { get; set; }
+
+        public int EmailAccountId { get; set; }
+
+        public virtual EmailAccount EmailAccount { get; set; }
+
+        public string Subject { get; set; }
+
+        public string AdministrationEmail { get; set; }
     }
 
     public class EmailTemplateMap : BaseEntityConfiguration<EmailTemplate>

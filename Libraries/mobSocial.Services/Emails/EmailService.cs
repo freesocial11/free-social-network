@@ -5,20 +5,31 @@ using mobSocial.Core.Data;
 using mobSocial.Core.Exception;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Emails;
+using mobSocial.Services.Security;
 
 namespace mobSocial.Services.Emails
 {
     public class EmailService : BaseEntityService<EmailMessage>, IEmailService
     {
-        public EmailService(IDataRepository<EmailMessage> dataRepository) : base(dataRepository)
+        private readonly IEmailAccountService _emailAccountService;
+        private readonly ICryptographyService _cryptographyService;
+
+        public EmailService(IDataRepository<EmailMessage> dataRepository, IEmailAccountService emailAccountService, ICryptographyService cryptographyService) : base(dataRepository)
         {
+            _emailAccountService = emailAccountService;
+            _cryptographyService = cryptographyService;
         }
 
         public bool SendEmail(EmailMessage emailMessage)
         {
+            //we need an email account
+            var emailAccount = emailMessage.EmailAccount ?? _emailAccountService.FirstOrDefault(x => x.IsDefault);
+            if (emailAccount == null)
+                return false; //can't send email without account
+
             var message = new MailMessage();
             //from, to, reply to
-            message.From = new MailAddress(emailMessage.FromEmail, emailMessage.FromName);
+            message.From = new MailAddress(emailAccount.Email, emailAccount.FromName);
 
             if (emailMessage.Tos == null && emailMessage.Ccs == null && emailMessage.Bccs == null)
             {
@@ -66,7 +77,8 @@ namespace mobSocial.Services.Emails
                     message.Attachments.Add(attachment);
 
             //send email
-            var emailAccount = emailMessage.EmailAccount;
+
+            var password = _cryptographyService.Decrypt(emailAccount.Password);
             using (var smtpClient = new SmtpClient())
             {
                 smtpClient.UseDefaultCredentials = emailAccount.UseDefaultCredentials;
@@ -75,7 +87,7 @@ namespace mobSocial.Services.Emails
                 smtpClient.EnableSsl = emailAccount.UseSsl;
                 smtpClient.Credentials = emailAccount.UseDefaultCredentials ?
                     CredentialCache.DefaultNetworkCredentials :
-                    new NetworkCredential(emailAccount.UserName, emailAccount.Password);
+                    new NetworkCredential(emailAccount.UserName, password);
                 try
                 {
                     smtpClient.Send(message);
@@ -91,6 +103,9 @@ namespace mobSocial.Services.Emails
             }
         }
 
-        
+        public void Queue(EmailMessage emailMessage)
+        {
+            Insert(emailMessage);
+        }
     }
 }

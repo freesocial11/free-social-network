@@ -221,6 +221,7 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\EducationController.cs" />
+    <Compile Include="Controllers\EmailAccountController.cs" />
     <Compile Include="Controllers\EntityPropertyController.cs" />
     <Compile Include="Controllers\FollowController.cs" />
     <Compile Include="Controllers\LikeController.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\EmailExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\MediaExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\SchoolExtensions.cs" />
@@ -276,6 +278,8 @@
     <Compile Include="Models\Education\SchoolEntityModel.cs" />
     <Compile Include="Models\Education\SchoolResponseModel.cs" />
     <Compile Include="Models\Education\SchoolSearchModel.cs" />
+    <Compile Include="Models\Emails\EmailAccountEntityModel.cs" />
+    <Compile Include="Models\Emails\EmailAccountGetModel.cs" />
     <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
     <Compile Include="Models\Media\MediaReponseModel.cs" />
@@ -316,6 +320,7 @@
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
     <Compile Include="Models\Users\ChangePasswordModel.cs" />
     <Compile Include="Models\Users\RoleResponseModel.cs" />
+    <Compile Include="Models\Users\UserActivationModel.cs" />
     <Compile Include="Models\Users\UserEntityPublicModel.cs" />
     <Compile Include="Models\Users\UserEntityModel.cs" />
     <Compile Include="Models\Users\UserGetModel.cs" />

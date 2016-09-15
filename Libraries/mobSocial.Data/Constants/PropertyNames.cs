@@ -13,6 +13,8 @@ namespace mobSocial.Data.Constants
 
         public const string DefaultTimeZoneId = "DefaultTimeZoneId";
 
+        public const string ActivationCode = "ActivationCode";
+
         public static bool IsSystemPropertyName(string propertyName)
         {
             return new[]

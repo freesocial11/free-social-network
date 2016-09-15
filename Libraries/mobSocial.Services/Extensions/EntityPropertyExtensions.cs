@@ -94,5 +94,15 @@ namespace mobSocial.Services.Extensions
             else
                 entityPropertyService.Update(property);
         }
+
+        public static void DeleteProperty<T>(this IHasEntityProperties<T> entity, string propertyName, string propertyValue = null)
+            where T : BaseEntity
+        {
+            var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
+            if (propertyValue == null)
+                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName);
+            else
+                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.Value == propertyValue);
+        }
     }
 }

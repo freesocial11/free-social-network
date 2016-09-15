@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Attributes\TokenFieldAttribute.cs" />
     <Compile Include="Constants\CreditContextKeyNames.cs" />
+    <Compile Include="Constants\EmailTemplateNames.cs" />
     <Compile Include="Constants\PaymentParameterNames.cs" />
     <Compile Include="Constants\PictureSizeNames.cs" />
     <Compile Include="Constants\PropertyNames.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Entity\Emails\EmailAccount.cs" />
     <Compile Include="Entity\Emails\EmailMessage.cs" />
     <Compile Include="Entity\Emails\EmailTemplate.cs" />
+    <Compile Include="Entity\Settings\UrlSettings.cs" />
     <Compile Include="Entity\Tokens\Token.cs" />
     <Compile Include="Entity\EntityProperties\EntityProperty.cs" />
     <Compile Include="Entity\EventPages\EventPage.cs" />

@@ -6,6 +6,12 @@ namespace mobSocial.Services.Emails
 {
     public interface IEmailSender
     {
+        void SendUserRegisteredMessage(User user, bool withAdmin = true);
+
+        void SendUserActivationLinkMessage(User user, string activationUrl);
+
+        void SendUserActivatedMessage(User user);
+
         int SendFriendRequestNotification(User user, int friendRequestCount);
 
         int SendEventInvitationNotification(User user);

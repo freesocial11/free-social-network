@@ -13,10 +13,6 @@ namespace mobSocial.Data.Entity.Emails
     /// </summary>
     public class EmailMessage : BaseEntity
     {
-        public string FromEmail { get; set; }
-
-        public string FromName { get; set; }
-
         [NotMapped]
         public IList<UserInfo> Tos { get; set; }
 
@@ -61,6 +57,8 @@ namespace mobSocial.Data.Entity.Emails
             }
             
         }
+        [NotMapped]
+        public EmailTemplate OriginalEmailTemplate { get; set; }
 
         public string AttachmentsSerialized
         {

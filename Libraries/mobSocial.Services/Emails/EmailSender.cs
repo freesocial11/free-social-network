@@ -1,11 +1,86 @@
-﻿using mobSocial.Data.Entity.Battles;
+﻿using System.Collections.Generic;
+using mobSocial.Data.Constants;
+using mobSocial.Data.Entity.Battles;
+using mobSocial.Data.Entity.Emails;
+using mobSocial.Data.Entity.Tokens;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Services.Tokens;
+using mobSocial.Services.Users;
 
 namespace mobSocial.Services.Emails
 {
     public class EmailSender : IEmailSender
     {
+        #region fields
+        private readonly IEmailService _emailService;
+        private readonly ITokenProcessor _tokenProcessor;
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly IUserService _userService;
+        #endregion
+
+        public EmailSender(IEmailService emailService, ITokenProcessor tokenProcessor, IEmailTemplateService emailTemplateService, IUserService userService)
+        {
+            _emailService = emailService;
+            _tokenProcessor = tokenProcessor;
+            _emailTemplateService = emailTemplateService;
+            _userService = userService;
+        }
+        /// <summary>
+        /// Loads a named email template from database and replaces tokens with passed entities, and returns a new email message object with template values
+        /// </summary>
+        /// <param name="templateName"></param>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        private EmailMessage LoadAndProcessTemplate(string templateName, params object[] entities)
+        {
+            //first load the template from database
+            var template = _emailTemplateService.FirstOrDefault(x => x.TemplateSystemName == templateName, earlyLoad: x => x.EmailAccount);
+            if (template == null)
+                return null;
+
+            var processedTemplateString = _tokenProcessor.ProcessAllTokens(template.Template, entities);
+            var emailAccount = template.EmailAccount;
+            //create a new email message
+            var emailMessage = new EmailMessage() {
+                IsEmailBodyHtml = true,
+                EmailBody = processedTemplateString,
+                EmailAccount = emailAccount,
+                Subject = template.Subject,
+                OriginalEmailTemplate = template
+            };
+
+            return emailMessage;
+        }
+
+
+        public void SendUserRegisteredMessage(User user, bool withAdmin = true)
+        {
+            var message = LoadAndProcessTemplate(EmailTemplateNames.UserRegisteredMessage, user);
+            message.Tos.Add(new EmailMessage.UserInfo(user.Name, user.Email));
+             _emailService.Queue(message);
+            if (withAdmin) //send to admin if needed
+            {
+                message = LoadAndProcessTemplate(EmailTemplateNames.UserRegisteredMessageToAdmin, user);
+                message.Tos.Add(new EmailMessage.UserInfo("Administrator", message.OriginalEmailTemplate.AdministrationEmail));
+                _emailService.Queue(message);
+            }
+        }
+
+        public void SendUserActivationLinkMessage(User user, string activationUrl)
+        {
+            var message = LoadAndProcessTemplate(EmailTemplateNames.UserActivationLinkMessage, user);
+            message.Tos.Add(new EmailMessage.UserInfo(user.Name, user.Email));
+            _emailService.Queue(message);
+        }
+
+        public void SendUserActivatedMessage(User user)
+        {
+            var message = LoadAndProcessTemplate(EmailTemplateNames.UserActivatedMessage, user);
+            message.Tos.Add(new EmailMessage.UserInfo(user.Name, user.Email));
+            _emailService.Queue(message);
+        }
+
         public int SendFriendRequestNotification(User user, int friendRequestCount)
         {
             throw new System.NotImplementedException();

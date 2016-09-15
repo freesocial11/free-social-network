@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Http;
 using mobSocial.Core;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Extensions;
+using mobSocial.Services.Emails;
+using mobSocial.Services.EntityProperties;
+using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Security;
 using mobSocial.Services.Social;
@@ -12,6 +18,7 @@ using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Authentication;
+using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -30,12 +37,15 @@ namespace mobSocial.WebApi.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly SecuritySettings _securitySettings;
         private readonly UserSettings _userSettings;
+        private readonly IEmailSender _emailSender;
+        private readonly UrlSettings _urlSettings;
+        private readonly IEntityPropertyService _entityPropertyService;
         #endregion
 
         #region ctor
 
         public AuthenticationController(IUserService userService,
-            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService)
+            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService, IEmailSender emailSender, UrlSettings urlSettings, IEntityPropertyService entityPropertyService)
         {
             _userService = userService;
             _cryptographyService = cryptographyService;
@@ -47,6 +57,9 @@ namespace mobSocial.WebApi.Controllers
             _securitySettings = securitySettings;
             _userSettings = userSettings;
             _roleService = roleService;
+            _emailSender = emailSender;
+            _urlSettings = urlSettings;
+            _entityPropertyService = entityPropertyService;
         }
 
         #endregion
@@ -106,16 +119,15 @@ namespace mobSocial.WebApi.Controllers
             if (!ModelState.IsValid)
                 return RespondFailure("All the fields are required to complete the registration", contextName);
 
-            if(string.Compare(registerModel.Password, registerModel.ConfirmPassword, StringComparison.InvariantCulture) != 0)
+            if (string.Compare(registerModel.Password, registerModel.ConfirmPassword, StringComparison.InvariantCulture) != 0)
                 return RespondFailure("The passwords do not match", contextName);
 
-            if(!registerModel.Agreement)
+            if (!registerModel.Agreement)
                 return RespondFailure("You must agree to the terms & conditions to complete the registration", contextName);
 
             //we can now try to register this user
             //so create a new object
-            var user = new User()
-            {
+            var user = new User() {
                 Email = registerModel.Email,
                 FirstName = registerModel.FirstName,
                 LastName = registerModel.LastName,
@@ -130,13 +142,93 @@ namespace mobSocial.WebApi.Controllers
             };
             //register this user
             var registrationStatus = _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
-            if(registrationStatus == UserRegistrationStatus.FailedAsEmailAlreadyExists)
+            if (registrationStatus == UserRegistrationStatus.FailedAsEmailAlreadyExists)
                 return RespondFailure("A user with this email is already registered", contextName);
 
             //assign role to the user
             _roleService.AssignRoleToUser(SystemRoleNames.Registered, user);
-            return RespondSuccess();
 
+            //so we are done, send a notification to user and admin
+            _emailSender.SendUserRegisteredMessage(user);
+
+            if (_userSettings.UserRegistrationDefaultMode == RegistrationMode.WithActivationEmail)
+            {
+                SendActivationEmail(user);
+            }
+            return RespondSuccess();
+        }
+
+        [HttpPost]
+        [Route("activate")]
+        public IHttpActionResult Activate(UserActivationModel activationModel)
+        {
+            const string contextName = "activate";
+            if(string.IsNullOrEmpty(activationModel.ActivationCode))
+                return RespondFailure("Invalid activation code", contextName);
+
+            if(_userSettings.RequireEmailForUserActivation && string.IsNullOrEmpty(activationModel.Email))
+                return RespondFailure("Invalid email", contextName);
+
+            //let's see if we have correct activation code
+            if (_userSettings.RequireEmailForUserActivation)
+            {
+                //let's find the user who has this email
+                var user = _userService.FirstOrDefault(x => x.Email == activationModel.Email);
+                if (user == null)
+                    return RespondFailure("The email is not registered", contextName);
+
+                if (user.Active)
+                    return RespondFailure("The user is already active", contextName);
+
+                //get the activation code and verify if it's same
+                var savedActivationCode = user.GetPropertyValueAs<string>(PropertyNames.ActivationCode);
+
+                if (string.Compare(activationModel.ActivationCode, savedActivationCode, StringComparison.Ordinal) != 0)
+                    return RespondFailure("Invalid activation code", contextName);
+
+                //activate the user now
+                user.Active = true;
+                _userService.Update(user);
+
+                //delete the activation code as well
+                user.DeleteProperty(PropertyNames.ActivationCode);
+
+                //send notification
+                _emailSender.SendUserActivatedMessage(user);
+                return RespondSuccess();
+            }
+            else
+            {
+                //we just need to find a user whose activation code matches with provided code and mark it active
+                var property = _entityPropertyService.FirstOrDefault(
+                    x =>
+                        x.PropertyName == PropertyNames.ActivationCode && x.Value == activationModel.ActivationCode &&
+                        x.EntityName == typeof(User).Name);
+
+                if(property == null)
+                    return RespondFailure("Invalid activation code", contextName);
+
+                //get the user with this property
+                var user = _userService.Get(property.Value.GetInteger(false));
+                if(user == null)
+                    return RespondFailure("The user account doesn't exist or has been deleted", contextName);
+
+                if (user.Active)
+                    return RespondFailure("The user is already active", contextName);
+
+                //mark the user as active
+                user.Active = true;
+                _userService.Update(user);
+
+                //delete the activation code as well
+                user.DeleteProperty(PropertyNames.ActivationCode);
+
+                //send notification
+                _emailSender.SendUserActivatedMessage(user);
+
+                return RespondSuccess();
+
+            }
         }
 
         #endregion
@@ -155,6 +247,28 @@ namespace mobSocial.WebApi.Controllers
             var hashedPassword = _cryptographyService.GetHashedPassword(password, user.PasswordSalt, user.PasswordFormat);
             return user.Password == hashedPassword;
         }
+
+        [NonAction]
+        private void SendActivationEmail(User user)
+        {
+            //we need to send activation email, so let's first generate the activation code.
+            //we use random password generator to get a unique activation code
+            var activationCode = _cryptographyService.GetHashedPassword(Guid.NewGuid().ToString(), user.PasswordSalt,
+                PasswordFormat.Sha256Hashed);
+            //save the property value
+            user.SetPropertyValue(PropertyNames.ActivationCode, activationCode);
+
+            //and send the activation url with email
+            var activationUrl = WebHelper.ParseUrl(_urlSettings.ActivationPageUrl, new Dictionary<string, string>()
+            {
+                {"code", activationCode}
+            });
+
+            //send the email now
+            _emailSender.SendUserActivationLinkMessage(user, activationUrl.AbsoluteUri);
+
+        }
+
         #endregion
     }
 }
