@@ -2,10 +2,13 @@
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Initializer;
+using mobSocial.Data.Entity.Emails;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Migrations;
+using mobSocial.Services.Emails;
+using mobSocial.Services.Security;
 using mobSocial.Services.Settings;
 using mobSocial.Services.Users;
 
@@ -41,6 +44,12 @@ namespace mobSocial.Services.Installation
 
             //then the user
             SeedDefaultUser(defaultUserEmail, defaultUserPassword);
+
+            //seed email account
+            SeedEmailAccount(installDomain);
+
+            //update config file
+            UpdateWebConfig();
         }
         /// <summary>
         /// Seed roles
@@ -148,5 +157,37 @@ namespace mobSocial.Services.Installation
             });
         }
 
+        /// <summary>
+        /// Seed email accounts
+        /// </summary>
+        private void SeedEmailAccount(string installDomain)
+        {
+            var emailAccountService = mobSocialEngine.ActiveEngine.Resolve<IEmailAccountService>();
+            emailAccountService.Insert(new EmailAccount()
+            {
+                Email = "mailer@" + installDomain,
+                FromName = "MobSocial Network",
+                Host = "smtp." + installDomain,
+                IsDefault = true,
+                UseDefaultCredentials = false,
+                UseSsl = true,
+                UserName = "mailer@" + installDomain,
+                Password = "password"
+            });
+        }
+
+        /// <summary>
+        /// Update the webconfig file with required settings
+        /// </summary>
+        private void UpdateWebConfig()
+        {
+            var applicationConfiguration = mobSocialEngine.ActiveEngine.Resolve<IApplicationConfiguration>();
+            var cryptographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
+            var key = cryptographyService.GetRandomPassword();
+            var salt = cryptographyService.GetRandomPassword();
+
+            applicationConfiguration.SetSetting("encryptionKey", key);
+            applicationConfiguration.SetSetting("encryptionSalt", salt);
+        }
     }
 }
