@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Web;
 
 namespace mobSocial.Core
 {
@@ -27,6 +29,34 @@ namespace mobSocial.Core
         public static string GetClientIpAddress()
         {
             return HttpContext.Current.Request.UserHostAddress;
+        }
+        /// <summary>
+        /// Parses a url and returns a uri object
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static Uri ParseUrl(string url, IDictionary<string, string> parameters = null)
+        {
+            try
+            {
+                var builder = new UriBuilder(url);
+                if (parameters != null)
+                {
+                    var queryParams = HttpUtility.ParseQueryString(string.Empty);
+                    foreach (var p in parameters)
+                        queryParams[p.Key] = p.Value;
+
+                    builder.Query = queryParams.ToString();
+                }
+                return builder.Uri;
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
+            
+
         }
     }
 }
