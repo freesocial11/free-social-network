@@ -9,6 +9,13 @@ namespace mobSocial.Services.Security
 {
     public class CryptographyService : ICryptographyService
     {
+        private IApplicationConfiguration _applicationConfiguration;
+
+        public CryptographyService(IApplicationConfiguration applicationConfiguration)
+        {
+            _applicationConfiguration = applicationConfiguration;
+        }
+
         public string CreateSalt(int size)
         {
             var random = new RNGCryptoServiceProvider();
@@ -72,12 +79,12 @@ namespace mobSocial.Services.Security
             return algorithmName;
         }
 
-        public string GetRandomPassword()
+        public string GetRandomPassword(int length = 15)
         {
             var random = new RNGCryptoServiceProvider();
 
             // Empty password array
-            var password = new byte[15];
+            var password = new byte[length];
 
             // Build the random bytes
             random.GetBytes(password);
@@ -171,6 +178,20 @@ namespace mobSocial.Services.Security
                 }
             }
             return plainText;
+        }
+
+        public string Encrypt(string plainText)
+        {
+            var key = _applicationConfiguration.GetSetting("encryptionKey");
+            var salt = _applicationConfiguration.GetSetting("encryptionSalt");
+            return Encrypt(plainText, key, salt);
+        }
+
+        public string Decrypt(string cipherText)
+        {
+            var key = _applicationConfiguration.GetSetting("encryptionKey");
+            var salt = _applicationConfiguration.GetSetting("encryptionSalt");
+            return Decrypt(cipherText, key, salt);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace mobSocial.Services.Security
         /// Gets a random alphanumeric password
         /// </summary>
         /// <returns></returns>
-        string GetRandomPassword();
+        string GetRandomPassword(int length = 15);
 
         /// <summary>
         /// Encrypts the plain text using specified key and salt
@@ -50,5 +50,15 @@ namespace mobSocial.Services.Security
         /// <param name="salt"></param>
         /// <returns></returns>
         string Decrypt(string cipherText, string key, string salt);
+
+        /// <summary>
+        /// Encrypts plain text with default encryption key & salt application configuration
+        /// </summary>
+        string Encrypt(string plainText);
+
+        /// <summary>
+        /// Encrypts plain text with default encryption key & salt from application configuration
+        /// </summary>
+        string Decrypt(string cipherText);
     }
 }

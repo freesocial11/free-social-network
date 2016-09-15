@@ -152,6 +152,8 @@
     <Compile Include="Plugins\PluginFinderService.cs" />
     <Compile Include="Plugins\PluginInstallerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\ApplicationConfiguration.cs" />
+    <Compile Include="Security\IApplicationConfiguration.cs" />
     <Compile Include="Social\CommentService.cs" />
     <Compile Include="Social\FollowService.cs" />
     <Compile Include="Social\LikeService.cs" />
