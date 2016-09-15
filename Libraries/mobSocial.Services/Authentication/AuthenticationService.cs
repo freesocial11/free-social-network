@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web;
 using System.Web.Security;
 using mobSocial.Data.Entity.Settings;
@@ -133,7 +134,7 @@ namespace mobSocial.Services.Authentication
             if (!int.TryParse(ticket.UserData, out userId))
                 return null;
 
-            var userEntity = _userService.Get(userId, x => x.UserRoles);
+            var userEntity = _userService.Get(userId, x => x.UserRoles.Select(y => y.Role));
             if (userEntity == null || !userEntity.Active || userEntity.Deleted || userEntity.IsSystemAccount || !userEntity.IsRegistered())
                 return null;
 
