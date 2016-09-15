@@ -44,7 +44,7 @@
              {
                  abstract: true,
                  resolve: {
-                     auth: function (authProvider) {
+                     auth: function(authProvider) {
                          return authProvider.isLoggedIn();
                      }
                  },
@@ -61,7 +61,7 @@
                  url: adminPrefix + "/users",
                  template: "<div ui-view></div>",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: function(controllerProvider) {
                          return controllerProvider.resolveBundles(["fileUpload", "users"]);
                      }
                  }
@@ -79,24 +79,44 @@
                  templateUrl: "pages/users/user.edit.html",
                  controller: "userEditController"
              })
-             .state('layoutAdministration.users.edit.basic', {
+             .state('layoutAdministration.users.edit.basic',
+             {
                  url: '',
                  templateUrl: 'pages/users/user.edit.basic.html'
              })
-             .state('layoutAdministration.users.edit.timeline', {
+             .state('layoutAdministration.users.edit.timeline',
+             {
                  url: '/timeline',
                  templateUrl: 'pages/users/user.edit.timeline.html'
              })
              .state("layoutAdministration.settings",
              {
                  url: adminPrefix + "/settings/:settingType",
-                 templateUrl: function (stateParams) { return "pages/settings/" + stateParams.settingType + "Settings.edit.html" },
-                 controller: "settingEditController",
+                 templateUrl: function(stateParams) {
+                     return "pages/settings/" + stateParams.settingType + "Settings.edit.html"
+                 },
+                 controllerProvider: function($stateParams) {
+                     if (!$stateParams.settingType)
+                         return "settingEditController";
+                     switch ($stateParams.settingType) {
+                     case "email":
+                         return "emailAccountController";
+                     default:
+                         return "settingEditController";
+
+                     }
+                 },
                  resolve: {
-                     resolver: function (controllerProvider) {
-                         return controllerProvider.resolveBundle("settings");
+                     resolver: function(controllerProvider) {
+                         return controllerProvider.resolveBundles(["settings", "emailAccounts"]);
                      }
                  }
+             })
+             .state("layoutAdministration.emailAccount",
+             {
+                 url: adminPrefix + "/emailaccount/?id",
+                 templateUrl: "/pages/email-accounts/emailAccount.editor.html",
+                 controller: "emailAccountController"
              });
 
          $stateProvider

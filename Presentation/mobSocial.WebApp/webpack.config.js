@@ -63,6 +63,10 @@ module.exports = {
             "./app/admin/users/userEditController.js",
             "./app/public/users/userProfileController.js"
         ],
+        emailAccounts: [
+            "./app/admin/email-accounts/emailAccountService.js",
+            "./app/admin/email-accounts/emailAccountController.js"
+        ],
         settings: [
             "./app/common/services/settingService.js",
             "./app/admin/settings/settingEditController.js"
