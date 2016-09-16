@@ -3,9 +3,11 @@ using System.Net;
 using System.Net.Mail;
 using mobSocial.Core.Data;
 using mobSocial.Core.Exception;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Emails;
 using mobSocial.Services.Security;
+using mobSocial.Services.VerboseReporter;
 
 namespace mobSocial.Services.Emails
 {
@@ -20,7 +22,7 @@ namespace mobSocial.Services.Emails
             _cryptographyService = cryptographyService;
         }
 
-        public bool SendEmail(EmailMessage emailMessage)
+        public bool SendEmail(EmailMessage emailMessage, bool verboseErrorOnFailure = false)
         {
             //we need an email account
             var emailAccount = emailMessage.EmailAccount ?? _emailAccountService.FirstOrDefault(x => x.IsDefault);
@@ -96,8 +98,13 @@ namespace mobSocial.Services.Emails
                     Update(emailMessage);
                     return true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    if (verboseErrorOnFailure)
+                    {
+                        var verboseReporterService = mobSocialEngine.ActiveEngine.Resolve<IVerboseReporterService>();
+                        verboseReporterService.ReportError(ex.Message, "send_email");
+                    }
                     return false;
                 }
             }

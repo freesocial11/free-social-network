@@ -8,7 +8,7 @@ namespace mobSocial.Services.Emails
         /// <summary>
         /// Sends an email with settings specified in the email info object and returns true if sending succeeds
         /// </summary>
-        bool SendEmail(EmailMessage emailMessage);
+        bool SendEmail(EmailMessage emailMessage, bool verboseErrorOnFailure = false);
 
         void Queue(EmailMessage emailMessage);
     }
