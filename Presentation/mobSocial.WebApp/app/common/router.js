@@ -115,7 +115,7 @@
              .state("layoutAdministration.emailAccount",
              {
                  url: adminPrefix + "/emailaccount/?id",
-                 templateUrl: "/pages/email-accounts/emailAccount.editor.html",
+                 templateUrl: "/pages/emails/emailAccount.editor.html",
                  controller: "emailAccountController",
                  resolve: {
                      resolver: function (controllerProvider) {
