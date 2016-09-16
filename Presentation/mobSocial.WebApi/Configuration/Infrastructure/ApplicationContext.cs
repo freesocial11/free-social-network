@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Linq;
+using System.Web;
 using DryIoc;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.Currency;
@@ -73,7 +74,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             //set current user if login succeeded
             if (loginStatus == LoginStatus.Success)
             {
-                _user = mobSocialEngine.ActiveEngine.Resolve<IUserService>().First(x => x.Email == email);
+                _user = mobSocialEngine.ActiveEngine.Resolve<IUserService>().First(x => x.Email == email, earlyLoad: x=> x.UserRoles.Select(y => y.Role));
             }
             return loginStatus;
         }
