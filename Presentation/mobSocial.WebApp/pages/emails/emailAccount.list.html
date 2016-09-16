@@ -4,7 +4,7 @@
             Email Settings
         </h1>
         <div class="pull-right">
-            <a ui-sref="layoutAdministration.emailAccount({ id:0 })" class="btn btn-primary"><i class="fa fa-plus"></i> Add Email Account</a>
+            <a ui-sref="layoutAdministration.emails.accountedit({ id:0 })" class="btn btn-primary"><i class="fa fa-plus"></i> Add Email Account</a>
         </div>
     </div>
     <div class="box-body no-padding">
@@ -29,7 +29,7 @@
                                 <strong class="margin-r-5">{{emailAccount.Email}}</strong>
                             </td>
                             <td>
-                                <a class="btn btn-default btn-sm pull-right"  ui-sref="layoutAdministration.emailAccount({ id:emailAccount.Id })">Edit</a>
+                                <a class="btn btn-default btn-sm pull-right"  ui-sref="layoutAdministration.emails.accountedit({ id:emailAccount.Id })">Edit</a>
                             </td>
                         </tr>
                     </table>

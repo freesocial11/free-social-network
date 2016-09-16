@@ -1,7 +1,7 @@
-﻿<div class="box">
+﻿<div class="box" ng-init="getEmailAccount()">
     <div class="box-header with-border">
         <h1 class="box-title">
-            Email Account Editor <small><a  ui-sref="layoutAdministration.settings({ settingType: 'email' })" ui-sref-opts="{reload: true}"> <i class="fa fa fa-arrow-circle-left"></i> back to email accounts</a></small>
+            Email Account Editor <small><a  ui-sref="layoutAdministration.emails.accountlist" ui-sref-opts="{reload: true}"> <i class="fa fa fa-arrow-circle-left"></i> back to email accounts</a></small>
         </h1>
     </div>
     <div class="box-body no-padding">
@@ -76,7 +76,7 @@
                     <div class="form-group">
                         <div class="col-md-10 col-md-offset-2">
                             <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-                            <button type="button" class="btn btn-default" ui-sref="layoutAdministration.settings({ settingType: 'email' })">Cancel</button>
+                            <button type="button" class="btn btn-default" ui-sref="layoutAdministration.emails.accountlist">Cancel</button>
                         </div>
                     </div>
                 </div>

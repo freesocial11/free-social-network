@@ -99,8 +99,6 @@
                      if (!$stateParams.settingType)
                          return "settingEditController";
                      switch ($stateParams.settingType) {
-                     case "email":
-                         return "emailAccountController";
                      default:
                          return "settingEditController";
 
@@ -108,21 +106,32 @@
                  },
                  resolve: {
                      resolver: function(controllerProvider) {
-                         return controllerProvider.resolveBundles(["settings", "emailAccounts"]);
+                         return controllerProvider.resolveBundles(["settings"]);
                      }
                  }
              })
-             .state("layoutAdministration.emailAccount",
+             .state("layoutAdministration.emails",
              {
-                 url: adminPrefix + "/emailaccount/?id",
-                 templateUrl: "/pages/emails/emailAccount.editor.html",
+                 abstract: true,
+                 url: adminPrefix + "/emailaccounts",
+                 template: "<div ui-view></div>",
                  controller: "emailAccountController",
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider.resolveBundles(["emailAccounts"]);
                      }
                  }
-
+             })
+             .state("layoutAdministration.emails.accountlist",
+             {
+                 url: "",
+                 templateUrl: "/pages/emails/emailAccount.list.html"
+             })
+             .state("layoutAdministration.emails.accountedit",
+             {
+                 url: "/emailaccount/:id",
+                 controller: "emailAccountController",
+                 templateUrl: "/pages/emails/emailAccount.editor.html"
              });
 
          $stateProvider
