@@ -17,9 +17,9 @@
                             <th>Email</th>
                             <th></th>
                         </tr>
-                        <tr>
+                        <tr ng-if="emailAccounts && emailAccounts.length == 0">
                             <td colspan="2">
-                                <div ng-if="emailAccounts && emailAccounts.length == 0">
+                                <div>
                                     You don't have any email accounts
                                 </div>
                             </td>
@@ -29,7 +29,7 @@
                                 <strong class="margin-r-5">{{emailAccount.Email}}</strong>
                             </td>
                             <td>
-                                <a class="btn btn-default btn-sm pull-right" ng-click="getEmailAccount(emailAccount.Id)">Edit</a>
+                                <a class="btn btn-default btn-sm pull-right"  ui-sref="layoutAdministration.emailAccount({ id:emailAccount.Id })">Edit</a>
                             </td>
                         </tr>
                     </table>

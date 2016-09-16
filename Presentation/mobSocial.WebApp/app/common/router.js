@@ -116,7 +116,13 @@
              {
                  url: adminPrefix + "/emailaccount/?id",
                  templateUrl: "/pages/email-accounts/emailAccount.editor.html",
-                 controller: "emailAccountController"
+                 controller: "emailAccountController",
+                 resolve: {
+                     resolver: function (controllerProvider) {
+                         return controllerProvider.resolveBundles(["emailAccounts"]);
+                     }
+                 }
+
              });
 
          $stateProvider

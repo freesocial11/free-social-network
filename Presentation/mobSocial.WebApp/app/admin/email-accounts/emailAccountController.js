@@ -1,6 +1,6 @@
 ﻿window.mobSocial.lazy.controller("emailAccountController",
 [
-    "$scope", "emailAccountService", function($scope, emailAccountService) {
+    "$scope", "emailAccountService", "$stateParams", function($scope, emailAccountService, $stateParams) {
         $scope.getEmailAccountsModel = {
             page: 1,
             count: 15
@@ -17,7 +17,9 @@
                 });
         }
 
-        $scope.getEmailAccount = function(id) {
+        $scope.getEmailAccount = function (id) {
+            if (id == 0)
+                return;
             emailAccountService.get(id,
                 function(response) {
                     if (response.Success) {
@@ -50,8 +52,6 @@
                         if (!found) {
                             $scope.emailAccounts.push($scope.emailAccount);
                         }
-
-                        $scope.emailAccount = null;
                     }
                 },
                 function() {
@@ -77,5 +77,20 @@
 
                 });
         }
+
+        $scope.sendTestEmail = function() {
+            emailAccountService.postTestEmail($scope.emailAccount,
+                function (response) {
+                    if (response.Success) {
+                       
+                    }
+                },
+                function () {
+
+                });
+        }
+
+        if ($stateParams.id) //initial load for editing
+            $scope.getEmailAccount($stateParams.id);
     }
 ]);

@@ -1,5 +1,5 @@
 ﻿window.mobSocial.lazy.service("emailAccountService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
-    var apiEndPoint = globalApiEndPoint + "/emailAccounts";
+    var apiEndPoint = globalApiEndPoint + "/emailaccounts";
     this.post = function (emailAccount, success, error) {
         webClientService.post(apiEndPoint + "/post", emailAccount, success, error);
     };
@@ -18,6 +18,10 @@
 
     this.get = function (id, success, error) {
         webClientService.get(apiEndPoint + "/get/" + id, null, success, error);
+    };
+
+    this.postTestEmail = function (emailAccount, success, error) {
+        webClientService.post(apiEndPoint + "/test-email/post", emailAccount, success, error);
     };
 
 }]);
