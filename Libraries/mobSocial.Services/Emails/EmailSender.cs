@@ -47,12 +47,31 @@ namespace mobSocial.Services.Emails
                 EmailBody = processedTemplateString,
                 EmailAccount = emailAccount,
                 Subject = template.Subject,
-                OriginalEmailTemplate = template
+                OriginalEmailTemplate = template,
+                Tos = new List<EmailMessage.UserInfo>()
             };
 
             return emailMessage;
         }
 
+
+        public bool SendTestEmail(string email, EmailAccount emailAccount)
+        {
+            var subject = "MobSocial Test Email";
+            var message = "Thank you for using mobSocial. This is a sample email to test if emails are functioning.";
+            //create a new email message
+            var emailMessage = new EmailMessage() {
+                IsEmailBodyHtml = true,
+                EmailBody = message,
+                EmailAccount = emailAccount,
+                Subject = subject,
+                Tos = new List<EmailMessage.UserInfo>()
+                {
+                    new EmailMessage.UserInfo("WebAdmin", email)
+                }
+            };
+            return _emailService.SendEmail(emailMessage, true);
+        }
 
         public void SendUserRegisteredMessage(User user, bool withAdmin = true)
         {

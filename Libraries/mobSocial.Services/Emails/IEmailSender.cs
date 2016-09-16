@@ -1,4 +1,5 @@
 ﻿using mobSocial.Data.Entity.Battles;
+using mobSocial.Data.Entity.Emails;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 
@@ -6,6 +7,8 @@ namespace mobSocial.Services.Emails
 {
     public interface IEmailSender
     {
+        bool SendTestEmail(string email, EmailAccount emailAccount);
+
         void SendUserRegisteredMessage(User user, bool withAdmin = true);
 
         void SendUserActivationLinkMessage(User user, string activationUrl);
