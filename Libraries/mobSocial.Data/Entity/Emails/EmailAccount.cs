@@ -22,4 +22,6 @@ namespace mobSocial.Data.Entity.Emails
 
         public bool IsDefault { get; set; }
     }
+
+    public class EmailAccountMap: BaseEntityConfiguration<EmailAccount> { }
 }
