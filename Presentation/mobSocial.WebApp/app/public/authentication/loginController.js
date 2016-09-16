@@ -8,7 +8,7 @@
                 Persist: false,
                 ReturnUrl: $location.search().ReturnUrl
             };
-        };
+        }();
 
         $scope.login = function() {
             loginService.login($scope.dataModel,
