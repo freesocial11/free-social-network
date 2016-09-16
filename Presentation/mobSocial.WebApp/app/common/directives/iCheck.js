@@ -22,6 +22,15 @@
                     scope.ngModel = false;
                 });
             });
+
+            scope.$watch("ngModel",
+                function(newValue) {
+                    if (scope.ngModel)
+                        element.parent().addClass("checked");
+                    else
+                        element.parent().removeClass("checked");
+                });
+            
         }
     };
 });
