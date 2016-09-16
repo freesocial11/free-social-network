@@ -17,13 +17,15 @@ namespace mobSocial.WebApi.Controllers
         #region variables
         private readonly IEmailAccountService _emailAccountService;
         private readonly ICryptographyService _cryptographyService;
+        private readonly IEmailSender _emailSender;
         #endregion
 
         #region ctor
-        public EmailAccountController(IEmailAccountService emailAccountService, ICryptographyService cryptographyService)
+        public EmailAccountController(IEmailAccountService emailAccountService, ICryptographyService cryptographyService, IEmailSender emailSender)
         {
             _emailAccountService = emailAccountService;
             _cryptographyService = cryptographyService;
+            _emailSender = emailSender;
         }
 
         #endregion
@@ -41,8 +43,7 @@ namespace mobSocial.WebApi.Controllers
             //get the email accounts
             var emailAccounts = _emailAccountService.Get(page: requestModel.Page, count: requestModel.Count).ToList();
             var model = emailAccounts.Select(x => x.ToEntityModel());
-            return RespondSuccess(new
-            {
+            return RespondSuccess(new {
                 EmailAccounts = model
             });
         }
@@ -53,7 +54,7 @@ namespace mobSocial.WebApi.Controllers
         {
             //get the account
             var emailAccount = _emailAccountService.Get(id);
-            if(emailAccount == null)
+            if (emailAccount == null)
                 return NotFound();
             return RespondSuccess(new {
                 EmailAccount = emailAccount.ToEntityModel()
@@ -64,9 +65,8 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Post(EmailAccountEntityModel entityModel)
         {
-           //create a new email account
-            var emailAccount = new EmailAccount()
-            {
+            //create a new email account
+            var emailAccount = new EmailAccount() {
                 Id = entityModel.Id,
                 Email = entityModel.Email,
                 UserName = entityModel.UserName,
@@ -89,6 +89,40 @@ namespace mobSocial.WebApi.Controllers
                 EmailAccount = emailAccount.ToEntityModel()
             });
 
+        }
+
+        [Route("test-email/post")]
+        [HttpPost]
+        public IHttpActionResult TestEmail(EmailAccountEntityModel entityModel)
+        {
+            const string contextName = "post_testemail";
+            var emailAccount = new EmailAccount() {
+                Id = entityModel.Id,
+                Email = entityModel.Email,
+                UserName = entityModel.UserName,
+                FromName = entityModel.FromName,
+                Host = entityModel.Host,
+                UseSsl = entityModel.UseSsl,
+                Port = entityModel.Port,
+                UseDefaultCredentials = entityModel.UseDefaultCredentials,
+            };
+
+            if (entityModel.Id != 0 && string.IsNullOrEmpty(entityModel.Password))
+            {
+                //a saved account is being tested, we'll need to retrieve the password from database to use appropriate password
+                var savedEmailAccount = _emailAccountService.Get(entityModel.Id);
+                if (savedEmailAccount != null)
+                {
+                    emailAccount.Password = savedEmailAccount.Password;
+                }
+            }
+            else
+            {
+                emailAccount.Password = _cryptographyService.Encrypt(entityModel.Password);
+            }
+
+            var result = _emailSender.SendTestEmail(entityModel.TestEmail, emailAccount);
+            return result ? RespondSuccess("Successfully sent test email", contextName) : RespondFailure();
         }
 
         [Route("put")]

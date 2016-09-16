@@ -21,5 +21,7 @@ namespace mobSocial.WebApi.Models.Emails
         public bool UseDefaultCredentials { get; set; }
 
         public bool IsDefault { get; set; }
+
+        public string TestEmail { get; set; }
     }
 }
