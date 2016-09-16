@@ -64,8 +64,8 @@ module.exports = {
             "./app/public/users/userProfileController.js"
         ],
         emailAccounts: [
-            "./app/admin/email-accounts/emailAccountService.js",
-            "./app/admin/email-accounts/emailAccountController.js"
+            "./app/admin/emails/emailAccountService.js",
+            "./app/admin/emails/emailAccountController.js"
         ],
         settings: [
             "./app/common/services/settingService.js",
