@@ -34,6 +34,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpGet]
         public IHttpActionResult Get([FromUri] EmailAccountGetModel requestModel)
         {
+            requestModel = requestModel ?? new EmailAccountGetModel();
             if (requestModel.Count <= 0)
                 requestModel.Count = 15;
 
@@ -65,6 +66,9 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Post(EmailAccountEntityModel entityModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             //create a new email account
             var emailAccount = new EmailAccount() {
                 Id = entityModel.Id,
@@ -95,6 +99,9 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult TestEmail(EmailAccountEntityModel entityModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             const string contextName = "post_testemail";
             var emailAccount = new EmailAccount() {
                 Id = entityModel.Id,
@@ -129,7 +136,8 @@ namespace mobSocial.WebApi.Controllers
         [HttpPut]
         public IHttpActionResult Put(EmailAccountEntityModel entityModel)
         {
-
+            if (!ModelState.IsValid)
+                return BadRequest();
             //get the account
             var emailAccount = _emailAccountService.Get(entityModel.Id);
             if (emailAccount == null)
