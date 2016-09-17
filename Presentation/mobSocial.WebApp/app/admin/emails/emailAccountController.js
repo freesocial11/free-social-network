@@ -18,7 +18,8 @@
         }
 
         $scope.getEmailAccount = function (id) {
-            if (id == 0)
+            id = id || $stateParams.id;
+            if (!id)
                 return;
             emailAccountService.get(id,
                 function(response) {
@@ -89,8 +90,5 @@
 
                 });
         }
-
-        if ($stateParams.id) //initial load for editing
-            $scope.getEmailAccount($stateParams.id);
     }
 ]);
