@@ -20,6 +20,23 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 UseDefaultCredentials = emailAccount.UseDefaultCredentials
             };
             return model;
+        }
+
+        public static EmailTemplateEntityModel ToEntityModel(this EmailTemplate emailTemplate)
+        {
+            var model = new EmailTemplateEntityModel()
+            {
+                Id = emailTemplate.Id,
+                AdministrationEmail = emailTemplate.AdministrationEmail,
+                EmailAccountId = emailTemplate.EmailAccountId,
+                IsMaster = emailTemplate.IsMaster,
+                ParentEmailTemplateId = emailTemplate.ParentEmailTemplateId,
+                Subject = emailTemplate.Subject,
+                Template = emailTemplate.Template,
+                TemplateName = emailTemplate.TemplateName,
+                TemplateSystemName = emailTemplate.TemplateSystemName
+            };
+            return model;
         }   
     }
 }

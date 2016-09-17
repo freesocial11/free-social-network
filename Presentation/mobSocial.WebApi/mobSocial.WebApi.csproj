@@ -222,6 +222,7 @@
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\EmailAccountController.cs" />
+    <Compile Include="Controllers\EmailTemplateController.cs" />
     <Compile Include="Controllers\EntityPropertyController.cs" />
     <Compile Include="Controllers\FollowController.cs" />
     <Compile Include="Controllers\LikeController.cs" />
@@ -280,6 +281,8 @@
     <Compile Include="Models\Education\SchoolSearchModel.cs" />
     <Compile Include="Models\Emails\EmailAccountEntityModel.cs" />
     <Compile Include="Models\Emails\EmailAccountGetModel.cs" />
+    <Compile Include="Models\Emails\EmailTemplateEntityModel.cs" />
+    <Compile Include="Models\Emails\EmailTemplateGetModel.cs" />
     <Compile Include="Models\EntityProperty\EntityPropertyModel.cs" />
     <Compile Include="Models\Installation\InstallationRequestModel.cs" />
     <Compile Include="Models\Media\MediaReponseModel.cs" />

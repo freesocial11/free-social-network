@@ -347,8 +347,21 @@
                     <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "security" })}'>
                         <a ui-sref="layoutAdministration.settings({ settingType: 'security' })"><i class="fa fa-circle-o"></i> Security Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "email" })}'>
-                        <a ui-sref="layoutAdministration.settings({ settingType: 'email' })"><i class="fa fa-circle-o"></i> Email Accounts</a>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.emails.accountlist")}'>
+                        <a href="">
+                            <i class="fa fa-circle-o"></i> Email Settings
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li ng-class='{"active": $state.includes("layoutAdministration.emails.accountlist")}'>
+                                <a ui-sref="layoutAdministration.emails.accountlist"><i class="fa fa-circle-o"></i> Email Accounts</a>
+                            </li>
+                            <li>
+                                <a ui-sref="layoutAdministration.settings({ settingType: 'email' })"><i class="fa fa-circle-o"></i> Email Templates</a>
+                            </li>
+                        </ul>
                     </li>
                     <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "datetime" })}'>
                         <a ui-sref="layoutAdministration.settings({ settingType: 'datetime' })"><i class="fa fa-circle-o"></i> Localization Settings</a>
