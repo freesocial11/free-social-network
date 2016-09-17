@@ -113,9 +113,8 @@
              .state("layoutAdministration.emails",
              {
                  abstract: true,
-                 url: adminPrefix + "/emailaccounts",
+                 url: adminPrefix + "/emails",
                  template: "<div ui-view></div>",
-                 controller: "emailAccountController",
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider.resolveBundles(["emailAccounts"]);
@@ -124,7 +123,8 @@
              })
              .state("layoutAdministration.emails.accountlist",
              {
-                 url: "",
+                 url: "/emailaccounts",
+                 controller: "emailAccountController",
                  templateUrl: "/pages/emails/emailAccount.list.html"
              })
              .state("layoutAdministration.emails.accountedit",
@@ -132,6 +132,18 @@
                  url: "/emailaccount/:id",
                  controller: "emailAccountController",
                  templateUrl: "/pages/emails/emailAccount.editor.html"
+             })
+            .state("layoutAdministration.emails.templatelist",
+             {
+                 url: "/emailtemplates",
+                 controller: "emailTemplateController",
+                 templateUrl: "/pages/emails/emailTemplate.list.html"
+             })
+             .state("layoutAdministration.emails.templateedit",
+             {
+                 url: "/emailtemplate/:id",
+                 controller: "emailTemplateController",
+                 templateUrl: "/pages/emails/emailTemplate.editor.html"
              });
 
          $stateProvider

@@ -327,7 +327,7 @@
                     <li ng-class='{"active": $state.includes("layoutAdministration.users.edit.basic", { id:0 })}'><a ui-sref="layoutAdministration.users.edit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>
-            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.settings")}'>
+            <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.settings") || $state.includes("layoutAdministration.emails")}'>
                 <a href="" ui-sref="layoutAdministration.settings({ settingType: 'general' })" ui-sref-opts="{reload: true}">
                     <i class="fa fa-gear"></i> <span>Settings</span>
                     <span class="pull-right-container">
@@ -347,7 +347,7 @@
                     <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "security" })}'>
                         <a ui-sref="layoutAdministration.settings({ settingType: 'security' })"><i class="fa fa-circle-o"></i> Security Settings</a>
                     </li>
-                    <li ng-class='{"active": $state.includes("layoutAdministration.emails.accountlist")}'>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.emails")}'>
                         <a href="">
                             <i class="fa fa-circle-o"></i> Email Settings
                             <span class="pull-right-container">
@@ -358,8 +358,8 @@
                             <li ng-class='{"active": $state.includes("layoutAdministration.emails.accountlist")}'>
                                 <a ui-sref="layoutAdministration.emails.accountlist"><i class="fa fa-circle-o"></i> Email Accounts</a>
                             </li>
-                            <li>
-                                <a ui-sref="layoutAdministration.settings({ settingType: 'email' })"><i class="fa fa-circle-o"></i> Email Templates</a>
+                            <li ng-class='{"active": $state.includes("layoutAdministration.emails.templatelist")}'>
+                                <a ui-sref="layoutAdministration.emails.templatelist"><i class="fa fa-circle-o"></i> Email Templates</a>
                             </li>
                         </ul>
                     </li>

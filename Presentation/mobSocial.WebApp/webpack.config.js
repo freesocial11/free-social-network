@@ -29,6 +29,7 @@ module.exports = {
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",
+            "./app/common/directives/wyswyg.js",
             "./app/common/directives/datePicker.js",
             "./app/common/directives/userProfileMini.js",
             //filters
@@ -65,7 +66,9 @@ module.exports = {
         ],
         emailAccounts: [
             "./app/admin/emails/emailAccountService.js",
-            "./app/admin/emails/emailAccountController.js"
+            "./app/admin/emails/emailAccountController.js",
+            "./app/admin/emails/emailTemplateService.js",
+            "./app/admin/emails/emailTemplateController.js"
         ],
         settings: [
             "./app/common/services/settingService.js",
