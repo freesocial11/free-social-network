@@ -10,6 +10,7 @@
                     var id = jQuery(element).attr("id");
                     CKEDITOR.replace(id);
                     const instance = CKEDITOR.instances[id];
+                    instance.setData(scope.ngModel);
                     //capture on change event
                     instance.on('change', function () {
                         const data = instance.getData();
