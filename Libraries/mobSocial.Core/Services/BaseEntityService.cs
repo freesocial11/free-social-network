@@ -29,7 +29,7 @@ namespace mobSocial.Core.Services
 
         public virtual void Delete(T entity)
         {
-            var deletable = entity as ISoftDeletable;
+            /*var deletable = entity as ISoftDeletable;
             if (deletable != null)
             {
                 var entityAsSoftDeletable = deletable;
@@ -38,17 +38,19 @@ namespace mobSocial.Core.Services
             }
             else
             {
-                //publish the event so they can be handled
-                _eventPublisherService.Publish(entity, EventType.Delete);
+                
 
-                _dataRepository.Delete(entity);
+            }*/
 
-            }
+            //publish the event so they can be handled
+            _eventPublisherService.Publish(entity, EventType.Delete);
+
+            _dataRepository.Delete(entity);
         }
 
         public virtual void Delete(Expression<Func<T, bool>> where)
         {
-            if (typeof(ISoftDeletable).IsAssignableFrom(typeof(T)))
+            /*if (typeof(ISoftDeletable).IsAssignableFrom(typeof(T)))
             {
                 //it's soft deletable so it's better to retrive them all and mark them deleted
                 var allEntities = Get(where, null).AsEnumerable();
@@ -65,9 +67,11 @@ namespace mobSocial.Core.Services
             }
             else
             {
-                _dataRepository.Delete(where);
 
-            }
+            }*/
+
+            _dataRepository.Delete(where);
+
         }
 
         public virtual void Update(T entity)
