@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Battles;
 using mobSocial.Data.Entity.Emails;
-using mobSocial.Data.Entity.Tokens;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Tokens;
@@ -35,11 +35,13 @@ namespace mobSocial.Services.Emails
         private EmailMessage LoadAndProcessTemplate(string templateName, params object[] entities)
         {
             //first load the template from database
-            var template = _emailTemplateService.FirstOrDefault(x => x.TemplateSystemName == templateName, earlyLoad: x => x.EmailAccount);
+            var template = _emailTemplateService.FirstOrDefault(x => x.TemplateSystemName == templateName, x => x.EmailAccount, x => x.ParentEmailTemplate);
             if (template == null)
                 return null;
+            //we'll check if there are parent templates and get all parent template 
+            var processedContentTemplate = _emailTemplateService.GetProcessedContentTemplate(template);
 
-            var processedTemplateString = _tokenProcessor.ProcessAllTokens(template.Template, entities);
+            var processedTemplateString = _tokenProcessor.ProcessAllTokens(processedContentTemplate, entities);
             var emailAccount = template.EmailAccount;
             //create a new email message
             var emailMessage = new EmailMessage() {
