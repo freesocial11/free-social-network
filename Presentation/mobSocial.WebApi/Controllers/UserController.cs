@@ -84,7 +84,7 @@ namespace mobSocial.WebApi.Controllers
         public async Task<IHttpActionResult> Get(string idOrUserName)
         {
             //first get the user
-            var user = await GetUser(idOrUserName);
+            var user = await GetUser(idOrUserName, true);
             if (user == null)
                 return NotFound();
             //depending on the logged in user, we send either entitymodel or response model because certain information
@@ -424,12 +424,12 @@ namespace mobSocial.WebApi.Controllers
                 ? (!loadRelated
                     ? await _userService.GetAsync(idOrUserName.GetInteger())
                     : await
-                        _userService.GetAsync(idOrUserName.GetInteger(), user => user.Educations.Select(x => x.School)))
+                        _userService.GetAsync(idOrUserName.GetInteger(), user => user.Educations.Select(x => x.School), user => user.UserRoles.Select(x => x.Role)))
                 : (!loadRelated
                     ? await _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName)
                     : await
                         _userService.FirstOrDefaultAsync(x => x.UserName == idOrUserName,
-                            user => user.Educations.Select(x => x.School)));
+                            user => user.Educations.Select(x => x.School), user => user.UserRoles.Select(x => x.Role)));
         }
         #endregion
     }
