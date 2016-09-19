@@ -83,7 +83,7 @@ namespace mobSocial.Core.Services
             return _dataRepository.Get(x => x.Id == id).FirstOrDefault();
         }
 
-        public T Get<TProperty>(int id, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public T Get(int id, params Expression<Func<T, object>>[] earlyLoad)
         {
             return _dataRepository.Get(id, earlyLoad);
         }
@@ -93,7 +93,7 @@ namespace mobSocial.Core.Services
             return _dataRepository.Get(where).First();
         }
 
-        public virtual T First<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual T First(Expression<Func<T, bool>> @where, params Expression<Func<T, object>>[] earlyLoad)
         {
             return _dataRepository.Get(where, earlyLoad).First();
         }
@@ -103,7 +103,7 @@ namespace mobSocial.Core.Services
             return _dataRepository.Get(where).FirstOrDefault();
         }
 
-        public virtual T FirstOrDefault<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual T FirstOrDefault(Expression<Func<T, bool>> @where, params Expression<Func<T, object>>[] earlyLoad)
         {
             return _dataRepository.Get(where, earlyLoad).FirstOrDefault();
         }
@@ -132,8 +132,8 @@ namespace mobSocial.Core.Services
 
         }
 
-        public virtual IQueryable<T> Get<TProperty>(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1,
-            int count = Int32.MaxValue, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual IQueryable<T> Get(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1,
+            int count = Int32.MaxValue, params Expression<Func<T, object>>[] earlyLoad)
         {
             if (where == null)
                 where = (x => true);
@@ -156,8 +156,8 @@ namespace mobSocial.Core.Services
             return await Task.Run(() => Get(@where, orderBy, ascending, page, count));
         }
 
-        public virtual async Task<IQueryable<T>> GetAsync<TProperty>(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1,
-            int count = Int32.MaxValue, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual async Task<IQueryable<T>> GetAsync(Expression<Func<T, bool>> @where = null, Expression<Func<T, object>> orderBy = null, bool @ascending = true, int page = 1,
+            int count = Int32.MaxValue, params Expression<Func<T, object>>[] earlyLoad)
         {
             return await Task.Run(() => Get(@where, orderBy, ascending, page, count, earlyLoad));
         }
@@ -167,7 +167,7 @@ namespace mobSocial.Core.Services
             return await Task.Run(() => FirstOrDefault(where));
         }
 
-        public virtual async Task<T> FirstOrDefaultAsync<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> @where, params Expression<Func<T, object>>[] earlyLoad)
         {
             return await Task.Run(() => FirstOrDefault(where, earlyLoad));
         }
@@ -177,7 +177,7 @@ namespace mobSocial.Core.Services
             return await Task.Run(() => Get(id));
         }
 
-        public virtual async Task<T> GetAsync<TProperty>(int id, params Expression<Func<T, TProperty>>[] earlyLoad)
+        public virtual async Task<T> GetAsync(int id, params Expression<Func<T, object>>[] earlyLoad)
         {
             return await Task.Run(() => Get(id, earlyLoad));
         }
