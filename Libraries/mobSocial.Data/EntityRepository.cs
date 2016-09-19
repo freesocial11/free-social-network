@@ -117,7 +117,6 @@ namespace mobSocial.Data
 
         public void Delete(T entity)
         {
-            _SetupContexts();
             if (entity == null)
                 throw new ArgumentNullException();
 
@@ -131,6 +130,8 @@ namespace mobSocial.Data
                     Update(entity);
                     return;
                 }
+                _SetupContexts();
+
                 _entityDbSet.Remove(entity);
 
                 _databaseContext.SaveChanges();
@@ -144,9 +145,10 @@ namespace mobSocial.Data
         public void Delete(Expression<Func<T, bool>> @where)
         {
             _SetupContexts();
+
             try
             {
-                var entities = _entityDbSet.Where(where);
+                var entities = _entityDbSet.Where(where).ToList();
                 foreach (var entity in entities)
                 {
                     var deletable = entity as ISoftDeletable;
@@ -156,6 +158,7 @@ namespace mobSocial.Data
                         Update(entity);
                         continue;
                     }
+
                     _entityDbSet.Remove(entity);
 
                 }
