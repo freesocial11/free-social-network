@@ -48,7 +48,8 @@ namespace mobSocial.Services.Emails
                 EmailAccount = emailAccount,
                 Subject = template.Subject,
                 OriginalEmailTemplate = template,
-                Tos = new List<EmailMessage.UserInfo>()
+                Tos = new List<EmailMessage.UserInfo>(),
+                SendingDate = DateTime.UtcNow
             };
 
             return emailMessage;
