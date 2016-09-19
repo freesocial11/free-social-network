@@ -72,7 +72,7 @@
                    userService.delete($scope.user.Id,
                        function (response) {
                            if (response.Success) {
-                               $state.go("layoutAdministration.userlist");
+                               $state.go("layoutAdministration.users.list");
                            }
                        },
                        function (response) {
