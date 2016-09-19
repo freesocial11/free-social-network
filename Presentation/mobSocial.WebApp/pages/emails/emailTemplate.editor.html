@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label for="systemName" class="col-md-2 control-label">Template System Name</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="systemName" placeholder="" ng-model="emailTemplate.TemplateSystemName">
+                            <input type="text" ng-readonly="emailTemplate.Id > 0" class="form-control" id="systemName" placeholder="" ng-model="emailTemplate.TemplateSystemName">
                         </div>
                     </div>
                     <div class="form-group">
@@ -59,7 +59,7 @@
                     <div class="form-group">
                         <div class="col-md-10 col-md-offset-2">
                             <button type="button" class="btn btn-primary" ng-click="save()">Save</button>
-                            <button type="button" class="btn btn-default" ui-sref="layoutAdministration.settings({ settingType: 'email' })">Cancel</button>
+                            <button type="button" class="btn btn-default" ui-sref="layoutAdministration.emails.templatelist">Cancel</button>
                         </div>
                     </div>
                 </div>
