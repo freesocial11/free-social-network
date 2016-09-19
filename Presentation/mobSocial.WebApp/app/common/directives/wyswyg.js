@@ -11,13 +11,30 @@
                     CKEDITOR.replace(id);
                     const instance = CKEDITOR.instances[id];
                     instance.setData(scope.ngModel);
+                    let setFromInstanceChange = false;
+                    
+                    scope.$watch("ngModel",
+                        function (newValue, oldValue) {
+                            if (!setFromInstanceChange) {
+                                //for some weird reasons, setdata doesn't work directly, so 
+                                //for now we are just introducing some delay
+                                setTimeout(function() {
+                                    instance.setData(newValue);
+                                    },
+                                    300);
+                            }
+                        });
+
                     //capture on change event
                     instance.on('change', function () {
                         const data = instance.getData();
-                        scope.$apply(function() {
+                        setFromInstanceChange = true;
+                        scope.$apply(function () {
                             scope.ngModel = data;
                         });
                     });
+
+
                 });
         }
     };
