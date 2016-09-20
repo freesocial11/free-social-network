@@ -23,6 +23,8 @@ namespace mobSocial.Services.ScheduledTasks
         {
             var container = mobSocialEngine.ActiveEngine.IocContainer;
             IList<ScheduledTask> scheduledTasks;
+            //because dbcontext resolves per web request and the per request scope hasn't yet started here,
+            //we'll have to fake open it, otherwise database context won't be resolved
             using (container.OpenScope(Reuse.WebRequestScopeName))
             {
                 //get the scheduled tasks which are enabled
@@ -48,6 +50,8 @@ namespace mobSocial.Services.ScheduledTasks
                             try
                             {
                                 sTask.LastStartDateTime = DateTime.UtcNow;
+                                //because dbcontext resolves per web request and it won't be available for background tasks,
+                                //we'll have to fake open it, otherwise database context won't be resolved
                                 using (container.OpenScope(Reuse.WebRequestScopeName))
                                 {
                                     task.Run();
