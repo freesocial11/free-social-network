@@ -338,6 +338,9 @@
                     <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "general" })}'>
                         <a ui-sref="layoutAdministration.settings({ settingType: 'general' })"><i class="fa fa-circle-o"></i> General Settings</a>
                     </li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "url" })}'>
+                        <a ui-sref="layoutAdministration.settings({ settingType: 'url' })"><i class="fa fa-circle-o"></i> Url Settings</a>
+                    </li>
                     <li ng-class='{"active": $state.includes("layoutAdministration.settings", { settingType: "user" })}'>
                         <a ui-sref="layoutAdministration.settings({ settingType: 'user' })"><i class="fa fa-circle-o"></i> User Settings</a>
                     </li>

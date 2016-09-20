@@ -136,5 +136,14 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             return model;
         }
 
+        public static UrlSettingsModel ToModel(this UrlSettings urlSettings)
+        {
+            var model = new UrlSettingsModel()
+            {
+                ActivationPageUrl = urlSettings.ActivationPageUrl
+            };
+            return model;
+        }
+
     }
 }

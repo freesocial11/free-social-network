@@ -31,6 +31,7 @@ namespace mobSocial.WebApi.Controllers
             DateTimeSettings dateTimeSettings;
             PaymentSettings paymentSettings;
             BattleSettings battleSettings;
+            UrlSettings urlSettings;
             switch (settingType)
             {
                 case "general":
@@ -74,6 +75,11 @@ namespace mobSocial.WebApi.Controllers
                     return RespondSuccess(new {
                         ThirdPartySettings = thirdPartySettings.ToModel()
                     });
+                case "url":
+                    urlSettings = _settingService.GetSettings<UrlSettings>();
+                    return RespondSuccess(new {
+                        UrlSettings = urlSettings.ToModel()
+                    });
                 case "all":
                     generalSettings = _settingService.GetSettings<GeneralSettings>();
                     mediaSettings = _settingService.GetSettings<MediaSettings>();
@@ -83,6 +89,7 @@ namespace mobSocial.WebApi.Controllers
                     dateTimeSettings = _settingService.GetSettings<DateTimeSettings>();
                     paymentSettings = _settingService.GetSettings<PaymentSettings>();
                     thirdPartySettings = _settingService.GetSettings<ThirdPartySettings>();
+                    urlSettings = _settingService.GetSettings<UrlSettings>();
                     return RespondSuccess(new
                     {
                         GeneralSettings = generalSettings?.ToModel(),
@@ -92,7 +99,8 @@ namespace mobSocial.WebApi.Controllers
                         BattleSettings = battleSettings.ToModel(),
                         DateTimeSettings = dateTimeSettings.ToModel(),
                         PaymentSettings = paymentSettings.ToModel(),
-                        ThirdPartySettings = thirdPartySettings.ToModel()
+                        ThirdPartySettings = thirdPartySettings.ToModel(),
+                        UrlSettings = urlSettings.ToModel()
                     });
                 default:
                     VerboseReporter.ReportError("Invalid type name", "get_setting");
@@ -248,6 +256,20 @@ namespace mobSocial.WebApi.Controllers
             VerboseReporter.ReportSuccess("Settings saved successfully", "post_setting");
             return RespondSuccess(new { ThirdPartySettings = thirdPartySettings.ToModel() });
         }
+
+        [Route("post/url")]
+        [HttpPost]
+        [AdminAuthorize]
+        public IHttpActionResult Post(UrlSettingsModel entityModel)
+        {
+            var thirdPartySettings = new UrlSettings() {
+               ActivationPageUrl = entityModel.ActivationPageUrl
+            };
+            _settingService.Save(thirdPartySettings);
+            VerboseReporter.ReportSuccess("Settings saved successfully", "post_setting");
+            return RespondSuccess(new { ThirdPartySettings = thirdPartySettings.ToModel() });
+        }
+
         [Route("post")]
         [HttpPost]
         [AdminAuthorize]

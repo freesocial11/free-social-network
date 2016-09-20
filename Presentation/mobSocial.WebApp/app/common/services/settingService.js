@@ -33,6 +33,9 @@
     this.postBattleSettings = function (entityModel, success, error) {
         this._post("battle", entityModel, success, error);
     }
+    this.postUrlSettings = function (entityModel, success, error) {
+        this._post("url", entityModel, success, error);
+    }
     this.delete = function (id, success, error) {
         webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     }

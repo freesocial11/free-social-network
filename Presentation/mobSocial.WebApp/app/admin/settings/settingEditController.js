@@ -11,7 +11,8 @@
             "thirdparty": "ThirdPartySettings",
             "battle": "BattleSettings",
             "datetime": "DateTimeSettings",
-            "payment": "PaymentSettings"
+            "payment": "PaymentSettings",
+            "url": "UrlSettings"
         };
         if (settingIndex[settingType] == undefined) {
             $state.go("layoutZero.404");
@@ -64,6 +65,8 @@
                     break;
                 case "battle":
                     settingService.postBattleSettings($scope.setting, successHandler, errorHandler);
+                case "url":
+                    settingService.postUrlSettings($scope.setting, successHandler, errorHandler);
                     break;
             }
         }

@@ -1,4 +1,5 @@
-﻿using mobSocial.Core.Exception;
+﻿using System;
+using mobSocial.Core.Exception;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Initializer;
@@ -154,6 +155,11 @@ namespace mobSocial.Services.Installation
             //user settings
             settingService.Save(new UserSettings() {
                 UserRegistrationDefaultMode = RegistrationMode.WithActivationEmail
+            });
+
+            //user settings
+            settingService.Save(new UrlSettings() {
+                ActivationPageUrl = installDomain + "/activate"
             });
         }
 

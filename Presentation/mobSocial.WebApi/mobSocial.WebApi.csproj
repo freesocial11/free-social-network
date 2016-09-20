@@ -300,6 +300,7 @@
     <Compile Include="Models\Settings\SecuritySettingsModel.cs" />
     <Compile Include="Models\Settings\SettingEntityModel.cs" />
     <Compile Include="Models\Settings\ThirdPartySettingsModel.cs" />
+    <Compile Include="Models\Settings\UrlSettingsModel.cs" />
     <Compile Include="Models\Settings\UserSettingsModel.cs" />
     <Compile Include="Models\Social\UserCommentModel.cs" />
     <Compile Include="Models\Social\UserCommentPublicModel.cs" />
