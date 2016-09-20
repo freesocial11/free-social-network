@@ -216,6 +216,7 @@
     <Compile Include="Configuration\Security\Attributes\RequireFeatureEnabledAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\CapabilityRequiredAttribute.cs" />
     <Compile Include="Configuration\Tasks\DatabaseSetupTask.cs" />
+    <Compile Include="Configuration\Tasks\EmailSchedulerTask.cs" />
     <Compile Include="Configuration\ViewEngines\mobSocialRazorProviderViewEngine.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
