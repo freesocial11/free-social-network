@@ -39,7 +39,7 @@ namespace mobSocial.WebApi.Configuration.Mvc
         public IHttpActionResult RespondSuccess(string successMessage, string contextName, dynamic additionalData = null)
         {
             VerboseReporter.ReportSuccess(successMessage, contextName);
-            return RespondFailure(additionalData);
+            return RespondSuccess(additionalData);
         }
 
         public IHttpActionResult RespondFailure()
