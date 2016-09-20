@@ -112,6 +112,7 @@
     <Compile Include="Api\EducationControllerTests.cs" />
     <Compile Include="Api\VideoBattleControllerTests.cs" />
     <Compile Include="Mock\MockHelper.cs" />
+    <Compile Include="Services\EmailTemplateServiceTests.cs" />
     <Compile Include="Services\EventPublisherServiceTests.cs" />
     <Compile Include="Services\TokenProcessorTests.cs" />
     <Compile Include="Setup\Extensions\HttpActionResultExtensions.cs" />
