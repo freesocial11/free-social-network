@@ -187,13 +187,20 @@ namespace mobSocial.Services.Installation
         /// </summary>
         private void UpdateWebConfig()
         {
-            var applicationConfiguration = mobSocialEngine.ActiveEngine.Resolve<IApplicationConfiguration>();
-            var cryptographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
-            var key = cryptographyService.GetRandomPassword();
-            var salt = cryptographyService.GetRandomPassword();
+            try
+            {
+                var applicationConfiguration = mobSocialEngine.ActiveEngine.Resolve<IApplicationConfiguration>();
+                var cryptographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
+                var key = cryptographyService.GetRandomPassword();
+                var salt = cryptographyService.GetRandomPassword();
 
-            applicationConfiguration.SetSetting("encryptionKey", key);
-            applicationConfiguration.SetSetting("encryptionSalt", salt);
+                applicationConfiguration.SetSetting("encryptionKey", key);
+                applicationConfiguration.SetSetting("encryptionSalt", salt);
+            }
+            catch (Exception)
+            {
+                //an error occured while modifying config file, may be it's write protected or test mode is on?
+            }
         }
     }
 }
