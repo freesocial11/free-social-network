@@ -16,22 +16,38 @@ namespace mobSocial.Data.Entity.Emails
         [NotMapped]
         public IList<UserInfo> Tos { get; set; }
 
-        public string TosSerialized => JsonConvert.SerializeObject(Tos);
+        public string TosSerialized
+        {
+            get { return JsonConvert.SerializeObject(Tos); }
+            set { Tos = JsonConvert.DeserializeObject<List<UserInfo>>(value); }
+        }
 
         [NotMapped]
         public IList<UserInfo> Ccs { get; set; }
 
-        public string CcsSerialized => JsonConvert.SerializeObject(Ccs);
+        public string CcsSerialized
+        {
+            get { return JsonConvert.SerializeObject(Ccs); }
+            set { Ccs = JsonConvert.DeserializeObject<List<UserInfo>>(value); }
+        }
 
         [NotMapped]
         public IList<UserInfo> Bccs { get; set; }
 
-        public string BccsSerialized => JsonConvert.SerializeObject(Bccs);
+        public string BccsSerialized
+        {
+            get { return JsonConvert.SerializeObject(Bccs); }
+            set { Bccs = JsonConvert.DeserializeObject<List<UserInfo>>(value); }
+        }
 
         [NotMapped]
         public IList<UserInfo> ReplyTos { get; set; }
 
-        public string ReplyTosSerialized => JsonConvert.SerializeObject(ReplyTos);
+        public string ReplyTosSerialized
+        {
+            get { return JsonConvert.SerializeObject(ReplyTos); }
+            set { ReplyTos = JsonConvert.DeserializeObject<List<UserInfo>>(value); }
+        }
 
         public string Subject { get; set; }
 
