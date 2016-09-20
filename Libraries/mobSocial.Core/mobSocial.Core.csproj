@@ -135,6 +135,8 @@
     <Compile Include="Services\Events\IEventPublisherService.cs" />
     <Compile Include="Startup\IOwinStartupTask.cs" />
     <Compile Include="Startup\IStartupTask.cs" />
+    <Compile Include="Tasks\ITask.cs" />
+    <Compile Include="Tasks\ITaskManager.cs" />
     <Compile Include="WebHelper.cs" />
   </ItemGroup>
   <ItemGroup>

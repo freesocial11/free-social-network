@@ -11,6 +11,7 @@ using mobSocial.Core.Infrastructure.Media;
 using mobSocial.Core.Infrastructure.Utils;
 using mobSocial.Core.Plugins;
 using mobSocial.Core.Startup;
+using mobSocial.Core.Tasks;
 
 namespace mobSocial.Core.Infrastructure.AppEngine
 {
@@ -53,6 +54,9 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             {
                 //run startup tasks
                 RunStartupTasks();
+
+                //start task manager to run scheduled tasks
+                StartTaskManager();
             }
 
         }
@@ -96,6 +100,14 @@ namespace mobSocial.Core.Infrastructure.AppEngine
                 task.Run();
             ;
 
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public static void StartTaskManager()
+        {
+            var taskManager = ActiveEngine.Resolve<ITaskManager>();
+            var tasks = TypeFinder.ClassesOfType<ITask>();
+            taskManager?.Start(tasks.ToArray());
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
