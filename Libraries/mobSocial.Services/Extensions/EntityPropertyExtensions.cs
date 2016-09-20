@@ -100,9 +100,9 @@ namespace mobSocial.Services.Extensions
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
             if (propertyValue == null)
-                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName);
+                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.EntityId == entity.Id);
             else
-                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.Value == propertyValue);
+                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.Value == propertyValue && x.EntityId == entity.Id);
         }
     }
 }
