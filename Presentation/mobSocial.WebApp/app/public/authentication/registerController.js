@@ -1,16 +1,33 @@
 ﻿window.mobSocial.lazy.controller("registerController",[
-    "$scope", "registerService", "$state", function ($scope, registerService, $state) {
+    "$scope", "registerService", "$stateParams", function ($scope, registerService, $stateParams) {
 
         $scope.register = function() {
             registerService.register($scope.dataModel,
                 function(response) {
                     if (response.Success) {
-                        $state.go("layoutZero.login");
+                        $scope.registered = true;
                     }
                 },
                 function(response) {
 
                 });
+        }
+
+        $scope.activate = function () {
+            $scope.dataModel = $scope.dataModel || {};
+            registerService.activate($stateParams.code, $scope.dataModel.email,
+                function (response) {
+                    if (response.Success) {
+                        $scope.activated = true;
+                    }
+                },
+                function (response) {
+
+                });
+        }
+
+        if ($stateParams.code) {
+            $scope.activate();
         }
 
         $scope.init = function() {

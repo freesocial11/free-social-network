@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using mobSocial.Core.Data;
+using mobSocial.Data.Attributes;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Interfaces;
 
@@ -9,13 +10,17 @@ namespace mobSocial.Data.Entity.Users
 {
     public class User : BaseEntity, ISoftDeletable, IPermalinkSupported, IHasEntityProperties<User>
     {
+        [TokenField]
         public string FirstName { get; set; }
 
+        [TokenField]
         public string LastName { get; set; }
 
+        [TokenField]
         public string Name { get; set; }
 
         [Required]
+        [TokenField]
         public string Email { get; set; }
 
         public string UserName { get; set; }

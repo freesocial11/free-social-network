@@ -4,5 +4,11 @@
             const registerUrl = $global.getApiUrl("/authentication/register");
             webClientService.post(registerUrl, registerRequest, success, error);
         }
+
+        this.activate = function (code, email, success, error) {
+            const activationUrl = $global.getApiUrl("/authentication/activate");
+            webClientService.post(activationUrl, { activationCode : code, email: email}, success, error);
+        }
+
     }
 ]);

@@ -150,12 +150,13 @@ namespace mobSocial.WebApi.Controllers
 
             //so we are done, send a notification to user and admin
             _emailSender.SendUserRegisteredMessage(user);
-
+            var responseMessage = "Your account has been successfully created.";
             if (_userSettings.UserRegistrationDefaultMode == RegistrationMode.WithActivationEmail)
             {
                 SendActivationEmail(user);
+                responseMessage += " Email verification is required before you can login. Please check your inbox for activation link.";
             }
-            return RespondSuccess();
+            return RespondSuccess(responseMessage, contextName);
         }
 
         [HttpPost]
@@ -195,7 +196,7 @@ namespace mobSocial.WebApi.Controllers
 
                 //send notification
                 _emailSender.SendUserActivatedMessage(user);
-                return RespondSuccess();
+                return RespondSuccess("Your email has been successfully verified", contextName);
             }
             else
             {
@@ -209,7 +210,7 @@ namespace mobSocial.WebApi.Controllers
                     return RespondFailure("Invalid activation code", contextName);
 
                 //get the user with this property
-                var user = _userService.Get(property.Value.GetInteger(false));
+                var user = _userService.Get(property.EntityId);
                 if(user == null)
                     return RespondFailure("The user account doesn't exist or has been deleted", contextName);
 
@@ -226,7 +227,7 @@ namespace mobSocial.WebApi.Controllers
                 //send notification
                 _emailSender.SendUserActivatedMessage(user);
 
-                return RespondSuccess();
+                return RespondSuccess("Your email has been successfully verified", contextName);
 
             }
         }

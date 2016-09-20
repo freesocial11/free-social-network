@@ -38,6 +38,17 @@
                      }
                  },
                  controller: "registerController"
+             })
+             .state("layoutZero.activate",
+             {
+                 templateUrl: "pages/common/activate.html",
+                 url: "/activate?code",
+                 resolve: {
+                     resolver: function (controllerProvider) {
+                         return controllerProvider.resolveBundles(["register"]);
+                     }
+                 },
+                 controller: "registerController"
              });
          $stateProvider
              .state("layoutAdministration",
