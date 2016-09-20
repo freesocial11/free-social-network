@@ -4,9 +4,9 @@
     </div>
     <!-- /.register-logo -->
     <div class="register-box-body" block-ui>
-        <p class="register-box-msg">Sign in to start your session</p>
-        <span ng-bind-html="_Notifications('register') "></span>
-        <form action="" method="post">
+        <p class="register-box-msg" ng-if="!registered">Create new account!</p>
+        <span ng-bind-html="_Notifications('register')"></span>
+        <form action="" method="post" ng-if="!registered">
             <fieldset>
                 <div class="row">
                     <div class="col-md-6">

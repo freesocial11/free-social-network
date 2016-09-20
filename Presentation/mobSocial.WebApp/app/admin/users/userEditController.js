@@ -65,7 +65,7 @@
        }
 
        $scope.delete = function () {
-           confirm("Are you sure you wish to delete this user?",
+           mobConfirm("Are you sure you wish to delete this user?",
                function (result) {
                    if (!result)
                        return;

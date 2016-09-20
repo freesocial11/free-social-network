@@ -8,8 +8,8 @@
         <form role="form" name="formEditor" class="form-horizontal">
             <fieldset block-ui>
                 <div class="box-body">
-                    <span ng-if="emailTemplate.Id == 0" ng-bind-html="_Notifications('post_emailtemplate') "></span>
-                    <span ng-if="emailTemplate.Id != 0" ng-bind-html="_Notifications('put_emailtemplate') "></span>
+                    <span ng-bind-html="_Notifications('post_emailtemplate') "></span>
+                    <span ng-bind-html="_Notifications('put_emailtemplate') "></span>
                     <div class="form-group">
                         <label for="templateName" class="col-md-2 control-label">Template Name</label>
                         <div class="col-md-10">

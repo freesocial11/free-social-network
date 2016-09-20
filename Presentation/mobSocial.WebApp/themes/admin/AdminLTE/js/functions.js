@@ -16,19 +16,30 @@ var iCheckIt = function () {
 }
 
 var select2fy = function () {
-    jQuery(".select2").select2();
+    jQuery("select.select2").each(function () {
+        if (jQuery(this).data("select2fy"))
+            return;
+        jQuery(this).select2();
+        jQuery(this).data("select2fy", true);
+    });
 }
 
 var datepickerify = function() {
-    jQuery("input[rel='datepicker']").datepicker({
-        autoclose: true
-    });
+    jQuery("input[rel='datepicker']")
+        .each(function() {
+            var defaultValue = $(this).val();
+            $(this)
+                .datepicker({
+                    autoclose: true
+                });
+
+            $(this).datepicker("setDate", new Date(defaultValue));
+        });
 }
 
 var stylizeBrowserPrompts = function () {
     //we replace existing browser prompts with our custom ones
-    var oldConfirm = window.confirm;
-    window.confirm = function (message, callback) {
+    window.mobConfirm = function (message, callback) {
         bootbox.confirm(message, callback);
     }
 }();
