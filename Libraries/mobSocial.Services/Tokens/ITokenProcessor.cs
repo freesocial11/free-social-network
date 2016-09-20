@@ -11,7 +11,7 @@ namespace mobSocial.Services.Tokens
         /// <param name="content"></param>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        string ProcessTokens(string content, IList<Token> tokens);
+        string ProcessProvidedTokens(string content, IList<Token> tokens);
 
         /// <summary>
         /// Gets all the available tokens for the entity

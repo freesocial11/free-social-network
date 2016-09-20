@@ -9,7 +9,7 @@ namespace mobSocial.Services.Tokens
 {
     public class TokenProcessor : ITokenProcessor
     {
-        public string ProcessTokens(string content, IList<Token> tokens)
+        public string ProcessProvidedTokens(string content, IList<Token> tokens)
         {
             var builder = new StringBuilder(content);
             builder = tokens.Aggregate(builder, (current, token) => current.Replace(token.TokenName, token.TokenValue));
@@ -51,7 +51,7 @@ namespace mobSocial.Services.Tokens
         public string ProcessTokens<T>(string content, T entity)
         {
             var availableTokens = GetAvailableTokens(entity);
-            return ProcessTokens(content, availableTokens);
+            return ProcessProvidedTokens(content, availableTokens);
         }
 
         public string ProcessAllTokens(string content, params object[] entities)

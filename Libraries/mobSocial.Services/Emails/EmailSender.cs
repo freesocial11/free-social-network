@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Battles;
 using mobSocial.Data.Entity.Emails;
+using mobSocial.Data.Entity.Tokens;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Tokens;
@@ -84,14 +85,23 @@ namespace mobSocial.Services.Emails
             if (withAdmin) //send to admin if needed
             {
                 message = LoadAndProcessTemplate(EmailTemplateNames.UserRegisteredMessageToAdmin, user);
-                message.Tos.Add(new EmailMessage.UserInfo("Administrator", message.OriginalEmailTemplate.AdministrationEmail));
-                _emailService.Queue(message);
+                if (message != null)
+                {
+                    message.Tos.Add(new EmailMessage.UserInfo("Administrator", message.OriginalEmailTemplate.AdministrationEmail));
+                    _emailService.Queue(message);
+                }
+                
             }
         }
 
         public void SendUserActivationLinkMessage(User user, string activationUrl)
         {
             var message = LoadAndProcessTemplate(EmailTemplateNames.UserActivationLinkMessage, user);
+            //additional tokens 
+            message.EmailBody = _tokenProcessor.ProcessProvidedTokens(message.EmailBody, new List<Token>
+            {
+                new Token(EmailTokenNames.ActivationUrl, activationUrl)
+            });
             message.Tos.Add(new EmailMessage.UserInfo(user.Name, user.Email));
             _emailService.Queue(message);
         }
