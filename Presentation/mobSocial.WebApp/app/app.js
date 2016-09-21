@@ -25,6 +25,8 @@ window.mobSocial.run(["$rootScope", "$sce", "authProvider", "$state", "$window",
     //whenever state changes, see if we are in administration area or registered area
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams, error) {
         $rootScope.isAdministrationArea = $window.location.pathname.startsWith($window.Configuration.adminUrlPathPrefix);
+        //and scroll to top
+        $window.scrollTo(0, 0);
     });
 
     //execute some theme callbacks on view content loaded
