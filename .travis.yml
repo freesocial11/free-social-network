@@ -1,3 +1,2 @@
-language: node_js
-
-script: none
+language: csharp
+solution: mobSocial.sln
