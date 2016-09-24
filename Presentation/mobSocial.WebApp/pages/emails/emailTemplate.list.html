@@ -13,10 +13,6 @@
                 <div class="box-body no-padding">
                     
                     <table class="table">
-                        <tr>
-                            <th>Template Name</th>
-                            <th></th>
-                        </tr>
                         <tr ng-if="emailTemplates && emailTemplates.length == 0">
                             <td colspan="2">
                                 <div>
@@ -26,10 +22,10 @@
                         </tr>
                         <tr ng-repeat="emailTemplate in emailTemplates">
                             <td>
-                                <strong class="margin-r-5">{{emailTemplate.TemplateName}}</strong>
+                                <i class=" margin-r-5 fa" ng-class="{'fa-object-group' : emailTemplate.IsMaster, 'fa-file-text-o' : !emailTemplate.IsMaster}"></i><strong class="margin-r-5">{{emailTemplate.TemplateName}}</strong> <span class="badge bg-light-blue" ng-if="emailTemplate.IsMaster">layout</span>
                             </td>
                             <td>
-                                <a class="btn btn-default btn-sm pull-right"  ui-sref="layoutAdministration.emails.templateedit({ id:emailTemplate.Id })">Edit</a>
+                                <a class="btn btn-default btn-sm pull-right" ui-sref="layoutAdministration.emails.templateedit({ id:emailTemplate.Id })">Edit</a>
                             </td>
                         </tr>
                     </table>
