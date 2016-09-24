@@ -822,12 +822,6 @@ namespace mobSocial.WebApi.Controllers
                         Id = videoBattle.Id,
                         IsEditable = CanEdit(videoBattle),
                         ChallengerName = challenger.GetPropertyValueAs<string>(PropertyNames.DisplayName),
-                        ChallengerSeName =
-                            Url.Route("CustomerProfileUrl",
-                                new RouteValueDictionary() { { "SeName", challenger.GetPermalink() } }),
-                        VideoBattleSeName =
-                            Url.Route("VideoBattlePage",
-                                new RouteValueDictionary() { { "SeName", videoBattle.GetPermalink() } }),
                         RemainingSeconds = videoBattle.GetRemainingSeconds(),
                         VideoBattleFeaturedImageUrl = thumbnailUrl,
                         ChallengerProfileImageUrl =
