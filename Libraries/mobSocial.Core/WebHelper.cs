@@ -12,6 +12,7 @@ namespace mobSocial.Core
         /// <returns></returns>
         public static string GetUrlFromPath(string path, string rootDomain = "")
         {
+            path = path ?? string.Empty;
             //we need to see if the path is relative or absolute
             if (path.StartsWith("~"))
             {
