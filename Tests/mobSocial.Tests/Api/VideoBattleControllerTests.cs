@@ -95,7 +95,7 @@ namespace mobSocial.Tests.Api
 
                 var queryModel = new VideoBattleQueryModel
                 {
-                  // Count = 1
+                   Count = 1
                 };
 
                 var response = battleController.GetBattles(queryModel);

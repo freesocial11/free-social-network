@@ -14,6 +14,7 @@ namespace mobSocial.Tests.SampleData
         static SampleVideoBattles()
         {
             SampleBattles = new List<VideoBattle>();
+            PopulateVideoBattles();
         }
 
         public static List<VideoBattle> GetSampleVideoBattles()
@@ -57,7 +58,9 @@ namespace mobSocial.Tests.SampleData
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
                 VotingStartDate = DateTime.UtcNow.AddDays(25),
-                VotingEndDate = DateTime.UtcNow.AddDays(45)
+                VotingEndDate = DateTime.UtcNow.AddDays(45),
+                VideoBattleStatus = BattleStatus.Open,
+                ChallengerId = 1
             });
 
             SampleBattles.Add(new VideoBattle() {
@@ -73,7 +76,9 @@ namespace mobSocial.Tests.SampleData
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
                 VotingStartDate = DateTime.UtcNow.AddDays(15),
-                VotingEndDate = DateTime.UtcNow.AddDays(65)
+                VotingEndDate = DateTime.UtcNow.AddDays(65),
+                VideoBattleStatus = BattleStatus.Open,
+                ChallengerId = 1
             });
 
             SampleBattles.Add(new VideoBattle() {
@@ -89,7 +94,9 @@ namespace mobSocial.Tests.SampleData
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow,
                 VotingStartDate = DateTime.UtcNow.AddDays(25),
-                VotingEndDate = DateTime.UtcNow.AddDays(45)
+                VotingEndDate = DateTime.UtcNow.AddDays(45),
+                VideoBattleStatus = BattleStatus.Open,
+                ChallengerId = 1
             });
 
             SampleBattles.Add(new VideoBattle() {
@@ -104,7 +111,9 @@ namespace mobSocial.Tests.SampleData
                 DateCreated = DateTime.UtcNow,
                 DateUpdated = DateTime.UtcNow.AddHours(5),
                 VotingStartDate = DateTime.UtcNow.AddDays(25),
-                VotingEndDate = DateTime.UtcNow.AddDays(45)
+                VotingEndDate = DateTime.UtcNow.AddDays(45),
+                VideoBattleStatus = BattleStatus.Open,
+                ChallengerId = 1
             });
         }
     }

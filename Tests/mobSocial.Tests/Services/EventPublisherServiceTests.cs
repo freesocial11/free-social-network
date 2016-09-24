@@ -30,7 +30,7 @@ namespace mobSocial.Tests.Services
         [Test]
         public void Does_event_publisher_for_delete_works()
         {
-            _userService.Delete(x => x.Id == 1);
+            _userService.Delete(x => x.Id == 2);
         }
     }
 
@@ -38,7 +38,7 @@ namespace mobSocial.Tests.Services
     {
         public void EntityInserted(User entity)
         {
-            Assert.AreEqual(entity.Id, 1, "Entity failed to insert");
+            Assert.AreEqual(2, entity.Id, "Entity failed to insert");
         }
 
         public void EntityUpdated(User entity)
@@ -48,7 +48,7 @@ namespace mobSocial.Tests.Services
 
         public void EntityDeleted(User entity)
         {
-            Assert.AreEqual(entity.Id, 1, "Entity failed to delete");
+            Assert.AreEqual(1, entity.Id, "Entity failed to delete");
         }
     }
 }

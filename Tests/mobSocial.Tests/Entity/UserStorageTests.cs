@@ -13,6 +13,8 @@ namespace mobSocial.Tests.Entity
 
             var user = GetTestUser(true);
             Assert.Throws<DbEntityValidationException>(() => SaveAndLoadEntity(user));
+            //delete entity from context 
+            DeleteEntity(user);
         }
 
         [Test]

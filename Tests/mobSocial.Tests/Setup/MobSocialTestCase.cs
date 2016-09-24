@@ -31,10 +31,16 @@ namespace mobSocial.Tests.Setup
 
         protected DatabaseContext DatabaseContext;
 
-        [TearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             HttpContext.Current = null;
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
+        {
+            mobSocialEngine.ActiveEngine.IocContainer.Dispose();
         }
 
         [OneTimeSetUp]
@@ -75,6 +81,8 @@ namespace mobSocial.Tests.Setup
             Resolve<IInstallationService>().FillRequiredSeedData("admin@test.com", "admin123", "localhost");
             //Resolve<IInstallationService>().Install(GetTestConnectionString(), "System.Data.SqlServerCe.4.0");
             mobSocialEngine.SetupPictureSizes();
+
+            mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName);
         }
         protected string GetTestConnectionString()
         {
@@ -146,6 +154,11 @@ namespace mobSocial.Tests.Setup
 
         }
 
+        protected void DeleteEntity<T>(T entity) where T : BaseEntity
+        {
+            DatabaseContext.Set<T>().Remove(entity);
+            DatabaseContext.SaveChanges();
+        }
         protected void Login()
         {
             //insert test user

@@ -30,7 +30,7 @@ namespace mobSocial.Tests.Api
                 var model = new EducationEntityModel();
                 controller.Validate(model);
                 var response = controller.Post(model);
-                Assert.IsInstanceOf<BadRequestResult>(response);
+                Assert.IsInstanceOf<BadRequestErrorMessageResult>(response);
             }
         }
 
