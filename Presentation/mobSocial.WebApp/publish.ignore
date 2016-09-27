@@ -4,3 +4,10 @@
 publish.ignore
 *.wpp.targets
 node_modules/
+app/
+
+compilerconfig.json
+compilerconfig.json.defaults
+package.json
+packages.config
+webpack.config.js
