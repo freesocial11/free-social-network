@@ -1,0 +1,6 @@
+# You can declare files/folders that should be ignored here. For example
+
+# prevents this file from being published
+publish.ignore
+*.wpp.targets
+node_modules/
