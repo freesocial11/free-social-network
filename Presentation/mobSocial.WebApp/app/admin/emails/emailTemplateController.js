@@ -77,8 +77,8 @@
                         $scope.emailTemplate = response.ResponseData.EmailTemplate;
                         var found = false;
                         //update email account in the list
-                        for (let i = 0; i < $scope.emailTemplates.length; i++) {
-                            let e = $scope.emailTemplates[i];
+                        for (var i = 0; i < $scope.emailTemplates.length; i++) {
+                            var e = $scope.emailTemplates[i];
                             if (e.Id != $scope.emailTemplate.Id)
                                 continue;
                             $scope.emailTemplates[i] = $scope.emailTemplate;
@@ -101,8 +101,8 @@
                 function (response) {
                     if (response.Success) {
                         //delete email account in the list
-                        for (let i = 0; i < $scope.emailTemplates[i]; i++) {
-                            let e = $scope.emailTemplates[i];
+                        for (var i = 0; i < $scope.emailTemplates[i]; i++) {
+                            var e = $scope.emailTemplates[i];
                             if (e.Id != $scope.emailTemplate.Id)
                                 continue;
                             $scope.emailTemplates.splice(i, 1);

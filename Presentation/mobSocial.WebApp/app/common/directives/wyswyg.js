@@ -11,7 +11,7 @@
                     CKEDITOR.replace(id);
                     const instance = CKEDITOR.instances[id];
                     instance.setData(scope.ngModel);
-                    let setFromInstanceChange = false;
+                    var setFromInstanceChange = false;
                     
                     scope.$watch("ngModel",
                         function (newValue, oldValue) {

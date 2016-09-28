@@ -13,7 +13,7 @@
         },
         resolveBundles: function (bundleNames) {
             const bundles = [];
-            for (let i = 0; i < bundleNames.length; i++)
+            for (var i = 0; i < bundleNames.length; i++)
                 bundles.push(this.getBundlePath(bundleNames[i]));
             return this.resolve(bundles);
         }

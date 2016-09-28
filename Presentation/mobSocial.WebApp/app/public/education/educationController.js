@@ -42,8 +42,8 @@
                         $scope.education = response.ResponseData.Education;
                         var found = false;
                         //update education in the list
-                        for (let i = 0; i < $scope.educations.length; i++) {
-                            let e = $scope.educations[i];
+                        for (var i = 0; i < $scope.educations.length; i++) {
+                            var e = $scope.educations[i];
                             if (e.Id != $scope.education.Id)
                                 continue;
                             $scope.educations[i] = $scope.education;
@@ -68,8 +68,8 @@
                 function(response) {
                     if (response.Success) {
                         //delete education in the list
-                        for (let i = 0; i < $scope.educations[i]; i++) {
-                            let e = $scope.educations[i];
+                        for (var i = 0; i < $scope.educations[i]; i++) {
+                            var e = $scope.educations[i];
                             if (e.Id != $scope.education.Id)
                                 continue;
                             $scope.educations.splice(i, 1);

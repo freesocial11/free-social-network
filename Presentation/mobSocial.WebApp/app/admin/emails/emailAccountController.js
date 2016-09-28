@@ -41,8 +41,8 @@
                         $scope.emailAccount = response.ResponseData.EmailAccount;
                         var found = false;
                         //update email account in the list
-                        for (let i = 0; i < $scope.emailAccounts.length; i++) {
-                            let e = $scope.emailAccounts[i];
+                        for (var i = 0; i < $scope.emailAccounts.length; i++) {
+                            var e = $scope.emailAccounts[i];
                             if (e.Id != $scope.emailAccount.Id)
                                 continue;
                             $scope.emailAccounts[i] = $scope.emailAccount;
@@ -65,8 +65,8 @@
                 function(response) {
                     if (response.Success) {
                         //delete email account in the list
-                        for (let i = 0; i < $scope.emailAccounts[i]; i++) {
-                            let e = $scope.emailAccounts[i];
+                        for (var i = 0; i < $scope.emailAccounts[i]; i++) {
+                            var e = $scope.emailAccounts[i];
                             if (e.Id != $scope.emailAccount.Id)
                                 continue;
                             $scope.emailAccounts.splice(i, 1);
