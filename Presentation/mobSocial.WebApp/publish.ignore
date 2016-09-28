@@ -3,6 +3,7 @@
 # prevents this file from being published
 publish.ignore
 *.wpp.targets
+*.map
 node_modules/
 app/
 
