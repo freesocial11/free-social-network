@@ -1,6 +1,19 @@
 /// <binding Clean='Run - Development' />
 "use strict";
-var webpack = require("webpack");
+var webpack = require("webpack"),
+    minimize = process.argv.indexOf('--minimize') !== -1,
+    plugins = [];
+
+plugins.push(new webpack.optimize.CommonsChunkPlugin("scripts/bundles/init.js"));
+if (minimize) {
+    plugins.push(new webpack.optimize.UglifyJsPlugin({
+        minimize: true,
+        output: {
+            comments: false
+        }
+    }));
+}
+
 module.exports = {
     externals: {
         'angular': 'angular',
@@ -117,5 +130,5 @@ module.exports = {
         loaders: [
         ]
     },
-    plugins: [new webpack.optimize.CommonsChunkPlugin("scripts/bundles/init.js")]
+    plugins: plugins
 };
