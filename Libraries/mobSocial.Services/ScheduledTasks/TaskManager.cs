@@ -6,6 +6,7 @@ using DryIoc;
 using FluentScheduler;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Core.Tasks;
+using mobSocial.Data.Database;
 using mobSocial.Data.Entity.ScheduledTasks;
 
 namespace mobSocial.Services.ScheduledTasks
@@ -21,6 +22,8 @@ namespace mobSocial.Services.ScheduledTasks
 
         public void Start(Type[] availableTasksTypes)
         {
+            if (!DatabaseManager.IsDatabaseInstalled())
+                return;
             var container = mobSocialEngine.ActiveEngine.IocContainer;
             IList<ScheduledTask> scheduledTasks;
             //because dbcontext resolves per web request and the per request scope hasn't yet started here,
