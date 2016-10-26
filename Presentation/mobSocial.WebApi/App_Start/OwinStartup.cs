@@ -18,6 +18,8 @@ namespace mobSocial.WebApi
             //new configuration for owin
             var config = new HttpConfiguration();
 
+            app.UseInstallationVerifier();
+
             app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
             
             app.UsePictureSizeRegistrar();
