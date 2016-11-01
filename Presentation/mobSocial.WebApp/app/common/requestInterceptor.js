@@ -6,7 +6,10 @@
         };
         this.response = function (response) {
             if (response.data) {
-
+                if (response.data.dbnotinstalled) {
+                    window.location.href = "/install";
+                    return;
+                }
                 if (response.data.Messages) {
                     $rootScope._responseMessages = response.data.Messages;
                 }

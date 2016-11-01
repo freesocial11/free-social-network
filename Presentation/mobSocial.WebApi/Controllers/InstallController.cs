@@ -23,17 +23,29 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         public IHttpActionResult Install(InstallationRequestModel model)
         {
+            if (!ModelState.IsValid)
+                return Response(new { Success = false, Message = "Insufficient data sent to complete installation" });
+
             var areTableInstalled = DatabaseManager.IsDatabaseInstalled();
 
             if (areTableInstalled)
                 return Response(new { Success = false, Message = "Database already installed" });
 
             //lets save the database settings to config file
-            var connectionString = "";
-            var providerName = "";
-            connectionString = @"Data Source=.\sqlexpress;Initial Catalog=mobsocial_standalone;Integrated Security=False;Persist Security Info=False;User ID=iis_user;Password=iis_user";
-            providerName = "SqlServer";
+            var connectionString = model.ConnectionString;
+            var providerName = "SqlServer";
 
+            if (!model.IsConnectionString)
+            {
+                connectionString = DatabaseManager.CreateConnectionString(model.ServerUrl, model.DatabaseName,
+                   model.DatabaseUserName, model.DatabasePassword, false, 0);
+            }
+
+            //check if we have correct connection string
+            if (!DatabaseManager.DatabaseConnects(connectionString))
+            {
+                return Response(new { Success = false, Message = "Failed to connect to database" });
+            }
             var databaseSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
             databaseSettings.WriteSettings(connectionString, DatabaseManager.GetProviderName(providerName));
 
@@ -44,6 +56,24 @@ namespace mobSocial.WebApi.Controllers
             _installationService.FillRequiredSeedData(model.AdminEmail, model.Password, HttpContext.Current.Request.Url.Host);
 
             return Response(new { Success = true });
+        }
+
+        [Route("install/test-connection")]
+        [HttpPost]
+        public IHttpActionResult TestConnection(InstallationRequestModel model)
+        {
+            if (model == null)
+                return Response(new {Success = false});
+
+            var connectionString = model.ConnectionString;
+            if (!model.IsConnectionString)
+            {
+                connectionString = DatabaseManager.CreateConnectionString(model.ServerUrl, model.DatabaseName,
+                    model.DatabaseUserName, model.DatabasePassword, false, 0);
+            }
+
+            var connectionSucceeds = DatabaseManager.DatabaseConnects(connectionString);
+            return Response(new { Success = connectionSucceeds });
         }
     }
 }

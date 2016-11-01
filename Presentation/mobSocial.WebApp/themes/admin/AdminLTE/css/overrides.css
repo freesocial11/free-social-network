@@ -263,3 +263,25 @@ img {
 videogular vg-overlay-play, [videogular] vg-overlay-play {
   left: 0; }
 
+.install-wizard-links {
+  padding-left: 13px; }
+  .install-wizard-links a {
+    color: #aaa;
+    font-size: 1.2em; }
+  .install-wizard-links .active {
+    font-weight: bold; }
+    .install-wizard-links .active a {
+      color: #222; }
+  .install-wizard-links .done {
+    color: #555; }
+    .install-wizard-links .done a {
+      color: #555; }
+
+.install-wizard-pane {
+  background-color: white;
+  padding: 15px;
+  border: solid 1px #ccc; }
+  .install-wizard-pane .license-terms {
+    height: 400px;
+    overflow: auto; }
+

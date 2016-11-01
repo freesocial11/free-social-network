@@ -14,7 +14,7 @@ namespace mobSocial.WebApi.Configuration.Middlewares
                 if (!DatabaseManager.IsDatabaseInstalled())
                 {
                     //avoid install page from this check, otherwise, we won't be able to install ever
-                    if (!HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/install"))
+                    if (!HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/api/install") && !HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/api/install/test-connection"))
                     {
 
                         context.Response.ContentType = "application/json";

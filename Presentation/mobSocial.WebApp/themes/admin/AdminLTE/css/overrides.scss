@@ -346,6 +346,7 @@ img {
         color: #999;
         font-size: 12px;
     }
+
     .media-contents {
         background-color: black;
         text-align: center;
@@ -392,4 +393,38 @@ img {
 
 videogular vg-overlay-play, [videogular] vg-overlay-play {
     left: 0;
+}
+
+.install-wizard-links {
+    padding-left: 13px;
+
+    a {
+        color: #aaa;
+        font-size: 1.2em;
+    }
+
+    .active {
+        a {
+            color: #222;
+        }
+
+        font-weight: bold;
+    }
+
+    .done {
+        color: #555;
+        a {
+            color: #555;
+        }
+    }
+}
+
+.install-wizard-pane {
+    background-color: white;
+    padding: 15px;
+    border: solid 1px #ccc;
+    .license-terms{
+        height:400px;
+        overflow:auto;
+    }
 }

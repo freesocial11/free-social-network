@@ -49,6 +49,17 @@
                      }
                  },
                  controller: "registerController"
+             })
+            .state("layoutZero.install",
+             {
+                 templateUrl: "pages/common/install.html",
+                 url: "/install",
+                 controller: "installController",
+                 resolve: {
+                     resolver: function (controllerProvider) {
+                         return controllerProvider.resolveBundles(["install"]);
+                     }
+                 }
              });
          $stateProvider
              .state("layoutAdministration",

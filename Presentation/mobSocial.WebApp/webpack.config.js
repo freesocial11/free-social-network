@@ -52,6 +52,10 @@ module.exports = {
             "./app/common/services/loginService.js",
             "./app/public/authentication/loginController.js"
         ],
+        install:[
+             "./app/admin/installation/installService.js",
+            "./app/admin/installation/installController.js"
+        ],
         register: [
             "./app/common/services/registerService.js",
             "./app/public/authentication/registerController.js"
