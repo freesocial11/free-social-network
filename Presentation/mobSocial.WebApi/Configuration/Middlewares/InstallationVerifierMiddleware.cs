@@ -19,7 +19,7 @@ namespace mobSocial.WebApi.Configuration.Middlewares
 
                         context.Response.ContentType = "application/json";
                         context.Response.StatusCode = (int) HttpStatusCode.OK;
-                        await context.Response.WriteAsync("{dbnotinstalled : true}");
+                        await context.Response.WriteAsync("{\"dbnotinstalled\" : true}");
                         return;
                     }
                 }
