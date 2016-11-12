@@ -96,7 +96,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             {
                 var instance = mobSocialEngine.ActiveEngine.IocContainer.Resolve<ApplicationContext>(IfUnresolved.ReturnDefault);
                 if (instance == null)
-                    instance = mobSocialEngine.ActiveEngine.RegisterAndResolve<ApplicationContext>(new ApplicationContext());
+                    instance = mobSocialEngine.ActiveEngine.RegisterAndResolve<ApplicationContext>(new ApplicationContext(), reuse: Reuse.InWebRequest);
 
                 return instance;
             }

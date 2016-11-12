@@ -26,7 +26,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             return IocContainer.Resolve<T>(returnDefaultIfNotResolved ? IfUnresolved.ReturnDefault : IfUnresolved.Throw);
         }
 
-        public T RegisterAndResolve<T>(object instance = null, bool instantiateIfNull = true) where T : class
+        public T RegisterAndResolve<T>(object instance = null, bool instantiateIfNull = true, IReuse reuse = null) where T : class
         {
             if (instance == null)
                 if (instantiateIfNull)
@@ -37,7 +37,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
                 }
             var typedInstance = Resolve<T>(true);
             if (typedInstance == null)
-                IocContainer.RegisterInstance<T>(instance as T, new SingletonReuse());
+                IocContainer.RegisterInstance<T>(instance as T, reuse);
             return instance as T;
         }
 

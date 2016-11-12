@@ -8,7 +8,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
 
         T Resolve<T>(bool returnDefaultIfNotResolved = false) where T : class;
 
-        T RegisterAndResolve<T>(object instance, bool instantiateIfNull = true) where T : class;
+        T RegisterAndResolve<T>(object instance, bool instantiateIfNull = true, IReuse reuse = null) where T : class;
 
         void Start(bool testMode = false);
     }
