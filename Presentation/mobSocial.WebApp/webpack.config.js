@@ -39,6 +39,7 @@ module.exports = {
             "./app/common/requestInterceptor.js",
             "./app/common/services/webClientService.js",
             "./app/common/services/entityPropertyService.js",
+            "./app/common/services/autoCompleteService.js",
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",

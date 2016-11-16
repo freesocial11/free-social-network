@@ -221,6 +221,7 @@
     <Compile Include="Configuration\Tasks\EmailSchedulerTask.cs" />
     <Compile Include="Configuration\ViewEngines\mobSocialRazorProviderViewEngine.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\EducationController.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Models\ArtistPages\ArtistPagePaymentModel.cs" />
     <Compile Include="Models\Authentication\LoginModel.cs" />
     <Compile Include="Models\Authentication\RegisterModel.cs" />
+    <Compile Include="Models\AutoComplete\AutoCompleteRequestModel.cs" />
     <Compile Include="Models\Battles\BattleUploadModel.cs" />
     <Compile Include="Models\Battles\InviteParticipantsModel.cs" />
     <Compile Include="Models\Battles\InviteVotersModel.cs" />
