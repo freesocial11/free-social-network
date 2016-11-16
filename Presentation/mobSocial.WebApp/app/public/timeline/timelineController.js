@@ -16,9 +16,15 @@ window.mobSocial.lazy.controller("timelineController", [
 
 
         $scope.ClearPostFormExtraData = function () {
-            $scope.PostData.AdditionalAttributeValue = null;
-            $scope.PostData.PostTypeName = "status";
+            //clear data
+            $scope.PostData = {
+                Message: "",
+                PostTypeName: "status",
+                AdditionalAttributeValue: null
+
+            };
         }
+        $scope.ClearPostFormExtraData();
 
         $scope.PostToTimeline = function () {
             if ($scope.PostData.Message == "" && $scope.PostData.AdditionalAttributeValue == "") {
@@ -26,15 +32,12 @@ window.mobSocial.lazy.controller("timelineController", [
                 return;
             }
             TimelineService.PostToTimeline($scope.PostData, function (response) {
+                $scope.TimelinePosts = $scope.TimelinePosts || [];
                 if (response.Success)
                     $scope.TimelinePosts.unshift(response.Post); //prepend to existing list
-                //clear data
-                $scope.PostData = {
-                    Message: "",
-                    PostTypeName: "status",
-                    AdditionalAttributeValue: null
 
-                };
+                $scope.ClearPostFormExtraData();
+
             }, function () {
                 alert("Error occured while processing the request");
             });

@@ -29,6 +29,8 @@ module.exports = {
             "./libraries/angular/angular-moment.min.js",
             "./libraries/ocLazyLoad/ocLazyLoad.min.js",
             "./libraries/angular/angular-sanitize.min.js",
+            //smart area
+             "./libraries/smart-area/smart-area.min.js",
             //mobSocial app
             "./config.js",
             "./app/common/functions.js",
