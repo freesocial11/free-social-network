@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Timeline
@@ -24,5 +25,14 @@ namespace mobSocial.WebApi.Models.Timeline
         public bool IsHidden { get; set; }
 
         public DateTime PublishDate { get; set; }
+
+        public IList<TagModel> InlineTags { get; set; }
+
+        public class TagModel
+        {
+            public string Id { get; set; }
+
+            public string Name { get; set; }
+        }
     }
 }

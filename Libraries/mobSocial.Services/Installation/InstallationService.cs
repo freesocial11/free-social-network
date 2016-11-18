@@ -154,7 +154,8 @@ namespace mobSocial.Services.Installation
 
             //user settings
             settingService.Save(new UserSettings() {
-                UserRegistrationDefaultMode = RegistrationMode.WithActivationEmail
+                UserRegistrationDefaultMode = RegistrationMode.WithActivationEmail,
+                UserLinkTemplate = "<a href='' data-uid='{0}'>{1}</a>"
             });
 
             //user settings

@@ -19,5 +19,10 @@ namespace mobSocial.Data.Entity.Settings
         /// Specifies if an email is also required to activate the user along with activation code
         /// </summary>
         public bool RequireEmailForUserActivation { get; set; }
+
+        /// <summary>
+        /// Specifies the html template used for creating user links within content
+        /// </summary>
+        public string UserLinkTemplate { get; set; }
     }
 }

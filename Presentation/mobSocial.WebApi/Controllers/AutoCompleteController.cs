@@ -3,8 +3,10 @@ using System.Linq;
 using System.Web.Http;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
+using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Users;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.AutoComplete;
@@ -38,10 +40,19 @@ namespace mobSocial.WebApi.Controllers
 
             var types = csvTypes.ToLowerInvariant().Split(',');//comma separated values (csv's)
             dynamic model = new ExpandoObject();
+            string[] searchRoles = null;
+            if (ApplicationContext.Current.CurrentUser.IsAdministrator())
+            {
+                searchRoles = new[] {SystemRoleNames.Registered, SystemRoleNames.Administrator};
+            }
+            else
+            {
+                searchRoles = new[] { SystemRoleNames.Registered };
+            }
             //are users requested?
             if (types.Any(x => x == "users"))
             {
-                var users = _userService.SearchUsers(requestModel.Search, false, new[] { SystemRoleNames.Registered }, 1, requestModel.Count);
+                var users = _userService.SearchUsers(requestModel.Search, false, searchRoles, 1, requestModel.Count);
                 model.Users = users.Select(x => x.ToModel(_mediaService, _mediaSettings));
             }
             var response = RespondSuccess(new { AutoComplete = model });

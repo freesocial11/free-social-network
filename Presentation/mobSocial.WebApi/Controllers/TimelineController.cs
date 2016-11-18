@@ -37,7 +37,7 @@ namespace mobSocial.WebApi.Controllers
         private readonly ICommentService _customerCommentService;
         private readonly IMediaService _pictureService;
         private readonly IVideoBattleService _videoBattleService;
-
+        private readonly ITimelinePostProcessor _timelinePostProcessor;
         private readonly MediaSettings _mediaSettings;
         
         public TimelineController(ITimelineService timelineService,
@@ -47,7 +47,7 @@ namespace mobSocial.WebApi.Controllers
             MediaSettings mediaSettings,
             IVideoBattleService videoBattleService, 
             ILikeService customerLikeService, 
-            ICommentService customerCommentService)
+            ICommentService customerCommentService, ITimelinePostProcessor timelinePostProcessor)
         {
             _timelineService = timelineService;
             _customerFollowService = customerFollowService;
@@ -57,6 +57,7 @@ namespace mobSocial.WebApi.Controllers
             _videoBattleService = videoBattleService;
             _customerLikeService = customerLikeService;
             _customerCommentService = customerCommentService;
+            _timelinePostProcessor = timelinePostProcessor;
         }
 
         [Route("post")]
@@ -85,7 +86,8 @@ namespace mobSocial.WebApi.Controllers
                 OwnerEntityType = model.OwnerEntityType,
                 LinkedToEntityName = model.LinkedToEntityName,
                 LinkedToEntityId = model.LinkedToEntityId,
-                PublishDate = model.PublishDate
+                PublishDate = model.PublishDate,
+                InlineTags = JsonConvert.SerializeObject(model.InlineTags)
             };
 
             //save it
@@ -297,6 +299,9 @@ namespace mobSocial.WebApi.Controllers
                     ? 0
                     : 1;
 
+            //process post content to replace inline tags
+            _timelinePostProcessor.ProcessInlineTags(post);
+
             var totalComments = _customerCommentService.GetCommentsCount(post.Id, typeof (TimelinePost).Name);
             var postModel = new TimelinePostDisplayModel() {
                 Id = post.Id,
@@ -321,7 +326,7 @@ namespace mobSocial.WebApi.Controllers
                 var user = _userService.Get(post.OwnerId);
 
                 postModel.OwnerName = user.Name;
-                postModel.OwnerImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
+                postModel.OwnerImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage);
             }
             //depending on the posttype, we may need to extract additional data e.g. in case of autopublished posts, we may need to query the linked entity
             switch (post.PostTypeName)
@@ -364,6 +369,8 @@ namespace mobSocial.WebApi.Controllers
                     break;
 
             }
+
+            //replace inline tags with html links
 
             return postModel;
         }

@@ -65,6 +65,17 @@ namespace mobSocial.Data.Extensions
             }
             return result;
         }
-
+        /// <summary>
+        /// Replaces first occurance of search string with the replace string and returns the result string
+        /// </summary>
+        public static string ReplaceFirst(this string text, string search, string replace)
+        {
+            var pos = text.IndexOf(search, StringComparison.Ordinal);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
+        }
     }
 }

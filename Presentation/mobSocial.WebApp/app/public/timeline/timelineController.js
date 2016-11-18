@@ -20,11 +20,19 @@ window.mobSocial.lazy.controller("timelineController", [
             $scope.PostData = {
                 Message: "",
                 PostTypeName: "status",
-                AdditionalAttributeValue: null
-
+                AdditionalAttributeValue: null,
+                InlineTags: []
             };
         }
         $scope.ClearPostFormExtraData();
+
+        $scope.TagUser = function (obj) {
+            $scope.PostData.InlineTags = $scope.PostData.InlineTags || [];
+            $scope.PostData.InlineTags.push({
+                Id: obj.item.Id,
+                Name: obj.item.Name
+            });
+        };
 
         $scope.PostToTimeline = function () {
             if ($scope.PostData.Message == "" && $scope.PostData.AdditionalAttributeValue == "") {

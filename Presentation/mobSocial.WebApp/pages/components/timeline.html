@@ -6,7 +6,7 @@
             </div>
             <div class="post-box col-xs-11">
                 <div class="form-group">
-                    <textarea ng-model="PostData.Message" smart-area="smartConfig.user" ng-trim="false" placeholder="What's on your mind" class="form-control"></textarea>
+                    <textarea ng-model="PostData.Message" smart-area="smartConfig(TagUser).user" ng-trim="false" placeholder="What's on your mind" class="form-control"></textarea>
                 </div>
                 <div class="form-group text-right">
                     <span ng-include="'/pages/components/timelinePostFormWidgets.html'"></span>
@@ -26,7 +26,7 @@
         <!-- /.user-block -->
     </div>
     <!-- Post -->
-    <div class="post" ng-repeat="Post in TimelinePosts">
+    <div class="post" ng-repeat="Post in TimelinePosts track by Post.Id">
         <div class="user-block">
             <img class="img-circle img-bordered-sm" ng-src="{{Post.OwnerImageUrl}}" alt="user image">
             <span class="username">
@@ -36,8 +36,8 @@
             <span class="description"><span class="time"><i class="fa fa-clock-o"></i> <time am-time-ago="Post.DateCreated"></time></span></span>
         </div>
         <!-- /.user-block -->
-        <p ng-bind-html="Post.Message | linky:'_blank'"></p>
-        <div class="post-content-display">
+        <p ng-bind-html="Post.Message | linky:'_blank' | unescape"></p>
+        <div class=" post-content-display">
             <ng-include src="'/pages/components/timelinePostDisplay.html'"></ng-include>
         </div>
         <div>

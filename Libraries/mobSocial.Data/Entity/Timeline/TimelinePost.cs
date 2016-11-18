@@ -28,6 +28,10 @@ namespace mobSocial.Data.Entity.Timeline
         public DateTime DateCreated { get; set; }
 
         public DateTime DateUpdated { get; set; }
+
+        public string InlineTags { get; set; }
+
+        public string ExternalTags { get; set; }
     }
     public class TimelinePostMap: BaseEntityConfiguration<TimelinePost> { }
 }

@@ -16,6 +16,8 @@ namespace mobSocial.Data.Entity.Social
         public string AdditionalData { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public string InlineTags { get; set; }
     }
 
     public class CommentMap: BaseEntityConfiguration<Comment> { }

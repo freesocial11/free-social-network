@@ -150,42 +150,48 @@ window.mobSocial.run([
             $api.changeSource(source);
             $api.sources = source;
         }
-
+        var activeConfigs = {};
         //smart configs for autocomplete
-        $rootScope.smartConfig = {
-            user: {
-                autocomplete: [
-                    {
-                        words: [/@([A-Za-z]+[_A-Za-z0-9]+)/gi],
-                        cssClass: 'user'
-                    }
-                ],
-                dropdown: [
-                    {
-                        trigger: /@([_A-Za-z0-9]+)/gi,
-                        list: function(match, callback) {
-                            autoCompleteService.get("users",
-                                match[1] /*search term*/,
-                                function(response) {
-                                    if (response.Success) {
-                                        var users = response.ResponseData.AutoComplete.Users.map(function(element) {
-                                            return {
-                                                display: element.Name, // This gets displayed in the dropdown
-                                                item: element // This will get passed to onSelect
-                                            };
+        $rootScope.smartConfig = function (onSelectCallBack, contextName) {
+            if (!activeConfigs[contextName]) {
+                activeConfigs[contextName] = {
+                    user: {
+                        autocomplete: [
+                            {
+                                words: [/@([A-Za-z]+[_A-Za-z0-9]+)/gi],
+                                cssClass: 'autocomplete-user-chip'
+                            }
+                        ],
+                        dropdown: [
+                            {
+                                trigger: /@([_A-Za-z0-9]+)/gi,
+                                list: function (match, callback) {
+                                    autoCompleteService.get("users",
+                                        match[1] /*search term*/,
+                                        function (response) {
+                                            if (response.Success) {
+                                                var users = response.ResponseData.AutoComplete.Users.map(function (element) {
+                                                    return {
+                                                        display: element.Name, // This gets displayed in the dropdown
+                                                        item: element // This will get passed to onSelect
+                                                    };
+                                                });
+                                                callback(users);
+                                            }
                                         });
-                                        callback(users);
-                                    }
-                                });
-                        },
-                        onSelect: function(item) {
-                            return item.display;
-                        },
-                        mode: 'replace'
+                                },
+                                onSelect: function (item) {
+                                    onSelectCallBack(item);
+                                    return item.display;
+                                },
+                                mode: 'replace'
+                            }
+                        ]
                     }
-                ]
+                };
             }
-        };
+            return activeConfigs[contextName];
+        }
     }
 ]);
 

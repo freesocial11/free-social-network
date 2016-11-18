@@ -50,6 +50,7 @@ module.exports = {
             "./app/common/directives/userProfileMini.js",
             //filters
             "./app/common/filters/ms2timestr.js",
+            "./app/common/filters/unescape.js",
             //controllers
             "./app/common/controllers/navigationController.js",
             "./app/common/services/loginService.js",

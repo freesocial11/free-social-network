@@ -179,8 +179,10 @@
     <Compile Include="TeamPages\ITeamPageService.cs" />
     <Compile Include="TeamPages\TeamPageService.cs" />
     <Compile Include="Timeline\ITimelineAutoPublisher.cs" />
+    <Compile Include="Timeline\ITimelinePostProcessor.cs" />
     <Compile Include="Timeline\ITimelineService.cs" />
     <Compile Include="Timeline\TimelineAutoPublisher.cs" />
+    <Compile Include="Timeline\TimelinePostProcessor.cs" />
     <Compile Include="Timeline\TimelineService.cs" />
     <Compile Include="Tokens\ITokenProcessor.cs" />
     <Compile Include="Tokens\TokenProcessor.cs" />
