@@ -16,7 +16,7 @@ namespace mobSocial.Services.Users
 
         public IList<User> SearchUsers(string searchText, bool excludeLoggedInUser, int page, int count)
         {
-            return Get(x => (x.FirstName.Contains(searchText) || x.LastName.Contains(searchText) || x.Email.Contains(searchText)), x => x.FirstName, true, page,
+            return Get(x => (x.FirstName.StartsWith(searchText) || x.LastName.StartsWith(searchText) || x.Email.StartsWith(searchText)), x => x.FirstName, true, page,
                 count).ToList();
         }
 
@@ -30,7 +30,7 @@ namespace mobSocial.Services.Users
         {
             var query = Get(
                 x =>
-                    (x.FirstName.Contains(searchText) || x.LastName.Contains(searchText) || x.Email.Contains(searchText)) &&
+                    (x.FirstName.StartsWith(searchText) || x.LastName.StartsWith(searchText) || x.Email.StartsWith(searchText)) &&
                     restrictToRoles.Intersect(x.UserRoles.Select(y => y.RoleId)).Any(), x => x.FirstName, true, page,
                 count);
             return query.ToList();
