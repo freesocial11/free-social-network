@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Models.Social;
 
 namespace mobSocial.WebApi.Models.Timeline
 {
@@ -26,13 +27,6 @@ namespace mobSocial.WebApi.Models.Timeline
 
         public DateTime PublishDate { get; set; }
 
-        public IList<TagModel> InlineTags { get; set; }
-
-        public class TagModel
-        {
-            public string Id { get; set; }
-
-            public string Name { get; set; }
-        }
+        public IList<UserTagModel> InlineTags { get; set; }
     }
 }

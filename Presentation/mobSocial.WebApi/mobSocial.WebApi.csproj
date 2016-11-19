@@ -313,6 +313,7 @@
     <Compile Include="Models\Social\UserFriendModel.cs" />
     <Compile Include="Models\Social\FriendPublicModel.cs" />
     <Compile Include="Models\Social\FriendSearchModel.cs" />
+    <Compile Include="Models\Social\UserTagModel.cs" />
     <Compile Include="Models\Songs\SongModel.cs" />
     <Compile Include="Models\Sponsors\SponsorDataModel.cs" />
     <Compile Include="Models\Sponsors\SponsorModel.cs" />
