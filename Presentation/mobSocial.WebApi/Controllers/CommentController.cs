@@ -11,11 +11,13 @@ using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Social;
+using mobSocial.Services.Timeline;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Social;
+using Newtonsoft.Json;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -27,17 +29,19 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _customerService;
         private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
+        private readonly ITimelinePostProcessor _timelinePostProcessor;
 
         public CommentController(ICommentService customerCommentService,
             IUserService customerService,
             ILikeService customerLikeService,
-            IMediaService mediaService, MediaSettings mediaSettings)
+            IMediaService mediaService, MediaSettings mediaSettings, ITimelinePostProcessor timelinePostProcessor)
         {
             _customerCommentService = customerCommentService;
             _customerService = customerService;
             _customerLikeService = customerLikeService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
+            _timelinePostProcessor = timelinePostProcessor;
         }
 
         [Route("post")]
@@ -55,7 +59,8 @@ namespace mobSocial.WebApi.Controllers
                 EntityName = model.EntityName,
                 EntityId = model.EntityId,
                 DateCreated = DateTime.UtcNow,
-                UserId = ApplicationContext.Current.CurrentUser.Id
+                UserId = ApplicationContext.Current.CurrentUser.Id,
+                InlineTags = model.InlineTags != null ? JsonConvert.SerializeObject(model.InlineTags) : null
             };
             _customerCommentService.Insert(comment);
             var cModel = PrepareCommentPublicModel(comment, new[] { ApplicationContext.Current.CurrentUser });
@@ -120,6 +125,10 @@ namespace mobSocial.WebApi.Controllers
             var user = users.FirstOrDefault(x => x.Id == comment.UserId);
             if (user == null)
                 return null;
+
+            //process the comment text
+            _timelinePostProcessor.ProcessInlineTags(comment);
+
             var likeStatus = _customerLikeService.GetCustomerLike<Comment>(ApplicationContext.Current.CurrentUser.Id, comment.Id) == null ? 0 : 1;
             //and create it's response model
             var cModel = new UserCommentPublicModel() {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Social
@@ -15,5 +16,7 @@ namespace mobSocial.WebApi.Models.Social
         public string CommentText { get; set; }
 
         public string AdditionalData { get; set; }
+
+        public IList<UserTagModel> InlineTags { get; set; }
     }
 }
