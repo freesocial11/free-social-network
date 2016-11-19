@@ -20,7 +20,7 @@
                 </span>
             </div>
             <div class="comment-text">
-                {{comment.CommentText}}
+                <p ng-bind-html="comment.CommentText | linky:'_blank' | unescape"></p>
                 <div>
                     <like-button entityid="{{comment.Id}}" entityname="Comment" likestatus="comment.LikeStatus" totallikes="{{comment.LikeCount}}"></like-button>
                 </div>
@@ -34,7 +34,16 @@
         <!--img ng-src="{{CurrentUser.ProfileImageUrl}}" class="img-circle img-sm img-bordered-sm" /-->
         <form type="post">
             <div class="input-group input-group-sm">
-                <input ng-model="Comment.CommentText" class="form-control input-sm" type="text" placeholder="Type a comment">
+                <textarea ng-model="Comment.CommentText"
+                          mentio  
+                          mentio-trigger-char="'@'" 
+                          mentio-items="mentionedUsers" 
+                          mentio-search="HandleMention(term)" 
+                          mentio-select="TagUser(item)"
+                          ng-trim="true" 
+                          class="form-control input-sm" 
+                          placeholder="Type a comment"
+                          mentio-id="'comment-area-{{EntityId}}'"></textarea>
                 <span class="input-group-btn">
                     <button type="submit" ng-click="Post()" class="btn btn-secondary btn-flat">Comment</button>
                 </span>

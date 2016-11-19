@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', '$rootScope', function (commentService, $rootScope) {
+﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', '$rootScope', 'functionHelperProvider', function (commentService, $rootScope, functionHelperProvider) {
     return {
         restrict: "E",
         templateUrl: "/pages/components/commentsBox.html",
@@ -12,6 +12,27 @@
 
 
             $scope.CurrentUser = $rootScope.CurrentUser;
+
+            $scope.HandleMention = function (term) {
+                if (term == "")
+                    return;
+                $rootScope.mentioHelper.userMention(term,
+                       function (result) {
+                           $scope.mentionedUsers = result;
+                       });
+            }
+
+            $scope.TagUser = function (item) {
+                $scope.Comment.InlineTags = $scope.Comment.InlineTags || [];
+                $scope.Comment.InlineTags.push({
+                    Id: item.item.Id,
+                    Name: item.label
+                });
+                return "@" + item.label;
+            };
+
+            $scope.SmartAreaConfig = $rootScope.smartConfig($scope.TagUser, "post_comment").user;
+
             $scope.Post = function () {
 
                 commentService.Post($scope.Comment, function (response) {
@@ -69,7 +90,8 @@
                 $scope.Comment = {
                     CommentText: "",
                     EntityName: $scope.EntityName,
-                    EntityId: $scope.EntityId
+                    EntityId: $scope.EntityId,
+                    InlineTags: []
                 };
                 $scope.commmentsVisible = false;
                 $scope.CommentRequest = {
@@ -79,7 +101,7 @@
                     Count: $scope.SinglePageCommentCount
                 }
                 $scope.CommentList = [];
-                $scope.toggleComments();
+                
             };
 
             $scope.toggleComments = function () {

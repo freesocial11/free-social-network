@@ -1,4 +1,4 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize", "smartArea"])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize", "smartArea", "mentio"])
     .constant('globalApiEndPoint', '/api')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
@@ -150,6 +150,24 @@ window.mobSocial.run([
             $api.changeSource(source);
             $api.sources = source;
         }
+
+        $rootScope.mentioHelper = {
+            userMention: function (term, callback) {
+                autoCompleteService.get("users",
+                    term /*search term*/,
+                    function(response) {
+                        if (response.Success) {
+                           var mentionedUsers = response.ResponseData.AutoComplete.Users.map(function(element) {
+                                return {
+                                    label: element.Name, // This gets displayed in the dropdown
+                                    item: element // This will get passed to onSelect
+                                };
+                            });
+                           callback(mentionedUsers);
+                        }
+                    });
+            }
+        };
         var activeConfigs = {};
         //smart configs for autocomplete
         $rootScope.smartConfig = function (onSelectCallBack, contextName) {

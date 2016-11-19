@@ -26,12 +26,22 @@ window.mobSocial.lazy.controller("timelineController", [
         }
         $scope.ClearPostFormExtraData();
 
+        $scope.HandleMention = function(term) {
+            if (term == "")
+                return;
+            $rootScope.mentioHelper.userMention(term,
+                   function (result) {
+                       $scope.mentionedUsers = result;
+                   });
+        }
+
         $scope.TagUser = function (obj) {
             $scope.PostData.InlineTags = $scope.PostData.InlineTags || [];
             $scope.PostData.InlineTags.push({
                 Id: obj.item.Id,
-                Name: obj.item.Name
+                Name: obj.label
             });
+            return "@" + obj.label;
         };
 
         $scope.PostToTimeline = function () {
