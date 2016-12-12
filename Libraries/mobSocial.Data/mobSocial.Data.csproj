@@ -97,6 +97,8 @@
     <Compile Include="Entity\Emails\EmailAccount.cs" />
     <Compile Include="Entity\Emails\EmailMessage.cs" />
     <Compile Include="Entity\Emails\EmailTemplate.cs" />
+    <Compile Include="Entity\Notifications\Notification.cs" />
+    <Compile Include="Entity\Notifications\NotificationEvent.cs" />
     <Compile Include="Entity\ScheduledTasks\ScheduledTask.cs" />
     <Compile Include="Entity\Settings\UrlSettings.cs" />
     <Compile Include="Entity\Tokens\Token.cs" />

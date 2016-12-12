@@ -32,6 +32,7 @@ namespace mobSocial.WebApi
 #if DEBUG
             app.UseErrorPage(new ErrorPageOptions());
 #endif
+            app.MapSignalR();
 
             //run owin startup configurations from plugins
             OwinStartupManager.RunAllOwinConfigurations(app);
