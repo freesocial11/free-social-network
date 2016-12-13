@@ -1,5 +1,6 @@
-﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize", "mentio"])
+﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize", "mentio", "SignalR"])
     .constant('globalApiEndPoint', '/api')
+    .constant('signalREndPoint', '/api/signalr')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
             return {
@@ -14,8 +15,8 @@
 
 //attach some global functions to rootScope
 window.mobSocial.run([
-    "$rootScope", "$sce", "authProvider", "$state", "$window", "$q", "$interval", "autoCompleteService",
-    function($rootScope, $sce, authProvider, $state, $window, $q, $interval, autoCompleteService) {
+    "$rootScope", "$sce", "authProvider", "$state", "$window", "$q", "$interval", "autoCompleteService","notificationHub",
+    function($rootScope, $sce, authProvider, $state, $window, $q, $interval, autoCompleteService, notificationHub) {
         $rootScope.$state = $state;
         //whenever a route changes, check if authentication is required, if yes, better redirect to login page
         $rootScope.$on('$stateChangeError',
