@@ -239,7 +239,7 @@ namespace mobSocial.WebApi.Controllers
                 return NotFound();
 
             //check if the email has already been registered
-            var emailUser = _userService.Get(x => x.Email == entityModel.Email, null).FirstOrDefault();
+            var emailUser = _userService.Get(x => x.Email == entityModel.Email, earlyLoad: x=> x.UserRoles.Select(y => y.Role)).FirstOrDefault();
             if (emailUser != null && emailUser.Id != user.Id)
             {
                 VerboseReporter.ReportError("The email is already registered with another user", "post_user");

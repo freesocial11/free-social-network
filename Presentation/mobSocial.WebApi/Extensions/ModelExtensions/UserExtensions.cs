@@ -7,6 +7,7 @@ using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Social;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Models.Users;
@@ -15,7 +16,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
 {
     public static class UserExtensions
     {
-        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService = null, IFriendService friendService = null)
+        public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService = null, IFriendService friendService = null, INotificationService notificationService = null)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
             var model = new UserResponseModel() {
@@ -42,9 +43,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             {
                 model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
                 model.FollowingCount = followService.Count(x => x.UserId == user.Id);
-                model.FollowStatus = model.CanFollow && followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
                 model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
-
+                if(model.CanFollow)
+                    model.FollowStatus = followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
             }
 
             if (friendService != null)
@@ -62,6 +63,18 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             if (string.IsNullOrEmpty(model.ProfileImageUrl))
                 model.ProfileImageUrl = mediaSettings.DefaultUserProfileImageUrl;
 
+            //we can send notifications as well if it's a user asking for his own details
+            if (currentUser.Id == user.Id && notificationService != null)
+            {
+                var qNotifications =
+                    notificationService.Get(x => x.UserId == currentUser.Id && x.PublishDateTime <= DateTime.UtcNow,
+                        x => new {x.Id}, false);
+
+                var unreadCount = qNotifications.Count(x => !x.IsRead);
+                var notifications = qNotifications.Take(15).ToList();
+                model.Notifications = notifications.Select(x => x.ToModel()).ToList();
+                model.UnreadNotificationCount = unreadCount;
+            }
           
             return model;
         }
