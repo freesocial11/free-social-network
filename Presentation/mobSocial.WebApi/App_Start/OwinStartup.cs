@@ -20,12 +20,15 @@ namespace mobSocial.WebApi
 
             app.UseInstallationVerifier();
 
-            app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
-            
-            app.UsePictureSizeRegistrar();
+            //run owin startup configurations from plugins
+            OwinStartupManager.RunAllOwinConfigurations(app);
 
             //route registrations & other configurations
             WebApiConfig.Register(config);
+
+            //app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+
+            app.UsePictureSizeRegistrar();
 
             app.UseMobAuthentication();
 
@@ -33,9 +36,6 @@ namespace mobSocial.WebApi
             app.UseErrorPage(new ErrorPageOptions());
 #endif
             app.MapSignalR();
-
-            //run owin startup configurations from plugins
-            OwinStartupManager.RunAllOwinConfigurations(app);
 
             //webapi, last one always 
             app.UseWebApi(config);

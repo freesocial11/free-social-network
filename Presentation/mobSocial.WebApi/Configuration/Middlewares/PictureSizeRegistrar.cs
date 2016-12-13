@@ -1,4 +1,6 @@
-﻿using mobSocial.Core.Infrastructure.AppEngine;
+﻿using DryIoc;
+using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Database;
 using Owin;
 
 namespace mobSocial.WebApi.Configuration.Middlewares
@@ -12,9 +14,12 @@ namespace mobSocial.WebApi.Configuration.Middlewares
         {
             app.Use(async (context, next) =>
             {
-                mobSocialEngine.SetupPictureSizes();
-                await next();
+                using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+                {
+                    mobSocialEngine.SetupPictureSizes();
+                    await next();
+                }
             });
-        }  
+        }
     }
 }
