@@ -29,6 +29,7 @@ module.exports = {
             "./libraries/angular/angular-moment.min.js",
             "./libraries/ocLazyLoad/ocLazyLoad.min.js",
             "./libraries/angular/angular-sanitize.min.js",
+             "./libraries/angular/signalr-hub.js",
             //mentio
              "./libraries/mentio/mentio.min.js",
             //mobSocial app
@@ -54,7 +55,9 @@ module.exports = {
             //controllers
             "./app/common/controllers/navigationController.js",
             "./app/common/services/loginService.js",
-            "./app/public/authentication/loginController.js"
+            "./app/public/authentication/loginController.js",
+             //hubs
+            "./app/common/hubs/notificationHub.js"
         ],
         install:[
              "./app/admin/installation/installService.js",
