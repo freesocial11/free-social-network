@@ -1,7 +1,12 @@
 ﻿using System.Web.Http;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Battles;
 using mobSocial.Data.Entity.Users;
+using mobSocial.Services.Battles;
+using mobSocial.Services.Extensions;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Social;
+using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 
@@ -13,10 +18,14 @@ namespace mobSocial.WebApi.Controllers
         
 
         private readonly IFollowService _followService;
+        private readonly INotificationService _notificationService;
+        private readonly IUserService _userService;
 
-        public FollowController(IFollowService followService)
+        public FollowController(IFollowService followService, INotificationService notificationService, IUserService userService)
         {
             _followService = followService;
+            _notificationService = notificationService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -26,6 +35,7 @@ namespace mobSocial.WebApi.Controllers
         {
             var response = false;
             var newStatus = 0;
+            var currentUser = ApplicationContext.Current.CurrentUser;
             switch (entityName.ToLower())
             {
                 case FollowableEntityNames.VideoBattle:
@@ -33,6 +43,7 @@ namespace mobSocial.WebApi.Controllers
                     break;
                 case FollowableEntityNames.User:
                     response = Follow<User>(id);
+                    _notificationService.NotifyInformation(id, NotificationEventNames.UserFollowed, currentUser, "User", currentUser.Id);
                     break;
             }
             if (response)

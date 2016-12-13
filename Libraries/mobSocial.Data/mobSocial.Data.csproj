@@ -60,6 +60,7 @@
     <Compile Include="Constants\CreditContextKeyNames.cs" />
     <Compile Include="Constants\EmailTemplateNames.cs" />
     <Compile Include="Constants\EmailTokenNames.cs" />
+    <Compile Include="Constants\NotificationEventNames.cs" />
     <Compile Include="Constants\PaymentParameterNames.cs" />
     <Compile Include="Constants\PictureSizeNames.cs" />
     <Compile Include="Constants\PropertyNames.cs" />

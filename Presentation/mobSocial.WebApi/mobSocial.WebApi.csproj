@@ -212,6 +212,7 @@
     <Compile Include="Configuration\Mvc\Models\RootModel.cs" />
     <Compile Include="Configuration\Mvc\Results\IApiCallResult.cs" />
     <Compile Include="Configuration\Mvc\Results\JsonpResult.cs" />
+    <Compile Include="Configuration\Mvc\RootApiWithHubController.cs" />
     <Compile Include="Configuration\Mvc\RootController.cs" />
     <Compile Include="Configuration\Mvc\RootApiController.cs" />
     <Compile Include="Configuration\Mvc\UI\Extensions\HtmlHelperExtensions.cs" />

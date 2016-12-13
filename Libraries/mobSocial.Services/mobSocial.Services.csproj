@@ -118,6 +118,7 @@
     <Compile Include="EntityProperties\EntityPropertyService.cs" />
     <Compile Include="EntityProperties\IEntityPropertyService.cs" />
     <Compile Include="Extensions\EntityPropertyExtensions.cs" />
+    <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Extensions\PaymentProcessorExtensions.cs" />
     <Compile Include="Extensions\PermalinkExtensions.cs" />
     <Compile Include="Extensions\PictureExtensions.cs" />
@@ -141,6 +142,10 @@
     <Compile Include="MobSocialEntityService.cs" />
     <Compile Include="Music\EchoNestMusicService .cs" />
     <Compile Include="Music\IMusicService.cs" />
+    <Compile Include="Notifications\INotificationEventService.cs" />
+    <Compile Include="Notifications\INotificationService.cs" />
+    <Compile Include="Notifications\NotificationEventService.cs" />
+    <Compile Include="Notifications\NotificationService.cs" />
     <Compile Include="Payments\IPaymentTransactionService.cs" />
     <Compile Include="Payments\PaymentTransactionService.cs" />
     <Compile Include="Payments\UserPaymentMethodService.cs" />
@@ -223,7 +228,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GroupPages\" />
-    <Folder Include="Notifications\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

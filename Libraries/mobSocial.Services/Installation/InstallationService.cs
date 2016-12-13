@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Reflection;
 using mobSocial.Core.Exception;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Initializer;
 using mobSocial.Data.Entity.Emails;
+using mobSocial.Data.Entity.Notifications;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Migrations;
 using mobSocial.Services.Emails;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Security;
 using mobSocial.Services.Settings;
 using mobSocial.Services.Users;
@@ -48,6 +52,9 @@ namespace mobSocial.Services.Installation
 
             //seed email account
             SeedEmailAccount(installDomain);
+
+            //notification emails
+            SeedNotificationEvents();
 
             //update config file
             UpdateWebConfig();
@@ -203,5 +210,24 @@ namespace mobSocial.Services.Installation
                 //an error occured while modifying config file, may be it's write protected or test mode is on?
             }
         }
+
+        private void SeedNotificationEvents()
+        {
+            var notificationEventService = mobSocialEngine.ActiveEngine.Resolve<INotificationEventService>();
+            //get all events from notification event class. use reflection for easy insert
+            var fieldInfos = typeof(NotificationEventNames).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (var fi in fieldInfos)
+            {
+                if (!fi.IsLiteral || fi.IsInitOnly)
+                    continue;
+                //it's a constant
+                var eventName = fi.GetRawConstantValue().ToString();
+                notificationEventService.Insert(new NotificationEvent() {
+                    EventName = eventName,
+                    Enabled = true
+                });
+            }
+        }
+
     }
 }
