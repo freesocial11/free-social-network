@@ -8,7 +8,7 @@ namespace mobSocial.Core.Services
 {
     public interface IBaseEntityService<T> where T : BaseEntity
     {
-        void Insert(T entity);
+        void Insert(T entity, bool reloadNavigationProperties = false);
 
         void Delete(T entity);
 

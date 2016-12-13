@@ -20,7 +20,7 @@ namespace mobSocial.Core.Services
             _eventPublisherService = mobSocialEngine.ActiveEngine.Resolve<IEventPublisherService>();
         }
 
-        public virtual void Insert(T entity)
+        public virtual void Insert(T entity, bool reloadNavigationProperties = false)
         {
             _dataRepository.Insert(entity);
             //publish the event so they can be handled

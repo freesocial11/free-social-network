@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading.Tasks;
 using DryIoc;
 using mobSocial.Core.Data;
@@ -82,7 +84,7 @@ namespace mobSocial.Data
             return await Task.Run(() => Get(@where, earlyLoad));
         }
 
-        public void Insert(T entity)
+        public void Insert(T entity, bool reloadNavigationProperties = false)
         {
             _SetupContexts();
             if (entity == null)
@@ -92,6 +94,9 @@ namespace mobSocial.Data
             {
                 _entityDbSet.Add(entity);
                 _databaseContext.SaveChanges();
+                if (reloadNavigationProperties)
+                    //reload the entity to load the navigation properties
+                    ReloadWithNavigationProperties(entity);
             }
             catch (DbEntityValidationException ex)
             {
@@ -185,6 +190,30 @@ namespace mobSocial.Data
                 where = ExpressionHelpers.CombineAnd<T>(where, deletedWhere);
             }
             return where;
+        }
+
+        private void ReloadWithNavigationProperties(T entity)
+        {
+            var oc = ((IObjectContextAdapter)_databaseContext).ObjectContext;
+            //we first detach the entity and get it again from the database to perform the reload
+            oc.Detach(entity); //detach entity to retrieve entity with navigation properties
+            var refreshedEntity = Get(entity.Id);
+
+            var fields = entity.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var field in fields)
+            {
+                var value = field.GetValue(refreshedEntity);
+                //assign to the original object
+                field.SetValue(entity, value);
+            }
+
+            var properties = entity.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(refreshedEntity);
+                //assign to the original object
+                property.SetValue(entity, value);
+            }
         }
     }
 }

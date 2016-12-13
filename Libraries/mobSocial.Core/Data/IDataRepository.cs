@@ -56,7 +56,7 @@ namespace mobSocial.Core.Data
         /// <returns></returns>
         Task<IQueryable<T>> GetAsync<TProperty>(Expression<Func<T, bool>> where, params Expression<Func<T, TProperty>>[] earlyLoad);
 
-        void Insert(T entity);
+        void Insert(T entity, bool reloadNavigationProperties = false);
 
         void Update(T entity);
 

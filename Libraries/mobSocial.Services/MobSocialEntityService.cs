@@ -13,9 +13,9 @@ namespace mobSocial.Services
         {
         }
 
-        public override void Insert(T entity)
+        public override void Insert(T entity, bool reloadNavigationProperties = false)
         {
-            base.Insert(entity);
+            base.Insert(entity, reloadNavigationProperties);
             //insert permalink if its supported
             var supported = entity as IPermalinkSupported;
             if (supported != null)
