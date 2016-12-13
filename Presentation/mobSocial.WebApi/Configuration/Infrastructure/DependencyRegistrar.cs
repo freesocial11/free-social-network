@@ -12,10 +12,13 @@ using mobSocial.Core.Services.Events;
 using mobSocial.Data;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Provider;
+using mobSocial.Services.Authentication;
 using mobSocial.Services.Settings;
 using mobSocial.Services.VerboseReporter;
 using mobSocial.WebApi.Configuration.Database;
 using mobSocial.WebApi.Configuration.Mvc.UI;
+using mobSocial.WebApi.Configuration.SignalR.Providers;
+using Microsoft.AspNet.SignalR;
 
 namespace mobSocial.WebApi.Configuration.Infrastructure
 {
@@ -75,8 +78,19 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             //event publishers and consumers
             container.Register<IEventPublisherService, EventPublisherService>(reuse: Reuse.Singleton);
             //all consumers which are not interfaces
-            container.RegisterMany(new[] {typeof(IEventConsumer<>)}, serviceTypeCondition: type => !type.IsInterface);
+            //find all event consumer types
+            var allConsumerTypes = asm.SelectMany(x => x.GetTypes())
+                .Where(type => type.IsPublic && // get public types 
+                type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEventConsumer<>)) &&
+                !type.IsAbstract);// which implementing some interface(s)
+            //all consumers which are not interfaces
+            container.RegisterMany(allConsumerTypes);
 
+            //user id provider for SignalR
+            container.Register<IUserIdProvider, SignalRUserIdProvider>();
+
+            //register authentication service inwebrequest
+            container.Register<IAuthenticationService, AuthenticationService>(reuse: Reuse.InWebRequest, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
         }
 
         public int Priority
