@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', '$rootScope', 'functionHelperProvider', function (commentService, $rootScope, functionHelperProvider) {
+﻿window.mobSocial.lazy.directive("commentsBox", ['commentService', '$rootScope', function (commentService, $rootScope) {
     return {
         restrict: "E",
         templateUrl: "/pages/components/commentsBox.html",
