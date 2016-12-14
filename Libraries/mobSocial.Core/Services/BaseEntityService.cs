@@ -22,7 +22,7 @@ namespace mobSocial.Core.Services
 
         public virtual void Insert(T entity, bool reloadNavigationProperties = false)
         {
-            _dataRepository.Insert(entity);
+            _dataRepository.Insert(entity, reloadNavigationProperties);
             //publish the event so they can be handled
             _eventPublisherService.Publish(entity, EventType.Insert);
         }
