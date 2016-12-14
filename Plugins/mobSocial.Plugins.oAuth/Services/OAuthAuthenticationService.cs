@@ -79,7 +79,7 @@ namespace mobSocial.Plugins.OAuth.Services
            
 
             _user = _userService.FirstOrDefault(x => x.Email == emailClaim.Value, x => x.UserRoles.Select(y => y.Role)) ?? base.GetCurrentUser();
-            return _user.Guid.ToString() == uidClaim.Value ? _user : null;
+            return _user?.Guid.ToString() == uidClaim.Value ? _user : null;
         }
     }
 }
