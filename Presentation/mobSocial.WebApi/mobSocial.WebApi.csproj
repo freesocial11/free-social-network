@@ -355,6 +355,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\InstallData\EmailTemplates\Master.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.AccountDeleted.Admin.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.AccountDeleted.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.Activated.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.ActivationLink.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.Deactivated.Admin.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.Deactivated.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.PasswordChanged.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.PasswordRecovery.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.Registered.Admin.html" />
+    <Content Include="App_Data\InstallData\EmailTemplates\User.Registered.html" />
     <Content Include="Content\Media\d_cover.jpg" />
     <Content Include="Content\Media\d_female.jpg" />
     <Content Include="Content\Media\d_male.jpg" />
@@ -373,7 +384,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Areas\Administration\Controllers\" />
     <Folder Include="Areas\Administration\Models\" />
     <Folder Include="Areas\Administration\Views\Shared\" />

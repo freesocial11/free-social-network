@@ -2,6 +2,8 @@
 {
     public class EmailTemplateNames
     {
+        public const string Master = "Master";
+
         public const string UserRegisteredMessage = "User.Registered";
 
         public const string UserRegisteredMessageToAdmin = "User.Registered.Admin";

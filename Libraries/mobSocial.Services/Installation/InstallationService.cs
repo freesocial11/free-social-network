@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
+using mobSocial.Core;
 using mobSocial.Core.Exception;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Constants;
@@ -52,6 +54,9 @@ namespace mobSocial.Services.Installation
 
             //seed email account
             SeedEmailAccount(installDomain);
+
+            //seed email templates
+            SeedEmailTemplates(defaultUserEmail, installDomain);
 
             //notification emails
             SeedNotificationEvents();
@@ -190,6 +195,198 @@ namespace mobSocial.Services.Installation
             });
         }
 
+        private void SeedEmailTemplates(string adminEmail, string installDomain)
+        {
+            var emailAccountService = mobSocialEngine.ActiveEngine.Resolve<IEmailAccountService>();
+            var emailTemplateService = mobSocialEngine.ActiveEngine.Resolve<IEmailTemplateService>();
+            var installEmailTemplatesPath =
+                ServerHelper.GetLocalPathFromRelativePath("~/App_Data/InstallData/EmailTemplates/");
+            //add email account
+            var emailAccount = new EmailAccount()
+            {
+                Email = "support@" + installDomain,
+                FromName = "MobSocial",
+                Host = "",
+                IsDefault = true,
+                Port = 485,
+                UseDefaultCredentials = true,
+                UseSsl = true,
+                UserName = "user"
+            };
+            emailAccountService.Insert(emailAccount);
+
+            var masterTemplate = new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = true,
+                Subject = "Master Template",
+                TemplateSystemName = EmailTemplateNames.Master,
+                TemplateName = "Master",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.Master)
+            };
+            emailTemplateService.Insert(masterTemplate);
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your account has been created",
+                TemplateSystemName = EmailTemplateNames.UserRegisteredMessage,
+                TemplateName = "User Registered",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserRegisteredMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "A new user has registered",
+                TemplateSystemName = EmailTemplateNames.UserRegisteredMessageToAdmin,
+                TemplateName = "User Registered Administrator",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserRegisteredMessageToAdmin),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your account has been activated",
+                TemplateSystemName = EmailTemplateNames.UserActivatedMessage,
+                TemplateName = "User Activated",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserActivatedMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Activate your account",
+                TemplateSystemName = EmailTemplateNames.UserActivationLinkMessage,
+                TemplateName = "User Activation Link",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserActivationLinkMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "We have received a password reset request",
+                TemplateSystemName = EmailTemplateNames.PasswordRecoveryLinkMessage,
+                TemplateName = "Password Recovery Link",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.PasswordRecoveryLinkMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your password has been changed",
+                TemplateSystemName = EmailTemplateNames.PasswordChangedMessage,
+                TemplateName = "Password Changed",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.PasswordChangedMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your account has been deactivated",
+                TemplateSystemName = EmailTemplateNames.UserDeactivatedMessage,
+                TemplateName = "User Account Deactivated",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserDeactivatedMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your account has been deactivated",
+                TemplateSystemName = EmailTemplateNames.UserDeactivatedMessageToAdmin,
+                TemplateName = "User Account Deactivated Administrator",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template =
+                    ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserDeactivatedMessageToAdmin),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "Your account has been deleted",
+                TemplateSystemName = EmailTemplateNames.UserAccountDeletedMessage,
+                TemplateName = "User Account Deleted",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template = ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserAccountDeletedMessage),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+
+            emailTemplateService.Insert(new EmailTemplate()
+            {
+                AdministrationEmail = adminEmail,
+                IsMaster = false,
+                Subject = "A user account has been deleted",
+                TemplateSystemName = EmailTemplateNames.UserAccountDeletedMessageToAdmin,
+                TemplateName = "User Account Deleted Administrator",
+                IsSystem = true,
+                EmailAccountId = emailAccount.Id,
+                Template =
+                    ReadEmailTemplate(installEmailTemplatesPath, EmailTemplateNames.UserAccountDeletedMessageToAdmin),
+                ParentEmailTemplateId = masterTemplate.Id
+            });
+        }
+
+     
+        private void SeedNotificationEvents()
+        {
+            var notificationEventService = mobSocialEngine.ActiveEngine.Resolve<INotificationEventService>();
+            //get all events from notification event class. use reflection for easy insert
+            var fieldInfos = typeof(NotificationEventNames).GetFields(BindingFlags.Public | BindingFlags.Static);
+            foreach (var fi in fieldInfos)
+            {
+                if (!fi.IsLiteral || fi.IsInitOnly)
+                    continue;
+                //it's a constant
+                var eventName = fi.GetRawConstantValue().ToString();
+                notificationEventService.Insert(new NotificationEvent() {
+                    EventName = eventName,
+                    Enabled = true
+                });
+            }
+        }
+
+        #region Helper
+        private string ReadEmailTemplate(string path, string templateName)
+        {
+            var filePath = path + templateName + ".html";
+            return File.Exists(filePath) ? File.ReadAllText(filePath) : string.Empty;
+        }
+
         /// <summary>
         /// Update the webconfig file with required settings
         /// </summary>
@@ -210,24 +407,7 @@ namespace mobSocial.Services.Installation
                 //an error occured while modifying config file, may be it's write protected or test mode is on?
             }
         }
-
-        private void SeedNotificationEvents()
-        {
-            var notificationEventService = mobSocialEngine.ActiveEngine.Resolve<INotificationEventService>();
-            //get all events from notification event class. use reflection for easy insert
-            var fieldInfos = typeof(NotificationEventNames).GetFields(BindingFlags.Public | BindingFlags.Static);
-            foreach (var fi in fieldInfos)
-            {
-                if (!fi.IsLiteral || fi.IsInitOnly)
-                    continue;
-                //it's a constant
-                var eventName = fi.GetRawConstantValue().ToString();
-                notificationEventService.Insert(new NotificationEvent() {
-                    EventName = eventName,
-                    Enabled = true
-                });
-            }
-        }
+        #endregion
 
     }
 }
