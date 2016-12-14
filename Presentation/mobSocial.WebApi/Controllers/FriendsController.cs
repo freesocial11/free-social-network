@@ -9,6 +9,7 @@ using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
@@ -25,14 +26,16 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _customerService;
         private readonly IFollowService _customerFollowService;
         private readonly IUserService _userService;
+        private readonly INotificationService _notificationService;
 
-        public FriendsController(IFriendService friendService, IMediaService pictureService, IUserService customerService, IFollowService customerFollowService, IUserService userService)
+        public FriendsController(IFriendService friendService, IMediaService pictureService, IUserService customerService, IFollowService customerFollowService, IUserService userService, INotificationService notificationService)
         {
             _friendService = friendService;
             _pictureService = pictureService;
             _customerService = customerService;
             _customerFollowService = customerFollowService;
             _userService = userService;
+            _notificationService = notificationService;
         }
 
      
@@ -42,8 +45,8 @@ namespace mobSocial.WebApi.Controllers
         [Route("addfriend/{friendId:int}")]
         public IHttpActionResult AddFriend(int friendId)
         {
-
-            if (ApplicationContext.Current.CurrentUser.Id == friendId)
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            if (currentUser.Id == friendId)
                 return Json(new { Success = false, Message = "Can't add one's self" });
 
             var fromCustomerId = ApplicationContext.Current.CurrentUser.Id;
@@ -67,6 +70,8 @@ namespace mobSocial.WebApi.Controllers
 
                 //let's add customer follow
                 _customerFollowService.Insert<User>(fromCustomerId, friendId);
+
+                _notificationService.NotifyInformation(friendId, NotificationEventNames.UserSentFriendRequest, currentUser, "User", currentUser.Id);
             }
 
 
@@ -79,11 +84,11 @@ namespace mobSocial.WebApi.Controllers
         [Route("confirmfriend/{friendId:int}")]
         public IHttpActionResult ConfirmFriend(int friendId)
         {
-
-            if (ApplicationContext.Current.CurrentUser.Id == friendId)
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            if (currentUser.Id == friendId)
                 return Json(new { Success = false, Message = "Can't add one's self" });
 
-            var toCustomerId = ApplicationContext.Current.CurrentUser.Id;
+            var toCustomerId = currentUser.Id;
 
             //first check if the request has already been sent?. Only the receiver can accept or decline
             var customerFriend = _friendService.GetCustomerFriend(friendId, toCustomerId);
@@ -95,6 +100,7 @@ namespace mobSocial.WebApi.Controllers
             customerFriend.DateConfirmed = DateTime.UtcNow;
             _friendService.Update(customerFriend);
 
+            _notificationService.NotifyInformation(friendId, NotificationEventNames.UserAcceptedFriendRequest, currentUser, "User", currentUser.Id);
             return Json(new { Success = true, NewStatus = FriendStatus.Friends });
         }
 
