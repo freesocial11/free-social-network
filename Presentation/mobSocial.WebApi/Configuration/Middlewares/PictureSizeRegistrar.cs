@@ -14,11 +14,16 @@ namespace mobSocial.WebApi.Configuration.Middlewares
         {
             app.Use(async (context, next) =>
             {
-                using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+                if (DatabaseManager.IsDatabaseInstalled())
                 {
-                    mobSocialEngine.SetupPictureSizes();
-                    await next();
+                    using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+                    {
+                        mobSocialEngine.SetupPictureSizes();
+                        await next();
+                        return;
+                    }
                 }
+                await next();
             });
         }
     }
