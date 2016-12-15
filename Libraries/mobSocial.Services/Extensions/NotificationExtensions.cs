@@ -29,21 +29,15 @@ namespace mobSocial.Services.Extensions
             notificationService.Insert(notification, true);
         }
 
-        public static void NotifyInformation<T>(this INotificationService notificationService, int userId, string eventName, T entity, string initiatorName, int initiatorId) where T : BaseEntity
+        public static void DeNotify<T>(this INotificationService notificationService, int userId, string eventName,
+            T entity, string initiatorName, int initiatorId) where T : BaseEntity
         {
-            notificationService.Notify<T>(userId, eventName, entity, initiatorName, initiatorId, DateTime.UtcNow);
+            notificationService.Delete(x => x.EntityId == entity.Id 
+            && x.EntityName == typeof(T).Name 
+            && x.InitiatorId == initiatorId
+            && x.InitiatorName == initiatorName 
+            && x.UserId == userId);
         }
-
-        public static void NotifyError<T>(this INotificationService notificationService, int userId, string eventName, T entity, string initiatorName, int initiatorId) where T : BaseEntity
-        {
-            notificationService.Notify<T>(userId, eventName, entity, initiatorName, initiatorId, DateTime.UtcNow);
-        }
-
-        public static void NotifyPromotion<T>(this INotificationService notificationService, int userId, string eventName, T entity, string initiatorName, int initiatorId) where T : BaseEntity
-        {
-            notificationService.Notify<T>(userId, eventName, entity, initiatorName, initiatorId, DateTime.UtcNow);
-        }
-
         public static void MarkRead(this INotificationService notificationService,  int notificationId)
         {
             var notification = notificationService.Get(notificationId);

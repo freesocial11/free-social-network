@@ -71,7 +71,7 @@ namespace mobSocial.WebApi.Controllers
                 //let's add customer follow
                 _customerFollowService.Insert<User>(fromCustomerId, friendId);
 
-                _notificationService.NotifyInformation(friendId, NotificationEventNames.UserSentFriendRequest, currentUser, "User", currentUser.Id);
+                _notificationService.Notify(friendId, NotificationEventNames.UserSentFriendRequest, currentUser, "User", currentUser.Id, DateTime.UtcNow);
             }
 
 
@@ -100,7 +100,7 @@ namespace mobSocial.WebApi.Controllers
             customerFriend.DateConfirmed = DateTime.UtcNow;
             _friendService.Update(customerFriend);
 
-            _notificationService.NotifyInformation(friendId, NotificationEventNames.UserAcceptedFriendRequest, currentUser, "User", currentUser.Id);
+            _notificationService.Notify(friendId, NotificationEventNames.UserAcceptedFriendRequest, currentUser, "User", currentUser.Id, DateTime.UtcNow);
             return Json(new { Success = true, NewStatus = FriendStatus.Friends });
         }
 

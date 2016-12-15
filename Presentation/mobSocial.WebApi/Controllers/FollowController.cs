@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System;
+using System.Web.Http;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Battles;
 using mobSocial.Data.Entity.Users;
@@ -43,7 +44,7 @@ namespace mobSocial.WebApi.Controllers
                     break;
                 case FollowableEntityNames.User:
                     response = Follow<User>(id);
-                    _notificationService.NotifyInformation(id, NotificationEventNames.UserFollowed, currentUser, "User", currentUser.Id);
+                    _notificationService.Notify(id, NotificationEventNames.UserFollowed, currentUser, "User", currentUser.Id, DateTime.UtcNow);
                     break;
             }
             if (response)
@@ -58,6 +59,7 @@ namespace mobSocial.WebApi.Controllers
         {
             var response = false;
             var newStatus = 1;
+            var currentUser = ApplicationContext.Current.CurrentUser;
             switch (entityName.ToLower())
             {
                 case FollowableEntityNames.VideoBattle:
@@ -65,6 +67,8 @@ namespace mobSocial.WebApi.Controllers
                     break;
                 case FollowableEntityNames.User:
                     response = Unfollow<User>(id);
+                    _notificationService.DeNotify(id, NotificationEventNames.UserFollowed, currentUser, "User",
+                        currentUser.Id);
                     break;
             }
             if (response)
