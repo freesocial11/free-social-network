@@ -11,6 +11,7 @@ using mobSocial.Services.Emails;
 using mobSocial.Services.EntityProperties;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Security;
 using mobSocial.Services.Social;
 using mobSocial.Services.Users;
@@ -40,12 +41,13 @@ namespace mobSocial.WebApi.Controllers
         private readonly IEmailSender _emailSender;
         private readonly UrlSettings _urlSettings;
         private readonly IEntityPropertyService _entityPropertyService;
+        private readonly INotificationService _notificationService;
         #endregion
 
         #region ctor
 
         public AuthenticationController(IUserService userService,
-            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService, IEmailSender emailSender, UrlSettings urlSettings, IEntityPropertyService entityPropertyService)
+            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService, IEmailSender emailSender, UrlSettings urlSettings, IEntityPropertyService entityPropertyService, INotificationService notificationService)
         {
             _userService = userService;
             _cryptographyService = cryptographyService;
@@ -60,6 +62,7 @@ namespace mobSocial.WebApi.Controllers
             _emailSender = emailSender;
             _urlSettings = urlSettings;
             _entityPropertyService = entityPropertyService;
+            _notificationService = notificationService;
         }
 
         #endregion
@@ -92,7 +95,7 @@ namespace mobSocial.WebApi.Controllers
                 VerboseReporter.ReportSuccess("Your login was successful", "login");
                 return RespondSuccess(new {
                     ReturnUrl = loginModel.ReturnUrl,
-                    User = ApplicationContext.Current.CurrentUser.ToModel(_mediaService, _mediaSettings, _followService, _friendService)
+                    User = ApplicationContext.Current.CurrentUser.ToModel(_mediaService, _mediaSettings, _followService, _friendService, _notificationService)
                 });
 
             }

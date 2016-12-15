@@ -68,7 +68,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             {
                 var qNotifications =
                     notificationService.Get(x => x.UserId == currentUser.Id && x.PublishDateTime <= DateTime.UtcNow,
-                        x => new {x.Id}, false);
+                        x => new {x.Id}, false, earlyLoad: x => x.NotificationEvent);
 
                 var unreadCount = qNotifications.Count(x => !x.IsRead);
                 var notifications = qNotifications.Take(15).ToList();

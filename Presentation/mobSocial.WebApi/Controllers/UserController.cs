@@ -13,6 +13,7 @@ using mobSocial.Data.Enum;
 using mobSocial.Data.Extensions;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Notifications;
 using mobSocial.Services.Security;
 using mobSocial.Services.Social;
 using mobSocial.Services.Users;
@@ -40,8 +41,9 @@ namespace mobSocial.WebApi.Controllers
         private readonly IMediaService _mediaService;
         private readonly IFollowService _followService;
         private readonly IFriendService _friendService;
+        private readonly INotificationService _notificationService;
 
-        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, GeneralSettings generalSettings)
+        public UserController(IUserService userService, IRoleService roleService, UserSettings userSettings, SecuritySettings securitySettings, IUserRegistrationService userRegistrationService, ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, GeneralSettings generalSettings, INotificationService notificationService)
         {
             _userService = userService;
             _userSettings = userSettings;
@@ -53,6 +55,7 @@ namespace mobSocial.WebApi.Controllers
             _followService = followService;
             _friendService = friendService;
             _generalSettings = generalSettings;
+            _notificationService = notificationService;
             _roleService = roleService;
         }
 
@@ -75,6 +78,18 @@ namespace mobSocial.WebApi.Controllers
             var model = users.ToList().Select(user => user.ToModel(_mediaService, _mediaSettings, _followService, _friendService));
             return RespondSuccess(new {
                 Users = model
+            });
+        }
+
+        [Route("get/me")]
+        [HttpGet]
+        [Authorize]
+        public IHttpActionResult Get()
+        {
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var model = currentUser.ToModel(_mediaService, _mediaSettings, _followService, _friendService, _notificationService);
+            return RespondSuccess(new {
+                User = model
             });
         }
 
@@ -116,7 +131,7 @@ namespace mobSocial.WebApi.Controllers
                 
             }
             else
-                model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
+                model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService, _notificationService);
 
 
             return RespondSuccess(new {
@@ -135,7 +150,7 @@ namespace mobSocial.WebApi.Controllers
             if (user == null)
                 return NotFound();
 
-            var model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService);
+            var model = user.ToModel(_mediaService, _mediaSettings, _followService, _friendService, _notificationService);
             return RespondSuccess(new {
                 User = model
             });
