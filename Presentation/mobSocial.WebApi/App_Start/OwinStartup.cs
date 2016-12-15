@@ -6,6 +6,8 @@ using Microsoft.Owin;
 using Owin;
 using mobSocial.WebApi;
 using mobSocial.WebApi.Configuration.Middlewares;
+using mobSocial.WebApi.Configuration.SignalR.Providers;
+using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Diagnostics;
 
 [assembly: OwinStartup(typeof(OwinStartup))]
@@ -35,6 +37,8 @@ namespace mobSocial.WebApi
 #if DEBUG
             app.UseErrorPage(new ErrorPageOptions());
 #endif
+            var userIdProvider = new SignalRUserIdProvider();
+            GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
             app.MapSignalR();
 
             //webapi, last one always 
