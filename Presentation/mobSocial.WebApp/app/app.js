@@ -57,7 +57,7 @@ window.mobSocial.run([
         $rootScope.CurrentUser = authProvider.getLoggedInUser();
 
         $rootScope.currentUserIs = function(id) {
-            return $rootScope.CurrentUser.Id == id;
+            return $rootScope.CurrentUser && $rootScope.CurrentUser.Id == id;
         }
         $rootScope.login = function(returnUrl) {
             returnUrl = returnUrl || window.location.href;

@@ -1,5 +1,5 @@
-﻿window.mobSocial.service("MobSocialInterceptor", ["authProvider", "$rootScope",
-    function (authProvider, $rootScope) {
+﻿window.mobSocial.service("MobSocialInterceptor", ["$rootScope",
+    function ($rootScope) {
         this.request = function (config) {
             $rootScope.clearMessages();
             return config;
@@ -27,7 +27,6 @@
                 };
             }
             else if (response.status === 401) { //unauthorized
-                authProvider.logout();
                 $rootScope.login();
                 return;
             }

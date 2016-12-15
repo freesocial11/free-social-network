@@ -1,6 +1,7 @@
-﻿window.mobSocial.factory('authProvider', ['$q', 'localStorageService', '$rootScope', function ($q, localStorageService, $rootScope) {
+﻿window.mobSocial.factory('authProvider', ['$q', 'localStorageService', '$rootScope', 'webClientService', function ($q, localStorageService, $rootScope, webClientService) {
     const loggedinKey = "loggedin";
     const userInfoKey = "userinfo";
+    var freshLoadComplete = false;
     return {
         markLoggedIn: function(user) {
             localStorageService.set(loggedinKey, true);
@@ -10,8 +11,21 @@
         setLoggedInUser: function (user) {
             $rootScope.CurrentUser = user;
         },
-        getLoggedInUser: function() {
-            return localStorageService.get(userInfoKey);
+        getLoggedInUser: function () {
+            var self = this;
+            if (!freshLoadComplete) {
+                //get user from server
+                webClientService.get("/api/users/get/me", null,
+                    function (response) {
+                        if (response.Success) {
+                            self.markLoggedIn(response.ResponseData.User);
+                            $rootScope.UnreadNotificationCount = response.ResponseData.User.UnreadNotificationCount;
+                            freshLoadComplete = true;
+                        }
+                    });
+            } else {
+                return localStorageService.get(userInfoKey);
+            }
         },
         isLoggedIn: function () {
             //Authentication logic here

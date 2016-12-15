@@ -1,5 +1,5 @@
 ﻿<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper no-margin" ng-controller="userProfileController" ng-init="init(CurrentUser.Id)">
+<div class="content-wrapper no-margin">
     <div class="container">
         <!-- Main content -->
         <section class="content">
@@ -9,25 +9,25 @@
                         <!-- Profile Image -->
                         <div class="box box-primary">
                             <div class="box-body box-profile">
-                                <img class="profile-user-img img-responsive img-circle" ng-src="{{user.ProfileImageUrl}}" alt="User profile picture">
+                                <img class="profile-user-img img-responsive img-circle" ng-src="{{CurrentUser.ProfileImageUrl}}" alt="User profile picture">
                                 <h3 class="profile-username text-center">
                                     <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName: user.UserName ? user.UserName : user.Id })">
-                                        {{user.Name}}
+                                        {{CurrentUser.Name}}
                                     </a>
                                 </h3>
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <b>Followers</b> <a class="pull-right">{{user.FollowerCount}}</a>
+                                        <b>Followers</b> <a class="pull-right">{{CurrentUser.FollowerCount}}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Following</b> <a class="pull-right">{{user.FollowingCount}}</a>
+                                        <b>Following</b> <a class="pull-right">{{CurrentUser.FollowingCount}}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <b>Friends</b> <a class="pull-right">{{user.FriendCount}}</a>
+                                        <b>Friends</b> <a class="pull-right">{{CurrentUser.FriendCount}}</a>
                                     </li>
                                 </ul>
                                 <friend-button class="friend-button" friendstatus="user.FriendStatus" customerid="user.Id"></friend-button>
-                                <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{user.Id}}" canfollow="{{user.CanFollow}}"></follow-button>
+                                <follow-button class="follow-button" followstatus="user.FollowStatus" entityname="user" entityid="{{CurrentUser.Id}}" canfollow="{{CurrentUser.CanFollow}}"></follow-button>
                             </div>
                             <!-- /.box-body -->
                         </div>
