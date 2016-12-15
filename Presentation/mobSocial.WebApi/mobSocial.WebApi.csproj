@@ -249,6 +249,7 @@
     <Compile Include="Controllers\FriendsController.cs" />
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />

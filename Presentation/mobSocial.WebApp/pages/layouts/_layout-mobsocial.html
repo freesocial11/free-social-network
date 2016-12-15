@@ -57,23 +57,23 @@
                     </li>
                     <!-- /.messages-menu -->
                     <!-- Notifications Menu -->
-                    <li class="dropdown notifications-menu">
+                    <li class="dropdown notifications-menu" ng-controller="notificationController">
                         <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="markNotificationsRead()">
                             <i class="fa fa-bell-o"></i>
                             <span class="label label-warning" ng-if="CurrentUser.UnreadNotificationCount > 0">
                                 {{CurrentUser.UnreadNotificationCount}}
                             </span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have {{CurrentUser.UnreadNotificationCount}} notification(s)</li>
+                            <li class="header">You have {{CurrentUser.UnreadNotificationCount}} new notification(s)</li>
                             <li>
                                 <!-- Inner Menu: contains the notifications -->
                                 <ul class="menu">
                                     <li ng-repeat="notification in CurrentUser.Notifications">
                                         <a ng-if="notification.EventName == 'UserFollowed'" ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">
                                             <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
-                                            <strong>{{notification.EntityTitle}}</strong> is now following you
+                                            <strong>{{notification.InitiatorDisplayName}}</strong> is now following you
                                         </a>
                                     </li>
                                     <!-- end notification -->

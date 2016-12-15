@@ -43,6 +43,7 @@ module.exports = {
             "./app/common/services/webClientService.js",
             "./app/common/services/entityPropertyService.js",
             "./app/common/services/autoCompleteService.js",
+            "./app/common/services/notificationService.js",
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",
@@ -56,6 +57,7 @@ module.exports = {
             "./app/common/controllers/navigationController.js",
             "./app/common/services/loginService.js",
             "./app/public/authentication/loginController.js",
+            "./app/public/social/notificationController.js",
              //hubs
             "./app/common/hubs/notificationHub.js"
         ],
