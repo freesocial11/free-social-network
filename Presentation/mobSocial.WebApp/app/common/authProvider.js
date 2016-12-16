@@ -10,7 +10,9 @@
         },
         setLoggedInUser: function (user) {
             $rootScope.CurrentUser = user;
-            $rootScope.UnreadNotificationCount = function() {
+            $rootScope.UnreadNotificationCount = function () {
+                if ($rootScope.CurrentUser || !$rootScope.CurrentUser.Notifications)
+                    return 0;
                 return $rootScope.CurrentUser.Notifications.reduce(function(total, n) {
                     if (n.EventName != "UserSentFriendRequest" && !n.IsRead)
                         total++;
@@ -18,6 +20,8 @@
                 }, 0);
             };
             $rootScope.PendingFriendRequestsCount = function () {
+                if ($rootScope.CurrentUser || !$rootScope.CurrentUser.Notifications)
+                    return 0;
                 return $rootScope.CurrentUser.Notifications.reduce(function (total, n) {
                     if (n.EventName == "UserSentFriendRequest") {
                         if (!n.FriendStatus && n.FriendStatus != 0)
