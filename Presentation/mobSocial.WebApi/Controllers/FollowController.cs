@@ -67,8 +67,7 @@ namespace mobSocial.WebApi.Controllers
                     break;
                 case FollowableEntityNames.User:
                     response = Unfollow<User>(id);
-                    _notificationService.DeNotify(id, NotificationEventNames.UserFollowed, currentUser, "User",
-                        currentUser.Id);
+                    _notificationService.DeNotify<User>(id, NotificationEventNames.UserFollowed, currentUser.Id, "User", currentUser.Id);
                     break;
             }
             if (response)

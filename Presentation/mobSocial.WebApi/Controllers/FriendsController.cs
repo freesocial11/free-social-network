@@ -101,6 +101,7 @@ namespace mobSocial.WebApi.Controllers
             _friendService.Update(customerFriend);
 
             _notificationService.Notify(friendId, NotificationEventNames.UserAcceptedFriendRequest, currentUser, "User", currentUser.Id, DateTime.UtcNow);
+            _notificationService.DeNotify<User>(currentUser.Id, NotificationEventNames.UserSentFriendRequest, friendId, "User", friendId);
             return Json(new { Success = true, NewStatus = FriendStatus.Friends });
         }
 
@@ -109,11 +110,11 @@ namespace mobSocial.WebApi.Controllers
         [Route("declinefriend/{friendId:int}")]
         public IHttpActionResult DeclineFriend(int friendId)
         {
-
-            if (ApplicationContext.Current.CurrentUser.Id == friendId)
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            if (currentUser.Id == friendId)
                 return Json(new { Success = false, Message = "Can't add one's self" });
 
-            var Customer2Id = ApplicationContext.Current.CurrentUser.Id;
+            var Customer2Id = currentUser.Id;
 
             //first check if the request has already been sent?. Any of two parties can decline
             var customerFriend = _friendService.GetCustomerFriendship(friendId, Customer2Id);
@@ -123,6 +124,7 @@ namespace mobSocial.WebApi.Controllers
 
             _friendService.Delete(customerFriend);
 
+            _notificationService.DeNotify<User>(currentUser.Id, NotificationEventNames.UserSentFriendRequest, friendId, "User", friendId);
             return Json(new { Success = true, NewStatus = FriendStatus.None });
         }
 

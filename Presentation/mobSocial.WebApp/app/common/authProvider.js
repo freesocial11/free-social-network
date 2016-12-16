@@ -10,6 +10,24 @@
         },
         setLoggedInUser: function (user) {
             $rootScope.CurrentUser = user;
+            $rootScope.UnreadNotificationCount = function() {
+                return $rootScope.CurrentUser.Notifications.reduce(function(total, n) {
+                    if (n.EventName != "UserSentFriendRequest" && !n.IsRead)
+                        total++;
+                    return total;
+                }, 0);
+            };
+            $rootScope.PendingFriendRequestsCount = function () {
+                return $rootScope.CurrentUser.Notifications.reduce(function (total, n) {
+                    if (n.EventName == "UserSentFriendRequest") {
+                        if (!n.FriendStatus && n.FriendStatus != 0)
+                            n.FriendStatus = 2; //status to show accept or decline button
+                        if (n.FriendStatus == 2)
+                            total++;
+                    }
+                    return total;
+                }, 0);
+            };
         },
         getLoggedInUser: function () {
             var self = this;
@@ -19,7 +37,6 @@
                     function (response) {
                         if (response.Success) {
                             self.markLoggedIn(response.ResponseData.User);
-                            $rootScope.UnreadNotificationCount = response.ResponseData.User.UnreadNotificationCount;
                             freshLoadComplete = true;
                         }
                     });

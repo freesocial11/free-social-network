@@ -23,46 +23,55 @@
                     <!-- Messages: style can be found in dropdown.less-->
                     <li class="dropdown messages-menu">
                         <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-envelope-o"></i>
-                            <span class="label label-success">4</span>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user-o"></i>
+                            <span class="label label-success" ng-if="PendingFriendRequestsCount() > 0">
+                                {{PendingFriendRequestsCount()}}
+                            </span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have 4 messages</li>
+                            <li class="header">You have {{PendingFriendRequestsCount()}} friend request(s)</li>
                             <li>
                                 <!-- inner menu: contains the messages -->
                                 <ul class="menu">
-                                    <li>
-                                        <!-- start message -->
-                                        <a href="#">
-                                            <div class="pull-left">
-                                                <!-- User Image -->
-                                                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                                            </div>
-                                            <!-- Message title and timestamp -->
-                                            <h4>
-                                                Support Team
-                                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                            </h4>
-                                            <!-- The message -->
-                                            <p>Why not buy a new awesome theme?</p>
-                                        </a>
+                                    <li ng-repeat="notification in CurrentUser.Notifications">
+                                        <span ng-if="notification.EventName == 'UserSentFriendRequest'" style="padding: 10px; display: block;" onclick="preventClosure(event)" class="friend-notification-block">
+                                            <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                            <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">{{notification.InitiatorDisplayName}}</a> wants to be friends with you.
+                                            <p>
+                                                <friend-button class="friend-button" friendstatus="notification.FriendStatus" customerid="notification.InitiatorId"></friend-button>
+                                            </p>
+                                        </span>
                                     </li>
-                                    <!-- end message -->
+                                    <!-- end notification -->
                                 </ul>
                                 <!-- /.menu -->
+                                <script type="text/javascript">
+                                    function preventClosure(e) {
+                                        e.stopPropagation();
+                                    }
+
+                                    jQuery(document)
+                                        .ready(function() {
+                                            jQuery(".friend-notification-block")
+                                                .on("click",
+                                                    function(e) {
+                                                        alert("x");
+                                                        e.stopPropagation();
+                                                    });
+                                        });
+                                </script>
                             </li>
-                            <li class="footer"><a href="#">See All Messages</a></li>
                         </ul>
                     </li>
                     <!-- /.messages-menu -->
                     <!-- Notifications Menu -->
                     <li class="dropdown notifications-menu" ng-controller="notificationController">
                         <!-- Menu toggle button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" ng-click="markNotificationsRead()">
+                        <a class="dropdown-toggle" data-toggle="dropdown" ng-click="markNotificationsRead()">
                             <i class="fa fa-bell-o"></i>
-                            <span class="label label-warning" ng-if="CurrentUser.UnreadNotificationCount > 0">
-                                {{CurrentUser.UnreadNotificationCount}}
+                            <span class="label label-warning" ng-if="UnreadNotificationCount() > 0">
+                                {{UnreadNotificationCount()}}
                             </span>
                         </a>
                         <ul class="dropdown-menu">
@@ -72,51 +81,22 @@
                                 <ul class="menu">
                                     <li ng-repeat="notification in CurrentUser.Notifications">
                                         <a ng-if="notification.EventName == 'UserFollowed'" ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">
-                                            <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
-                                            <strong>{{notification.InitiatorDisplayName}}</strong> is now following you
+                                            <div>
+                                                <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                                <strong>{{notification.InitiatorDisplayName}}</strong> is now following you
+                                            </div>
+                                        </a>
+                                        <a ng-if="notification.EventName == 'UserAcceptedFriendRequest'" ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">
+                                            <div>
+                                                <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                                <strong>{{notification.InitiatorDisplayName}}</strong> has accepted your friend request
+                                            </div>
                                         </a>
                                     </li>
                                     <!-- end notification -->
                                 </ul>
                             </li>
-                            <li class="footer"><a href="#">View all</a></li>
-                        </ul>
-                    </li>
-                    <!-- Tasks Menu -->
-                    <li class="dropdown tasks-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="fa fa-flag-o"></i>
-                            <span class="label label-danger">9</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="header">You have 9 tasks</li>
-                            <li>
-                                <!-- Inner menu: contains the tasks -->
-                                <ul class="menu">
-                                    <li>
-                                        <!-- Task item -->
-                                        <a href="#">
-                                            <!-- Task title and progress text -->
-                                            <h3>
-                                                Design some buttons
-                                                <small class="pull-right">20%</small>
-                                            </h3>
-                                            <!-- The progress bar -->
-                                            <div class="progress xs">
-                                                <!-- Change the css width attribute to simulate progress -->
-                                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                    <span class="sr-only">20% Complete</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <!-- end task item -->
-                                </ul>
-                            </li>
-                            <li class="footer">
-                                <a href="#">View all tasks</a>
-                            </li>
+                            <li class="footer" ng-if="CurrentUser.UnreadNotificationCount > 0"><a href="#">View all</a></li>
                         </ul>
                     </li>
                     <!-- User Account Menu -->

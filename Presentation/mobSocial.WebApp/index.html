@@ -3,14 +3,17 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>mobSocial {{isAdministrationArea ? "Administration" : ""}}</title>
+    <title>
+        mobSocial {{isAdministrationArea ? "Administration" : ""}}
+        {{ UnreadNotificationCount() + PendingFriendRequestsCount()  > 0 ?  '('+ (UnreadNotificationCount() + PendingFriendRequestsCount()) +')' : '' }}
+    </title>
     <base href="/">
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="libraries/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <!-- jvectormap -->
@@ -71,7 +74,7 @@
     <script src="plugins/datepicker/bootstrap-datepicker.js"></script>
     <!-- bootbox-->
     <script src="plugins/bootbox/bootbox.min.js"></script>
-  
+
     <!-- CK Editor -->
     <script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
     <script src="scripts/bundles/init.js"></script>

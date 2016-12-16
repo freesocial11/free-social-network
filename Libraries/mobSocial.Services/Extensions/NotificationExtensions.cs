@@ -30,12 +30,17 @@ namespace mobSocial.Services.Extensions
         }
 
         public static void DeNotify<T>(this INotificationService notificationService, int userId, string eventName,
-            T entity, string initiatorName, int initiatorId) where T : BaseEntity
+            int entityId, string initiatorName, int initiatorId) where T : BaseEntity
         {
-            notificationService.Delete(x => x.EntityId == entity.Id 
+            var notificationEventService = mobSocialEngine.ActiveEngine.Resolve<INotificationEventService>();
+            var notificationEvent = notificationEventService.FirstOrDefault(x => x.EventName == eventName);
+            if (notificationEvent == null)
+                return;
+            notificationService.Delete(x => x.EntityId == entityId 
             && x.EntityName == typeof(T).Name 
             && x.InitiatorId == initiatorId
-            && x.InitiatorName == initiatorName 
+            && x.InitiatorName == initiatorName
+            && x.NotificationEventId == notificationEvent.Id 
             && x.UserId == userId);
         }
         public static void MarkRead(this INotificationService notificationService,  int notificationId)
