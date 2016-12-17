@@ -1,6 +1,8 @@
 ﻿window.mobSocial = angular.module("mobSocialApp", ['ui.router', 'LocalStorageModule', 'angularMoment', "oc.lazyLoad", "ngSanitize", "mentio", "SignalR"])
     .constant('globalApiEndPoint', '/api')
     .constant('signalREndPoint', '/api/signalr')
+	.constant('loggedInUserKey', 'loggedin')
+    .constant('userInfoKey', 'userinfo')
     .factory('$global', [
         'globalApiEndPoint', function (globalApiEndPoint) {
             return {

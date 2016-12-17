@@ -27,6 +27,9 @@
                 };
             }
             else if (response.status === 401) { //unauthorized
+			    //todo: find a better way to log out. We can't use authProvider here because it'll cause circular dependency
+                localStorageService.set(loggedInUserKey, false);
+                localStorageService.set(userInfoKey, null);
                 $rootScope.login();
                 return;
             }
