@@ -229,6 +229,7 @@
     <Compile Include="Configuration\SignalR\Connections\UserConnection.cs" />
     <Compile Include="Configuration\SignalR\Engines\MobSocialHubEngine.cs" />
     <Compile Include="Configuration\SignalR\Engines\NotificationEngine.cs" />
+    <Compile Include="Configuration\SignalR\Hubs\ConversationHub.cs" />
     <Compile Include="Configuration\SignalR\Hubs\MobSocialHub.cs" />
     <Compile Include="Configuration\SignalR\Hubs\NotificationHub.cs" />
     <Compile Include="Configuration\SignalR\Providers\SignalRUserIdProvider.cs" />
@@ -239,6 +240,7 @@
     <Compile Include="Controllers\AutoCompleteController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
+    <Compile Include="Controllers\ConversationController.cs" />
     <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\EmailAccountController.cs" />
     <Compile Include="Controllers\EmailTemplateController.cs" />
@@ -263,6 +265,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\ConversationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EmailExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\MediaExtensions.cs" />
@@ -295,6 +298,9 @@
     <Compile Include="Models\Battles\VideoBattleVotePublicModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
+    <Compile Include="Models\Conversation\ConversationReplyModel.cs" />
+    <Compile Include="Models\Conversation\ConversationRequestModel.cs" />
+    <Compile Include="Models\Conversation\ConversationResponseModel.cs" />
     <Compile Include="Models\Credits\PurchaseCreditModel.cs" />
     <Compile Include="Models\Education\EducationEntityModel.cs" />
     <Compile Include="Models\Education\EducationResponseModel.cs" />

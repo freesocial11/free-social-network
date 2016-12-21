@@ -101,6 +101,10 @@
     <Compile Include="Configuration\Mvc\IRouteMapperService.cs" />
     <Compile Include="Configuration\Mvc\RouteMapperService.cs" />
     <Compile Include="Configuration\XmlConfigurationFileService.cs" />
+    <Compile Include="Conversations\ConversationReplyService.cs" />
+    <Compile Include="Conversations\ConversationService.cs" />
+    <Compile Include="Conversations\IConversationReplyService.cs" />
+    <Compile Include="Conversations\IConversationService.cs" />
     <Compile Include="Credits\CreditService.cs" />
     <Compile Include="Credits\ICreditService.cs" />
     <Compile Include="Education\EducationService.cs" />

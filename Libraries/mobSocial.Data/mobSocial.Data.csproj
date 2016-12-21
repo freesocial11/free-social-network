@@ -91,6 +91,8 @@
     <Compile Include="Entity\Battles\VoterPass.cs" />
     <Compile Include="Entity\BusinessPages\BusinessPage.cs" />
     <Compile Include="Entity\BusinessPages\BusinessPageCoupon.cs" />
+    <Compile Include="Entity\Conversations\Conversation.cs" />
+    <Compile Include="Entity\Conversations\ConversationReply.cs" />
     <Compile Include="Entity\Credits\Credit.cs" />
     <Compile Include="Entity\Currency\Currency.cs" />
     <Compile Include="Entity\Education\School.cs" />
