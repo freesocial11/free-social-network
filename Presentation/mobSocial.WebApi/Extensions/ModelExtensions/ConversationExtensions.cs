@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Data.Entity.Conversations;
 using mobSocial.Data.Entity.Settings;
+using mobSocial.Data.Extensions;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;

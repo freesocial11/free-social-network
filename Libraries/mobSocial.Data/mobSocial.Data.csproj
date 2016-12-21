@@ -187,6 +187,7 @@
     <Compile Include="Enum\VideoStatus.cs" />
     <Compile Include="Enum\VideoType.cs" />
     <Compile Include="Enum\VideoViewMode.cs" />
+    <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeConversionExtensions.cs" />
     <Compile Include="Extensions\SettingExtensions.cs" />
