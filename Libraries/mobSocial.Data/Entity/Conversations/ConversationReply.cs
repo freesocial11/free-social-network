@@ -23,6 +23,9 @@ namespace mobSocial.Data.Entity.Conversations
 
     public class ConversationReplyMap : BaseEntityConfiguration<ConversationReply>
     {
-        
+        public ConversationReplyMap()
+        {
+            HasRequired(x => x.User).WithMany().WillCascadeOnDelete(false);
+        }
     }
 }
