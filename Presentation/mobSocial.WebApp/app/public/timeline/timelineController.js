@@ -124,7 +124,7 @@ window.mobSocial.lazy.controller("timelineController", [
                 $scope.FilterFunction = [];
             }
 
-            $rootScope.waitFromParent($scope, "user", { Id: 0 })
+            $rootScope.waitFromParent($scope, "CurrentUser", { Id: 0 })
                 .then(function (user) {
                     _init(user.Id);
                 });
