@@ -50,16 +50,6 @@
                                     function preventClosure(e) {
                                         e.stopPropagation();
                                     }
-
-                                    jQuery(document)
-                                        .ready(function() {
-                                            jQuery(".friend-notification-block")
-                                                .on("click",
-                                                    function(e) {
-                                                        alert("x");
-                                                        e.stopPropagation();
-                                                    });
-                                        });
                                 </script>
                             </li>
                         </ul>
@@ -152,3 +142,79 @@
 
 <div ui-view></div>
 
+<div class="chat-area">
+    <div class="chat-box">
+        <div class="">
+            <div class="chat-box-section-friend-list">
+                <div class="friend-list" block-ui>
+                    <ul>
+                        <li ng-repeat="friend in CurrentUser.Friends">
+                            <a ng-click="Chat.chatWith(friend.Id)" ng-class="{'active': Chat.isActiveChat(friend.Id)}" onclick="focusToInput()">
+                                <img class="img-sm img-circle margin-r-5" ng-src="{{friend.ProfileImageUrl}}" />
+                                <span>{{friend.Name}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="chat-box-section-chat-scroll" ng-class="{'hidden' : !Chat.isOpen()}">
+                <div class="chat-scroll">
+                    <div class="conversation">
+                        <div ng-if="Chat.activeChat.conversation.ConversationReplies.length < Chat.activeChat.conversation.TotalReplies" class="load-more">
+                            <a ng-click="Chat.loadChat(Chat.activeChat.userId, Chat.activeChat.loadedPage + 1)">Load More</a>
+                        </div>
+                        <ul>
+                            <li ng-repeat="reply in Chat.activeChat.conversation.ConversationReplies">
+                                <div class="reply" ng-class="{'my-reply': reply.UserId == CurrentUser.Id}">
+                                    <a ng-if="reply.UserId != CurrentUser.Id">
+                                        <img class="img-sm img-circle margin-r-5" ng-src="{{Chat.activeChat.conversation.Users[reply.UserId].ProfileImageUrl}}"/>
+                                        <span>{{Chat.activeChat.conversation.Users[reply.UserId].Name}}</span>
+                                    </a>
+                                    <div class="reply-text">
+                                        {{reply.ReplyText}}
+                                    </div>
+                                    <div class="reply-status" ng-if="reply.ReplyStatus != 0">
+                                        <span ng-switch on="reply.ReplyStatus">
+                                            <span ng-switch-when="1" class="sent">
+                                                <i class="fa fa-check"></i>
+                                            </span>
+                                            <span ng-switch-when="3" class="read">
+                                                <i class="fa fa-check-circle"></i>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div ng-if="Chat.activeChat.activeTypingUserId" class="typing-notify">
+                           <i class="fa fa-circle-o-notch fa-spin"></i> <span>{{Chat.activeChat.conversation.Users[Chat.activeChat.activeTypingUserId].Name}}</span> is typing
+                        </div>
+                    </div>
+                    <div class="submission-area col-xs-12 col-md-12">
+                        <form method="post">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control" id="chat-input" ng-model="Chat.activeChat.replyText" placeholder="start typing your message..." />
+                                <span class="input-group-btn">
+                                    <button type="submit" ng-click="Chat.sendReply()" class="btn btn-secondary btn-flat">Send</button>
+                                </span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chat-switcher">
+        <a id="switch-link" ng-click="Chat.loadOnlineFriends()">Online</a>
+        <script type="text/javascript">
+            jQuery("#switch-link")
+                .click(function (e) {
+                    jQuery(".chat-area").toggleClass("expanded");
+                    e.preventDefault();
+                });
+            var focusToInput = function() {
+                jQuery("#chat-input").focus();
+            }
+        </script>
+    </div>
+</div>

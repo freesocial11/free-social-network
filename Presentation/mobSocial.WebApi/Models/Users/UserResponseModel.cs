@@ -51,5 +51,7 @@ namespace mobSocial.WebApi.Models.Users
 
         public int UnreadNotificationCount { get; set; }
 
+        public bool IsOnline { get; set; }
+
     }
 }

@@ -2,6 +2,7 @@
     iCheckIt();
     select2fy();
     datepickerify();
+    slimScroll();
 }
 //store in viewcontentloaded event so we can perform callbacks from angular
 window['viewContentLoaded'] = bootstrapApp;
@@ -43,3 +44,10 @@ var stylizeBrowserPrompts = function () {
         bootbox.confirm(message, callback);
     }
 }();
+
+var slimScroll = function() {
+    jQuery(".slim-scroll")
+        .each(function() {
+            jQuery(this).slimScroll();
+        });
+}

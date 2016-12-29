@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using mobSocial.Core.Data;
 using mobSocial.Data.Entity.Users;
 
@@ -19,6 +20,8 @@ namespace mobSocial.Data.Entity.Conversations
         public DateTime DateCreated { get; set; }
 
         public string IpAddress { get; set; }
+
+        public virtual IList<ConversationReplyStatus> ConversationReplyStatus { get; set; }
     }
 
     public class ConversationReplyMap : BaseEntityConfiguration<ConversationReply>

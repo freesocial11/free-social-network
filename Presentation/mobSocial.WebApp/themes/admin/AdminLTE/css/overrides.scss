@@ -413,6 +413,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
     .done {
         color: #555;
+
         a {
             color: #555;
         }
@@ -423,13 +424,168 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     background-color: white;
     padding: 15px;
     border: solid 1px #ccc;
-    .license-terms{
-        height:400px;
-        overflow:auto;
+
+    .license-terms {
+        height: 400px;
+        overflow: auto;
     }
 }
-.navbar-nav>.notifications-menu>.dropdown-menu>li .menu>li>a
-{
-    white-space:normal!important;
-    overflow:auto;
+
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a {
+    white-space: normal !important;
+    overflow: auto;
+}
+
+.chat-area {
+    position: fixed;
+    bottom: 0;
+    right: 3px;
+    z-index: 10;
+
+    .chat-switcher {
+        a {
+            display: block;
+            padding: 5px 40px;
+            background-color: #ccc;
+            border: solid 1px #bbb;
+            color: #555;
+
+            &:hover, &:active {
+                color: #555;
+            }
+        }
+    }
+
+    .chat-box {
+        display: none;
+        position: absolute;
+        bottom: 32px;
+        right: 0;
+        min-width: 200px;
+
+        .friend-list {
+            ul {
+                padding: 0;
+                margin: 0;
+
+                li {
+                    list-style: none;
+                    border-bottom: dotted 1px #ccc;
+
+                    a {
+                        display: block;
+                        padding: 5px 5px;
+                        height: 45px;
+                    }
+                }
+            }
+        }
+
+        .chat-box-section-friend-list {
+            float: left;
+            width: 25%;
+            height: 400px;
+
+            a {
+                &.active {
+                    background-color: #eee;
+                }
+            }
+        }
+
+        .chat-box-section-chat-scroll {
+            float: left;
+            width: 75%;
+            height: 400px;
+        }
+
+        .chat-scroll {
+            .conversation {
+                height: 360px;
+                overflow: auto;
+                padding: 10px 0;
+
+                ul {
+                    padding: 0;
+                    margin: 0;
+
+                    li {
+                        padding: 1px 0px;
+                        list-style-type: none;
+
+                        .reply {
+                            padding: 5px 10px;
+                            margin-right: 45px;
+                            border-radius: 5px;
+
+                            &.my-reply {
+                                background-color: #ecf0f5;
+                                margin-left: 45px;
+                                margin-right: 0;
+
+                                .reply-status {
+                                    font-size: 8px;
+                                    text-align: right;
+
+                                    .sent {
+                                        color: gray;
+                                    }
+
+                                    .received {
+                                        color: blue;
+                                    }
+
+                                    .read {
+                                        color: green;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .load-more {
+                    text-align: center;
+                    border: dashed 1px #999;
+                    padding: 5px 0;
+                    margin: 15px;
+
+                    a {
+                        color: #555;
+                    }
+                }
+
+                .typing-notify {
+                    font-size: 13px;
+                    color: gray;
+                    margin-left: 47px;
+                    padding: 5px 0;
+                    font-style: italic;
+                }
+            }
+        }
+    }
+
+    &.expanded {
+        .chat-box {
+            display: block;
+            width: 800px;
+            height: 400px;
+            background-color: white;
+            border: solid 1px #ccc;
+            box-shadow: 0px 0px 1px rgba(0,0,0,0.5);
+
+            .friend-list {
+                border-right: solid 1px #ccc;
+                height: 400px;
+                overflow: auto;
+            }
+        }
+    }
+
+    .submission-area {
+        padding: 10px 10px;
+        background-color: #eee;
+        margin-top: 6px;
+    }
 }

@@ -76,6 +76,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.UnreadNotificationCount = unreadCount;
             }
           
+            //check if user is online or not
+            model.IsOnline = true;
             return model;
         }
 

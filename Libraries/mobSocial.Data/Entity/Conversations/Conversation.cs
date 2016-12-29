@@ -17,6 +17,14 @@ namespace mobSocial.Data.Entity.Conversations
         public virtual IList<ConversationReply> ConversationReplies { get; set; }
 
         public bool Deleted { get; set; }
+
+        public int ReceiverId { get; set; }
+
+        public string ReceiverType { get; set; }
+
+        public bool ReceiverDeleted { get; set; }
+
+        public bool SenderDeleted { get; set; }
     }
 
     public class ConversationMap : BaseEntityConfiguration<Conversation> { }

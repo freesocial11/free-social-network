@@ -93,6 +93,7 @@
     <Compile Include="Entity\BusinessPages\BusinessPageCoupon.cs" />
     <Compile Include="Entity\Conversations\Conversation.cs" />
     <Compile Include="Entity\Conversations\ConversationReply.cs" />
+    <Compile Include="Entity\Conversations\ConversationReplyStatus.cs" />
     <Compile Include="Entity\Credits\Credit.cs" />
     <Compile Include="Entity\Currency\Currency.cs" />
     <Compile Include="Entity\Education\School.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="Enum\PaymentStatus.cs" />
     <Compile Include="Enum\PurchaseType.cs" />
     <Compile Include="Enum\RegistrationMode.cs" />
+    <Compile Include="Enum\ReplyStatus.cs" />
     <Compile Include="Enum\SortOrder.cs" />
     <Compile Include="Enum\SponsoredCashDistributionType.cs" />
     <Compile Include="Enum\SponsorshipStatus.cs" />

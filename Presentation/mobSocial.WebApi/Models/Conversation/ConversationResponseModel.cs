@@ -7,8 +7,16 @@ namespace mobSocial.WebApi.Models.Conversation
     {
         public int ConversationId { get; set; }
 
-        public IList<UserResponseModel> Users { get; set; }
+        public Dictionary<int, UserResponseModel> Users { get; set; }
 
-        public IList<ConversationReplyModel> ConversationReplies { get; set; }
+        public List<ConversationReplyModel> ConversationReplies { get; set; }
+
+        public int ReceiverId { get; set; }
+
+        public string ReceiverType { get; set; }
+
+        public int UserId { get; set; }
+
+        public int TotalReplies { get; set; }
     }
 }

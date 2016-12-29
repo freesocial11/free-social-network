@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Routing;
 using mobSocial.Data.Constants;
+using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Social;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
@@ -14,6 +15,7 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Social;
 
 namespace mobSocial.WebApi.Controllers
@@ -27,8 +29,9 @@ namespace mobSocial.WebApi.Controllers
         private readonly IFollowService _customerFollowService;
         private readonly IUserService _userService;
         private readonly INotificationService _notificationService;
+        private readonly MediaSettings _mediaSettings;
 
-        public FriendsController(IFriendService friendService, IMediaService pictureService, IUserService customerService, IFollowService customerFollowService, IUserService userService, INotificationService notificationService)
+        public FriendsController(IFriendService friendService, IMediaService pictureService, IUserService customerService, IFollowService customerFollowService, IUserService userService, INotificationService notificationService, MediaSettings mediaSettings)
         {
             _friendService = friendService;
             _pictureService = pictureService;
@@ -36,6 +39,7 @@ namespace mobSocial.WebApi.Controllers
             _customerFollowService = customerFollowService;
             _userService = userService;
             _notificationService = notificationService;
+            _mediaSettings = mediaSettings;
         }
 
      
@@ -247,6 +251,37 @@ namespace mobSocial.WebApi.Controllers
                 models.Add(friendModel);
             }
             return Json(new { Success = true, People = models });
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("get")]
+        public IHttpActionResult GetFriends([FromUri] FriendSearchModel requestModel)
+        {
+            if (requestModel == null || !ModelState.IsValid)
+            {
+                requestModel = new FriendSearchModel()
+                {
+                    Count = int.MaxValue,
+                    Page = 1,
+                    ExcludeLoggedInUser = true,
+                    SearchTerm = ""
+                };
+            }
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var friends =
+                _friendService.GetFriends(currentUser.Id, requestModel.Page, requestModel.Count, true).Where(x => x.Confirmed).ToList();
+
+            //get user entities
+            var userIds = friends.Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId).ToArray();
+
+            var users = _userService.Get(x => userIds.Contains(x.Id)).ToList();
+            //todo: implement checks to evaluate last login time and see if the user is online
+            var model = users.Select(x => x.ToModel(_pictureService, _mediaSettings)).ToList();
+            return RespondSuccess(new
+            {
+                Friends = model
+            });
         }
 
     }

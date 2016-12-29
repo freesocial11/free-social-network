@@ -26,4 +26,7 @@
         webClientService.get(apiEndPoint + "/getcustomerfriends", customerFriendsRequestModel, success, error);
     };
 
+    this.GetOnlineFriends = function (onlineFriendsRequestModel, success, error) {
+        webClientService.get(apiEndPoint + "/online/get", onlineFriendsRequestModel, success, error);
+    };
 }]);

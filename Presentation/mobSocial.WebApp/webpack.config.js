@@ -30,6 +30,7 @@ module.exports = {
             "./libraries/ocLazyLoad/ocLazyLoad.min.js",
             "./libraries/angular/angular-sanitize.min.js",
              "./libraries/angular/signalr-hub.js",
+             "./libraries/angular/angular-slimscroll.js",
             //mentio
              "./libraries/mentio/mentio.min.js",
             //mobSocial app
@@ -44,6 +45,7 @@ module.exports = {
             "./app/common/services/entityPropertyService.js",
             "./app/common/services/autoCompleteService.js",
             "./app/common/services/notificationService.js",
+            "./app/common/services/conversationService.js",
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",
@@ -59,7 +61,8 @@ module.exports = {
             "./app/public/authentication/loginController.js",
             "./app/public/social/notificationController.js",
              //hubs
-            "./app/common/hubs/notificationHub.js"
+            "./app/common/hubs/notificationHub.js",
+            "./app/common/hubs/conversationHub.js"
         ],
         install:[
              "./app/admin/installation/installService.js",
