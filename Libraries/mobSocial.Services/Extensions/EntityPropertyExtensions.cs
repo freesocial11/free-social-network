@@ -6,6 +6,7 @@ using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.EntityProperties;
 using mobSocial.Data.Interfaces;
 using mobSocial.Services.EntityProperties;
+using Newtonsoft.Json;
 
 namespace mobSocial.Services.Extensions
 {
@@ -70,7 +71,7 @@ namespace mobSocial.Services.Extensions
             if (entityProperty == null)
                 return defaultValue;
 
-            return (T) Convert.ChangeType(entityProperty.Value, typeof(T));
+            return JsonConvert.DeserializeAnonymousType(entityProperty.Value, defaultValue);
         }
         /// <summary>
         /// Sets the property value of the provided entity
@@ -85,9 +86,9 @@ namespace mobSocial.Services.Extensions
                 EntityName = typeof(T).Name,
                 PropertyName = propertyName
             };
-            
 
-            property.Value = value?.ToString();
+
+            property.Value = JsonConvert.SerializeObject(value);
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
             if (property.Id == 0)
                 entityPropertyService.Insert(property);

@@ -16,6 +16,14 @@ namespace mobSocial.Data.Extensions
         }
 
         /// <summary>
+        /// Returns last n elements from a sequence
+        /// </summary>
+        public static IEnumerable<T> TakeLast<T>(this IEnumerable<T> source, int n, int skip)
+        {
+            return source.TakeLast(n + skip).Take(n);
+        }
+
+        /// <summary>
         /// Returns specified number of elements after skipping previous pages
         /// </summary>
         public static IEnumerable<T> TakeFromPage<T>(this IEnumerable<T> source, int page, int count)
