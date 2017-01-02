@@ -8,4 +8,7 @@
         webClientService.get(apiEndPoint + "/get", {userId: userId, page: page}, success, error);
     };
 
+    this.getAll = function(success, error) {
+        webClientService.get(apiEndPoint + "/get/all", null, success, error);
+    }
 }]);

@@ -25,6 +25,8 @@ namespace mobSocial.Data.Entity.Conversations
         public bool ReceiverDeleted { get; set; }
 
         public bool SenderDeleted { get; set; }
+
+        public DateTime LastUpdated { get; set; }
     }
 
     public class ConversationMap : BaseEntityConfiguration<Conversation> { }

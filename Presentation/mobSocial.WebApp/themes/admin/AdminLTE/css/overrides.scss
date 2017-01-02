@@ -453,6 +453,15 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
             &:hover, &:active {
                 color: #555;
             }
+
+            span {
+                background-color: maroon;
+                color: white;
+                margin: 5px;
+                padding: 2px 6px;
+                font-size: 11px;
+                border-radius: 50%;
+            }
         }
     }
 
@@ -501,7 +510,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
         .chat-scroll {
             .conversation {
-                height: 360px;
+                height: 342px;
                 overflow: auto;
                 padding: 10px 0;
 

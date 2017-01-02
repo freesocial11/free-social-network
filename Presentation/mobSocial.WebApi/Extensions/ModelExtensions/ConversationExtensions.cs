@@ -49,7 +49,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 DateCreatedUtc = conversationReply.DateCreated,
                 DateCreatedLocal =
                     DateTimeHelper.GetDateInUserTimeZone(conversationReply.DateCreated, DateTimeKind.Utc, currentUser),
-                ReplyText = conversationReply.ReplyText
+                ReplyText = conversationReply.ReplyText,
+                ConversationId = conversationReply.ConversationId
             };
 
             if (currentUser.Id == conversationReply.UserId)

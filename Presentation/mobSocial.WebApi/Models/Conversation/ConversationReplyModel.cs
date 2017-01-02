@@ -17,5 +17,7 @@ namespace mobSocial.WebApi.Models.Conversation
         public ReplyStatus ReplyStatus { get; set; }
 
         public DateTime ReplyStatusLastUpdated { get; set; }
+
+        public int ConversationId { get; set; }
     }
 }

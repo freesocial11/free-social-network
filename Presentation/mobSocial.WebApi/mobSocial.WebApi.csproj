@@ -299,6 +299,7 @@
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
     <Compile Include="Models\Conversation\ConversationEntityModel.cs" />
+    <Compile Include="Models\Conversation\ConversationOverviewModel.cs" />
     <Compile Include="Models\Conversation\ConversationReplyModel.cs" />
     <Compile Include="Models\Conversation\ConversationRequestModel.cs" />
     <Compile Include="Models\Conversation\ConversationResponseModel.cs" />

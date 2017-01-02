@@ -23,10 +23,20 @@ namespace mobSocial.WebApi.Configuration.SignalR.Hubs
             });
         }
 
-        public IHttpActionResult MarkRead(int conversationId)
+        public void MarkRead(int conversationId)
         {
             var conversationController = mobSocialEngine.ActiveEngine.Resolve<ConversationController>();
-            return conversationController.MarkRead(conversationId);
+            conversationController.MarkRead(conversationId);
+
+            //we get conversation
+            var conversationService = mobSocialEngine.ActiveEngine.Resolve<IConversationService>();
+            var conversation = conversationService.Get(conversationId);
+            if (conversation == null)
+                return;
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var conversationUserIds = conversation.GetUserIds().Select(x => x.ToString()).ToList();
+            conversationUserIds.Remove(currentUser.Id.ToString());//no need to notify the one who is reading
+            Clients.Users(conversationUserIds).markRead(conversationId);
         }
 
         public void NotifyTyping(int conversationId, bool typing)

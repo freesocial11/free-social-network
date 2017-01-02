@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using mobSocial.Core;
 using mobSocial.Data.Entity.Conversations;
@@ -10,6 +12,7 @@ using mobSocial.Data.Enum;
 using mobSocial.Services.Conversations;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
@@ -28,14 +31,16 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _userService;
         private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
+        private readonly IFriendService _friendService;
 
-        public ConversationController(IConversationService conversationService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IConversationReplyService conversationReplyService)
+        public ConversationController(IConversationService conversationService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IConversationReplyService conversationReplyService, IFriendService friendService)
         {
             _conversationService = conversationService;
             _userService = userService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
             _conversationReplyService = conversationReplyService;
+            _friendService = friendService;
         }
 
         [Route("get")]
@@ -46,6 +51,68 @@ namespace mobSocial.WebApi.Controllers
             var model = conversation?.ToModel(_userService, _mediaService, _mediaSettings, requestModel.Page);
             return RespondSuccess(new {
                 Conversation = model
+            });
+        }
+        [Route("get/all")]
+        public async Task<IHttpActionResult> Get()
+        {
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var conversations =
+                await
+                    _conversationService.Get(x => x.ConversationReplies.Any(y => x.UserId == currentUser.Id),
+                        x => new {x.LastUpdated}, false, earlyLoad: x => x.User).ToListAsync();
+
+            //get all the users apart from current user
+            var replies = await
+                _conversationReplyService.Get(
+                    x =>
+                        x.ConversationReplyStatus.Any(
+                            y => y.ReplyStatus == ReplyStatus.Received && y.UserId == currentUser.Id), earlyLoad: x => x.User).ToListAsync();
+
+            var model = new List<ConversationOverviewModel>();
+            foreach (var conversation in conversations)
+            {
+                var receiver = conversation.UserId == currentUser.Id
+                    ? replies.FirstOrDefault()?.User.ToModel(_mediaService, _mediaSettings)
+                    : conversation.User.ToModel(_mediaService, _mediaSettings);
+                if (receiver == null)
+                    continue;
+                var modelItem = new ConversationOverviewModel()
+                {
+                    ConversationId = conversation.Id,
+                    UnreadCount = replies.Count(x => x.ConversationId == conversation.Id),
+                    Receiver =  receiver
+                };
+                model.Add(modelItem);
+            }
+            var allReceiverIds = model.Select(x => x.Receiver?.Id ?? 0).ToList();
+
+            if (model.Count < 15)
+            {
+                var friendsIds = _friendService.GetFriends(currentUser.Id, 1, int.MaxValue)
+                    .Where(x => !allReceiverIds.Contains(x.FromCustomerId) && !allReceiverIds.Contains(x.ToCustomerId))
+                    .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId);
+
+                var userModels =
+                    _userService.Get(x => friendsIds.Contains(x.Id))
+                        .ToList()
+                        .Select(x => x.ToModel(_mediaService, _mediaSettings));
+
+                foreach(var uModel in userModels)
+                {
+                    var modelItem = new ConversationOverviewModel() {
+                        ConversationId = 0,
+                        UnreadCount = 0,
+                        Receiver = uModel
+                    };
+                    model.Add(modelItem);
+                }
+
+            }
+            //_friendService.Get(x => x.)
+            return RespondSuccess(new
+            {
+                Conversations = model
             });
         }
 
@@ -76,7 +143,7 @@ namespace mobSocial.WebApi.Controllers
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
             //get replies
-            var replies = _conversationReplyService.Get(x => x.ConversationId == conversationId, earlyLoad: x => x.ConversationReplyStatus);
+            var replies = _conversationReplyService.Get(x => x.ConversationId == conversationId, earlyLoad: x => x.ConversationReplyStatus).ToList();
             //update all replies
             foreach (var reply in replies)
             {
@@ -88,6 +155,10 @@ namespace mobSocial.WebApi.Controllers
                 //update conversation reply
                 _conversationReplyService.Update(reply);
             }
+            var conversation = replies.FirstOrDefault()?.Conversation ?? _conversationService.Get(conversationId);
+            //update last updated
+            conversation.LastUpdated = DateTime.UtcNow;
+            _conversationService.Update(conversation);
             return RespondSuccess();
         }
 
@@ -162,8 +233,14 @@ namespace mobSocial.WebApi.Controllers
             }
             _conversationReplyService.Insert(reply);
 
-            //notify hubs
+            var model = reply.ToModel();
+            Hub.Clients.User(currentUser.Id.ToString()).conversationReply(model, conversation.Id);
+
+            //change reply status for other receivers
+            model.ReplyStatus = 0;
+            //notify hubs except current user
             var conversationUserIds = conversation.GetUserIds().Select(x => x.ToString()).ToList();
+            conversationUserIds.Remove(currentUser.Id.ToString());
             Hub.Clients.Users(conversationUserIds).conversationReply(reply.ToModel(), conversation.Id);
 
             return RespondSuccess();
