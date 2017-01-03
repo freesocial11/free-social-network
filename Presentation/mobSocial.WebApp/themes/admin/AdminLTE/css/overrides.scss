@@ -441,6 +441,14 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     bottom: 0;
     right: 3px;
     z-index: 10;
+    span.unread-count {
+                background-color: maroon;
+                color: white;
+                margin: 5px;
+                padding: 2px 6px;
+                font-size: 11px;
+                border-radius: 50%;
+            }
 
     .chat-switcher {
         a {
@@ -454,14 +462,7 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                 color: #555;
             }
 
-            span {
-                background-color: maroon;
-                color: white;
-                margin: 5px;
-                padding: 2px 6px;
-                font-size: 11px;
-                border-radius: 50%;
-            }
+            
         }
     }
 

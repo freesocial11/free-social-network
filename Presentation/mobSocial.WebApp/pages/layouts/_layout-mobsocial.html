@@ -151,7 +151,7 @@
                         <li ng-repeat="chat in Chat.openChats">
                             <a ng-click="Chat.chatWith(chat.receiver.Id, attachReadScroller())" ng-class="{'active': Chat.isActiveChat(chat.receiver.Id)}" onclick="focusToInput()">
                                 <img class="img-sm img-circle margin-r-5" ng-src="{{chat.receiver.ProfileImageUrl}}"/>
-                                <span>{{chat.receiver.Name}}</span>
+                                <span>{{chat.receiver.Name}}</span><span ng-if="chat.unreadCount > 0" class="unread-count">{{chat.unreadCount}}</span>
                             </a>
                         </li>
                     </ul>
@@ -205,7 +205,7 @@
         </div>
     </div>
     <div class="chat-switcher">
-        <a id="switch-link" ng-click="Chat.loadOnlineFriends()">Online <span ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span></a>
+        <a id="switch-link" ng-click="Chat.loadOnlineFriends()">Online <span class="unread-count" ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span></a>
         <script type="text/javascript">
             jQuery("#switch-link")
                 .click(function (e) {

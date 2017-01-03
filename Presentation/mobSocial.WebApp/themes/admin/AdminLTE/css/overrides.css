@@ -294,6 +294,13 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
   bottom: 0;
   right: 3px;
   z-index: 10; }
+  .chat-area span.unread-count {
+    background-color: maroon;
+    color: white;
+    margin: 5px;
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 50%; }
   .chat-area .chat-switcher a {
     display: block;
     padding: 5px 40px;
@@ -302,13 +309,6 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     color: #555; }
     .chat-area .chat-switcher a:hover, .chat-area .chat-switcher a:active {
       color: #555; }
-    .chat-area .chat-switcher a span {
-      background-color: maroon;
-      color: white;
-      margin: 5px;
-      padding: 2px 6px;
-      font-size: 11px;
-      border-radius: 50%; }
   .chat-area .chat-box {
     display: none;
     position: absolute;

@@ -76,9 +76,12 @@
             'markRead': function (conversationId) {
                 var chat = $rootScope.Chat.getChat(0, conversationId);
                 if (chat) {
-                    for (var i = 0; i < chat.conversation.ConversationReplies.length; i++) {
-                        chat.conversation.ConversationReplies[i].replyStatus = 3; //read
-                    }
+                    $timeout(function () {
+                        for (var i = 0; i < chat.conversation.ConversationReplies.length; i++) {
+                            chat.conversation.ConversationReplies[i].replyStatus = 3; //read
+                        }
+                        $rootScope.$apply();
+                    }, 0);
                 }
             }
         },
@@ -206,6 +209,10 @@
         },
         markConversationRead: function (conversationId) {
             hub.markRead(conversationId);
+            var chat = $rootScope.Chat.getChat(0, conversationId);
+            if (chat) {
+                chat.unreadCount = 0;
+            }
         }
     };
 
