@@ -66,8 +66,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             //we can send notifications as well if it's a user asking for his own details
             if (currentUser.Id == user.Id && notificationService != null)
             {
+                var now = DateTime.UtcNow;
                 var qNotifications =
-                    notificationService.Get(x => x.UserId == currentUser.Id && x.PublishDateTime <= DateTime.UtcNow,
+                    notificationService.Get(x => x.UserId == currentUser.Id && x.PublishDateTime <= now,
                         x => new {x.Id}, false, earlyLoad: x => x.NotificationEvent);
 
                 var unreadCount = qNotifications.Count(x => !x.IsRead);
@@ -75,7 +76,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.Notifications = notifications.Select(x => x.ToModel()).ToList();
                 model.UnreadNotificationCount = unreadCount;
             }
-          
+    
             //check if user is online or not
             model.IsOnline = true;
             return model;
