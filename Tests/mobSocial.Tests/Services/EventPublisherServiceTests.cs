@@ -12,7 +12,7 @@ namespace mobSocial.Tests.Services
     public class EventPublisherServiceTests : MobSocialTestCase
     {
         private IUserService _userService;
-        [OneTimeSetUp]
+        [SetUp]
         public void Initialize()
         {
             mobSocialEngine.ActiveEngine.IocContainer.Register<IEventConsumer<User>, UserEventTestConsumer>();
@@ -38,17 +38,17 @@ namespace mobSocial.Tests.Services
     {
         public void EntityInserted(User entity)
         {
-            Assert.AreEqual(2, entity.Id, "Entity failed to insert");
+            Assert.NotNull(entity, "Event insert executed");
         }
 
         public void EntityUpdated(User entity)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void EntityDeleted(User entity)
         {
-            Assert.AreEqual(1, entity.Id, "Entity failed to delete");
+            Assert.AreEqual(2, entity.Id, "Entity failed to delete");
         }
     }
 }
