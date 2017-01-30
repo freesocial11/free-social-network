@@ -170,6 +170,10 @@
     <Compile Include="ScheduledTasks\TaskManager.cs" />
     <Compile Include="Security\ApplicationConfiguration.cs" />
     <Compile Include="Security\IApplicationConfiguration.cs" />
+    <Compile Include="Skills\ISkillService.cs" />
+    <Compile Include="Skills\IUserSkillService.cs" />
+    <Compile Include="Skills\SkillService.cs" />
+    <Compile Include="Skills\UserSkillService.cs" />
     <Compile Include="Social\CommentService.cs" />
     <Compile Include="Social\FollowService.cs" />
     <Compile Include="Social\LikeService.cs" />
