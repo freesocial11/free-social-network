@@ -20,15 +20,18 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             return model;
         }
 
-        public static UserSkillModel ToModel(this UserSkill userSkill, IMediaService mediaService, MediaSettings mediaSettings, bool onlySkillData = false)
+        public static UserSkillModel ToModel(this UserSkill userSkill, IMediaService mediaService, MediaSettings mediaSettings, GeneralSettings generalSettings, bool onlySkillData = false)
         {
             var model = new UserSkillModel()
             {
-                Skill = userSkill.Skill.ToModel(),
+                DisplayOrder = userSkill.Skill.DisplayOrder,
+                SkillName = userSkill.Skill.SkillName,
+                UserSkillId = userSkill.Id,
+                Id = userSkill.SkillId,
                 User = onlySkillData ? null : userSkill.User.ToModel(mediaService, mediaSettings),
                 Media =
                     mediaService.GetEntityMedia<UserSkill>(userSkill.Id, MediaType.Video)
-                        .FirstOrDefault()?.ToModel(mediaService, mediaSettings),
+                        .FirstOrDefault()?.ToModel(mediaService, mediaSettings, generalSettings),
                 ExternalUrl = userSkill.ExternalUrl,
                 Description = userSkill.Description
             };

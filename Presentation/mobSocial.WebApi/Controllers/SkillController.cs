@@ -13,7 +13,7 @@ using mobSocial.WebApi.Models.Skills;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("api/skills")]
+    [RoutePrefix("skills")]
     public class SkillController : RootApiController
     {
         #region fields
@@ -22,16 +22,18 @@ namespace mobSocial.WebApi.Controllers
         private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
         private readonly IUserSkillService _userSkillService;
+        private readonly GeneralSettings _generalSettings;
         #endregion
 
         #region ctor
-        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService)
+        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService, GeneralSettings generalSettings)
         {
             _skillService = skillService;
             _userService = userService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
             _userSkillService = userSkillService;
+            _generalSettings = generalSettings;
         }
         #endregion
 
@@ -46,7 +48,7 @@ namespace mobSocial.WebApi.Controllers
                 return NotFound();
 
             var userSkills = _skillService.GetUserSkills(userId).OrderBy(x => x.DisplayOrder);
-            var model = userSkills.Select(x => x.ToModel(_mediaService, _mediaSettings, true));
+            var model = userSkills.Select(x => x.ToModel(_mediaService, _mediaSettings, _generalSettings, true));
 
             return RespondSuccess(new { Skills = model });
         }
@@ -85,7 +87,12 @@ namespace mobSocial.WebApi.Controllers
             var currentUser = ApplicationContext.Current.CurrentUser;
             //if it's admin, we can safely change the customer id otherwise we'll save skill as logged in user 
             var isAdmin = currentUser.IsAdministrator();
-            if (!isAdmin)
+            if (!isAdmin && model.UserId > 0)
+                model.UserId = currentUser.Id;
+
+            if (model.SystemSkill && isAdmin)
+                model.UserId = 0;
+            else
                 model.UserId = currentUser.Id;
 
             if (model.MediaId > 0)
@@ -114,7 +121,7 @@ namespace mobSocial.WebApi.Controllers
             //if user id is not 0, attach this skill with user
             if (model.UserId != 0)
             {
-                var userSkill = _userSkillService.Get(model.UserSkillId) ?? new UserSkill()
+                var userSkill = model.UserSkillId > 0 ? _userSkillService.Get(model.UserSkillId) : new UserSkill()
                 {
                     UserId = model.UserId,
                     SkillId = skill.Id,
@@ -129,11 +136,12 @@ namespace mobSocial.WebApi.Controllers
                     _userSkillService.Update(userSkill);
 
                 //attach media if it exists
+                _mediaService.ClearEntityMedia(userSkill);
                 if (model.MediaId > 0)
                     _mediaService.AttachMediaToEntity<UserSkill>(userSkill.Id, model.MediaId);
                 return RespondSuccess(new
                 {
-                    Skill = userSkill.ToModel(_mediaService, _mediaSettings)
+                    Skill = userSkill.ToModel(_mediaService, _mediaSettings, _generalSettings)
                 });
             }
             return RespondSuccess(new
@@ -176,6 +184,9 @@ namespace mobSocial.WebApi.Controllers
             //the current user should be either admin or himself to delete the skill
             if (userSkill.UserId != currentUser.Id && !currentUser.IsAdministrator())
                 return Unauthorized();
+
+            //detach media
+            _mediaService.ClearEntityMedia(userSkill);
 
             _userSkillService.Delete(userSkill);
 

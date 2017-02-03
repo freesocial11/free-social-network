@@ -6,7 +6,11 @@ namespace mobSocial.WebApi.Models.Skills
 {
     public class UserSkillModel : RootEntityModel
     {
-        public SkillModel Skill { get; set; }
+        public string SkillName { get; set; }
+
+        public int DisplayOrder { get; set; }
+
+        public int UserSkillId { get; set; }
 
         public string Description { get; set; }
 

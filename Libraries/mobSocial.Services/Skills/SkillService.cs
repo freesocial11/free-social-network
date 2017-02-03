@@ -18,7 +18,7 @@ namespace mobSocial.Services.Skills
         public IList<UserSkill> GetUserSkills(int userId)
         {
             //get user's skill ids
-            return _userSkillDataRepository.Get(x => x.UserId == userId).ToList();
+            return _userSkillDataRepository.Get(x => x.UserId == userId, earlyLoad: x => x.Skill).ToList();
         }
 
         public IList<Skill> GetSystemSkills(out int total, string search = "", int page = 1, int count = 15)

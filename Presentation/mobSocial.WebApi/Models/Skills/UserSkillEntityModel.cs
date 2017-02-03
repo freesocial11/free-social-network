@@ -19,5 +19,7 @@ namespace mobSocial.WebApi.Models.Skills
         public int MediaId { get; set; }
 
         public int UserSkillId { get; set; }
+
+        public bool SystemSkill { get; set; }
     }
 }

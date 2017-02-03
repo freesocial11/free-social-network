@@ -5,6 +5,7 @@ using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Skills;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
@@ -20,14 +21,17 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _userService;
         private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
+        private readonly ISkillService _skillService;
+
         #endregion
 
         #region ctor
-        public AutoCompleteController(IUserService userService, IMediaService mediaService, MediaSettings mediaSettings)
+        public AutoCompleteController(IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, ISkillService skillService)
         {
             _userService = userService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
+            _skillService = skillService;
         }
 
         #endregion
@@ -55,6 +59,14 @@ namespace mobSocial.WebApi.Controllers
                 var users = _userService.SearchUsers(requestModel.Search, false, searchRoles, 1, requestModel.Count);
                 model.Users = users.Select(x => x.ToModel(_mediaService, _mediaSettings));
             }
+
+            //are users requested?
+            if (types.Any(x => x == "skills"))
+            {
+                var skills = _skillService.SearchSkills(requestModel.Search, 1, requestModel.Count);
+                model.Skills = skills.Select(x => x.ToModel());
+            }
+
             var response = RespondSuccess(new { AutoComplete = model });
             return response;
         }
