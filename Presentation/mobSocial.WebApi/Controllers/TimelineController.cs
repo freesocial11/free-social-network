@@ -327,6 +327,8 @@ namespace mobSocial.WebApi.Controllers
 
                 postModel.OwnerName = user.Name;
                 postModel.OwnerImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage);
+                if (string.IsNullOrEmpty(postModel.OwnerImageUrl))
+                    postModel.OwnerImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
             }
             //depending on the posttype, we may need to extract additional data e.g. in case of autopublished posts, we may need to query the linked entity
             switch (post.PostTypeName)
