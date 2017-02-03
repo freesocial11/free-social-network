@@ -39,10 +39,20 @@
                             </div>
                             <!-- /.box-header -->
                             <div class="box-body">
-                                <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-                                <p class="text-muted">
-                                    B.S. in Computer Science from the University of Tennessee at Knoxville
-                                </p>
+                                <div ng-controller="educationController" ng-init="init()" block-ui>
+                                    <strong><i class="fa fa-book margin-r-5"></i> Education 
+                                        <a ui-sref="layoutMobSocial.twoColumns.editProfile({tab: 'education'})" class="pull-right"><i class="fa fa-pencil"></i> </a> 
+                                    </strong>
+                                    <p class="text-muted">
+                                        <ul class="list-group list-group-unbordered">
+                                            <li class="list-group-item" ng-repeat="education in educations">
+                                                {{education.Name}} from {{education.School.Name}}, {{education.School.City}} <span class="text-muted small">({{education.FromDate |  date : "MMM, yyyy"}}-{{education.ToDate |  date : "MMM, yyyy"}})</span>
+                                            </li>
+                                        </ul>
+                                    </p>
+                                    
+                                </div>
+                              
                                 <hr>
                                 <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
                                 <p class="text-muted">Malibu, California</p>
