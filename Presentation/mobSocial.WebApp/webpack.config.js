@@ -129,6 +129,14 @@ module.exports = {
             "./app/common/services/schoolService.js",
             "./app/common/services/educationService.js",
             "./app/public/education/educationController.js"
+        ],
+        skillPublic: [
+            "./app/common/services/skillService.js",
+            "./app/public/skills/skillController.js"
+        ],
+        skillAdmin: [
+            "./app/common/services/skillService.js"
+
         ]
     },
     output: {

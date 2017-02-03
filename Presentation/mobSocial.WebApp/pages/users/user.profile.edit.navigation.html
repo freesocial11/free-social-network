@@ -14,6 +14,11 @@
                     <i class="fa fa-graduation-cap"></i> Education
                 </a>
             </li>
+            <li ng-class='{"active": $state.includes("layoutMobSocial.twoColumns.editProfile", { tab: "skills"} )}'>
+                <a ui-sref="layoutMobSocial.twoColumns.editProfile({tab: 'skills'})">
+                    <i class="fa fa-gamepad"></i> Skills
+                </a>
+            </li>
             <li ng-class='{"active": $state.includes("layoutMobSocial.twoColumns.editProfile", { tab: "achievements"} )}'>
                 <a ui-sref="layoutMobSocial.twoColumns.editProfile({tab: 'achievements'})">
                     <i class="fa fa-trophy"></i> Achievements

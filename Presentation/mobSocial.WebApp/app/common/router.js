@@ -186,7 +186,7 @@
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider
-                             .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline"]);
+                             .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline", "education"]);
                      }
                  }
              })
@@ -198,7 +198,7 @@
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider
-                             .resolveBundles(["videogular", "social", "media", "fileUpload", "users", "timeline"]);
+                             .resolveBundles(["videogular", "social", "media", "fileUpload", "users", "timeline", "skillPublic"]);
                      }
                  }
              })
@@ -206,7 +206,7 @@
              {
                  url: "",
                  templateUrl: function ($stateParams, state) {
-                     if ([undefined, "main", "pictures", "videos", "friends", "followers", "following"].indexOf($stateParams.tab) == -1) {
+                     if ([undefined, "main", "pictures", "videos", "friends", "followers", "following", "skills"].indexOf($stateParams.tab) == -1) {
                          return "pages/common/404.html";
                      }
                      return "pages/users/user.profile." + ($stateParams.tab || "main") + ".html";
@@ -225,7 +225,7 @@
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider
-                             .resolveBundles(["fileUpload", "users", "education"]);
+                             .resolveBundles(["videogular", "fileUpload", "media", "users", "education", "skillPublic"]);
                      }
                  },
                  views: {
@@ -234,7 +234,7 @@
                      },
                      "right": {
                          templateUrl: function ($stateParams, state) {
-                             if ([undefined, "basic", "education"].indexOf($stateParams.tab) == -1) {
+                             if ([undefined, "basic", "education", "skills"].indexOf($stateParams.tab) == -1) {
                                  return "pages/common/404.html";
                              }
                              return "pages/users/user.profile.edit." + ($stateParams.tab || "basic") + ".html";
@@ -242,7 +242,7 @@
                          resolve: {
                              resolver: function (controllerProvider) {
                                  return controllerProvider
-                                     .resolveBundles(["education"]);
+                                     .resolveBundles(["education", "skillPublic"]);
                              }
                          },
                          controllerProvider: function($stateParams) {
@@ -253,6 +253,8 @@
                                      return "userEditController";
                                  case "education":
                                      return "educationController";
+                                 case "skills":
+                                     return "skillController";
 
                              }
                          }
