@@ -106,12 +106,7 @@ namespace mobSocial.WebApi.Controllers
                 _mediaService.WritePictureBytes(picture, _mediaSettings.PictureSaveLocation);
                 //save it
                 _mediaService.Insert(picture);
-                newImages.Add(new {
-                    ImageUrl = _mediaService.GetPictureUrl(picture.Id),
-                    ThumbnailUrl = _mediaService.GetPictureUrl(picture.Id, PictureSizeNames.ThumbnailImage),
-                    ImageId = picture.Id,
-                    MimeType = contentType
-                });
+                newImages.Add(picture.ToModel(_mediaService, _mediaSettings));
             }
 
             return RespondSuccess(new { Images = newImages });
@@ -169,12 +164,10 @@ namespace mobSocial.WebApi.Controllers
             _mediaService.WriteVideoBytes(media);
             //insert now
             _mediaService.Insert(media);
-           return RespondSuccess(new {
-                VideoId = media.Id,
-                VideoUrl = WebHelper.GetUrlFromPath(media.LocalPath, _generalSettings.VideoServerDomain),
-                ThumbnailUrl = WebHelper.GetUrlFromPath(media.ThumbnailPath, _generalSettings.ImageServerDomain),
-                MimeType = file.ContentType
-            });
+           return RespondSuccess(new
+           {
+               Media = media.ToModel(_mediaService, _mediaSettings)
+           });
         }
     }
 }
