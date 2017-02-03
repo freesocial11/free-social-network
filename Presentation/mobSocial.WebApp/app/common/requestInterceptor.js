@@ -1,5 +1,5 @@
-﻿window.mobSocial.service("MobSocialInterceptor", ["$rootScope",
-    function ($rootScope) {
+﻿window.mobSocial.service("MobSocialInterceptor", ["$rootScope", "localStorageService",  'loggedInUserKey', 'userInfoKey',
+    function ($rootScope, localStorageService, loggedInUserKey, userInfoKey) {
         this.request = function (config) {
             $rootScope.clearMessages();
             return config;
