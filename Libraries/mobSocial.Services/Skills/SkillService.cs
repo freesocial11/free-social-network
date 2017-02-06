@@ -21,9 +21,9 @@ namespace mobSocial.Services.Skills
             return _userSkillDataRepository.Get(x => x.UserId == userId, earlyLoad: x => x.Skill).ToList();
         }
 
-        public IList<Skill> GetSystemSkills(out int total, string search = "", int page = 1, int count = 15)
+        public IList<Skill> GetAllSkills(out int total, string search = "", int page = 1, int count = 15)
         {
-            var q = Repository.Get(x => x.UserId == 0 && (search == "" || x.SkillName.StartsWith(search)));
+            var q = Repository.Get(x => search == "" || x.SkillName.StartsWith(search));
             total = q.Count(); //total records
             return
                 q.OrderBy(x => x.SkillName)

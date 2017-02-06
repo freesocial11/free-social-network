@@ -54,11 +54,11 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("system/get")]
+        [Route("get/all")]
         public IHttpActionResult GetSystemSkills(int page = 1, int count = 15)
         {
             int total;
-            var skills = _skillService.GetSystemSkills(out total, string.Empty, page, count);
+            var skills = _skillService.GetAllSkills(out total, string.Empty, page, count);
             var model = skills.Select(x => x.ToModel()).ToList();
             return RespondSuccess(new { Skills = model, Total = total });
         }
@@ -116,6 +116,14 @@ namespace mobSocial.WebApi.Controllers
             if (skill.Id == 0)
             {
                 _skillService.Insert(skill);
+            }
+            else
+            {
+                if (model.SystemSkill && isAdmin)
+                {
+                    skill.SkillName = model.SkillName;
+                    _skillService.Update(skill);
+                }
             }
 
             //if user id is not 0, attach this skill with user

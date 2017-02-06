@@ -27,7 +27,13 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="description" class="col-md-3 control-label">Upload Video</label>
+        <label for="displayOrder" class="col-md-3 control-label">Display Order</label>
+        <div class="col-md-9">
+            <textarea type="number" class="form-control" id="displayOrder" placeholder="Display Order" ng-model="skill.DisplayOrder"></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="skill_{{CurrentUser.Id}}" class="col-md-3 control-label">Upload Video</label>
         <div class="col-md-3">
             <a file-upload-button
                id="skill_{{CurrentUser.Id}}"

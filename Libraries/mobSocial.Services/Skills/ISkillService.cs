@@ -8,7 +8,7 @@ namespace mobSocial.Services.Skills
     {
         IList<UserSkill> GetUserSkills(int userId);
 
-        IList<Skill> GetSystemSkills(out int total, string search = "", int page = 1, int count = 15);
+        IList<Skill> GetAllSkills(out int total, string search = "", int page = 1, int count = 15);
 
         IList<Skill> SearchSkills(string searchText, int page = 1, int count = 15);
     }

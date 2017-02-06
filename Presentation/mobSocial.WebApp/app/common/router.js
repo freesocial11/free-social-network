@@ -166,6 +166,23 @@
                  url: "/emailtemplate/:id",
                  controller: "emailTemplateController",
                  templateUrl: "/pages/emails/emailTemplate.editor.html"
+             })
+             .state("layoutAdministration.skills",
+             {
+                 abstract: true,
+                 url: adminPrefix + "/skills",
+                 template: "<div ui-view></div>",
+                 resolve: {
+                     resolver: function (controllerProvider) {
+                         return controllerProvider.resolveBundles(["skillAdmin"]);
+                     }
+                 }
+             })
+            .state("layoutAdministration.skills.list",
+             {
+                 url: "",
+                 templateUrl: "pages/skills/skill.list.html",
+                 controller: "skillController"
              });
 
          $stateProvider

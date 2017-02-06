@@ -8,8 +8,13 @@ window.mobSocial.lazy.service("skillService", ["globalApiEndPoint", "webClientSe
         webClientService.get(apiEndPoint + "/users/" + userId + "/get", null, success, error);
     }
 
+
     this.getSkill = function (skilId, success, error) {
         webClientService.get(apiEndPoint + "/get/" + skilId, null, success, error);
+    }
+
+    this.getSkills = function (options, success, error) {
+        webClientService.get(apiEndPoint + "/get/all", options, success, error);
     }
 
     this.postSkill = function (skill, success, error) {
