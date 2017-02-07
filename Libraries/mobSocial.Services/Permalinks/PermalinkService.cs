@@ -14,7 +14,7 @@ namespace mobSocial.Services.Permalinks
         public Permalink GetPermalink<T>(T entity) where T : IPermalinkSupported
         {
             //first check if the entity already has a permalink
-            var typeName = typeof(T).Name;
+            var typeName = entity.GetType().Name;
             var permalink = FirstOrDefault(x => x.EntityName == typeName && x.EntityId == entity.Id);
             if (permalink == null)
             {
