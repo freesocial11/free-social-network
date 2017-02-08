@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Core.Data;
-using mobSocial.Core.Services;
 using mobSocial.Data.Entity.Skills;
 
 namespace mobSocial.Services.Skills
 {
-    public class SkillService : BaseEntityService<Skill>, ISkillService
+    public class SkillService : MobSocialEntityService<Skill>, ISkillService
     {
         private readonly IDataRepository<UserSkill> _userSkillDataRepository;
 
