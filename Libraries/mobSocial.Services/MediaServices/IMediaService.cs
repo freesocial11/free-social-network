@@ -40,6 +40,6 @@ namespace mobSocial.Services.MediaServices
 
         void WriteOtherMediaBytes(Media media, MediaSaveLocation saveLocation);
 
-        IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity;
+        IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType? mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity;
     }
 }

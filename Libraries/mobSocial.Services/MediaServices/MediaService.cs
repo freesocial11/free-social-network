@@ -252,11 +252,13 @@ namespace mobSocial.Services.MediaServices
             }
         }
 
-        public IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity
+        public IQueryable<Media> GetEntityMedia<TEntityType>(int entityId, MediaType? mediaType, int page = 1, int count = 15) where TEntityType : BaseEntity
         {
             //first get the media ids for this entity
             var mediaIds = _entityMediaRepository.Get(x => x.EntityId == entityId && x.EntityName == typeof(TEntityType).Name).Select(x => x.MediaId).ToList();
-            return Get(x => mediaIds.Contains(x.Id) && x.MediaType == mediaType, null, true, page, count);
+            if (mediaType.HasValue)
+                return Get(x => mediaIds.Contains(x.Id) && x.MediaType == mediaType, null, true, page, count);
+            return Get(x => mediaIds.Contains(x.Id), null, true, page, count);
         }
     }
 }
