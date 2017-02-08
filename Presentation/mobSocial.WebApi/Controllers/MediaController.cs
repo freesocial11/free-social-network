@@ -7,6 +7,7 @@ using mobSocial.Core;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.MediaEntities;
 using mobSocial.Data.Entity.Settings;
+using mobSocial.Data.Entity.Skills;
 using mobSocial.Data.Enum;
 using mobSocial.Data.Helpers;
 using mobSocial.Services.MediaServices;
@@ -15,6 +16,7 @@ using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Extensions.ModelExtensions;
+using mobSocial.WebApi.Models.Media;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -28,8 +30,8 @@ namespace mobSocial.WebApi.Controllers
         private readonly IUserService _userService;
         private readonly ICommentService _commentService;
         private readonly ILikeService _likeService;
-
-        public MediaController(MediaService mediaService, MediaSettings mediaSettings, IMobSocialVideoProcessor videoProcessor, GeneralSettings generalSettings, IUserService userService, ICommentService commentService, ILikeService likeService)
+        private readonly IEntityMediaService _entityMediaService;
+        public MediaController(MediaService mediaService, MediaSettings mediaSettings, IMobSocialVideoProcessor videoProcessor, GeneralSettings generalSettings, IUserService userService, ICommentService commentService, ILikeService likeService, IEntityMediaService entityMediaService)
         {
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
@@ -38,6 +40,7 @@ namespace mobSocial.WebApi.Controllers
             _userService = userService;
             _commentService = commentService;
             _likeService = likeService;
+            _entityMediaService = entityMediaService;
         }
 
         [HttpGet]
@@ -48,12 +51,37 @@ namespace mobSocial.WebApi.Controllers
             var media = _mediaService.Get(id);
             if (media == null)
                 return NotFound();
+
+            var entityMedia = _entityMediaService.FirstOrDefault(x => x.MediaId == id);
+            MediaReponseModel model = null;
             //todo: verify permissions to see if media can be viewed by logged in user
-            var model = media.ToModel(_mediaService, _mediaSettings, _generalSettings, _userService,
-                commentService: _commentService,
-                likeService: _likeService,
-                withSocialInfo: true,
-                withNextAndPreviousMedia: true);
+            switch (entityMedia.EntityName)
+            {
+                case "Skill":
+                    model = media.ToModel<Skill>(entityMedia.EntityId, _mediaService, _mediaSettings, _generalSettings, _userService,
+                        commentService: _commentService,
+                        likeService: _likeService,
+                        withSocialInfo: true,
+                        withNextAndPreviousMedia: true,
+                        avoidMediaTypeForNextAndPreviousMedia: true);
+                    break;
+                case "UserSkill":
+                    model = media.ToModel<UserSkill>(entityMedia.EntityId, _mediaService, _mediaSettings, _generalSettings, _userService,
+                        commentService: _commentService,
+                        likeService: _likeService,
+                        withSocialInfo: true,
+                        withNextAndPreviousMedia: true,
+                        avoidMediaTypeForNextAndPreviousMedia: true);
+                    break;
+                default:
+                    model = media.ToModel(_mediaService, _mediaSettings, _generalSettings, _userService,
+                        commentService: _commentService,
+                        likeService: _likeService,
+                        withSocialInfo: true,
+                        withNextAndPreviousMedia: true);
+                    break;
+            }
+
 
             return RespondSuccess(new { Media = model });
         }

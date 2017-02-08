@@ -139,6 +139,8 @@
     <Compile Include="Formatter\IFormatterService.cs" />
     <Compile Include="Installation\IInstallationService.cs" />
     <Compile Include="Installation\InstallationService.cs" />
+    <Compile Include="MediaServices\EntityMediaService.cs" />
+    <Compile Include="MediaServices\IEntityMediaService.cs" />
     <Compile Include="MediaServices\IMobSocialImageProcessor.cs" />
     <Compile Include="MediaServices\IMobSocialVideoProcessor.cs" />
     <Compile Include="MediaServices\MobSocialImageProcessor.cs" />
