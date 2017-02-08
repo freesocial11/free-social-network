@@ -28,4 +28,17 @@ window.mobSocial.lazy.service("skillService", ["globalApiEndPoint", "webClientSe
     this.deleteUserSkill = function(userSkillId, success, error) {
         webClientService.delete(apiEndPoint + "/users/delete/" + userSkillId, null, success, error);
     }
+
+    this.getSkillBySlug = function(slug, success, error) {
+        webClientService.get(apiEndPoint + "/get/" + slug, null, success, error);
+    }
+
+    this.setFeaturedMedia = function(skillId, mediaId, success, error) {
+        webClientService.post(apiEndPoint + "/featured-media", { skillId: skillId, mediaId: mediaId}, success, error);
+    }
+
+    this.deleteUserSkillMedia = function(userSkillId, mediaId, success, error) {
+        webClientService
+            .delete(apiEndPoint + "/user/media/delete/" + userSkillId + "/" + mediaId, null, success, error);
+    }
 }]);

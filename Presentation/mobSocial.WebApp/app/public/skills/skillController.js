@@ -1,6 +1,6 @@
 ﻿window.mobSocial.lazy.controller("skillController",
 [
-    "$scope", "$sce", "skillService", "autoCompleteService", '$timeout', '$rootScope', function ($scope, $sce, skillService, autoCompleteService, $timeout, $rootScope) {
+    "$scope", "$sce", "skillService", "autoCompleteService", '$timeout', '$rootScope', '$state', function ($scope, $sce, skillService, autoCompleteService, $timeout, $rootScope, $state) {
         $scope.skill = null;
         $scope.getUserSkills = function(userId) {
             skillService.getUserSkills(userId,
@@ -24,6 +24,7 @@
             if (skill.Id < 0)
                 skill.Id = 0;
             var isOld = skill.Id > 0;
+            skill.Media = null;
             skillService.postSkill(skill,
                function (response) {
                    if (response.Success) {
@@ -81,11 +82,21 @@
                 $scope.skill = null;
         }
 
-        $scope.uploadSkillVideoSuccess = function (fileItem, data, status, headers) {
+        $scope.uploadSkillMediaSuccess = function (fileItem, data, status, headers) {
 
             if (data.Success) {
-                $scope.skill.MediaId = data.ResponseData.Media.Id;
-                $scope.skill.Media = data.ResponseData;
+                $scope.skill.MediaId = $scope.skill.MediaId || [];
+                if (data.ResponseData.Media) {
+                    $scope.skill.MediaId.push(data.ResponseData.Media.Id);
+                    $scope.skill.Media.push(data.ResponseData.Media);
+                }
+                if (data.ResponseData.Images) {
+                    for (var i = 0; i < data.ResponseData.Images.length; i++) {
+                        $scope.skill.MediaId.push(data.ResponseData.Images[i].Id);
+                        $scope.skill.Media.push(data.ResponseData.Images[i]);
+                    }
+                }
+                
             }
         };
 
@@ -98,9 +109,63 @@
 
         $scope.loadProfileSkills = function() {
             $rootScope.waitFromParent($scope, "user", null)
-                  .then(function (user) {
-                      $scope.getUserSkills(user.Id);
-                  });
+                .then(function(user) {
+                    $scope.getUserSkills(user.Id);
+                });
+        };
+
+        $scope.getSkillBySlug = function() {
+            var slug = $state.params.slug;
+            skillService.getSkillBySlug(slug,
+                function(response) {
+                    if (response.Success) {
+                        $scope.skill = response.ResponseData.SkillData.Skill;
+                        $scope.skillData = response.ResponseData.SkillData;
+                    }
+                });
+
+        }
+
+        $scope.uploadCoverSuccess = function (fileItem, data, status, headers) {
+
+            if (data.Success) {
+                $scope.skill.TemporaryFeaturedImageUrl = data.ResponseData.Images[0].Url;
+                $scope.skill.TemporaryFeaturedMediaId = data.ResponseData.Images[0].Id;
+            }
+        };
+
+        $scope.setTemporaryPictureAsCover = function (set) {
+            if (set) {
+                skillService.setFeaturedMedia($scope.skill.Id,
+                    $scope.skill.TemporaryFeaturedMediaId,
+                    function(response) {
+                        if (response.Success) {
+                            $scope.skillData.FeaturedMediaImageUrl = $scope.skill.TemporaryFeaturedImageUrl;
+                            $scope.skill.TemporaryFeaturedImageUrl = null;
+                            $scope.skill.TemporaryFeaturedMediaId = 0;
+                        }
+                    });
+            } else {
+                $scope.skill.TemporaryFeaturedImageUrl = null;
+                $scope.skill.TemporaryFeaturedMediaId = 0;
+            }
+        }
+
+        $scope.deleteUserSkillMedia = function (userSkillId, mediaId) {
+            if (!confirm("Are you sure?"))
+                return;
+            skillService.deleteUserSkillMedia(userSkillId,
+                mediaId,
+                function(response) {
+                    if (response.Success) {
+                        if ($scope.skill) {
+                            for (var i = 0; i < $scope.skill.Media.length; i++) {
+                                if ($scope.skill.Media[i].Id == mediaId)
+                                    $scope.skill.Media.splice(i, 1);
+                            }
+                        }
+                    }
+                });
         }
     }
 ]);

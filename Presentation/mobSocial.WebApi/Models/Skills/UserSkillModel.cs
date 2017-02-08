@@ -1,4 +1,5 @@
-﻿using mobSocial.WebApi.Configuration.Mvc.Models;
+﻿using System.Collections.Generic;
+using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Models.Media;
 using mobSocial.WebApi.Models.Users;
 
@@ -16,8 +17,12 @@ namespace mobSocial.WebApi.Models.Skills
 
         public UserResponseModel User { get; set; }      
 
-        public MediaReponseModel Media { get; set; }
+        public IList<MediaReponseModel> Media { get; set; }
 
         public string ExternalUrl { get; set; }
+
+        public string FeaturedImageUrl { get; set; }
+
+        public string SeName { get; set; }
     }
 }

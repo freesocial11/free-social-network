@@ -391,3 +391,11 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     background-color: #eee;
     margin-top: 6px; }
 
+.video-thumbnail {
+  position: relative; }
+  .video-thumbnail span.fa {
+    position: absolute;
+    top: 45%;
+    left: 45%;
+    color: white; }
+

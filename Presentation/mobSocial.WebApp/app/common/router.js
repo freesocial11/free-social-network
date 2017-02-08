@@ -228,6 +228,18 @@
                      }
                      return "pages/users/user.profile." + ($stateParams.tab || "main") + ".html";
                  }
+             })
+            .state("layoutMobSocial.skill",
+             {
+                 url: "/skill/:slug",
+                 templateUrl: "pages/skills/skill.single.html",
+                 resolve: {
+                     resolver: function (controllerProvider) {
+                         return controllerProvider
+                             .resolveBundles(["videogular", "social", "media", "fileUpload", "skillPublic"]);
+                     }
+                 },
+                 controller: "skillController"
              });
 
          $stateProvider

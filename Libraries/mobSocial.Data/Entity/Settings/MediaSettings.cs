@@ -81,6 +81,11 @@ namespace mobSocial.Data.Entity.Settings
         /// </summary>
         public string DefaultUserProfileCoverUrl { get; set; }
 
+        /// <summary>
+        /// Default image that'll be used for skill page's cover if no image has been set
+        /// </summary>
+        public string DefaultSkillCoverUrl { get; set; }
+
     }
 
 

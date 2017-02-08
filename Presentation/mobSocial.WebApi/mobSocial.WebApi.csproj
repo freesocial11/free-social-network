@@ -335,6 +335,8 @@
     <Compile Include="Models\Settings\ThirdPartySettingsModel.cs" />
     <Compile Include="Models\Settings\UrlSettingsModel.cs" />
     <Compile Include="Models\Settings\UserSettingsModel.cs" />
+    <Compile Include="Models\Skills\SetFeaturedMediaModel.cs" />
+    <Compile Include="Models\Skills\SkillWithUsersModel.cs" />
     <Compile Include="Models\Skills\UserSkillEntityModel.cs" />
     <Compile Include="Models\Skills\SkillModel.cs" />
     <Compile Include="Models\Skills\UserSkillModel.cs" />

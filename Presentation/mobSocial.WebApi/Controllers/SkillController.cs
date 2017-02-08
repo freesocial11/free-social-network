@@ -1,10 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Skills;
+using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
+using mobSocial.Services.Permalinks;
 using mobSocial.Services.Skills;
+using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
@@ -23,10 +27,12 @@ namespace mobSocial.WebApi.Controllers
         private readonly MediaSettings _mediaSettings;
         private readonly IUserSkillService _userSkillService;
         private readonly GeneralSettings _generalSettings;
+        private readonly IPermalinkService _permalinkService;
+        private readonly IFollowService _followService;
         #endregion
 
         #region ctor
-        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService, GeneralSettings generalSettings)
+        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService, GeneralSettings generalSettings, IPermalinkService permalinkService, IFollowService followService)
         {
             _skillService = skillService;
             _userService = userService;
@@ -34,6 +40,8 @@ namespace mobSocial.WebApi.Controllers
             _mediaSettings = mediaSettings;
             _userSkillService = userSkillService;
             _generalSettings = generalSettings;
+            _permalinkService = permalinkService;
+            _followService = followService;
         }
         #endregion
 
@@ -76,12 +84,31 @@ namespace mobSocial.WebApi.Controllers
             return RespondSuccess(new { Skill = model });
         }
 
+        [HttpGet]
+        [Authorize]
+        [Route("get/{slug}")]
+        public IHttpActionResult GetSkill(string slug)
+        {
+            var permalink = _permalinkService.FirstOrDefault(x => x.Slug == slug && x.EntityName == typeof(Skill).Name);
+            if (permalink == null)
+                return NotFound();
+
+            var skillId = permalink.EntityId;
+            var skill = _skillService.Get(skillId);
+
+            if (skill == null)
+                return NotFound();
+
+            var model = skill.ToSkillWithUsersModel(_userSkillService, _mediaService, _mediaSettings, _generalSettings, _followService);
+            return RespondSuccess(new { SkillData = model });
+        }
+
         [HttpPost]
         [Authorize]
         [Route("post")]
         public IHttpActionResult Post(UserSkillEntityModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return BadRequest();
 
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -95,22 +122,19 @@ namespace mobSocial.WebApi.Controllers
             else
                 model.UserId = currentUser.Id;
 
-            if (model.MediaId > 0)
-            {
-                //so there is a media, let's see if user owns this media
-                var media = _mediaService.Get(model.MediaId);
-                if (media == null || media.UserId != model.UserId)
-                    return Unauthorized();
-            }
+            var mediaIds = model.MediaId?.ToList() ?? new List<int>();
+            //get all medias
+            var medias = _mediaService.Get(x => mediaIds.Contains(x.Id) && x.UserId == currentUser.Id).ToList();
 
+           
             //get skill, 1.) by id 2.) by name 3.) create new otherwise
             var skill = _skillService.Get(model.Id) ??
-                        (_skillService.FirstOrDefault(x => x.SkillName == model.SkillName) ?? new Skill()
-                         {
-                             DisplayOrder = model.DisplayOrder,
-                             UserId = currentUser.Id,
-                             SkillName = model.SkillName
-                         });
+                        (_skillService.FirstOrDefault(x => x.SkillName == model.SkillName) ?? new Skill() {
+                            DisplayOrder = model.DisplayOrder,
+                            UserId = currentUser.Id,
+                            SkillName = model.SkillName,
+                            Name = model.SkillName
+                        });
 
             //should we add this?
             if (skill.Id == 0)
@@ -144,18 +168,76 @@ namespace mobSocial.WebApi.Controllers
                     _userSkillService.Update(userSkill);
 
                 //attach media if it exists
-                _mediaService.ClearEntityMedia(userSkill);
-                if (model.MediaId > 0)
-                    _mediaService.AttachMediaToEntity<UserSkill>(userSkill.Id, model.MediaId);
-                return RespondSuccess(new
-                {
+                foreach(var media in medias)
+                    _mediaService.AttachMediaToEntity(userSkill, media);
+                return RespondSuccess(new {
                     Skill = userSkill.ToModel(_mediaService, _mediaSettings, _generalSettings)
                 });
             }
-            return RespondSuccess(new
-            {
+            return RespondSuccess(new {
                 Skill = skill.ToModel()
             });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("featured-media")]
+        public IHttpActionResult Post(SetFeaturedMediaModel requestModel)
+        {
+            var skillId = requestModel.SkillId;
+            var mediaId = requestModel.MediaId;
+            var currentUser = ApplicationContext.Current.CurrentUser;
+           //check if the skill and media actually exist?
+            var skill = _skillService.Get(skillId);
+            if (skill == null)
+                return NotFound();
+
+            var canUpdate = currentUser.IsAdministrator() || currentUser.Id == skill.UserId;
+
+            if (!canUpdate)
+                return Unauthorized();
+
+            //check if media exist
+            var media = _mediaService.Get(mediaId);
+            if (media == null || (media.UserId != currentUser.Id && !currentUser.IsAdministrator()))
+                return Unauthorized();
+
+            //media should also be a picture to proceed further.
+            //todo: support video covers as well
+            if (media.MediaType != MediaType.Image)
+                return BadRequest("Can't set media as featured image");
+
+            skill.FeaturedImageId = mediaId;
+            _skillService.Update(skill);
+            return RespondSuccess();
+        }
+
+        [HttpDelete]
+        [Authorize]
+        [Route("user/media/delete/{userSkillId}/{mediaId}")]
+        public IHttpActionResult DeleteMedia(int userSkillId, int mediaId)
+        {
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            //check if the skill and media actually exist?
+            var userSkill = _userSkillService.Get(userSkillId);
+            if (userSkill == null)
+                return NotFound();
+
+            var canUpdate = currentUser.IsAdministrator() || currentUser.Id == userSkill.UserId;
+
+            if (!canUpdate)
+                return Unauthorized();
+
+            //check if media exist
+            var media = _mediaService.Get(mediaId);
+            if (media == null || (media.UserId != currentUser.Id && !currentUser.IsAdministrator()))
+                return Unauthorized();
+
+            _mediaService.DetachMediaFromEntity(userSkill, media);
+
+            //delete the media as well
+            _mediaService.Delete(media);
+            return RespondSuccess();
         }
 
         [HttpDelete]

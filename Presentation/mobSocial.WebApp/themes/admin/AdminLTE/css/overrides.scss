@@ -599,3 +599,14 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
         margin-top: 6px;
     }
 }
+
+.video-thumbnail
+{
+    position:relative;
+    span.fa{
+        position:absolute;
+        top:45%;
+        left:45%;
+        color:white;
+    }
+}

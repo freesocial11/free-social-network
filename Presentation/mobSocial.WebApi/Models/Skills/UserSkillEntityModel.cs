@@ -16,7 +16,7 @@ namespace mobSocial.WebApi.Models.Skills
 
         public string ExternalUrl { get; set; }
 
-        public int MediaId { get; set; }
+        public int[] MediaId { get; set; }
 
         public int UserSkillId { get; set; }
 

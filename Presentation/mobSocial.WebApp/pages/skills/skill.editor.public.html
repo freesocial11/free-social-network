@@ -33,27 +33,46 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="skill_{{CurrentUser.Id}}" class="col-md-3 control-label">Upload Video</label>
+        <label for="skill_{{CurrentUser.Id}}" class="col-md-3 control-label">Upload Media</label>
         <div class="col-md-3">
             <a file-upload-button
-               id="skill_{{CurrentUser.Id}}"
+               id="skill_{{CurrentUser.Id}}_video"
                fieldname="SkillVideo"
                uploadtype="video"
-               onsuccessitem="uploadSkillVideoSuccess"
+               onsuccessitem="uploadSkillMediaSuccess"
                url="/api/media/uploadvideo">
-                <i class="fa fa-video-camera"></i> Select Video
+                <i class="fa fa-video-camera"></i> Add Video
+            </a>
+            <a file-upload-button
+               id="skill_{{CurrentUser.Id}}_image"
+               fieldname="SkillImage"
+               uploadtype="image"
+               onsuccessitem="uploadSkillMediaSuccess"
+               url="/api/media/uploadpictures">
+                <i class="fa fa-file-picture-o"></i> Add Image
             </a>
         </div>
-        <div class="col-md-6">
-            <div ng-if="skill.Media.Id > 0">
-                <a media-button target="#video-modal" media="skill.Media">
-                    <img ng-src="{{skill.Media.ThumbnailUrl}}"/>
-                </a>
-                <media-modal id="video-modal"></media-modal>
+    </div>
+    <div class="form-group" ng-if="skill.Media.length > 0">
+        <div class="col-md-3"></div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col-md-4 text-center" ng-repeat="media in skill.Media">
+                    <a media-button target="#video-modal" media="media" class="video-thumbnail">
+                        <span class="fa fa-play" ng-if="media.MediaType == 1"></span>
+                        <img ng-src="{{media.ThumbnailUrl}}"/>
+                    </a>
+                    <div>
+                        <a ng-click="deleteUserSkillMedia(skill.UserSkillId, media.Id)">
+                            <i class="fa fa-times"></i> Remove
+                        </a>
+                    </div>
+                   
+                </div>
             </div>
+            <media-modal id="video-modal"></media-modal>
         </div>
     </div>
-   
     <div class="form-group">
         <div class="col-md-9 col-md-offset-3">
             <button type="button" class="btn btn-primary" ng-click="postSkill(skill)">Save</button>
