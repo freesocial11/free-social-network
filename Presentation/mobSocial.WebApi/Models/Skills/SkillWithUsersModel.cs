@@ -1,11 +1,4 @@
-﻿// #region Author Information
-// // SkillWithUsersModel.cs
-// // 
-// // (c) 2017 Apexol Technologies. All Rights Reserved.
-// // 
-// #endregion
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Models.Media;
 

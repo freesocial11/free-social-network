@@ -1,11 +1,4 @@
-﻿#region Author Information
-// ConversationEntityModel.cs
-// 
-// (c) 2016 Apexol Technologies. All Rights Reserved.
-// 
-#endregion
-
-using mobSocial.WebApi.Configuration.Mvc.Models;
+﻿using mobSocial.WebApi.Configuration.Mvc.Models;
 
 namespace mobSocial.WebApi.Models.Conversation
 {

@@ -1,10 +1,4 @@
-﻿#region Author Information
-// ReplyStatus.cs
-// 
-// (c) 2016 Apexol Technologies. All Rights Reserved.
-// 
-#endregion
-namespace mobSocial.Data.Enum
+﻿namespace mobSocial.Data.Enum
 {
     public enum ReplyStatus
     {

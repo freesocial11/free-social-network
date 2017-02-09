@@ -1,11 +1,4 @@
-﻿#region Author Information
-// ConversationReplyStatus.cs
-// 
-// (c) 2016 Apexol Technologies. All Rights Reserved.
-// 
-#endregion
-
-using System;
+﻿using System;
 using mobSocial.Core.Data;
 using mobSocial.Data.Enum;
 
