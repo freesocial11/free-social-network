@@ -25,7 +25,7 @@ window.mobSocial.run([
             function(event, toState, toParams, fromState, fromParams, error) {
                 if (error === 'Not Authenticated') {
                     event.preventDefault();
-                    $rootScope.login(toState.url);
+                    $rootScope.login();
                 }
             });
         //whenever state changes, see if we are in administration area or registered area
