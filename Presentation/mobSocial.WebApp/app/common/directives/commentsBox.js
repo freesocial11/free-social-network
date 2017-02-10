@@ -40,6 +40,7 @@
                         $scope.CommentList.push(response.Comment);
                         $scope.TotalComments++;
                         $scope.Comment.CommentText = "";
+                        $scope.commmentsVisible = true;
                     }
                 }, function () {
                     alert("An error occured while performing operation");
