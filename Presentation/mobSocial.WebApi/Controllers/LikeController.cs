@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using mobSocial.Data.Entity.Battles;
+using mobSocial.Data.Entity.Skills;
 using mobSocial.Data.Entity.Social;
 using mobSocial.Data.Entity.Timeline;
 using mobSocial.Data.Entity.Users;
@@ -42,6 +43,9 @@ namespace mobSocial.WebApi.Controllers
                 case LikableEntityNames.Comment:
                     response = Like<Comment>(id);
                     break;
+                case LikableEntityNames.Skill:
+                    response = Like<Skill>(id);
+                    break;
             }
             if (response)
                 newStatus = 1;
@@ -68,6 +72,9 @@ namespace mobSocial.WebApi.Controllers
                     break;
                 case LikableEntityNames.Comment:
                     response = Unlike<Comment>(id);
+                    break;
+                case LikableEntityNames.Skill:
+                    response = Unlike<Skill>(id);
                     break;
             }
             if (response)
@@ -100,6 +107,7 @@ namespace mobSocial.WebApi.Controllers
             public const string User = "user";
             public const string TimelinePost = "timelinepost";
             public const string Comment = "comment";
+            public const string Skill = "skill";
         }
 
         #endregion

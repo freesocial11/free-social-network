@@ -24,5 +24,11 @@ namespace mobSocial.WebApi.Models.Skills
         public string FeaturedImageUrl { get; set; }
 
         public string SeName { get; set; }
+
+        public int TotalMediaCount { get; set; }
+
+        public int TotalVideoCount { get; set; }
+
+        public int TotalPictureCount { get; set; }
     }
 }

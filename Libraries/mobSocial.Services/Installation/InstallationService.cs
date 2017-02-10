@@ -174,6 +174,12 @@ namespace mobSocial.Services.Installation
             settingService.Save(new UrlSettings() {
                 ActivationPageUrl = installDomain + "/activate"
             });
+
+            //skill settings
+            settingService.Save(new SkillSettings()
+            {
+                NumberOfUsersPerPageOnSinglePage = 15
+            });
         }
 
         /// <summary>

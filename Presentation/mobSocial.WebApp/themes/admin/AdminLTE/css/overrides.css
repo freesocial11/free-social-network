@@ -399,3 +399,12 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     left: 45%;
     color: white; }
 
+.load-more {
+  text-align: center;
+  border: dashed 1px #999;
+  padding: 5px 0;
+  margin: 15px;
+  background-color: white; }
+  .load-more a {
+    color: #555; }
+

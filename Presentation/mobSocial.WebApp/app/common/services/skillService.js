@@ -41,4 +41,8 @@ window.mobSocial.lazy.service("skillService", ["globalApiEndPoint", "webClientSe
         webClientService
             .delete(apiEndPoint + "/user/media/delete/" + userSkillId + "/" + mediaId, null, success, error);
     }
+
+    this.getUsers = function(skillId, options, success, error) {
+        webClientService.get(apiEndPoint + "/" + skillId + "/users/get", options, success, error);
+    }
 }]);

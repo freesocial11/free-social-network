@@ -29,10 +29,13 @@ namespace mobSocial.WebApi.Controllers
         private readonly GeneralSettings _generalSettings;
         private readonly IPermalinkService _permalinkService;
         private readonly IFollowService _followService;
+        private readonly ILikeService _likeService;
+        private readonly ICommentService _commentService;
+        private readonly SkillSettings _skillSettings;
         #endregion
 
         #region ctor
-        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService, GeneralSettings generalSettings, IPermalinkService permalinkService, IFollowService followService)
+        public SkillController(ISkillService skillService, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, IUserSkillService userSkillService, GeneralSettings generalSettings, IPermalinkService permalinkService, IFollowService followService, ILikeService likeService, ICommentService commentService, SkillSettings skillSettings)
         {
             _skillService = skillService;
             _userService = userService;
@@ -42,6 +45,9 @@ namespace mobSocial.WebApi.Controllers
             _generalSettings = generalSettings;
             _permalinkService = permalinkService;
             _followService = followService;
+            _likeService = likeService;
+            _commentService = commentService;
+            _skillSettings = skillSettings;
         }
         #endregion
 
@@ -99,8 +105,29 @@ namespace mobSocial.WebApi.Controllers
             if (skill == null)
                 return NotFound();
 
-            var model = skill.ToSkillWithUsersModel(_userSkillService, _mediaService, _mediaSettings, _generalSettings, _followService);
+            var model = skill.ToSkillWithUsersModel(_userSkillService, _mediaService, _mediaSettings, _generalSettings, _skillSettings, _followService, _likeService, _commentService);
             return RespondSuccess(new { SkillData = model });
+        }
+
+        [HttpGet]
+        [Route("{id:int}/users/get")]
+        public IHttpActionResult GetSkillUsers(int id, int page)
+        {
+            var skill = _skillService.Get(id);
+            if (skill == null)
+                return NotFound();
+
+            var userSkills = _userSkillService.Get(x => x.SkillId == id, page: page, count: _skillSettings.NumberOfUsersPerPageOnSinglePage,earlyLoad: x => x.User).ToList();
+            var model =
+                userSkills.Select(
+                    x =>
+                        x.ToModel(_mediaService, _mediaSettings, _generalSettings, firstMediaOnly: true,
+                            withNextAndPreviousMedia: true, withSocialInfo: false));
+
+            return RespondSuccess(new
+            {
+                UserSkills = model
+            });
         }
 
         [HttpPost]

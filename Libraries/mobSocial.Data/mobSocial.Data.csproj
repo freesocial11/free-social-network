@@ -104,6 +104,7 @@
     <Compile Include="Entity\Notifications\Notification.cs" />
     <Compile Include="Entity\Notifications\NotificationEvent.cs" />
     <Compile Include="Entity\ScheduledTasks\ScheduledTask.cs" />
+    <Compile Include="Entity\Settings\SkillSettings.cs" />
     <Compile Include="Entity\Settings\UrlSettings.cs" />
     <Compile Include="Entity\Skills\Skill.cs" />
     <Compile Include="Entity\Skills\UserSkill.cs" />

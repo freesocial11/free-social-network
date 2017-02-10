@@ -441,14 +441,15 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     bottom: 0;
     right: 3px;
     z-index: 10;
+
     span.unread-count {
-                background-color: maroon;
-                color: white;
-                margin: 5px;
-                padding: 2px 6px;
-                font-size: 11px;
-                border-radius: 50%;
-            }
+        background-color: maroon;
+        color: white;
+        margin: 5px;
+        padding: 2px 6px;
+        font-size: 11px;
+        border-radius: 50%;
+    }
 
     .chat-switcher {
         a {
@@ -461,8 +462,6 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
             &:hover, &:active {
                 color: #555;
             }
-
-            
         }
     }
 
@@ -600,13 +599,24 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
     }
 }
 
-.video-thumbnail
-{
-    position:relative;
-    span.fa{
-        position:absolute;
-        top:45%;
-        left:45%;
-        color:white;
+.video-thumbnail {
+    position: relative;
+
+    span.fa {
+        position: absolute;
+        top: 45%;
+        left: 45%;
+        color: white;
+    }
+}
+
+.load-more {
+    text-align: center;
+    border: dashed 1px #999;
+    padding: 5px 0;
+    margin: 15px;
+    background-color:white;
+    a {
+        color: #555;
     }
 }

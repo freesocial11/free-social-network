@@ -31,7 +31,9 @@
                        skill = response.ResponseData.Skill;
                        $scope.skill = null;
                        if (!isOld)
+                           $scope.skills = $scope.skills || [];
                            $scope.skills.push(skill);
+                       }
                    }
                });
         }
@@ -93,6 +95,7 @@
                 if (data.ResponseData.Images) {
                     for (var i = 0; i < data.ResponseData.Images.length; i++) {
                         $scope.skill.MediaId.push(data.ResponseData.Images[i].Id);
+                        $scope.skill.Media = $scope.skill.Media || [];
                         $scope.skill.Media.push(data.ResponseData.Images[i]);
                     }
                 }
@@ -114,16 +117,33 @@
                 });
         };
 
+        var getUsersOptions = {
+            nextPage: 0
+        };
+
         $scope.getSkillBySlug = function() {
             var slug = $state.params.slug;
             skillService.getSkillBySlug(slug,
                 function(response) {
                     if (response.Success) {
-                        $scope.skill = response.ResponseData.SkillData.Skill;
                         $scope.skillData = response.ResponseData.SkillData;
+                        $scope.skill =$scope.skillData.Skill;
+                        getUsersOptions.nextPage = 2;
                     }
                 });
 
+        }
+        $scope.getUsers = function() {
+            skillService.getUsers($scope.skill.Id, {
+                    page: getUsersOptions.nextPage
+                },
+                function(response) {
+                    if (response.Success) {
+                        getUsersOptions.nextPage++;
+                        if (response.ResponseData.UserSkills.length > 0)
+                            $scope.skillData.UserSkills = $scope.skillData.UserSkills.concat(response.ResponseData.UserSkills);
+                    }
+                });
         }
 
         $scope.uploadCoverSuccess = function (fileItem, data, status, headers) {
