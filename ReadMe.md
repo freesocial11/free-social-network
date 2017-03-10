@@ -12,8 +12,10 @@ Features
 1. Search
     *   Search People, Events, Businesses, and Products from any screen   
 2. Timeline
-    *   Post URLs, Photos, Videos, Share, Like, Comment!    
-3. Profile Pages
+    *   Post URLs, Photos, Videos, Share, Like, Comment!
+3. Chat
+    * Send Instant Messages to one or more people
+4. Profile Pages
     *    Profile Picture
     *    About Tab
     *    Website
@@ -22,7 +24,7 @@ Features
     *    Featured Video on home page
     *    Add and Invite Friends
     *    SEO Friendly URLs and optimization 
- 4. Business Pages
+ 5. Business Pages
     *   Hours of Operation
     *   Map
     *   Address
@@ -32,18 +34,18 @@ Features
     *   Up to Date Info provided by the Business Owner 
     *   SEO Friendly URLs and optimization
     *   Live Search
-5. Email Notifications
+6. Email Notifications
     *    Friend Request Notification
     *    Pending Friend Request Notifications
     *    Event Invite Notifications
-6. Business Pages
+7. Business Pages
     *    Hours of Operation, Map, Address, Phone, Fax Number
     *    Friends
     *    Pictures/Videos
     *    Up to Date Info provided by the Business Owner 
     *    SEO Friendly URLs and optimization
     *    Live Search
-7. Event Pages 
+8. Event Pages 
     *    Address
     *    Hotel Information
     *    Attendance Information
@@ -51,15 +53,15 @@ Features
     *    SEO Friendly URLs and optimization
     *    Mobile Device Support
     *    Responsive User Interface
-8. Video Battles™
+9. Video Battles™
     *    Anyone can host their own battle
     *    Spectators are invited to vote by all participants
     *    The video with the most votes at the end wins
     *    Search Engine Optimized
     *    Phone App (under development)
-9. Picture Battles™ (coming very soon)
+10. Picture Battles™ (coming very soon)
     *    Same as video battles except using pictures
-10. Search Engine Optimization
+11. Search Engine Optimization
     *    Includes Profile, Business, and Event Pages in the SiteMap.xml
     *    Meta tags
     *    Friendly URLs
