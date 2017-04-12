@@ -191,7 +191,11 @@
     <Compile Include="Songs\SongService.cs" />
     <Compile Include="Sponsors\ISponsorService.cs" />
     <Compile Include="Sponsors\SponsorService.cs" />
+    <Compile Include="TeamPages\ITeamPageGroupMemberService.cs" />
+    <Compile Include="TeamPages\ITeamPageGroupService.cs" />
     <Compile Include="TeamPages\ITeamPageService.cs" />
+    <Compile Include="TeamPages\TeamPageGroupMemberService.cs" />
+    <Compile Include="TeamPages\TeamPageGroupService.cs" />
     <Compile Include="TeamPages\TeamPageService.cs" />
     <Compile Include="Timeline\ITimelineAutoPublisher.cs" />
     <Compile Include="Timeline\ITimelinePostProcessor.cs" />
