@@ -208,6 +208,34 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route("media/post")]
+        public IHttpActionResult Post(UserSkillEntityMediaModel model)
+        {
+            if (model.MediaId == 0 || model.UserSkillId == 0)
+                return BadRequest();
+
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            //check if user skill exists and that media exists
+            var userSkill =
+                _userSkillService.FirstOrDefault(x => x.Id == model.UserSkillId && x.UserId == currentUser.Id);
+
+            if (userSkill == null)
+                return NotFound();
+
+            var media = _mediaService.Get(model.MediaId);
+            if (media == null || media.UserId != currentUser.Id)
+                return BadRequest();
+
+            //attach media
+            _mediaService.AttachMediaToEntity(userSkill, media);
+
+            return RespondSuccess(new {
+                MediaType = media.MediaType
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
         [Route("featured-media")]
         public IHttpActionResult Post(SetFeaturedMediaModel requestModel)
         {
