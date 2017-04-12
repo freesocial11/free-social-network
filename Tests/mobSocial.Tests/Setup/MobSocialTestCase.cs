@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
+using System.Data.SqlServerCe;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +17,7 @@ using mobSocial.Data.Database;
 using mobSocial.Data.Database.Provider;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Migrations;
 using mobSocial.Services.Installation;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
@@ -72,14 +76,21 @@ namespace mobSocial.Tests.Setup
             container.RegisterInstance(typeof(IDatabaseContext), DatabaseContext,
                 ifAlreadyRegistered: IfAlreadyRegistered.Replace);
 
+           
             //recreate database
             DatabaseContext.Database.Delete();
-            
-            DatabaseContext.Database.Create();
+
+            //DatabaseContext.Database.Create();
+            var engine = new SqlCeEngine(connectionString);
+            engine.CreateDatabase();
+
+            var migrator = new DbMigrator(new MigratorTestConfiguration(connectionString, "System.Data.SqlServerCe.4.0"));
+            migrator.Update();
 
             //fill the required seed data
-            Resolve<IInstallationService>().FillRequiredSeedData("admin@test.com", "admin123", "localhost");
             //Resolve<IInstallationService>().Install(GetTestConnectionString(), "System.Data.SqlServerCe.4.0");
+            Resolve<IInstallationService>().FillRequiredSeedData("admin@test.com", "admin123", "localhost");
+            
             mobSocialEngine.SetupPictureSizes();
 
             mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName);
@@ -195,6 +206,11 @@ namespace mobSocial.Tests.Setup
                 Remarks = "random text",
                 UserName = "firstlast"
             };
+        }
+
+        protected void StoreSampleData()
+        {
+            
         }
     }
 }

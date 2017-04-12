@@ -120,6 +120,7 @@
     <Compile Include="Services\EventPublisherServiceTests.cs" />
     <Compile Include="Services\TokenProcessorTests.cs" />
     <Compile Include="Setup\Extensions\HttpActionResultExtensions.cs" />
+    <Compile Include="Setup\MigratorTestConfiguration.cs" />
     <Compile Include="Setup\MobSocialTestCase.cs" />
     <Compile Include="Database\DatabaseStorageTests.cs" />
     <Compile Include="Entity\UserStorageTests.cs" />

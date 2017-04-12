@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.Infrastructure;
+using mobSocial.Data.Database;
 using mobSocial.Plugins.OAuth.Database;
 using mobSocial.WebApi.Configuration.Database;
 
@@ -8,7 +9,15 @@ namespace mobSocial.Plugins.OAuth.Migrations
     {
         public OAuthDbContext Create()
         {
-            return DatabaseContextManager.GetDatabaseContext<OAuthDbContext>();
+            try
+            {
+                return DatabaseContextManager.GetDatabaseContext<OAuthDbContext>();
+
+            }
+            catch
+            {
+                return DatabaseContextManager.GetDatabaseContext<OAuthDbContext>(DatabaseManager.FallbackConnectionStringName);
+            }
         }
     }
 }

@@ -1,21 +1,16 @@
-﻿using System.Data.Entity.Migrations;
-using System.Reflection;
-using mobSocial.Plugins.OAuth.Database;
+using mobSocial.Data.Database;
 
 namespace mobSocial.Plugins.OAuth.Migrations
 {
-    public sealed class Configuration : DbMigrationsConfiguration<OAuthDbContext>
+    using System.Data.Entity.Migrations;
+
+    internal sealed class Configuration : DbMigrationsConfiguration<mobSocial.Plugins.OAuth.Database.OAuthDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
 
-            AutomaticMigrationDataLossAllowed = true;
-
-            MigrationsAssembly = Assembly.GetExecutingAssembly();
-
-            MigrationsNamespace = "mobSocial.Plugins.OAuth.Migrations";
-
+            TargetDatabase = DatabaseManager.GetDatabaseConnectionInfo();
         }
     }
 }

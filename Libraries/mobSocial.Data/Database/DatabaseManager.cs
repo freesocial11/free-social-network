@@ -1,11 +1,14 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Database.Provider;
 
 namespace mobSocial.Data.Database
 {
     public class DatabaseManager
     {
+        public const string FallbackConnectionStringName = "migrationConnectionString";
 
         public static void SetDbInitializer<T>(IDatabaseInitializer<T> initializer) where T : DbContext
         {
@@ -60,8 +63,7 @@ namespace mobSocial.Data.Database
         {
             try
             {
-                var builder = new SqlConnectionStringBuilder
-                {
+                var builder = new SqlConnectionStringBuilder {
                     IntegratedSecurity = integratedSecurity,
                     DataSource = server,
                     InitialCatalog = databaseName
@@ -84,5 +86,18 @@ namespace mobSocial.Data.Database
             }
         }
 
+        public static DbConnectionInfo GetDatabaseConnectionInfo()
+        {
+            try
+            {
+                var dbSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
+                return new DbConnectionInfo(dbSettings.ConnectionString, dbSettings.ProviderName);
+            }
+            catch
+            {
+                return new DbConnectionInfo(FallbackConnectionStringName);
+            }
+        }
+ 
     }
 }

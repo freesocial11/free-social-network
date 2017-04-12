@@ -204,6 +204,10 @@
     <Compile Include="Interfaces\IPermalinkSupported.cs" />
     <Compile Include="Interfaces\IPicturesSupported.cs" />
     <Compile Include="Interfaces\IUserResource.cs" />
+    <Compile Include="Migrations\201704111238475_InitialCreate.cs" />
+    <Compile Include="Migrations\201704111238475_InitialCreate.Designer.cs">
+      <DependentUpon>201704111238475_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
     <Compile Include="Migrations\mobSocialDbMigrator.cs" />
@@ -220,7 +224,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201704111238475_InitialCreate.resx">
+      <DependentUpon>201704111238475_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 
@@ -23,6 +24,11 @@ namespace mobSocial.WebApi.Configuration.Database
             var databaseSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
             var connectionString = databaseSettings.ConnectionString;
             return (T) Activator.CreateInstance(typeof(T), connectionString);
+        }
+
+        public static T GetDatabaseContext<T>(string nameOrConnectionString) where T : DbContext
+        {
+            return (T)Activator.CreateInstance(typeof(T), nameOrConnectionString);
         }
     }
 }

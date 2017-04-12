@@ -8,8 +8,15 @@ namespace mobSocial.Data.Migrations
     {
         public DatabaseContext Create()
         {
-            var connectionString = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>().ConnectionString;
-            return new DatabaseContext(connectionString);
+            try
+            {
+                var connectionString = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>().ConnectionString;
+                return new DatabaseContext(connectionString);
+            }
+            catch
+            {
+                return new DatabaseContext(DatabaseManager.FallbackConnectionStringName); //try if there is one in web.config
+            }
         }
     }
 }

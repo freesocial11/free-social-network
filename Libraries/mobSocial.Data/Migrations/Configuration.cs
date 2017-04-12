@@ -9,9 +9,7 @@ namespace mobSocial.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
 
             MigrationsAssembly = Assembly.GetExecutingAssembly();
 
