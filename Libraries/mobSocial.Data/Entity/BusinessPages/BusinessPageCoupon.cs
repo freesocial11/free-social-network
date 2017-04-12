@@ -15,4 +15,6 @@ namespace mobSocial.Data.Entity.BusinessPages
 
         public virtual BusinessPage BusinessPage { get; set; }
     }
+
+    public class BusinessPageCouponMap : BaseEntityConfiguration<BusinessPageCoupon> { }
 }

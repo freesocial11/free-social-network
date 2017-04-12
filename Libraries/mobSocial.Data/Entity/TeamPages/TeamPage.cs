@@ -29,4 +29,6 @@ namespace mobSocial.Data.Entity.TeamPages
 
 
     }
+
+    public class TeamPageMap: BaseEntityConfiguration<TeamPage> { }
 }

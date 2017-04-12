@@ -13,4 +13,6 @@ namespace mobSocial.Data.Entity.EventPages
         public virtual EventPage EventPage { get; set; }
 
     }
+
+    public class EventPageAttendanceMap : BaseEntityConfiguration<EventPageAttendance> { }
 }

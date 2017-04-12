@@ -30,6 +30,8 @@ namespace mobSocial.Data.Entity.GroupPages
 
     }
 
+    public class GroupPageMap : BaseEntityConfiguration<GroupPage> { }
+
 }
 
 

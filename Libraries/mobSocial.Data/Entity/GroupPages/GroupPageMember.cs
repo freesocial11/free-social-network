@@ -14,4 +14,6 @@ namespace mobSocial.Data.Entity.GroupPages
         public virtual GroupPage GroupPage { get; set; }
 
     }
+
+    public class GroupPageMemberMap : BaseEntityConfiguration<GroupPageMember> { }
 }

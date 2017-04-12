@@ -29,4 +29,9 @@ namespace mobSocial.Data.Entity.Addresses
 
         public string Email { get; set; }
     }
+
+    public class AddressMap : BaseEntityConfiguration<Address>
+    {
+        public AddressMap() { }
+    }
 }

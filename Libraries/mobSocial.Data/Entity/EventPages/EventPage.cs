@@ -33,4 +33,6 @@ namespace mobSocial.Data.Entity.EventPages
         public virtual List<EventPageHotel> Hotels { get; set; }
 
     }
+
+    public class EventPageMap : BaseEntityConfiguration<EventPage> { }
 }
