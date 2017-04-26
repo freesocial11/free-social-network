@@ -24,4 +24,6 @@ namespace mobSocial.Data.Entity.Payments
         public bool IsVerified { get; set; }
 
     }
+
+    public class UserPaymentMethodMap : BaseEntityConfiguration<UserPaymentMethod> { }
 }

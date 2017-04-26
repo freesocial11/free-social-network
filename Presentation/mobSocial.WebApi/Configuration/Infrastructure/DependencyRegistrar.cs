@@ -79,7 +79,17 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.Register<IEventPublisherService, EventPublisherService>(reuse: Reuse.Singleton);
             //all consumers which are not interfaces
             //find all event consumer types
-            var allConsumerTypes = asm.SelectMany(x => x.GetTypes())
+            var allConsumerTypes = asm.SelectMany(x =>
+                {
+                    try
+                    {
+                        return x.GetTypes();
+                    }
+                    catch
+                    {
+                        return new Type[0];
+                    }
+                })
                 .Where(type => type.IsPublic && // get public types 
                 type.GetInterfaces().Any(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEventConsumer<>)) &&
                 !type.IsAbstract);// which implementing some interface(s)

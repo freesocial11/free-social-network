@@ -65,7 +65,6 @@
     <Compile Include="Constants\PictureSizeNames.cs" />
     <Compile Include="Constants\PropertyNames.cs" />
     <Compile Include="Constants\TimelineAutoPostTypeNames.cs" />
-    <Compile Include="Database\DatabaseConfiguration.cs" />
     <Compile Include="Database\DatabaseContext.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Database\IDatabaseContext.cs" />
@@ -101,9 +100,12 @@
     <Compile Include="Entity\Emails\EmailAccount.cs" />
     <Compile Include="Entity\Emails\EmailMessage.cs" />
     <Compile Include="Entity\Emails\EmailTemplate.cs" />
+    <Compile Include="Entity\GeoServices\Country.cs" />
+    <Compile Include="Entity\GeoServices\State.cs" />
     <Compile Include="Entity\Notifications\Notification.cs" />
     <Compile Include="Entity\Notifications\NotificationEvent.cs" />
     <Compile Include="Entity\ScheduledTasks\ScheduledTask.cs" />
+    <Compile Include="Entity\Settings\ArtistPageSettings.cs" />
     <Compile Include="Entity\Settings\SkillSettings.cs" />
     <Compile Include="Entity\Settings\UrlSettings.cs" />
     <Compile Include="Entity\Skills\Skill.cs" />

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Web.Http;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
+using mobSocial.Services.BusinessPages;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Skills;
@@ -22,16 +23,17 @@ namespace mobSocial.WebApi.Controllers
         private readonly IMediaService _mediaService;
         private readonly MediaSettings _mediaSettings;
         private readonly ISkillService _skillService;
-
+        private readonly IBusinessPageService _businessPageService;
         #endregion
 
         #region ctor
-        public AutoCompleteController(IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, ISkillService skillService)
+        public AutoCompleteController(IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, ISkillService skillService, IBusinessPageService businessPageService)
         {
             _userService = userService;
             _mediaService = mediaService;
             _mediaSettings = mediaSettings;
             _skillService = skillService;
+            _businessPageService = businessPageService;
         }
 
         #endregion
@@ -60,8 +62,15 @@ namespace mobSocial.WebApi.Controllers
                 model.Users = users.Select(x => x.ToModel(_mediaService, _mediaSettings));
             }
 
-            //are users requested?
+            //are skills requested?
             if (types.Any(x => x == "skills"))
+            {
+                var skills = _skillService.SearchSkills(requestModel.Search, 1, requestModel.Count);
+                model.Skills = skills.Select(x => x.ToModel());
+            }
+
+            //are skills requested?
+            if (types.Any(x => x == "businesses"))
             {
                 var skills = _skillService.SearchSkills(requestModel.Search, 1, requestModel.Count);
                 model.Skills = skills.Select(x => x.ToModel());

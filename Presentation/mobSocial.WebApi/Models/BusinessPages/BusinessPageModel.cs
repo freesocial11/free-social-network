@@ -1,26 +1,21 @@
 ﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using Nop.Web.Framework.Localization;
+using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Models.Media;
 
-namespace Nop.Plugin.WebApi.MobSocial.Models
+namespace mobSocial.WebApi.Models.BusinessPages
 {
-    public class BusinessPageModel : BasePageModel
+    public class BusinessPageModel : RootPageModel
     {
 
         public BusinessPageModel()
         {
             AddCouponModel = new BusinessPageCouponModel();
             Coupons = new List<BusinessPageCouponModel>();
-            Pictures = new List<PictureModel>();
         }
         
         public List<BusinessPageCouponModel> Coupons { get; set; }
         public BusinessPageCouponModel AddCouponModel { get; set; }
-
+        public List<MediaReponseModel> Pictures { get; set; }
 
         public bool CanEdit { get; set; }
     }

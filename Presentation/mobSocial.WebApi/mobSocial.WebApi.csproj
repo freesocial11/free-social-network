@@ -197,7 +197,6 @@
     <Compile Include="App_Start\OwinStartupManager.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Configuration\Database\DatabaseContextManager.cs" />
     <Compile Include="Configuration\Database\DatabaseSettings.cs" />
     <Compile Include="Configuration\Infrastructure\ApplicationContext.cs" />
@@ -207,6 +206,7 @@
     <Compile Include="Configuration\Middlewares\MobAuthenticationMiddleware.cs" />
     <Compile Include="Configuration\Middlewares\PictureSizeRegistrar.cs" />
     <Compile Include="Configuration\Mvc\Models\RootEntityModel.cs" />
+    <Compile Include="Configuration\Mvc\Models\RootPageModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootRequestModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootResponseModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootModel.cs" />
@@ -222,6 +222,7 @@
     <Compile Include="Configuration\Mvc\UI\Resource.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourcePlacementType.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourceRegistrationType.cs" />
+    <Compile Include="Configuration\Routing\CentralizedPrefixProvider.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
     <Compile Include="Configuration\Security\Attributes\AdminAuthorizeAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\RequireFeatureEnabledAttribute.cs" />
@@ -236,8 +237,10 @@
     <Compile Include="Configuration\Tasks\DatabaseSetupTask.cs" />
     <Compile Include="Configuration\Tasks\EmailSchedulerTask.cs" />
     <Compile Include="Configuration\ViewEngines\mobSocialRazorProviderViewEngine.cs" />
+    <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
+    <Compile Include="Controllers\BusinessPageController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\ConversationController.cs" />
@@ -259,6 +262,7 @@
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\SponsorController.cs" />
+    <Compile Include="Controllers\TeamPageController.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VideoBattleController.cs" />
@@ -266,6 +270,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\BusinessPageExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\ConversationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EmailExtensions.cs" />
@@ -275,6 +280,7 @@
     <Compile Include="Extensions\ModelExtensions\SchoolExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\SettingExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\SkillExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\TeamPageExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Extensions\UtilityExtensions.cs" />
@@ -300,6 +306,9 @@
     <Compile Include="Models\Battles\VideoBattleVotePublicModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
+    <Compile Include="Models\BusinessPages\BusinessPageCouponModel.cs" />
+    <Compile Include="Models\BusinessPages\BusinessPageModel.cs" />
+    <Compile Include="Models\BusinessPages\BusinessPageSearchModel.cs" />
     <Compile Include="Models\Conversation\ConversationEntityModel.cs" />
     <Compile Include="Models\Conversation\ConversationOverviewModel.cs" />
     <Compile Include="Models\Conversation\ConversationReplyModel.cs" />
@@ -358,7 +367,9 @@
     <Compile Include="Models\Sponsors\UpdateSponsorModel.cs" />
     <Compile Include="Models\TeamPages\TeamPageGroupMemberModel.cs" />
     <Compile Include="Models\TeamPages\TeamPageGroupModel.cs" />
+    <Compile Include="Models\TeamPages\TeamPageGroupPublicModel.cs" />
     <Compile Include="Models\TeamPages\TeamPageModel.cs" />
+    <Compile Include="Models\TeamPages\TeamPagePublicModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostDisplayModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostModel.cs" />
     <Compile Include="Models\Timeline\TimelinePostsRequestModel.cs" />
@@ -401,11 +412,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Areas\Administration\Controllers\" />
-    <Folder Include="Areas\Administration\Models\" />
-    <Folder Include="Areas\Administration\Views\Shared\" />
     <Folder Include="Configuration\Security\AuthenticationProviders\" />
-    <Folder Include="Models\BusinessPages\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -423,9 +430,6 @@
       <Project>{c5c9babe-e078-4716-a5ee-b17b8dcead84}</Project>
       <Name>mobSocial.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\Administration\Views\web.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="mobSocial.WebApi.wpp.targets" />

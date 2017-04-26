@@ -24,7 +24,7 @@ namespace mobSocial.Services.EventPages
        int GetInvitedCount();
 
        
-       List<CustomerFriend> GetUninvitedFriends(int eventPageId, int customerId, int index, int count);
+       List<Friend> GetUninvitedFriends(int eventPageId, int customerId, int index, int count);
        List<User> InviteFriends(int eventPageId, int[] invitedCustomerIds);
 
        EventPageAttendance GetCustomerAttendanceStatus(int customerId, int eventPageId);

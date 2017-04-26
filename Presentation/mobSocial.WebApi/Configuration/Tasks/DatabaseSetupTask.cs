@@ -17,8 +17,8 @@ namespace mobSocial.WebApi.Configuration.Tasks
             DatabaseManager.SetDbInitializer<DatabaseContext>(null);
 
             //run the migrator. this will update any pending tasks or updates to database
-            var migrator = new mobSocialDbMigrator(new Data.Migrations.Configuration());
-            migrator.Update();
+            //var migrator = new mobSocialDbMigrator(new Data.Migrations.Configuration());
+            //migrator.Update();
         }
 
         public int Priority

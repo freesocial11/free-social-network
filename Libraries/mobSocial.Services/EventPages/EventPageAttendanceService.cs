@@ -7,49 +7,33 @@ using mobSocial.Data.Entity.EventPages;
 using mobSocial.Data.Entity.Social;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
-using mobSocial.Services.EventPages;
-using Mob.Core.Data;
-using Mob.Core.Services;
-using Nop.Core;
-using Nop.Core.Data;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Media;
-using Nop.Plugin.WebApi.MobSocial.Domain;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Services.Customers;
-using Nop.Services.Seo;
+using mobSocial.Services.Emails;
+using mobSocial.Services.Users;
 
-namespace mobSocial.Services.Battles
+namespace mobSocial.Services.EventPages
 {
     public class EventPageAttendanceService : BaseEntityService<EventPageAttendance>,IEventPageAttendanceService
     {
 
-        private readonly ICustomerService _cutomerService;
-        private readonly IMobSocialMessageService _messageService;
-        private readonly IDataRepository<CustomerFriend> _customerFriendRepository;
-        private readonly IWorkContext _workContext;
+        private readonly IDataRepository<Friend> _customerFriendRepository;
+        private readonly IUserService _userService;
+        private readonly IEmailSender _emailSender;
 
-        public EventPageAttendanceService(IDataRepository<EventPageAttendance> entityRepository,
-            IUrlRecordService urlRecordService, ICustomerService customerService,
-            IMobSocialMessageService messageService, IWorkContext workContext,
-            IDataRepository<CustomerFriend> customerFriendRepository) : base(entityRepository)
+        public EventPageAttendanceService(IDataRepository<EventPageAttendance> entityRepository, IDataRepository<Friend> customerFriendRepository, IUserService userService, IEmailSender emailSender) : base(entityRepository)
         {
-            _cutomerService = customerService;
-            _messageService = messageService;
             _customerFriendRepository = customerFriendRepository;
-            _workContext = workContext;
+            _userService = userService;
+            _emailSender = emailSender;
         }
 
 
         public List<EventPageAttendance> GetAllInvited(int eventPageId)
         {
-            return Repository.Table
-                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
+            return Repository.Get(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
         }
         public List<EventPageAttendance> GetInvited(int start, int count)
         {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited).ToList();
+            return Repository.Get(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited).Skip(start).Take(count).ToList();
         }
 
 
@@ -59,40 +43,35 @@ namespace mobSocial.Services.Battles
         }
         public List<EventPageAttendance> GetGoing(int start, int count)
         {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).ToList();
+            return Repository.Get(x => x.AttendanceStatusId == (int)AttendanceStatus.Going).Skip(start).Take(count).ToList();
         }
 
 
         public List<EventPageAttendance> GetAllMaybies(int eventPageId)
         {
-            return Repository.Table
-                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
+            return Repository.Get(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
         }
         public List<EventPageAttendance> GetMaybies(int start, int count)
         {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).ToList();
+            return Repository.Get(x => x.AttendanceStatusId == (int)AttendanceStatus.Maybe).Skip(start).Take(count).ToList();
         }
 
 
         public List<EventPageAttendance> GetAllNotGoing(int eventPageId)
         {
-            return Repository.Table
-                .Where(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
+            return Repository.Get(x => x.EventPageId == eventPageId && x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
         }
+
         public List<EventPageAttendance> GetNotGoing(int start, int count)
         {
-            return Repository.Table.Skip(start).Take(count)
-                .Where(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).ToList();
+            return Repository.Get(x => x.AttendanceStatusId == (int)AttendanceStatus.NotGoing).Skip(start).Take(count).ToList();
         }
 
-        public List<CustomerFriend> GetUninvitedFriends(int eventPageId, int customerId, int index, int count)
+        public List<Friend> GetUninvitedFriends(int eventPageId, int customerId, int index, int count)
         {
 
-            var attendance = Repository.Table.Where(x=>x.EventPageId == eventPageId).Select(x=>x.CustomerId).ToList();
-            var uninvitedFriends = _customerFriendRepository.Table
-                .Where(x => x.Confirmed)
+            var attendance = Repository.Get(x=>x.EventPageId == eventPageId).Select(x=>x.CustomerId).ToList();
+            var uninvitedFriends = _customerFriendRepository.Get(x => x.Confirmed)
                 .Where(x => x.ToCustomerId == customerId || x.FromCustomerId == customerId);
 
             // only univited friends
@@ -126,10 +105,10 @@ namespace mobSocial.Services.Battles
 
                 Repository.Insert(eventPageAttendance);
 
-                var customer = _cutomerService.GetCustomerById(customerId);
+                var customer = _userService.Get(customerId);
                 invitedCustomers.Add(customer);
-                _messageService.SendEventInvitationNotification(customer, _workContext.WorkingLanguage.Id, 0);
 
+                _emailSender.SendEventInvitationNotification(customer);
             }
 
             return invitedCustomers;
@@ -144,27 +123,19 @@ namespace mobSocial.Services.Battles
 
         public EventPageAttendance GetCustomerAttendanceStatus(int customerId, int eventPageId)
         {
-            return Repository.FirstOrDefault(x => x.CustomerId == customerId && x.EventPageId == eventPageId);
+            return Repository.Get(x => x.CustomerId == customerId && x.EventPageId == eventPageId).FirstOrDefault();
         }
 
         public int GetInvitedCount()
         {
-            return Repository.Table.Count(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited);
+            return Repository.Count(x => x.AttendanceStatusId == (int)AttendanceStatus.Invited);
         }
 
         public List<EventPageAttendance> GetAllAttendances(int eventPageId)
         {
-            return base.Repository.Table.Where(x => x.EventPageId == eventPageId).ToList();
+            return base.Repository.Get(x => x.EventPageId == eventPageId).ToList();
         }
-
-        public override List<EventPageAttendance> GetAll(string term, int count = 15, int page = 1)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
-
-
-
-
 
 }

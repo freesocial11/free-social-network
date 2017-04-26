@@ -22,6 +22,12 @@ namespace mobSocial.WebApi.Models.ArtistPages
 
         public string HomeTown { get; set; }
 
+        public string ShortDescription { get; set; }
+
+        public bool CanEdit { get; set; }
+
+        public bool CanDelete { get; set; }
+
         public IList<PictureResponseModel> Pictures { get; set; }
     }
 }

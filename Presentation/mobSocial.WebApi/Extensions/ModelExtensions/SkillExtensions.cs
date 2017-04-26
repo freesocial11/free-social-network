@@ -18,7 +18,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             var model = new SkillModel()
             {
                 DisplayOrder = skill.DisplayOrder,
-                SkillName = skill.SkillName,
+                Name = skill.Name,
                 Id = skill.Id,
                 UserId = skill.UserId
             };
@@ -31,7 +31,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             var model = new UserSkillModel()
             {
                 DisplayOrder = userSkill.Skill.DisplayOrder,
-                SkillName = userSkill.Skill.SkillName,
+                Name = userSkill.Skill.Name,
                 UserSkillId = userSkill.Id,
                 Id = userSkill.SkillId,
                 User = onlySkillData ? null : userSkill.User.ToModel(mediaService, mediaSettings),

@@ -24,4 +24,6 @@ namespace mobSocial.Data.Entity.ArtistPages
         public virtual ArtistPage ArtistPage { get; set; }
 
     }
+
+    public class ArtistPagePaymentMap : BaseEntityConfiguration<ArtistPagePayment> { }
 }

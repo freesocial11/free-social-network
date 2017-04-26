@@ -5,8 +5,6 @@ namespace mobSocial.Data.Entity.Skills
 {
     public class Skill : BaseEntity, IPermalinkSupported
     {
-        public string SkillName { get; set; }
-
         public int DisplayOrder { get; set; }
 
         public int UserId { get; set; }
@@ -14,6 +12,8 @@ namespace mobSocial.Data.Entity.Skills
         public int FeaturedImageId { get; set; }
 
         public string Name { get; set; }
+
+        public string Description { get; set; }
     }
 
     public class SkillMap : BaseEntityConfiguration<Skill>

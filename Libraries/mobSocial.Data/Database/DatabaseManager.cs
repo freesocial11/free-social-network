@@ -31,7 +31,7 @@ namespace mobSocial.Data.Database
                 case "sqlce":
                     return "System.Data.SqlServerCe.4.0";
             }
-            return string.Empty;
+            return providerAbstractName;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace mobSocial.Data.Database
             try
             {
                 var dbSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
-                return new DbConnectionInfo(dbSettings.ConnectionString, dbSettings.ProviderName);
+                return new DbConnectionInfo(dbSettings.ConnectionString, GetProviderName(dbSettings.ProviderName));
             }
             catch
             {

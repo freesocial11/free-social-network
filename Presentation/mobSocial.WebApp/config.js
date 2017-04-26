@@ -1,4 +1,4 @@
-const Configuration = {
+var Configuration = {
     themeName: "AdminLTE",
     rootApiUrl: "",
     adminUrlPathPrefix: "/admin"

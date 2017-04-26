@@ -6,4 +6,6 @@ namespace mobSocial.Data.Entity.Videos
     {
         public string GenreName { get; set; }
     }
+
+    public class VideoGenreMap : BaseEntityConfiguration<VideoGenre> { }
 }

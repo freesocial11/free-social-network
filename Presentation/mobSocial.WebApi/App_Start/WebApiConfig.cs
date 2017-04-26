@@ -1,6 +1,8 @@
-﻿using System.Web.Http;
+﻿using System.Web.Configuration;
+using System.Web.Http;
 using DryIoc.WebApi;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.WebApi.Configuration.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -8,6 +10,8 @@ namespace mobSocial.WebApi
 {
     public class WebApiConfig
     {
+        public static string ApiPrefix = WebConfigurationManager.AppSettings["apiPrefix"] ?? "";
+
         private static HttpConfiguration _httpConfiguration;
 
         public static HttpConfiguration Configuration
@@ -18,14 +22,13 @@ namespace mobSocial.WebApi
         public static void Register(HttpConfiguration configuration)
         {
             _httpConfiguration = configuration;
-
             //setup attribute routes
-            configuration.MapHttpAttributeRoutes();
+            configuration.MapHttpAttributeRoutes(new CentralizedPrefixProvider(ApiPrefix));
 
             configuration.Routes.MapHttpRoute
                 (
                     name: "DefaultApi",
-                    routeTemplate: "api/{controller}/{id}",
+                    routeTemplate: ApiPrefix + "/{controller}/{id}",
                     defaults: new {id = RouteParameter.Optional}
                 );
 

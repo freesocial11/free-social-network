@@ -16,4 +16,6 @@ namespace mobSocial.Data.Entity.Videos
 
         public DateTime DateUpdated { get; set; }
     }
+
+    public class WatchedVideoMap : BaseEntityConfiguration<WatchedVideo> { }
 }

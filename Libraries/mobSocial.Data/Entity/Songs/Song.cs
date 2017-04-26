@@ -30,4 +30,6 @@ namespace mobSocial.Data.Entity.Songs
 
         public virtual ArtistPage ArtistPage { get; set; }
     }
+
+    public class SongMap : BaseEntityConfiguration<Song> { }
 }

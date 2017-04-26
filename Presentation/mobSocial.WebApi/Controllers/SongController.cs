@@ -91,7 +91,7 @@ namespace mobSocial.WebApi.Controllers
             var song = _songService.Get(id);
 
             if (song == null || (!CanEdit(song) && !song.Published))
-                return InvokeHttp404(); //not found
+                return NotFound(); //not found
             
             string affiliateUrl = "";
             int trackId;

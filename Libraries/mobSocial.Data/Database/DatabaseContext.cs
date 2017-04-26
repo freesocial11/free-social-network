@@ -16,6 +16,7 @@ namespace mobSocial.Data.Database
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            DatabaseManager.SetDbInitializer<DatabaseContext>(null);
 
             var typesToRegister = typeof(DatabaseContext).Assembly.GetTypes()
           .Where(type => !string.IsNullOrEmpty(type.Namespace))

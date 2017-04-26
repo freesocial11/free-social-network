@@ -11,4 +11,6 @@ namespace mobSocial.Data.Entity.ArtistPages
         [ForeignKey("ArtistPageId")]
         public virtual ArtistPage ArtistPage { get; set; }
     }
+
+    public class ArtistPageManagerMap : BaseEntityConfiguration<ArtistPageManager> { }
 }

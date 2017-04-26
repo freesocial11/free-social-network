@@ -2,9 +2,11 @@
 {
     public class TeamPageGroupMemberModel
     {
-        public string DisplayName { get; set; }
-        public string ThumbnailUrl { get; set; }
+        public int[] GroupId { get; set; }
 
-        public string ProfileUrl { get; set; }
+        public int[] CustomerId { get; set; }
+
+        public int TeamId { get; set; }
+
     }
 }

@@ -5,7 +5,7 @@ using mobSocial.Data.Interfaces;
 
 namespace mobSocial.Data.Entity.BusinessPages
 {
-    public class BusinessPage : BaseEntity, IPermalinkSupported
+    public class BusinessPage : BaseEntity, IPermalinkSupported, IPicturesSupported<BusinessPage>
     {
 
 
@@ -14,7 +14,7 @@ namespace mobSocial.Data.Entity.BusinessPages
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string City { get; set; }
-        public int StateProvinceId { get; set; }
+        public int StateId { get; set; }
         public string ZipPostalCode { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }

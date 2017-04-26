@@ -1,8 +1,7 @@
-﻿using Nop.Web.Framework;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-namespace Nop.Plugin.WebApi.MobSocial.Models
+namespace mobSocial.WebApi.Models.BusinessPages
 {
     public class BusinessPageSearchModel
     {
@@ -13,9 +12,9 @@ namespace Nop.Plugin.WebApi.MobSocial.Models
         }
 
         public bool StateProvinceEnabled { get; set; }
-        [NopResourceDisplayName("Address.Fields.Country")]
+        
         public int CountryId { get; set; }
-        [NopResourceDisplayName("Address.Fields.StateProvince")]
+        
         public int StateProvinceId { get; set; }
 
         public IList<SelectListItem> AvailableStates { get; set; }

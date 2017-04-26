@@ -1,32 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
-using Nop.Core.Domain.Customers;
-using Nop.Core.Domain.Forums;
-using Nop.Core.Domain.Media;
-using Nop.Services.Common;
-using Nop.Services.Customers;
-using Nop.Services.Directory;
-using Nop.Services.Forums;
-using Nop.Services.Helpers;
-using Nop.Services.Localization;
-using Nop.Services.Media;
-using Nop.Services.Seo;
-using Nop.Web.Framework.Security;
-using Nop.Plugin.WebApi.MobSocial.Domain;
-using Nop.Plugin.WebApi.MobSocial.Models;
-using Nop.Web.Controllers;
 using System.Linq;
-using Nop.Core;
-using Nop.Plugin.WebApi.MobSocial.Enums;
-using Nop.Plugin.WebApi.MobSocial.Services;
-using SeoExtensions = Nop.Plugin.WebApi.MobSocial.Extensions.SeoExtensions;
+using System.Web.Http;
+using mobSocial.Data.Entity.EventPages;
+using mobSocial.Data.Entity.Settings;
+using mobSocial.Data.Enum;
+using mobSocial.Services.EventPages;
+using mobSocial.WebApi.Configuration.Mvc;
 
-namespace Nop.Plugin.WebApi.MobSocial.Controllers
+namespace mobSocial.WebApi.Controllers
 {
-
-    [NopHttpsRequirement(SslRequirement.No)]
-    public partial class EventPageController : BasePublicController
+    public partial class EventPageController : RootApiController
     {
         private readonly IForumService _forumService;
         private readonly ILocalizationService _localizationService;
@@ -67,7 +51,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
             _workContext = workContext;
         }
 
-        public ActionResult Index(int? id, int? page)
+        public IHttpActionResult Index(int? id, int? page)
         {
 
             if (!_customerSettings.AllowViewingProfiles)
@@ -81,7 +65,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
                 entityId = id.Value;
             }
 
-            var entity = _eventPageService.GetById(entityId);
+            var entity = _eventPageService.Get(entityId);
             if (entity == null)
             {
                 return RedirectToRoute("HomePage");
@@ -160,7 +144,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
         
         [HttpPost]
-        public ActionResult GetGoing(int eventPageId)
+        public IHttpActionResult GetGoing(int eventPageId)
         {
 
             var going = _eventPageAttendanceService.GetAllGoing(eventPageId);
@@ -192,7 +176,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetNotGoing(int eventPageId)
+        public IHttpActionResult GetNotGoing(int eventPageId)
         {
 
             var notGoing = _eventPageAttendanceService.GetAllNotGoing(eventPageId);
@@ -224,7 +208,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetMaybe(int eventPageId)
+        public IHttpActionResult GetMaybe(int eventPageId)
         {
 
             var maybe = _eventPageAttendanceService.GetAllMaybies(eventPageId);
@@ -257,7 +241,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult GetInvited(int eventPageId)
+        public IHttpActionResult GetInvited(int eventPageId)
         {
 
             var invited = _eventPageAttendanceService.GetAllInvited(eventPageId);
@@ -291,7 +275,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
 
 
         [HttpPost]
-        public ActionResult InviteFriends(int eventPageId, int[] customerIds)
+        public IHttpActionResult InviteFriends(int eventPageId, int[] customerIds)
         {
 
            if (_workContext.CurrentCustomer.IsGuest())
@@ -320,7 +304,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetUninvitedFriends(int eventPageId, int index)
+        public IHttpActionResult GetUninvitedFriends(int eventPageId, int index)
         {
             var customerId = _workContext.CurrentCustomer.Id;
 
@@ -360,11 +344,11 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
 
         //todo: clean up unused methods
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult GetAttendance(int start, int count, int attendanceStatusId)
         {
 
-            if (Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+            if (System.Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
                 return Json(null);
 
 
@@ -419,7 +403,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
 
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult GetCustomerAttendanceStatus(int eventPageId)
         {
 
@@ -441,7 +425,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
         }
 
 
-        [HttpPost]
+        [System.Web.Mvc.HttpPost]
         public ActionResult UpdateAttendanceStatus(int eventPageId, int attendanceStatusId)
         {
             if (_workContext.CurrentCustomer.IsGuest())
@@ -451,7 +435,7 @@ namespace Nop.Plugin.WebApi.MobSocial.Controllers
 
             try
             {
-                if (!Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
+                if (!System.Enum.IsDefined(typeof(AttendanceStatus), attendanceStatusId))
                     throw new ApplicationException("Invalid attendance status.");
 
 

@@ -14,4 +14,6 @@ namespace mobSocial.Data.Entity.Songs
        
 
     }
+
+    public class SharedSongMap : BaseEntityConfiguration<SharedSong> { }
 }

@@ -23,5 +23,7 @@
         public const string UserAccountDeletedMessage = "User.AccountDeleted";
 
         public const string UserAccountDeletedMessageToAdmin = "User.AccountDeleted.Admin";
+
+        public const string EventInvite = "Event.Invite";
     }
 }

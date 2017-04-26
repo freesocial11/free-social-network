@@ -15,6 +15,10 @@ namespace mobSocial.Data.Migrations
 
             MigrationsNamespace = "mobSocial.Data.Migrations";
 
+            ContextKey = "mobSocial.Data.Migrations.Configuration";
+
+            TargetDatabase = DatabaseManager.GetDatabaseConnectionInfo();
+
         }
 
         public Configuration(string connectionString, string providerName) : this()

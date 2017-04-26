@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using mobSocial.Core;
 using mobSocial.Core.Exception;
@@ -25,11 +26,12 @@ namespace mobSocial.Services.Installation
     {
         public void Install()
         {
-            DatabaseManager.SetDbInitializer(new CreateOrUpdateTables<DatabaseContext>());
+            //DatabaseManager.SetDbInitializer(new CreateOrUpdateTables<DatabaseContext>());
 
             //run the migrator to install the database
             var migrator = new mobSocialDbMigrator(new Data.Migrations.Configuration());
-            migrator.Update();
+            if (migrator.GetPendingMigrations().Any())
+                migrator.Update();
         }
 
         public void Install(string connectionString, string providerName)

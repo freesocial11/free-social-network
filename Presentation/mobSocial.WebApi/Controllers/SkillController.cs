@@ -156,10 +156,9 @@ namespace mobSocial.WebApi.Controllers
            
             //get skill, 1.) by id 2.) by name 3.) create new otherwise
             var skill = _skillService.Get(model.Id) ??
-                        (_skillService.FirstOrDefault(x => x.SkillName == model.SkillName) ?? new Skill() {
+                        (_skillService.FirstOrDefault(x => x.Name == model.SkillName) ?? new Skill() {
                             DisplayOrder = model.DisplayOrder,
                             UserId = currentUser.Id,
-                            SkillName = model.SkillName,
                             Name = model.SkillName
                         });
 
@@ -172,7 +171,7 @@ namespace mobSocial.WebApi.Controllers
             {
                 if (model.SystemSkill && isAdmin)
                 {
-                    skill.SkillName = model.SkillName;
+                    skill.Name = model.SkillName;
                     _skillService.Update(skill);
                 }
             }

@@ -15,5 +15,5 @@ namespace mobSocial.Data.Entity.Videos
         public int LikeCount { get; set; }
     }
 
-
+    public class CustomerVideoMap : BaseEntityConfiguration<CustomerVideo> { }
 }

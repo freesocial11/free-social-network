@@ -113,99 +113,101 @@ namespace mobSocial.Services.Emails
             _emailService.Queue(message);
         }
 
-        public int SendFriendRequestNotification(User user, int friendRequestCount)
+        public void SendFriendRequestNotification(User user, int friendRequestCount)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendEventInvitationNotification(User user)
+        public void SendEventInvitationNotification(User user)
+        {
+            var message = LoadAndProcessTemplate(EmailTemplateNames.EventInvite, user);
+            message.Tos.Add(new EmailMessage.UserInfo(user.Name, user.Email));
+            _emailService.Queue(message);
+        }
+
+        public void SendPendingFriendRequestNotification(User user, int friendRequestCount)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendPendingFriendRequestNotification(User user, int friendRequestCount)
+        public void SendBirthdayNotification(User user)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendBirthdayNotification(User user)
+        public void SendSomeoneSentYouASongNotification(User userUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendSomeoneSentYouASongNotification(User userUser)
+        public void SendSomeoneChallengedYouForABattleNotification(User challenger, User challengee, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendSomeoneChallengedYouForABattleNotification(User challenger, User challengee, VideoBattle videoBattleUser)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public int SendSomeoneChallengedYouForABattleNotification(User challenger, string challengeeEmail, string challengeeName,
+        public void SendSomeoneChallengedYouForABattleNotification(User challenger, string challengeeEmail, string challengeeName,
             VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleCompleteNotification(User user, VideoBattle videoBattle, NotificationRecipientType recipientTypeUser)
+        public void SendVideoBattleCompleteNotification(User user, VideoBattle videoBattle, NotificationRecipientType recipientTypeUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVotingReminderNotification(User sender, User receiver, VideoBattle videoBattleUser)
+        public void SendVotingReminderNotification(User sender, User receiver, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVotingReminderNotification(User sender, string receiverEmail, string receiverName, VideoBattle videoBattleUser)
+        public void SendVotingReminderNotification(User sender, string receiverEmail, string receiverName, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleSignupNotification(User challenger, User challengee, VideoBattle videoBattleUser)
+        public void SendVideoBattleSignupNotification(User challenger, User challengee, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleJoinNotification(User challenger, User challengee, VideoBattle videoBattleUser)
+        public void SendVideoBattleJoinNotification(User challenger, User challengee, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleSignupAcceptedNotification(User challenger, User challengee, VideoBattle videoBattleUser)
+        public void SendVideoBattleSignupAcceptedNotification(User challenger, User challengee, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleDisqualifiedNotification(User challenger, User challengee, VideoBattle videoBattleUser)
+        public void SendVideoBattleDisqualifiedNotification(User challenger, User challengee, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendVideoBattleOpenNotification(User receiver, VideoBattle videoBattleUser)
+        public void SendVideoBattleOpenNotification(User receiver, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendSponsorAppliedNotificationToBattleOwner(User owner, User sponsor, VideoBattle videoBattleUser)
+        public void SendSponsorAppliedNotificationToBattleOwner(User owner, User sponsor, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendSponsorshipStatusChangeNotification(User receiver, SponsorshipStatus sponsorshipStatus,
+        public void SendSponsorshipStatusChangeNotification(User receiver, SponsorshipStatus sponsorshipStatus,
             VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendXDaysToBattleStartNotificationToParticipant(User receiver, VideoBattle videoBattleUser)
+        public void SendXDaysToBattleStartNotificationToParticipant(User receiver, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }
 
-        public int SendXDaysToBattleEndNotificationToFollower(User receiver, VideoBattle videoBattleUser)
+        public void SendXDaysToBattleEndNotificationToFollower(User receiver, VideoBattle videoBattleUser)
         {
             throw new System.NotImplementedException();
         }

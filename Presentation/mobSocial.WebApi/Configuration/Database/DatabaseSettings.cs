@@ -10,7 +10,7 @@ namespace mobSocial.WebApi.Configuration.Database
 {
     public class DatabaseSettings : IDatabaseSettings
     {
-        private string _connectionString;
+        protected string _connectionString;
         public string ConnectionString
         {
             get
@@ -20,7 +20,7 @@ namespace mobSocial.WebApi.Configuration.Database
             }
         }
 
-        private string _providerName;
+        protected string _providerName;
         public string ProviderName
         {
             get
@@ -35,7 +35,7 @@ namespace mobSocial.WebApi.Configuration.Database
         }
 
         private readonly string _saveFileName = HttpContext.Current.Server.MapPath("~/App_Data/database.config");
-        public void LoadSettings()
+        public virtual void LoadSettings()
         {
             
             if (!File.Exists(_saveFileName))
@@ -53,7 +53,7 @@ namespace mobSocial.WebApi.Configuration.Database
             
         }
         
-        public void WriteSettings(string connectionString, string providerName)
+        public virtual void WriteSettings(string connectionString, string providerName)
         {
             var configFileService = mobSocialEngine.ActiveEngine.Resolve<IConfigurationFileService>();
             var configValues = new Dictionary<string, string>()

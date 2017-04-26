@@ -8,6 +8,41 @@ namespace mobSocial.Data.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.mobSocial_CustomerVideo",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CustomerVideoAlbumId = c.Int(nullable: false),
+                        VideoUrl = c.String(),
+                        Caption = c.String(),
+                        DisplayOrder = c.Int(nullable: false),
+                        LikeCount = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.mobSocial_VideoGenre",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        GenreName = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.mobSocial_WatchedVideo",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        VideoId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
+                        VideoType = c.Int(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
+                        DateUpdated = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.mobSocial_RoleCapability",
                 c => new
                     {
@@ -51,7 +86,7 @@ namespace mobSocial.Data.Migrations
                         FirstName = c.String(),
                         LastName = c.String(),
                         Name = c.String(),
-                        Email = c.String(nullable: false, maxLength: 100),
+                        Email = c.String(nullable: false),
                         UserName = c.String(),
                         Guid = c.Guid(nullable: false),
                         Password = c.String(nullable: false),
@@ -146,7 +181,7 @@ namespace mobSocial.Data.Migrations
                         UpdatedOn = c.DateTime(nullable: false),
                         UpdatedBy = c.Int(nullable: false),
                         Description = c.String(),
-                        TeamPictureUrl = c.String(),
+                        TeamPictureId = c.Int(nullable: false),
                         Name = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
@@ -159,12 +194,15 @@ namespace mobSocial.Data.Migrations
                         Name = c.String(),
                         Description = c.String(),
                         PayPalDonateUrl = c.String(),
+                        TeamPageId = c.Int(nullable: false),
                         DisplayOrder = c.Int(nullable: false),
-                        Team_Id = c.Int(),
+                        IsDefault = c.Boolean(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
+                        DateUpdated = c.DateTime(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.mobSocial_TeamPage", t => t.Team_Id)
-                .Index(t => t.Team_Id);
+                .ForeignKey("dbo.mobSocial_TeamPage", t => t.TeamPageId, cascadeDelete: true)
+                .Index(t => t.TeamPageId);
             
             CreateTable(
                 "dbo.mobSocial_GroupPageMember",
@@ -224,6 +262,71 @@ namespace mobSocial.Data.Migrations
                         BattleType = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.mobSocial_SharedSong",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CustomerId = c.Int(nullable: false),
+                        SenderId = c.Int(nullable: false),
+                        SongId = c.Int(nullable: false),
+                        Message = c.String(),
+                        SharedOn = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.mobSocial_Song", t => t.SongId, cascadeDelete: true)
+                .Index(t => t.SongId);
+            
+            CreateTable(
+                "dbo.mobSocial_Song",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        PageOwnerId = c.Int(nullable: false),
+                        Name = c.String(),
+                        Description = c.String(),
+                        RemoteEntityId = c.String(),
+                        RemoteSourceName = c.String(),
+                        PreviewUrl = c.String(),
+                        TrackId = c.String(),
+                        RemoteArtistId = c.String(),
+                        ArtistPageId = c.Int(),
+                        AssociatedProductId = c.Int(nullable: false),
+                        Published = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.mobSocial_ArtistPage", t => t.ArtistPageId)
+                .Index(t => t.ArtistPageId);
+            
+            CreateTable(
+                "dbo.mobSocial_ArtistPage",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        PageOwnerId = c.Int(nullable: false),
+                        Name = c.String(),
+                        RemoteEntityId = c.String(),
+                        RemoteSourceName = c.String(),
+                        Biography = c.String(),
+                        DateOfBirth = c.DateTime(nullable: false),
+                        Gender = c.String(),
+                        HomeTown = c.String(),
+                        ShortDescription = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.mobSocial_ArtistPageManager",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        CustomerId = c.Int(nullable: false),
+                        ArtistPageId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.mobSocial_ArtistPage", t => t.ArtistPageId, cascadeDelete: true)
+                .Index(t => t.ArtistPageId);
             
             CreateTable(
                 "dbo.mobSocial_Comment",
@@ -324,6 +427,23 @@ namespace mobSocial.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.mobSocial_UserPaymentMethod",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.Int(nullable: false),
+                        PaymentMethodType = c.Int(nullable: false),
+                        CardNumber = c.String(),
+                        CardNumberMasked = c.String(),
+                        NameOnCard = c.String(),
+                        ExpireMonth = c.String(),
+                        ExpireYear = c.String(),
+                        CardIssuerType = c.String(),
+                        IsVerified = c.Boolean(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.mobSocial_PaymentTransaction",
                 c => new
                     {
@@ -419,11 +539,11 @@ namespace mobSocial.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        SkillName = c.String(),
                         DisplayOrder = c.Int(nullable: false),
                         UserId = c.Int(nullable: false),
                         FeaturedImageId = c.Int(nullable: false),
                         Name = c.String(),
+                        Description = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -449,9 +569,9 @@ namespace mobSocial.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        GroupName = c.String(maxLength: 100),
-                        Key = c.String(maxLength: 200),
-                        Value = c.String(maxLength: 2000),
+                        GroupName = c.String(),
+                        Key = c.String(),
+                        Value = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -654,7 +774,7 @@ namespace mobSocial.Data.Migrations
                         Address1 = c.String(),
                         Address2 = c.String(),
                         City = c.String(),
-                        StateProvinceId = c.Int(nullable: false),
+                        StateId = c.Int(nullable: false),
                         ZipPostalCode = c.String(),
                         Phone = c.String(),
                         Website = c.String(),
@@ -689,8 +809,8 @@ namespace mobSocial.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(maxLength: 100),
-                        Description = c.String(maxLength: 2000),
+                        Name = c.String(),
+                        Description = c.String(),
                         ChallengerId = c.Int(nullable: false),
                         VotingStartDate = c.DateTime(nullable: false),
                         VotingEndDate = c.DateTime(nullable: false),
@@ -720,11 +840,11 @@ namespace mobSocial.Data.Migrations
                         VideoBattleId = c.Int(nullable: false),
                         WinnerPosition = c.Int(nullable: false),
                         PrizeType = c.Int(nullable: false),
-                        Description = c.String(maxLength: 2000),
+                        Description = c.String(),
                         PrizePercentage = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PrizeAmount = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PrizeProductId = c.Int(nullable: false),
-                        PrizeOther = c.String(maxLength: 500),
+                        PrizeOther = c.String(),
                         WinnerId = c.Int(nullable: false),
                         IsSponsored = c.Boolean(nullable: false),
                         SponsorCustomerId = c.Int(nullable: false),
@@ -745,18 +865,9 @@ namespace mobSocial.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.mobSocial_VideoBattle", t => t.VideoBattleId, cascadeDelete: true)
-                .ForeignKey("dbo.VideoGenres", t => t.VideoGenreId, cascadeDelete: true)
+                .ForeignKey("dbo.mobSocial_VideoGenre", t => t.VideoGenreId, cascadeDelete: true)
                 .Index(t => t.VideoBattleId)
                 .Index(t => t.VideoGenreId);
-            
-            CreateTable(
-                "dbo.VideoGenres",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        GenreName = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.mobSocial_VideoBattleParticipant",
@@ -767,7 +878,7 @@ namespace mobSocial.Data.Migrations
                         ParticipantId = c.Int(nullable: false),
                         ParticipantStatus = c.Int(nullable: false),
                         LastUpdated = c.DateTime(nullable: false),
-                        Remarks = c.String(maxLength: 1000),
+                        Remarks = c.String(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.mobSocial_VideoBattle", t => t.VideoBattleId, cascadeDelete: true)
@@ -778,12 +889,12 @@ namespace mobSocial.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        VideoPath = c.String(maxLength: 2000),
-                        MimeType = c.String(maxLength: 50),
+                        VideoPath = c.String(),
+                        MimeType = c.String(),
                         ParticipantId = c.Int(nullable: false),
                         VideoBattleId = c.Int(nullable: false),
                         VideoStatus = c.Int(nullable: false),
-                        ThumbnailPath = c.String(maxLength: 2000),
+                        ThumbnailPath = c.String(),
                         DateCreated = c.DateTime(nullable: false),
                         DateUpdated = c.DateTime(nullable: false),
                     })
@@ -830,21 +941,42 @@ namespace mobSocial.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.mobSocial_ArtistPagePayment",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        ArtistPageId = c.Int(nullable: false),
+                        PaymentType = c.Int(nullable: false),
+                        PaypalEmail = c.String(),
+                        BankName = c.String(),
+                        RoutingNumber = c.String(),
+                        AccountNumber = c.String(),
+                        PayableTo = c.String(),
+                        Address = c.String(),
+                        City = c.String(),
+                        Country = c.String(),
+                        PostalCode = c.String(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.mobSocial_ArtistPage", t => t.ArtistPageId, cascadeDelete: true)
+                .Index(t => t.ArtistPageId);
+            
+            CreateTable(
                 "dbo.mobSocial_Address",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(maxLength: 100),
-                        Address1 = c.String(maxLength: 200),
-                        Address2 = c.String(maxLength: 200),
+                        Name = c.String(),
+                        Address1 = c.String(),
+                        Address2 = c.String(),
                         StateProvinceId = c.Int(nullable: false),
-                        City = c.String(maxLength: 200),
-                        State = c.String(maxLength: 200),
-                        ZipPostalCode = c.String(maxLength: 10),
+                        City = c.String(),
+                        State = c.String(),
+                        ZipPostalCode = c.String(),
                         CountryId = c.Int(nullable: false),
-                        Phone = c.String(maxLength: 20),
-                        Website = c.String(maxLength: 200),
-                        Email = c.String(maxLength: 50),
+                        Phone = c.String(),
+                        Website = c.String(),
+                        Email = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -854,7 +986,7 @@ namespace mobSocial.Data.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         EntityId = c.Int(nullable: false),
-                        EntityName = c.String(maxLength: 50),
+                        EntityName = c.String(),
                         AddressId = c.Int(nullable: false),
                         IsDefault = c.Boolean(nullable: false),
                     })
@@ -864,10 +996,11 @@ namespace mobSocial.Data.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.mobSocial_ArtistPagePayment", "ArtistPageId", "dbo.mobSocial_ArtistPage");
             DropForeignKey("dbo.mobSocial_VideoBattleVote", "VideoBattleId", "dbo.mobSocial_VideoBattle");
             DropForeignKey("dbo.mobSocial_VideoBattleVideo", "VideoBattleId", "dbo.mobSocial_VideoBattle");
             DropForeignKey("dbo.mobSocial_VideoBattleParticipant", "VideoBattleId", "dbo.mobSocial_VideoBattle");
-            DropForeignKey("dbo.mobSocial_VideoBattleGenre", "VideoGenreId", "dbo.VideoGenres");
+            DropForeignKey("dbo.mobSocial_VideoBattleGenre", "VideoGenreId", "dbo.mobSocial_VideoGenre");
             DropForeignKey("dbo.mobSocial_VideoBattleGenre", "VideoBattleId", "dbo.mobSocial_VideoBattle");
             DropForeignKey("dbo.mobSocial_VideoBattlePrize", "VideoBattleId", "dbo.mobSocial_VideoBattle");
             DropForeignKey("dbo.mobSocial_BusinessPageCoupon", "BusinessPageId", "dbo.mobSocial_BusinessPage");
@@ -885,7 +1018,10 @@ namespace mobSocial.Data.Migrations
             DropForeignKey("dbo.mobSocial_UserSkill", "SkillId", "dbo.mobSocial_Skill");
             DropForeignKey("dbo.mobSocial_EventPageAttendance", "EventPageId", "dbo.mobSocial_EventPage");
             DropForeignKey("dbo.mobSocial_EventPageHotel", "EventPageId", "dbo.mobSocial_EventPage");
-            DropForeignKey("dbo.mobSocial_GroupPage", "Team_Id", "dbo.mobSocial_TeamPage");
+            DropForeignKey("dbo.mobSocial_SharedSong", "SongId", "dbo.mobSocial_Song");
+            DropForeignKey("dbo.mobSocial_Song", "ArtistPageId", "dbo.mobSocial_ArtistPage");
+            DropForeignKey("dbo.mobSocial_ArtistPageManager", "ArtistPageId", "dbo.mobSocial_ArtistPage");
+            DropForeignKey("dbo.mobSocial_GroupPage", "TeamPageId", "dbo.mobSocial_TeamPage");
             DropForeignKey("dbo.mobSocial_GroupPageMember", "GroupPageId", "dbo.mobSocial_GroupPage");
             DropForeignKey("dbo.mobSocial_UserRole", "UserId", "dbo.mobSocial_User");
             DropForeignKey("dbo.mobSocial_UserRole", "RoleId", "dbo.mobSocial_Role");
@@ -893,6 +1029,7 @@ namespace mobSocial.Data.Migrations
             DropForeignKey("dbo.mobSocial_Education", "SchoolId", "dbo.mobSocial_School");
             DropForeignKey("dbo.mobSocial_RoleCapability", "RoleId", "dbo.mobSocial_Role");
             DropForeignKey("dbo.mobSocial_RoleCapability", "CapabilityId", "dbo.mobSocial_Capability");
+            DropIndex("dbo.mobSocial_ArtistPagePayment", new[] { "ArtistPageId" });
             DropIndex("dbo.mobSocial_VideoBattleVote", new[] { "VideoBattleId" });
             DropIndex("dbo.mobSocial_VideoBattleVideo", new[] { "VideoBattleId" });
             DropIndex("dbo.mobSocial_VideoBattleParticipant", new[] { "VideoBattleId" });
@@ -914,8 +1051,11 @@ namespace mobSocial.Data.Migrations
             DropIndex("dbo.mobSocial_UserSkill", new[] { "SkillId" });
             DropIndex("dbo.mobSocial_EventPageAttendance", new[] { "EventPageId" });
             DropIndex("dbo.mobSocial_EventPageHotel", new[] { "EventPageId" });
+            DropIndex("dbo.mobSocial_ArtistPageManager", new[] { "ArtistPageId" });
+            DropIndex("dbo.mobSocial_Song", new[] { "ArtistPageId" });
+            DropIndex("dbo.mobSocial_SharedSong", new[] { "SongId" });
             DropIndex("dbo.mobSocial_GroupPageMember", new[] { "GroupPageId" });
-            DropIndex("dbo.mobSocial_GroupPage", new[] { "Team_Id" });
+            DropIndex("dbo.mobSocial_GroupPage", new[] { "TeamPageId" });
             DropIndex("dbo.mobSocial_UserRole", new[] { "RoleId" });
             DropIndex("dbo.mobSocial_UserRole", new[] { "UserId" });
             DropIndex("dbo.mobSocial_Education", new[] { "SchoolId" });
@@ -924,12 +1064,12 @@ namespace mobSocial.Data.Migrations
             DropIndex("dbo.mobSocial_RoleCapability", new[] { "RoleId" });
             DropTable("dbo.mobSocial_EntityAddress");
             DropTable("dbo.mobSocial_Address");
+            DropTable("dbo.mobSocial_ArtistPagePayment");
             DropTable("dbo.mobSocial_VoterPass");
             DropTable("dbo.mobSocial_VideoBattleVote");
             DropTable("dbo.mobSocial_VideoBattleView");
             DropTable("dbo.mobSocial_VideoBattleVideo");
             DropTable("dbo.mobSocial_VideoBattleParticipant");
-            DropTable("dbo.VideoGenres");
             DropTable("dbo.mobSocial_VideoBattleGenre");
             DropTable("dbo.mobSocial_VideoBattlePrize");
             DropTable("dbo.mobSocial_VideoBattle");
@@ -954,6 +1094,7 @@ namespace mobSocial.Data.Migrations
             DropTable("dbo.mobSocial_EventPageHotel");
             DropTable("dbo.mobSocial_EventPage");
             DropTable("dbo.mobSocial_PaymentTransaction");
+            DropTable("dbo.mobSocial_UserPaymentMethod");
             DropTable("dbo.mobSocial_Media");
             DropTable("dbo.mobSocial_EntityMedia");
             DropTable("dbo.mobSocial_Permalink");
@@ -961,6 +1102,10 @@ namespace mobSocial.Data.Migrations
             DropTable("dbo.mobSocial_Friend");
             DropTable("dbo.mobSocial_UserFollow");
             DropTable("dbo.mobSocial_Comment");
+            DropTable("dbo.mobSocial_ArtistPageManager");
+            DropTable("dbo.mobSocial_ArtistPage");
+            DropTable("dbo.mobSocial_Song");
+            DropTable("dbo.mobSocial_SharedSong");
             DropTable("dbo.mobSocial_SponsorPass");
             DropTable("dbo.mobSocial_SponsorData");
             DropTable("dbo.mobSocial_Sponsor");
@@ -975,6 +1120,9 @@ namespace mobSocial.Data.Migrations
             DropTable("dbo.mobSocial_Role");
             DropTable("dbo.mobSocial_Capability");
             DropTable("dbo.mobSocial_RoleCapability");
+            DropTable("dbo.mobSocial_WatchedVideo");
+            DropTable("dbo.mobSocial_VideoGenre");
+            DropTable("dbo.mobSocial_CustomerVideo");
         }
     }
 }

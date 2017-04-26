@@ -24,5 +24,11 @@ namespace mobSocial.Data.Entity.Settings
         /// Specifies the html template used for creating user links within content
         /// </summary>
         public string UserLinkTemplate { get; set; }
+
+        /// <summary>
+        /// Specifies minimum length of string required to search users #imported from old webapi plugin
+        /// </summary>
+        public int PeopleSearchTermMinimumLength { get; set; }
+
     }
 }

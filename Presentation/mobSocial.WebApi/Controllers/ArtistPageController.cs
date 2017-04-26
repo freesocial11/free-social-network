@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Routing;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.ArtistPages;
 using mobSocial.Data.Entity.MediaEntities;
 using mobSocial.Data.Entity.Settings;
@@ -240,7 +241,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("getartistsongsbyid/{artistPageId:int}")]
         public IHttpActionResult GetArtistSongsByArtistPage(int artistPageId)
         {
-            //check if artist page exists
+            /*//check if artist page exists
             var artistPage = _artistPageService.Get(artistPageId);
             if (artistPage == null)
                 return null;
@@ -266,7 +267,10 @@ namespace mobSocial.WebApi.Controllers
                     RemoteSong = false
                 });
             }
-            return Response(model);
+            return Response(model);*/
+           
+            //todo: Implement a product buy feature
+            return null;
 
         }
         [HttpGet]
@@ -721,7 +725,7 @@ namespace mobSocial.WebApi.Controllers
                 //so the current user is actually admin or the page owner. let's find friends
                 //only friends can become page managers
 
-                var friends = _friendService.GetCustomerFriends(ApplicationContext.Current.CurrentUser.Id);
+                var friends = _friendService.GetFriends(ApplicationContext.Current.CurrentUser.Id);
 
                 foreach (var friend in friends)
                 {
@@ -731,17 +735,11 @@ namespace mobSocial.WebApi.Controllers
                     if (friendCustomer == null)
                         continue;
 
-                    var friendThumbnailUrl = _pictureService.GetPictureUrl(
-                            friendCustomer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            100,
-                            true);
+                    var friendThumbnailUrl = _pictureService.GetPictureUrl(friendCustomer.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
 
                     model.Add(new {
-                        CustomerDisplayName = friendCustomer.GetFullName().ToTitleCase(),
-                        ProfileUrl = Url.Route("CustomerProfileUrl", new RouteValueDictionary()
-                        {
-                            { "SeName" , friendCustomer.GetSeName(0) } 
-                        }),
+                        CustomerDisplayName = friendCustomer.FirstName + " " + friendCustomer.LastName,
+                        SeName = friendCustomer.GetPermalink()?.Slug,
                         ProfileImageUrl = friendThumbnailUrl,
                         Id = friendId
                     });
@@ -774,17 +772,11 @@ namespace mobSocial.WebApi.Controllers
                     if (customer == null)
                         continue;
 
-                    var customerThumbnailUrl = _pictureService.GetPictureUrl(
-                            customer.GetAttribute<int>(SystemCustomerAttributeNames.AvatarPictureId),
-                            100,
-                            true);
+                    var customerThumbnailUrl = _pictureService.GetPictureUrl(customer.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
 
                     model.Add(new {
-                        CustomerDisplayName = customer.GetFullName().ToTitleCase(),
-                        ProfileUrl =Url.Route("CustomerProfileUrl", new RouteValueDictionary()
-                        {
-                            { "SeName" , customer.GetSeName(0) } 
-                        }),
+                        CustomerDisplayName = customer.FirstName + " " + customer.LastName,
+                        SeName = customer.GetPermalink()?.Slug,
                         ProfileImageUrl = customerThumbnailUrl,
                         Id = customer.Id
                     });

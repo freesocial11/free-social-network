@@ -27,19 +27,19 @@ namespace mobSocial.Tests.SampleData
         {
             sampleSkills.Add(new Skill()
             {
-                SkillName = "Skill 1",
+                Name = "Skill 1",
                 DisplayOrder = 0,
                 UserId = 0
             });
 
             sampleSkills.Add(new Skill() {
-                SkillName = "Skill 2",
+                Name = "Skill 2",
                 DisplayOrder = 1,
                 UserId = 0
             });
 
             sampleSkills.Add(new Skill() {
-                SkillName = "Skill 3",
+                Name = "Skill 3",
                 DisplayOrder = 2,
                 UserId = 0
             });

@@ -13,15 +13,20 @@ namespace mobSocial.WebApi.Configuration.Middlewares
             {
                 if (!DatabaseManager.IsDatabaseInstalled())
                 {
-                    //avoid install page from this check, otherwise, we won't be able to install ever
-                    if (!HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/api/install") && !HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/api/install/test-connection"))
+                    var absPath = HttpContext.Current.Request.Url.AbsolutePath;
+                    if (absPath.StartsWith("/" + WebApiConfig.ApiPrefix))
                     {
+                        //avoid install page from this check, otherwise, we won't be able to install ever
+                        if (!absPath.EndsWith("/install") && !absPath.EndsWith("/install/test-connection"))
+                        {
 
-                        context.Response.ContentType = "application/json";
-                        context.Response.StatusCode = (int) HttpStatusCode.OK;
-                        await context.Response.WriteAsync("{\"dbnotinstalled\" : true}");
-                        return;
+                            context.Response.ContentType = "application/json";
+                            context.Response.StatusCode = (int)HttpStatusCode.OK;
+                            await context.Response.WriteAsync("{\"dbnotinstalled\" : true}");
+                            return;
+                        }
                     }
+                  
                 }
                 await next();
             });

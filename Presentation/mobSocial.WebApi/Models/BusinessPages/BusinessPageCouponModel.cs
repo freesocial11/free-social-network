@@ -1,12 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Nop.Web.Framework;
-using Nop.Web.Framework.Mvc;
-using System;
-using System.ComponentModel.DataAnnotations;
-using Nop.Web.Framework.Localization;
+﻿using System.Web.Mvc;
 
-namespace Nop.Plugin.WebApi.MobSocial.Models
+namespace mobSocial.WebApi.Models.BusinessPages
 {
     public class BusinessPageCouponModel 
     {

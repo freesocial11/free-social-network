@@ -97,7 +97,8 @@ namespace mobSocial.Core.Plugins
                             currentInfo.SystemName = xmlReader.Value;
                         break;
                     case XmlNodeType.EndElement:
-                        readPlugins.Add(currentInfo);
+                        if (currentInfo != null)
+                            readPlugins.Add(currentInfo);
                         currentInfo = null;
                         break;
                 }

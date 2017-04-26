@@ -23,7 +23,7 @@ namespace mobSocial.Services.BusinessPages
                 searchQuery = searchQuery.Where(x => x.City.ToLower().Contains(city));
 
             if (stateProvinceId.HasValue)
-                searchQuery = searchQuery.Where(x => x.StateProvinceId == stateProvinceId);
+                searchQuery = searchQuery.Where(x => x.StateId == stateProvinceId);
 
             if(countryId.HasValue)
                 searchQuery = searchQuery.Where(x => x.CountryId == countryId);

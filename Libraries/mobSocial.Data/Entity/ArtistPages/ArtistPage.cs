@@ -31,4 +31,9 @@ namespace mobSocial.Data.Entity.ArtistPages
         public virtual IList<Song> Songs { get; set; }
 
     }
+
+    public class ArtistPageMap : BaseEntityConfiguration<ArtistPage>
+    {
+        
+    }
 }

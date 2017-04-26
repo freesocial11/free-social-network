@@ -15,42 +15,42 @@ namespace mobSocial.Services.Emails
 
         void SendUserActivatedMessage(User user);
 
-        int SendFriendRequestNotification(User user, int friendRequestCount);
+        void SendFriendRequestNotification(User user, int friendRequestCount);
 
-        int SendEventInvitationNotification(User user);
+        void SendEventInvitationNotification(User user);
 
-        int SendPendingFriendRequestNotification(User user, int friendRequestCount);
+        void SendPendingFriendRequestNotification(User user, int friendRequestCount);
 
-        int SendBirthdayNotification(User user);
+        void SendBirthdayNotification(User user);
 
-        int SendSomeoneSentYouASongNotification(User userUser);
+        void SendSomeoneSentYouASongNotification(User userUser);
 
-        int SendSomeoneChallengedYouForABattleNotification(User challenger, User challengee, VideoBattle videoBattleUser);
+        void SendSomeoneChallengedYouForABattleNotification(User challenger, User challengee, VideoBattle videoBattleUser);
 
-        int SendSomeoneChallengedYouForABattleNotification(User challenger, string challengeeEmail, string challengeeName, VideoBattle videoBattleUser);
+        void SendSomeoneChallengedYouForABattleNotification(User challenger, string challengeeEmail, string challengeeName, VideoBattle videoBattleUser);
 
-        int SendVideoBattleCompleteNotification(User user, VideoBattle videoBattle, NotificationRecipientType recipientTypeUser);
+        void SendVideoBattleCompleteNotification(User user, VideoBattle videoBattle, NotificationRecipientType recipientTypeUser);
 
-        int SendVotingReminderNotification(User sender, User receiver, VideoBattle videoBattleUser);
+        void SendVotingReminderNotification(User sender, User receiver, VideoBattle videoBattleUser);
 
-        int SendVotingReminderNotification(User sender, string receiverEmail, string receiverName, VideoBattle videoBattleUser);
+        void SendVotingReminderNotification(User sender, string receiverEmail, string receiverName, VideoBattle videoBattleUser);
 
-        int SendVideoBattleSignupNotification(User challenger, User challengee, VideoBattle videoBattleUser);
+        void SendVideoBattleSignupNotification(User challenger, User challengee, VideoBattle videoBattleUser);
 
-        int SendVideoBattleJoinNotification(User challenger, User challengee, VideoBattle videoBattleUser);
+        void SendVideoBattleJoinNotification(User challenger, User challengee, VideoBattle videoBattleUser);
 
-        int SendVideoBattleSignupAcceptedNotification(User challenger, User challengee, VideoBattle videoBattleUser);
+        void SendVideoBattleSignupAcceptedNotification(User challenger, User challengee, VideoBattle videoBattleUser);
 
-        int SendVideoBattleDisqualifiedNotification(User challenger, User challengee, VideoBattle videoBattleUser);
+        void SendVideoBattleDisqualifiedNotification(User challenger, User challengee, VideoBattle videoBattleUser);
 
-        int SendVideoBattleOpenNotification(User receiver, VideoBattle videoBattleUser);
+        void SendVideoBattleOpenNotification(User receiver, VideoBattle videoBattleUser);
 
-        int SendSponsorAppliedNotificationToBattleOwner(User owner, User sponsor, VideoBattle videoBattleUser);
+        void SendSponsorAppliedNotificationToBattleOwner(User owner, User sponsor, VideoBattle videoBattleUser);
 
-        int SendSponsorshipStatusChangeNotification(User receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattleUser);
+        void SendSponsorshipStatusChangeNotification(User receiver, SponsorshipStatus sponsorshipStatus, VideoBattle videoBattleUser);
 
-        int SendXDaysToBattleStartNotificationToParticipant(User receiver, VideoBattle videoBattleUser);
+        void SendXDaysToBattleStartNotificationToParticipant(User receiver, VideoBattle videoBattleUser);
 
-        int SendXDaysToBattleEndNotificationToFollower(User receiver, VideoBattle videoBattleUser);
+        void SendXDaysToBattleEndNotificationToFollower(User receiver, VideoBattle videoBattleUser);
     }
 }

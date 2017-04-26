@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using Mob.Core.Services;
-using Nop.Plugin.WebApi.MobSocial.Domain;
+using mobSocial.Core.Services;
+using mobSocial.Data.Entity.EventPages;
 
-namespace mobSocial.Services.Battles
+namespace mobSocial.Services.EventPages
 {
     /// <summary>
     /// Product service

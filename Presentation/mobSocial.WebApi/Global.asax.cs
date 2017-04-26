@@ -15,7 +15,7 @@ namespace mobSocial.WebApi
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
+            //AreaRegistration.RegisterAllAreas();
 
             //setup initial tasks
             mobSocialEngine.ActiveEngine.Start();

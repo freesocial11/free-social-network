@@ -121,6 +121,12 @@
     <Compile Include="Emails\IEmailTemplateService.cs" />
     <Compile Include="EntityProperties\EntityPropertyService.cs" />
     <Compile Include="EntityProperties\IEntityPropertyService.cs" />
+    <Compile Include="EventPages\EventPageAttendanceService.cs" />
+    <Compile Include="EventPages\EventPageHotelService.cs" />
+    <Compile Include="EventPages\EventPageService.cs" />
+    <Compile Include="EventPages\IEventPageAttendanceService.cs" />
+    <Compile Include="EventPages\IEventPageHotelService.cs" />
+    <Compile Include="EventPages\IEventPageService.cs" />
     <Compile Include="Extensions\EntityPropertyExtensions.cs" />
     <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Extensions\PaymentProcessorExtensions.cs" />
@@ -128,6 +134,10 @@
     <Compile Include="Extensions\PictureExtensions.cs" />
     <Compile Include="Extensions\UserCapabilityExtensions.cs" />
     <Compile Include="Formatter\FormatterService.cs" />
+    <Compile Include="GeoServices\CountryService.cs" />
+    <Compile Include="GeoServices\ICountryService.cs" />
+    <Compile Include="GeoServices\IStateService.cs" />
+    <Compile Include="GeoServices\StateService.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Helpers\PaymentCardHelper.cs" />
     <Compile Include="Helpers\DatabaseHelpers.cs" />
