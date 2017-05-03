@@ -28,7 +28,7 @@ namespace mobSocial.WebApi
             configuration.Routes.MapHttpRoute
                 (
                     name: "DefaultApi",
-                    routeTemplate: ApiPrefix + "/{controller}/{id}",
+                    routeTemplate: ApiPrefix + (string.IsNullOrEmpty(ApiPrefix) ? "" : "/") + "{controller}/{id}",
                     defaults: new {id = RouteParameter.Optional}
                 );
 
