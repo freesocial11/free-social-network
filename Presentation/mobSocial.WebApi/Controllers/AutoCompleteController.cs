@@ -58,7 +58,7 @@ namespace mobSocial.WebApi.Controllers
             //are users requested?
             if (types.Any(x => x == "users"))
             {
-                var users = _userService.SearchUsers(requestModel.Search, false, searchRoles, 1, requestModel.Count);
+                var users = _userService.SearchUsers(requestModel.Search, requestModel.ExcludeLoggedInUser, searchRoles, 1, requestModel.Count);
                 model.Users = users.Select(x => x.ToModel(_mediaService, _mediaSettings));
             }
 

@@ -100,7 +100,9 @@ namespace mobSocial.WebApi.Controllers
             //update now
             _teamPageService.Update(teamPage);
 
-            return Response(new { Success = true });
+            return RespondSuccess(new {
+                TeamPage = teamPage.ToModel(_mediaService)
+            });
         }
 
         [HttpPut]

@@ -24,5 +24,7 @@ namespace mobSocial.Data.Entity.Settings
         /// </summary>
         public string SevenDigitalOAuthConsumerSecret { get; set; }
 
+        public string FacebookWebsiteAppId { get; set; }
+
     }
 }

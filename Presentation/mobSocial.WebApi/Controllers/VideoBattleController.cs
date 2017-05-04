@@ -175,7 +175,7 @@ namespace mobSocial.WebApi.Controllers
                     });
                 }
             }
-            return RespondSuccess(model);
+            return RespondSuccess(new {VideoBattle = model});
         }
 
         [HttpPost]
@@ -688,7 +688,10 @@ namespace mobSocial.WebApi.Controllers
             //and howmany are following
             model.TotalFollowerCount = _followService.GetFollowerCount<VideoBattle>(videoBattleId);
 
-            return RespondSuccess(model);
+            return RespondSuccess(new
+            {
+                VideoBattle = model
+            });
         }
 
 
