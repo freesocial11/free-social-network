@@ -87,7 +87,7 @@ namespace mobSocial.WebApi.Controllers
                 LinkedToEntityName = model.LinkedToEntityName,
                 LinkedToEntityId = model.LinkedToEntityId,
                 PublishDate = model.PublishDate,
-                InlineTags = JsonConvert.SerializeObject(model.InlineTags)
+                InlineTags = model.InlineTags != null ? JsonConvert.SerializeObject(model.InlineTags) : null
             };
 
             //save it
@@ -325,7 +325,7 @@ namespace mobSocial.WebApi.Controllers
                 //get the customer to retrieve info such a profile image, profile url etc.
                 var user = _userService.Get(post.OwnerId);
 
-                postModel.OwnerName = user.Name;
+                postModel.OwnerName = string.IsNullOrEmpty(user.Name) ? user.Email : user.Name;
                 postModel.OwnerImageUrl = _pictureService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage);
                 if (string.IsNullOrEmpty(postModel.OwnerImageUrl))
                     postModel.OwnerImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
