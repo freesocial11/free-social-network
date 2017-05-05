@@ -65,6 +65,7 @@
     <Compile Include="Constants\PictureSizeNames.cs" />
     <Compile Include="Constants\PropertyNames.cs" />
     <Compile Include="Constants\TimelineAutoPostTypeNames.cs" />
+    <Compile Include="Database\Attributes\ToRunTimeViewAttribute.cs" />
     <Compile Include="Database\DatabaseContext.cs" />
     <Compile Include="Database\DatabaseManager.cs" />
     <Compile Include="Database\IDatabaseContext.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Enum\VideoStatus.cs" />
     <Compile Include="Enum\VideoType.cs" />
     <Compile Include="Enum\VideoViewMode.cs" />
+    <Compile Include="Extensions\IntegrationExtensions.cs" />
     <Compile Include="Extensions\LinqExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeConversionExtensions.cs" />
@@ -202,6 +204,8 @@
     <Compile Include="Helpers\PictureUtility.cs" />
     <Compile Include="Helpers\SimpleEncryptor.cs" />
     <Compile Include="Helpers\VideoUtility.cs" />
+    <Compile Include="Integration\IIntegrationMap.cs" />
+    <Compile Include="Integration\UserIntegrationMap.cs" />
     <Compile Include="Interfaces\IHasEntityProperties.cs" />
     <Compile Include="Interfaces\IPermalinkSupported.cs" />
     <Compile Include="Interfaces\IPicturesSupported.cs" />

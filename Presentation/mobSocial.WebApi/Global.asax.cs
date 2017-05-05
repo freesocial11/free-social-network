@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
-using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.ViewEngines;
 
 [assembly: InternalsVisibleTo("mobSocial.Tests")]
@@ -19,6 +18,9 @@ namespace mobSocial.WebApi
 
             //setup initial tasks
             mobSocialEngine.ActiveEngine.Start();
+
+            //specify that migrations are not running and it's the app that's working
+            DatabaseManager.IsMigrationRunning = false;
 
             RouteConfig.RegisterRoutes(RouteTable.Routes);
 

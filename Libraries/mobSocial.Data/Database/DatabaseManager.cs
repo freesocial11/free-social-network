@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database.Provider;
+using mobSocial.Data.Integration;
 
 namespace mobSocial.Data.Database
 {
@@ -98,6 +99,11 @@ namespace mobSocial.Data.Database
                 return new DbConnectionInfo(FallbackConnectionStringName);
             }
         }
- 
+
+        public static bool IsMigrationRunning { get; set; } = true;
+
+        public static UserIntegrationMap UserIntegrationMap { get; set; }
+
+        public static bool IsDatabaseUpdating { get; set; } = false;
     }
 }

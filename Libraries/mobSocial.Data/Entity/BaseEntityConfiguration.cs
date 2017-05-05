@@ -10,6 +10,7 @@ namespace mobSocial.Data.Entity
         protected BaseEntityConfiguration()
         {
             ToTable(this.TableName);
+            HasKey(x => x.Id);
         } 
     }
 }

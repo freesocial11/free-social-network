@@ -1,3 +1,7 @@
+using mobSocial.Data.Database;
+using mobSocial.Data.Extensions;
+using mobSocial.Data.Integration;
+
 namespace mobSocial.Data.Migrations
 {
     using System;
@@ -104,6 +108,10 @@ namespace mobSocial.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            //create view map for user. This can be overridden by other integrating applications 
+            var userViewMap = (DatabaseManager.UserIntegrationMap ?? new UserIntegrationMap()).GetView();
+            Sql(userViewMap);
+
             CreateTable(
                 "dbo.mobSocial_Education",
                 c => new

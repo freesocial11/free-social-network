@@ -29,9 +29,12 @@ namespace mobSocial.Services.Installation
             //DatabaseManager.SetDbInitializer(new CreateOrUpdateTables<DatabaseContext>());
 
             //run the migrator to install the database
+            DatabaseManager.IsDatabaseUpdating = true;
             var migrator = new mobSocialDbMigrator(new Data.Migrations.Configuration());
             if (migrator.GetPendingMigrations().Any())
                 migrator.Update();
+
+            DatabaseManager.IsDatabaseUpdating = false;
         }
 
         public void Install(string connectionString, string providerName)
