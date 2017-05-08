@@ -139,19 +139,18 @@ namespace mobSocial.WebApi.Controllers
         public IHttpActionResult GetFriendRequests()
         {
             var friendRequests = _friendService.GetFriendRequests(ApplicationContext.Current.CurrentUser.Id);
-
+            var friendUserIds = friendRequests.Select(x => x.FromCustomerId).ToList();
             var friendRequestCustomers =
-                _customerService.Get(x => friendRequests.Select(r => r.FromCustomerId).ToArray().Contains(x.Id), null);
+                _customerService.Get(x => friendUserIds.Contains(x.Id), null);
 
             var model = new List<FriendPublicModel>();
             foreach (var c in friendRequestCustomers)
             {
                 var friendModel = new FriendPublicModel() {
                     Id = c.Id,
-                    DisplayName = c.GetPropertyValueAs<string>(PropertyNames.DisplayName),
+                    DisplayName = c.Name,
                     PictureUrl = _pictureService.GetPictureUrl(c.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId)),
-                    ProfileUrl = Url.Route("CustomerProfileUrl",
-                            new RouteValueDictionary() { {"SeName", c.GetPermalink().ToString() }}),
+                    SeName = c.GetPermalink().ToString(),
                     FriendStatus = FriendStatus.NeedsConfirmed
                 };
                 model.Add(friendModel);
@@ -226,14 +225,9 @@ namespace mobSocial.WebApi.Controllers
             {
                 var friendModel = new FriendPublicModel() {
                     Id = c.Id,
-                    DisplayName = c.GetPropertyValueAs<string>(PropertyNames.DisplayName),
-                    PictureUrl = _pictureService.GetPictureUrl(c.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId)),
-                    ProfileUrl =
-                        Url.Route("CustomerProfileUrl",
-                            new RouteValueDictionary()
-                            {
-                               { "SeName",  c.GetPermalink().ToString() }  
-                            }),
+                    DisplayName = c.Name.Trim(),
+                    PictureUrl = _pictureService.GetPictureUrl(c.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), returnDefaultIfNotFound: true),
+                    SeName = c.GetPermalink().Slug
                 };
 
                 var friend = friends.FirstOrDefault(x => x.FromCustomerId == c.Id || x.ToCustomerId == c.Id);
