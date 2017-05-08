@@ -19,12 +19,12 @@ namespace mobSocial.Data.Extensions
                 throw new mobSocialException("Can't generate view for empty view name");
             }
             var viewName = runTimeViewAttribute.ViewName;
-            const string viewQuery = "CREATE VIEW {0} AS SELECT {1} FROM {2} {3} GO";
+            const string viewQuery = "CREATE VIEW {0} AS SELECT {1} FROM {2} {3}";
 
             var selectBuilder = new List<string>();
             foreach (var sourceDestinationPair in map.SourceToDestinationColumnMapping)
             {
-                selectBuilder.Add($"[{sourceDestinationPair.Key}] AS [{sourceDestinationPair.Value}]");
+                selectBuilder.Add($"{sourceDestinationPair.Key} AS [{sourceDestinationPair.Value}]");
             }
 
             var select = string.Join(",", selectBuilder);

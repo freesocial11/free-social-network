@@ -1,4 +1,5 @@
 using mobSocial.Data.Database;
+using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Extensions;
 using mobSocial.Data.Integration;
 

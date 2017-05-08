@@ -3,6 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database.Provider;
+using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Integration;
 
 namespace mobSocial.Data.Database
@@ -102,7 +103,7 @@ namespace mobSocial.Data.Database
 
         public static bool IsMigrationRunning { get; set; } = true;
 
-        public static UserIntegrationMap UserIntegrationMap { get; set; }
+        public static IIntegrationMap<UserMap> UserIntegrationMap { get; set; }
 
         public static bool IsDatabaseUpdating { get; set; } = false;
     }
