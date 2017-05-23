@@ -72,6 +72,10 @@
     <Compile Include="Database\IDatabaseProvider.cs" />
     <Compile Include="Database\IDatabaseSettings.cs" />
     <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
+    <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
+    <Compile Include="Entity\Users\IRoleNameProvider.cs" />
+    <Compile Include="Entity\Users\RoleNameProvider.cs" />
+    <Compile Include="Integration\IntegrationManager.cs" />
     <Compile Include="Database\Provider\SqlCeDatabaseProvider.cs" />
     <Compile Include="Database\Provider\SqlServerDatabaseProvider.cs" />
     <Compile Include="Entity\Addresses\Address.cs" />
@@ -205,7 +209,9 @@
     <Compile Include="Helpers\SimpleEncryptor.cs" />
     <Compile Include="Helpers\VideoUtility.cs" />
     <Compile Include="Integration\IIntegrationMap.cs" />
+    <Compile Include="Integration\RoleIntegrationMap.cs" />
     <Compile Include="Integration\UserIntegrationMap.cs" />
+    <Compile Include="Integration\UserRoleIntegrationMap.cs" />
     <Compile Include="Interfaces\IHasEntityProperties.cs" />
     <Compile Include="Interfaces\IPermalinkSupported.cs" />
     <Compile Include="Interfaces\IPicturesSupported.cs" />

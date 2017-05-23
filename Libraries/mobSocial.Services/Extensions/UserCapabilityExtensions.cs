@@ -96,7 +96,7 @@ namespace mobSocial.Services.Extensions
             var insertCapabilityName = resourceName + "Insert";
             return (user.IsAdministrator()
                 || resource.UserId == user.Id/*owner?*/
-                || (resource.Id == 0 && user.Can(insertCapabilityName)) /*new resource?*/); /*agent and has capability to update?*/
+                || (resource.Id == 0 && user.Can(insertCapabilityName)) /*new resource?*/); /* has capability to update?*/
         }
     }
 }

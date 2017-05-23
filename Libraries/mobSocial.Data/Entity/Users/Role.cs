@@ -1,4 +1,5 @@
 ﻿using mobSocial.Core.Data;
+using mobSocial.Data.Database.Attributes;
 
 namespace mobSocial.Data.Entity.Users
 {
@@ -13,5 +14,6 @@ namespace mobSocial.Data.Entity.Users
         public bool IsActive { get; set; }
     }
 
+    [ToRunTimeView("mobSocial_RoleView")]
     public class RoleMap : BaseEntityConfiguration<Role> { }
 }

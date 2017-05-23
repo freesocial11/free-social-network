@@ -1,4 +1,5 @@
 ﻿using mobSocial.Core.Data;
+using mobSocial.Data.Database.Attributes;
 
 namespace mobSocial.Data.Entity.Users
 {
@@ -13,5 +14,6 @@ namespace mobSocial.Data.Entity.Users
         public virtual Role Role { get; set; }
     }
 
+    [ToRunTimeView("mobSocial_UserRoleView")]
     public class UserRoleMap : BaseEntityConfiguration<UserRole> { }
 }

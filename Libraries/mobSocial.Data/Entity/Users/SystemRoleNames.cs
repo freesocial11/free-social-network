@@ -1,11 +1,19 @@
-﻿namespace mobSocial.Data.Entity.Users
+﻿using mobSocial.Core.Infrastructure.AppEngine;
+
+namespace mobSocial.Data.Entity.Users
 {
     public static class SystemRoleNames
     {
-        public const string Administrator = "Administrator";
+        private static readonly IRoleNameProvider RoleNameProvider;
+        static SystemRoleNames()
+        {
+            RoleNameProvider = mobSocialEngine.ActiveEngine.Resolve<IRoleNameProvider>();
+        }
 
-        public const string Visitor = "Visitor";
+        public static string Administrator => RoleNameProvider.Administrator;
 
-        public const string Registered = "Registered";
+        public static string Visitor => RoleNameProvider.Visitor;
+
+        public static string Registered => RoleNameProvider.Registered;
     }
 }

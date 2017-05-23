@@ -6,9 +6,9 @@ namespace mobSocial.WebApi.Models.Social
     {
 
 
-        public string CustomerDisplayName { get; set; }
+        public string DisplayName { get; set; }
 
-        public string ProfileUrl { get; set; }
+        public string SeName { get; set; }
 
         public string ProfileThumbnailUrl { get; set; }
     }

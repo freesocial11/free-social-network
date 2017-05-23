@@ -1,8 +1,13 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
+using DryIoc;
+using mobSocial.Core;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Core.Services;
 using mobSocial.Data.Database.Provider;
+using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Integration;
 
@@ -20,7 +25,11 @@ namespace mobSocial.Data.Database
         public static bool IsDatabaseInstalled()
         {
             var dbSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
-            return !string.IsNullOrEmpty(dbSettings.ConnectionString) && !string.IsNullOrEmpty(dbSettings.ProviderName);
+            var status = !string.IsNullOrEmpty(dbSettings.ConnectionString) && !string.IsNullOrEmpty(dbSettings.ProviderName);
+            if (!status) return false;
+            //there is a possibility that tables haven't been installed and we've only connectionstring and provider name.
+            //to prevent that, let's check for a table
+            return ApplicationHelper.AreTablesInstalled();
         }
 
         public static string GetProviderName(string providerAbstractName)
@@ -102,8 +111,6 @@ namespace mobSocial.Data.Database
         }
 
         public static bool IsMigrationRunning { get; set; } = true;
-
-        public static IIntegrationMap<UserMap> UserIntegrationMap { get; set; }
 
         public static bool IsDatabaseUpdating { get; set; } = false;
     }

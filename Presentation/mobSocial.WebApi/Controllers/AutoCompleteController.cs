@@ -41,6 +41,9 @@ namespace mobSocial.WebApi.Controllers
         [Route("{csvTypes}/get")]
         public IHttpActionResult Get(string csvTypes, [FromUri]AutoCompleteRequestModel requestModel)
         {
+            if (!ModelState.IsValid || requestModel == null)
+                return BadRequest();
+
             if (requestModel.Count > 30)
                 requestModel.Count = 30;
 

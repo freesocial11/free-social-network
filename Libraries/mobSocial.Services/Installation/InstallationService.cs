@@ -35,6 +35,13 @@ namespace mobSocial.Services.Installation
                 migrator.Update();
 
             DatabaseManager.IsDatabaseUpdating = false;
+
+            //any post installation tasks?
+            if(PostInstallationTasks.HasPostInstallationTasks())
+                PostInstallationTasks.Execute();
+
+            //mark tables installed
+            ApplicationHelper.MarkTablesInstalled();
         }
 
         public void Install(string connectionString, string providerName)

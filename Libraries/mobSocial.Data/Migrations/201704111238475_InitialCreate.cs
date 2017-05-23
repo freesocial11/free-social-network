@@ -1,5 +1,8 @@
+using System.Data.Entity;
+using DryIoc;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
-using mobSocial.Data.Entity.Users;
+using mobSocial.Data.Database.Initializer;
 using mobSocial.Data.Extensions;
 using mobSocial.Data.Integration;
 
@@ -83,6 +86,11 @@ namespace mobSocial.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            //role map
+            var roleIntegrationMap = IntegrationManager.RoleIntegrationMap ?? new RoleIntegrationMap();
+            var roleView = roleIntegrationMap.GetView();
+            Sql(roleView);
+
             CreateTable(
                 "dbo.mobSocial_User",
                 c => new
@@ -110,7 +118,8 @@ namespace mobSocial.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             //create view map for user. This can be overridden by other integrating applications 
-            var userViewMap = (DatabaseManager.UserIntegrationMap ?? new UserIntegrationMap()).GetView();
+            var userIntegrationMap = (IntegrationManager.UserIntegrationMap ?? new UserIntegrationMap());
+            var userViewMap = userIntegrationMap.GetView();
             Sql(userViewMap);
 
             CreateTable(
@@ -158,6 +167,10 @@ namespace mobSocial.Data.Migrations
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
+            var userRoleIntegrationMap = (IntegrationManager.UserRoleIntegrationMap ?? new UserRoleIntegrationMap());
+            var userRoleViewMap = userRoleIntegrationMap.GetView();
+            Sql(userRoleViewMap);
+
             CreateTable(
                 "dbo.mobSocial_TimelinePost",
                 c => new
@@ -1000,6 +1013,42 @@ namespace mobSocial.Data.Migrations
                         IsDefault = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
+
+            //drop and recreate constraints if required
+            var isUserIntegrated = userIntegrationMap.SourceTableName != "mobSocial_User";
+            if (isUserIntegrated)
+            {
+                PostInstallationTasks.RunPostInstallation(() =>
+                {
+                    using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+                    {
+                        var dbContext = mobSocialEngine.ActiveEngine.Resolve<IDatabaseContext>();
+                        var dropConstraintString = @"ALTER TABLE {0} DROP CONSTRAINT [FK_{1}_{2}_{3}]";
+                        Action<string> executeSql = sql =>
+                        {
+                            dbContext.ExecuteSql(TransactionalBehavior.EnsureTransaction, sql);
+                        };
+
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_Conversation", "dbo.mobSocial_Conversation", "dbo.mobSocial_User", "UserId"));
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_ConversationReply", "dbo.mobSocial_ConversationReply", "dbo.mobSocial_User", "UserId"));
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_Notification", "dbo.mobSocial_Notification", "dbo.mobSocial_User", "UserId"));
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_UserSkill", "dbo.mobSocial_UserSkill", "dbo.mobSocial_User", "UserId"));
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_UserRole", "dbo.mobSocial_UserRole", "dbo.mobSocial_User", "UserId"));
+                        executeSql(string.Format(dropConstraintString, "dbo.mobSocial_Education", "dbo.mobSocial_Education", "dbo.mobSocial_User", "UserId"));
+
+                        //add with new table
+                        var constraintString = @"ALTER TABLE {0} ADD CONSTRAINT [FK_{1}] FOREIGN KEY ({2}) REFERENCES {3}({4});";
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_Conversation", "dbo.mobSocial_Conversation", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_ConversationReply", "dbo.mobSocial_ConversationReply", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_Notification", "dbo.mobSocial_Notification", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_UserSkill", "dbo.mobSocial_UserSkill", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_UserRole", "dbo.mobSocial_UserRole", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                        executeSql(string.Format(constraintString, "dbo.mobSocial_Education", "dbo.mobSocial_Education", "UserId", userIntegrationMap.SourceTableName, "Id"));
+                    }
+                    
+                });
+                
+            }
             
         }
         

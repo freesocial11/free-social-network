@@ -12,6 +12,7 @@ using mobSocial.Core.Services.Events;
 using mobSocial.Data;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Provider;
+using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Authentication;
 using mobSocial.Services.Settings;
 using mobSocial.Services.VerboseReporter;
@@ -42,7 +43,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.Register<IDatabaseContext>(made: Made.Of(() => DatabaseContextManager.GetDatabaseContext()), reuse: Reuse.InWebRequest);
 
             //and respositories
-            container.Register(typeof(IDataRepository<>), typeof(EntityRepository<>), made: Made.Of(FactoryMethod.ConstructorWithResolvableArguments), reuse: Reuse.Singleton);
+            container.Register(typeof(IDataRepository<>), typeof(EntityRepository<>), made: Made.Of(FactoryMethod.ConstructorWithResolvableArguments), reuse: Reuse.InResolutionScope);
 
             var asm = AssemblyLoader.LoadBinDirectoryAssemblies();
 
@@ -54,7 +55,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
                               !type.IsAbstract && // which are not interfaces nor abstract
                               type.GetInterfaces().Length != 0);// which implementing some interface(s)
 
-            container.RegisterMany(serviceTypes, reuse: Reuse.Singleton);
+            container.RegisterMany(serviceTypes, reuse: Reuse.InResolutionScope);
 
             //we need a trasient reporter service rather than singleton
             container.Register<IVerboseReporterService, VerboseReporterService>(reuse: Reuse.InWebRequest, ifAlreadyRegistered:IfAlreadyRegistered.Replace);
@@ -101,6 +102,9 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
 
             //register authentication service inwebrequest
             container.Register<IAuthenticationService, AuthenticationService>(reuse: Reuse.InWebRequest, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+
+            //overridable providers
+            container.Register<IRoleNameProvider, RoleNameProvider>(reuse: Reuse.Singleton);
         }
 
         public int Priority

@@ -141,7 +141,7 @@ namespace mobSocial.WebApi.Controllers
             var friendRequests = _friendService.GetFriendRequests(ApplicationContext.Current.CurrentUser.Id);
             var friendUserIds = friendRequests.Select(x => x.FromCustomerId).ToList();
             var friendRequestCustomers =
-                _customerService.Get(x => friendUserIds.Contains(x.Id), null);
+                _customerService.Get(x => friendUserIds.Contains(x.Id), null).ToList();
 
             var model = new List<FriendPublicModel>();
             foreach (var c in friendRequestCustomers)
@@ -169,7 +169,7 @@ namespace mobSocial.WebApi.Controllers
             if (customerId == 0)
                 customerId = ApplicationContext.Current.CurrentUser.Id;
 
-            var friends = _friendService.GetFriends(customerId);
+            var friends = _friendService.GetFriends(customerId).ToList();
 
             var model = new List<UserFriendModel>();
 
@@ -184,14 +184,12 @@ namespace mobSocial.WebApi.Controllers
                     continue;
 
                 var friendThumbnailUrl = _pictureService.GetPictureUrl(friendCustomer.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
+                if (string.IsNullOrEmpty(friendThumbnailUrl))
+                    friendThumbnailUrl = _mediaSettings.DefaultUserProfileCoverUrl;
 
                 model.Add(new UserFriendModel() {
-                    CustomerDisplayName = friendCustomer.GetPropertyValueAs<string>(PropertyNames.DisplayName),
-                    ProfileUrl =  Url.Route("CustomerProfileUrl",
-                            new RouteValueDictionary()
-                            {
-                               { "SeName",  friendCustomer.GetPermalink().ToString() }  
-                            }),
+                    DisplayName = friendCustomer.Name,
+                    SeName = friendCustomer.GetPermalink().Slug,
                     ProfileThumbnailUrl = friendThumbnailUrl
                 });
 
