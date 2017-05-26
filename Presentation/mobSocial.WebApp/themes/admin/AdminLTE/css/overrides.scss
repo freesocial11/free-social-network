@@ -485,6 +485,17 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                         display: block;
                         padding: 5px 5px;
                         height: 45px;
+
+                        img {
+                            width: 34px;
+                            display: inline-block;
+                            float: left;
+                        }
+
+                        span {
+                            display: inline-block;
+                            padding-top: 8px;
+                        }
                     }
                 }
             }
@@ -506,14 +517,18 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
             float: left;
             width: 75%;
             height: 400px;
+
+            &.hidden {
+                display: none;
+            }
         }
 
         .chat-scroll {
             .conversation {
-                height: 342px;
+                height: 347px;
                 overflow: auto;
                 padding: 10px 0;
-
+                background-color: #ecf0f5;
                 ul {
                     padding: 0;
                     margin: 0;
@@ -522,18 +537,30 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                         padding: 1px 0px;
                         list-style-type: none;
 
+                        .thread-date {
+                            text-align: center;
+                            font-weight: bold;
+                            padding: 15px 0;
+                        }
+
                         .reply {
-                            padding: 5px 10px;
-                            margin-right: 45px;
+                            padding: 10px;
+                            margin: 5px 20px;
                             border-radius: 5px;
+                            background-color: #fff;
+                                box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+
+                            img.user-profile {
+                                width: 25px;
+                                float: left;
+                            }
 
                             &.my-reply {
-                                background-color: #ecf0f5;
                                 margin-left: 45px;
-                                margin-right: 0;
-
-                                .reply-status {
-                                    font-size: 8px;
+                                margin-right: 0;                                
+                            }
+                            .reply-status {
+                                    font-size: 10px;
                                     text-align: right;
 
                                     .sent {
@@ -548,7 +575,6 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
                                         color: green;
                                     }
                                 }
-                            }
                         }
                     }
                 }
@@ -594,8 +620,14 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
 
     .submission-area {
         padding: 10px 10px;
-        background-color: #eee;
-        margin-top: 6px;
+        background-color: #fff;
+        border-top:solid 1px #ddd;
+        #chat-input {
+            height: 30px;
+            border: 1px solid #fff;
+            padding: 8px;
+            width: 520px;
+        }
     }
 }
 
