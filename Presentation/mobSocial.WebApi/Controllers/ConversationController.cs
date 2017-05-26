@@ -19,6 +19,7 @@ using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Configuration.SignalR.Hubs;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Conversation;
+using mobSocial.Data.Constants;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -59,7 +60,7 @@ namespace mobSocial.WebApi.Controllers
             var currentUser = ApplicationContext.Current.CurrentUser;
             var conversations =
                 await
-                    _conversationService.Get(x => x.ConversationReplies.Any(y => x.UserId == currentUser.Id),
+                    _conversationService.Get(x => x.ConversationReplies.Any(y => x.UserId == currentUser.Id || x.ReceiverId == currentUser.Id),
                         x => new {x.LastUpdated}, false, earlyLoad: x => x.User).ToListAsync();
 
             //get all the users apart from current user
@@ -73,19 +74,30 @@ namespace mobSocial.WebApi.Controllers
             foreach (var conversation in conversations)
             {
                 var receiver = conversation.UserId == currentUser.Id
-                    ? replies.FirstOrDefault()?.User.ToModel(_mediaService, _mediaSettings)
-                    : conversation.User.ToModel(_mediaService, _mediaSettings);
+                    ? replies.FirstOrDefault()?.User : conversation.User;
                 if (receiver == null)
-                    continue;
+                {
+                    if(conversation.ReceiverType == "User")
+                    {
+                        receiver = _userService.Get(conversation.ReceiverId);
+                        if (receiver == null)
+                            continue;
+                    }
+                }
                 var modelItem = new ConversationOverviewModel()
                 {
                     ConversationId = conversation.Id,
                     UnreadCount = replies.Count(x => x.ConversationId == conversation.Id),
-                    Receiver =  receiver
+                    ReceiverName =  receiver.Name,
+                    ReceiverId = receiver.Id,
+                    ReceiverType = conversation.ReceiverType,
+                    ReceiverImageUrl = _mediaService.GetPictureUrl(receiver.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage)
                 };
+                if (string.IsNullOrEmpty(modelItem.ReceiverImageUrl))
+                    modelItem.ReceiverImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
                 model.Add(modelItem);
             }
-            var allReceiverIds = model.Select(x => x.Receiver?.Id ?? 0).ToList();
+            var allReceiverIds = model.Where(x => x.ReceiverType == "User").Select(x => x.ReceiverId).ToList();
 
             if (model.Count < 15)
             {
@@ -93,23 +105,24 @@ namespace mobSocial.WebApi.Controllers
                     .Where(x => !allReceiverIds.Contains(x.FromCustomerId) && !allReceiverIds.Contains(x.ToCustomerId))
                     .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId);
 
-                var userModels =
-                    _userService.Get(x => friendsIds.Contains(x.Id))
-                        .ToList()
-                        .Select(x => x.ToModel(_mediaService, _mediaSettings));
+                var userModels = _userService.Get(x => friendsIds.Contains(x.Id)).ToList();
 
                 foreach(var uModel in userModels)
                 {
                     var modelItem = new ConversationOverviewModel() {
                         ConversationId = 0,
                         UnreadCount = 0,
-                        Receiver = uModel
+                        ReceiverName = uModel.Name,
+                        ReceiverId = uModel.Id,
+                        ReceiverType = "User",
+                        ReceiverImageUrl = _mediaService.GetPictureUrl(uModel.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage)
                     };
+                    if (string.IsNullOrEmpty(modelItem.ReceiverImageUrl))
+                        modelItem.ReceiverImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
                     model.Add(modelItem);
                 }
 
             }
-            //_friendService.Get(x => x.)
             return RespondSuccess(new
             {
                 Conversations = model
@@ -198,6 +211,7 @@ namespace mobSocial.WebApi.Controllers
                 //we'll need to insert a new conversation
                 conversation = new Conversation() {
                     CreatedOn = DateTime.UtcNow,
+                    LastUpdated = DateTime.UtcNow,
                     UserId = currentUser.Id,
                     ReceiverType = !requestModel.Group ? typeof(User).Name : "Group",
                     ReceiverId = toUserId

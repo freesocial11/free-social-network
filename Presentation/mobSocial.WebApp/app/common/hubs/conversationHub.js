@@ -27,17 +27,17 @@
     var markChatOpen = function (userId) {
         var opened = false;
         var cu = $rootScope.CurrentUser;
-        for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
-            var chat = $rootScope.Chat.openChats[i].conversation;
-            var canOpen = ((chat.ReceiverId == userId && chat.UserId == cu.Id) ||
-                    (chat.ReceiverId == cu.Id && chat.UserId == userId)) &&
-                chat.ReceiverType == "User";
 
+        for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
+            var conversation = $rootScope.Chat.openChats[i].conversation;
+            var conversationDetails = $rootScope.Chat.openChats[i].conversationDetails;
+            var canOpen = conversation.ReceiverId == userId && conversation.ReceiverType == "User" && conversationDetails;
             if (canOpen) {
                 $rootScope.Chat.activeChat = $rootScope.Chat.openChats[i];
                 $rootScope.Chat.activeChat.toUserId = userId;
                 opened = true;
                 scrollToBottom();
+                break;
             }
         }
         return opened;
@@ -51,7 +51,7 @@
                 $timeout(function () {
                     var chat = $rootScope.Chat.getChat(reply.UserId, conversationId);
                     if (chat) {
-                        chat.conversation.ConversationReplies.push(reply);
+                        chat.conversationDetails.ConversationReplies.push(reply);
                         chat.unreadCount = chat.unreadCount || 0;
                         if (reply.UserId != $rootScope.CurrentUser.Id)
                             chat.unreadCount++;
@@ -75,10 +75,11 @@
             },
             'markRead': function (conversationId) {
                 var chat = $rootScope.Chat.getChat(0, conversationId);
+                console.log("marking ", chat);
                 if (chat) {
                     $timeout(function () {
-                        for (var i = 0; i < chat.conversation.ConversationReplies.length; i++) {
-                            chat.conversation.ConversationReplies[i].replyStatus = 3; //read
+                        for (var i = 0; i < chat.conversationDetails.ConversationReplies.length; i++) {
+                            chat.conversationDetails.ConversationReplies[i].ReplyStatus = 3; //read
                         }
                         $rootScope.$apply();
                     }, 0);
@@ -92,7 +93,7 @@
         openChats: [],
         activeChat: null,
         globalUnreadCount: 0,
-        firstLoadComplete : false,
+        firstLoadComplete: false,
         getTotalUnreadCount: function () {
             return $rootScope.Chat.openChats.reduce(function (total, chat) {
                 return total + (chat.unreadCount || 0);
@@ -104,7 +105,7 @@
         isActiveChat: function (userId) {
             if (!$rootScope.Chat.activeChat)
                 return false;
-            var chat = $rootScope.Chat.activeChat.conversation;
+            var chat = $rootScope.Chat.activeChat.conversationDetails;
             if (!chat)
                 return false;
             var canOpen = (chat.ReceiverId == userId || chat.UserId == userId) && chat.ReceiverType == "User";
@@ -114,9 +115,7 @@
             var cu = $rootScope.CurrentUser;
             for (var i = 0; i < $rootScope.Chat.openChats.length; i++) {
                 var chat = $rootScope.Chat.openChats[i].conversation;
-                var canOpen = ((chat.ReceiverId == userId && chat.UserId == cu.Id) ||
-                        (chat.ReceiverId == cu.Id && chat.UserId == userId)) &&
-                    chat.ReceiverType == "User";
+                var canOpen = chat.ReceiverId == userId && chat.UserId == cu.Id && chat.ReceiverType == "User";
 
                 if (canOpen) {
                     return $rootScope.Chat.openChats[i];
@@ -132,37 +131,31 @@
                     function (response) {
                         if (response.Success) {
                             var chat = $rootScope.Chat.getChat(userId);
-                            if (!chat) {
-                                $rootScope.Chat.openChats.push({
-                                    conversation: response.ResponseData.Conversation || [],
-                                    replyText: '',
-                                    loadedPage: page,
-                                    userId: userId,
-                                    unreadCount: 0
-                                });
-                                markChatOpen(userId);
-                                if (callback)
-                                    callback();
-                                scrollToBottom();
-                            } else {
-                                if (chat.conversation.ConversationId == 0) {
-                                    chat.conversation = response.ResponseData.Conversation || [];
+                            if (chat.conversation.ConversationId == 0) {
+                                if (response.ResponseData.Conversation) {
+                                    chat.conversationDetails = response.ResponseData.Conversation;
                                     chat.loadedPage = page;
                                     scrollToBottom();
                                 }
+                            }
+                            else {
+                                if (page == 1)
+                                    chat.conversationDetails = response.ResponseData.Conversation;
                                 else {
                                     var replies = response.ResponseData.Conversation.ConversationReplies;
-                                    chat.conversation.ConversationReplies = chat.conversation.ConversationReplies || [];
+                                    chat.conversationDetails.ConversationReplies = chat.conversationDetails.ConversationReplies || [];
                                     for (var i = replies.length; i >= 0; i--)
-                                        chat.conversation.ConversationReplies.unshift(replies[i]);
+                                        chat.conversationDetails.ConversationReplies.unshift(replies[i]);
                                 }
+
                             }
+                            markChatOpen(userId);
 
                         }
                     });
         },
         chatWith: function (userId, callback) {
-            if (!markChatOpen(userId) || this.activeChat.conversation.ConversationId == 0) {
+            if (!markChatOpen(userId)) {
                 this.loadChat(userId, 1, callback);
             } else {
                 if (callback)
@@ -180,7 +173,10 @@
 
         },
         //get online friends
-        loadOnlineFriends: function () {
+        loadOnlineFriends: function (currentUserId) {
+            $rootScope.CurrentUser = {
+                Id: currentUserId
+            };
             if (this.firstLoadComplete)
                 return;
             conversationService.getAll(function (response) {
@@ -189,17 +185,14 @@
                     var conversations = response.ResponseData.Conversations;
                     for (var i = 0; i < conversations.length; i++) {
                         var conversation = conversations[i];
+                        conversation.ReceiverType = "User";
+                        conversation.UserId = $rootScope.CurrentUser.Id;
+                        conversation.ConversationReplies = [];
                         $rootScope.Chat.openChats.push({
-                            conversation: {
-                                ConversationId: 0,
-                                UserId: $rootScope.CurrentUser.Id,
-                                ReceiverId: conversation.Receiver.Id,
-                                ReceiverType: "User"
-                            },
-                            receiver: conversation.Receiver,
+                            conversation: conversation,
+                            conversationDetails: null,
                             replyText: '',
                             loadedPage: 0,
-                            userId: conversation.Receiver.Id,
                             unreadCount: conversation.UnreadCount
                         });
                     }

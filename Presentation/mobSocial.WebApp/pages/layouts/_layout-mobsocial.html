@@ -149,9 +149,9 @@
                 <div class="friend-list" block-ui>
                     <ul>
                         <li ng-repeat="chat in Chat.openChats">
-                            <a ng-click="Chat.chatWith(chat.receiver.Id, attachReadScroller())" ng-class="{'active': Chat.isActiveChat(chat.receiver.Id)}" onclick="focusToInput()">
-                                <img class="img-sm img-circle margin-r-5" ng-src="{{chat.receiver.ProfileImageUrl}}"/>
-                                <span>{{chat.receiver.Name}}</span><span ng-if="chat.unreadCount > 0" class="unread-count">{{chat.unreadCount}}</span>
+                            <a ng-click="Chat.chatWith(chat.conversation.ReceiverId, attachReadScroller())" ng-class="{'active': Chat.isActiveChat(chat.conversation.ReceiverId)}" onclick="focusToInput()">
+                                <img class="img-sm img-circle margin-r-5" ng-src="{{chat.conversation.ReceiverImageUrl}}" />
+                                <span>{{chat.conversation.ReceiverName}}</span><span ng-if="chat.unreadCount > 0" class="unread-count">{{chat.unreadCount}}</span>
                             </a>
                         </li>
                     </ul>
@@ -164,30 +164,38 @@
                             <a ng-click="Chat.loadChat(Chat.activeChat.userId, Chat.activeChat.loadedPage + 1)">Load More</a>
                         </div>
                         <ul>
-                            <li ng-repeat="reply in Chat.activeChat.conversation.ConversationReplies">
+                            <li ng-repeat="reply in Chat.activeChat.conversationDetails.ConversationReplies track by $index">
+                                <div class="thread-date" ng-if="!areDatesSame(reply.DateCreatedLocal, Chat.activeChat.conversationDetails.ConversationReplies[$index - 1].DateCreatedLocal)">
+                                    {{reply.DateCreatedLocal | date : "fullDate"}}
+                                </div>
                                 <div class="reply" ng-class="{'my-reply': reply.UserId == CurrentUser.Id}">
                                     <a ng-if="reply.UserId != CurrentUser.Id">
-                                        <img class="img-sm img-circle margin-r-5" ng-src="{{Chat.activeChat.conversation.Users[reply.UserId].ProfileImageUrl}}" />
-                                        <span>{{Chat.activeChat.conversation.Users[reply.UserId].Name}}</span>
+                                        <img class="img-sm img-circle margin-r-5 user-profile" ng-src="{{Chat.activeChat.conversationDetails.Users[reply.UserId].ProfileImageUrl}}" />
+                                        <span>{{Chat.activeChat.conversationDetails.Users[reply.UserId].Name}}</span>
                                     </a>
                                     <div class="reply-text">
                                         {{reply.ReplyText}}
                                     </div>
-                                    <div class="reply-status" ng-if="reply.ReplyStatus != 0">
-                                        <span ng-switch on="reply.ReplyStatus">
-                                            <span ng-switch-when="2" class="received">
-                                                <i class="fa fa-check"></i>
+                                    <div class="reply-status">
+                                        <span ng-if="reply.ReplyStatus != 0 && reply.UserId == CurrentUser.Id">
+                                            <span ng-switch on="reply.ReplyStatus">
+                                                <span ng-switch-when="2" class="received">
+                                                    <i class="fa fa-check"></i>
+                                                </span>
+                                                <span ng-switch-when="3" class="read">
+                                                    <i class="fa fa-check-circle"></i>
+                                                </span>
                                             </span>
-                                            <span ng-switch-when="3" class="read">
-                                                <i class="fa fa-check-circle"></i>
-                                            </span>
+                                        </span>
+                                        <span class="reply-date">
+                                            {{reply.DateCreatedLocal | date : "h:mm a"}}
                                         </span>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                         <div ng-if="Chat.activeChat.activeTypingUserId" class="typing-notify">
-                           <i class="fa fa-circle-o-notch fa-spin"></i> <span>{{Chat.activeChat.conversation.Users[Chat.activeChat.activeTypingUserId].Name}}</span> is typing
+                            <i class="fa fa-circle-o-notch fa-spin"></i> <span>{{Chat.activeChat.conversationDetails.Users[Chat.activeChat.activeTypingUserId].Name}}</span> is typing
                         </div>
                     </div>
                     <div class="submission-area col-xs-12 col-md-12">
@@ -205,7 +213,7 @@
         </div>
     </div>
     <div class="chat-switcher">
-        <a id="switch-link" ng-click="Chat.loadOnlineFriends()">Online <span class="unread-count" ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span></a>
+        <a id="switch-link" ng-click="Chat.loadOnlineFriends(CurrentUser.Id)">Online <span class="unread-count" ng-if="(Chat.getTotalUnreadCount() || Chat.globalUnreadCount) > 0">{{Chat.getTotalUnreadCount() || Chat.globalUnreadCount || ''}}</span></a>
         <script type="text/javascript">
             jQuery("#switch-link")
                 .click(function (e) {

@@ -6,6 +6,8 @@ namespace mobSocial.WebApi.Models.Conversation
 {
     public class ConversationReplyModel : RootModel
     {
+        public int Id { get; set; }
+
         public string ReplyText { get; set; }
 
         public int UserId { get; set; }

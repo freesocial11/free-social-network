@@ -325,6 +325,13 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
           display: block;
           padding: 5px 5px;
           height: 45px; }
+          .chat-area .chat-box .friend-list ul li a img {
+            width: 34px;
+            display: inline-block;
+            float: left; }
+          .chat-area .chat-box .friend-list ul li a span {
+            display: inline-block;
+            padding-top: 8px; }
     .chat-area .chat-box .chat-box-section-friend-list {
       float: left;
       width: 25%;
@@ -335,33 +342,44 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
       float: left;
       width: 75%;
       height: 400px; }
+      .chat-area .chat-box .chat-box-section-chat-scroll.hidden {
+        display: none; }
     .chat-area .chat-box .chat-scroll .conversation {
-      height: 342px;
+      height: 347px;
       overflow: auto;
-      padding: 10px 0; }
+      padding: 10px 0;
+      background-color: #ecf0f5; }
       .chat-area .chat-box .chat-scroll .conversation ul {
         padding: 0;
         margin: 0; }
         .chat-area .chat-box .chat-scroll .conversation ul li {
           padding: 1px 0px;
           list-style-type: none; }
+          .chat-area .chat-box .chat-scroll .conversation ul li .thread-date {
+            text-align: center;
+            font-weight: bold;
+            padding: 15px 0; }
           .chat-area .chat-box .chat-scroll .conversation ul li .reply {
-            padding: 5px 10px;
-            margin-right: 45px;
-            border-radius: 5px; }
+            padding: 10px;
+            margin: 5px 20px;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2); }
+            .chat-area .chat-box .chat-scroll .conversation ul li .reply img.user-profile {
+              width: 25px;
+              float: left; }
             .chat-area .chat-box .chat-scroll .conversation ul li .reply.my-reply {
-              background-color: #ecf0f5;
               margin-left: 45px;
               margin-right: 0; }
-              .chat-area .chat-box .chat-scroll .conversation ul li .reply.my-reply .reply-status {
-                font-size: 8px;
-                text-align: right; }
-                .chat-area .chat-box .chat-scroll .conversation ul li .reply.my-reply .reply-status .sent {
-                  color: gray; }
-                .chat-area .chat-box .chat-scroll .conversation ul li .reply.my-reply .reply-status .received {
-                  color: blue; }
-                .chat-area .chat-box .chat-scroll .conversation ul li .reply.my-reply .reply-status .read {
-                  color: green; }
+            .chat-area .chat-box .chat-scroll .conversation ul li .reply .reply-status {
+              font-size: 10px;
+              text-align: right; }
+              .chat-area .chat-box .chat-scroll .conversation ul li .reply .reply-status .sent {
+                color: gray; }
+              .chat-area .chat-box .chat-scroll .conversation ul li .reply .reply-status .received {
+                color: blue; }
+              .chat-area .chat-box .chat-scroll .conversation ul li .reply .reply-status .read {
+                color: green; }
       .chat-area .chat-box .chat-scroll .conversation .load-more {
         text-align: center;
         border: dashed 1px #999;
@@ -388,8 +406,13 @@ videogular vg-overlay-play, [videogular] vg-overlay-play {
       overflow: auto; }
   .chat-area .submission-area {
     padding: 10px 10px;
-    background-color: #eee;
-    margin-top: 6px; }
+    background-color: #fff;
+    border-top: solid 1px #ddd; }
+    .chat-area .submission-area #chat-input {
+      height: 30px;
+      border: 1px solid #fff;
+      padding: 8px;
+      width: 520px; }
 
 .video-thumbnail {
   position: relative; }

@@ -18,6 +18,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
     {
         public static ConversationResponseModel ToModel(this Conversation conversation, IUserService userService, IMediaService mediaService, MediaSettings mediaSettings, int page)
         {
+            var currentUser = ApplicationContext.Current.CurrentUser;
             var userIds = conversation.GetUserIds().ToArray();
             var replyCount = 15;
             var totalReplies = conversation.ConversationReplies.Count;
@@ -32,9 +33,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 ConversationId = conversation.Id,
                 ConversationReplies = replies?.Select(x => x.ToModel()).ToList(),
                 Users = users,
-                ReceiverId = conversation.ReceiverId,
+                ReceiverId = currentUser.Id == conversation.ReceiverId ? conversation.UserId : conversation.ReceiverId, //no matter who initiated conversation, we'll always send the other party as receiver
                 ReceiverType = conversation.ReceiverType,
-                UserId = conversation.UserId,
+                UserId = currentUser.Id,
                 TotalReplies = totalReplies
             };
             return model;
@@ -50,7 +51,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 DateCreatedLocal =
                     DateTimeHelper.GetDateInUserTimeZone(conversationReply.DateCreated, DateTimeKind.Utc, currentUser),
                 ReplyText = conversationReply.ReplyText,
-                ConversationId = conversationReply.ConversationId
+                ConversationId = conversationReply.ConversationId,
+                Id = conversationReply.Id
             };
 
             if (currentUser.Id == conversationReply.UserId)
