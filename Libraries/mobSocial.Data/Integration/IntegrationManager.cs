@@ -21,5 +21,20 @@ namespace mobSocial.Data.Integration
             if(typeof(T) == typeof(UserRoleMap))
                 UserRoleIntegrationMap = (IIntegrationMap<UserRoleMap>) map;
         }
+
+        public static bool HasIntegrationMap<T>()
+        {
+            if (typeof(T) == typeof(UserMap))
+                return UserIntegrationMap != null;
+
+            if (typeof(T) == typeof(RoleMap))
+                return RoleIntegrationMap != null;
+
+            if (typeof(T) == typeof(UserRoleMap))
+                return UserRoleIntegrationMap != null;
+
+            return false;
+
+        }
     }
 }

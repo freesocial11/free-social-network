@@ -13,6 +13,7 @@ using mobSocial.Data.Entity.Notifications;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
+using mobSocial.Data.Integration;
 using mobSocial.Data.Migrations;
 using mobSocial.Services.Emails;
 using mobSocial.Services.Notifications;
@@ -57,12 +58,14 @@ namespace mobSocial.Services.Installation
         {
             //first the settings
             SeedSettings(installDomain);
-            
-            //seed the roles
-            SeedRoles();
 
-            //then the user
-            SeedDefaultUser(defaultUserEmail, defaultUserPassword);
+            if (!IntegrationManager.HasIntegrationMap<RoleMap>())
+                //seed the roles
+                SeedRoles();
+
+            if (!IntegrationManager.HasIntegrationMap<UserMap>())
+                //then the user
+                SeedDefaultUser(defaultUserEmail, defaultUserPassword);
 
             //seed email account
             SeedEmailAccount(installDomain);
