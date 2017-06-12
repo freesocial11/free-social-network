@@ -147,9 +147,9 @@ namespace mobSocial.WebApi.Controllers
             var model = teamPage.ToEntityModel(_mediaService);
 
             model.Groups = GetTeamPageGroupPublicModels(id);
+            var currentUser = ApplicationContext.Current.CurrentUser;
             //is the page editable
-            model.IsEditable = ApplicationContext.Current.CurrentUser.IsAdministrator() ||
-                               ApplicationContext.Current.CurrentUser.Id == teamPage.CreatedBy;
+            model.IsEditable = currentUser != null && (currentUser.IsAdministrator() || currentUser.Id == teamPage.CreatedBy);
 
             model.TeamPictureUrl = _mediaService.GetPictureUrl(model.TeamPictureId);
             return Response(new
@@ -238,7 +238,7 @@ namespace mobSocial.WebApi.Controllers
             }
             var currentUser = ApplicationContext.Current.CurrentUser;
             //check if the page exists or not & the person deleting actually owns the resource
-            if (teamPage.CreatedBy != currentUser.Id && ! currentUser.IsAdministrator())
+            if (currentUser != null && teamPage.CreatedBy != currentUser.Id && ! currentUser.IsAdministrator())
             {
                 return Response(new {
                     Success = false,
