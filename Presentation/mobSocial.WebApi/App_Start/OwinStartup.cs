@@ -28,7 +28,7 @@ namespace mobSocial.WebApi
             //route registrations & other configurations
             WebApiConfig.Register(config);
 
-            //app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+            app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
 
             app.UsePictureSizeRegistrar();
 
