@@ -24,9 +24,9 @@ namespace mobSocial.Data.Database
 
         public static bool IsDatabaseInstalled()
         {
-            var dbSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
+           /* var dbSettings = mobSocialEngine.ActiveEngine.Resolve<IDatabaseSettings>();
             var status = !string.IsNullOrEmpty(dbSettings.ConnectionString) && !string.IsNullOrEmpty(dbSettings.ProviderName);
-            if (!status) return false;
+            if (!status) return false;*/
             //there is a possibility that tables haven't been installed and we've only connectionstring and provider name.
             //to prevent that, let's check for a table
             return ApplicationHelper.AreTablesInstalled();
