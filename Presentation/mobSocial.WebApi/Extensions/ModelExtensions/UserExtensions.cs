@@ -64,7 +64,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.ProfileImageUrl = mediaSettings.DefaultUserProfileImageUrl;
 
             //we can send notifications as well if it's a user asking for his own details
-            if (currentUser.Id == user.Id && notificationService != null)
+            if (currentUser != null && currentUser.Id == user.Id && notificationService != null)
             {
                 var now = DateTime.UtcNow;
                 var qNotifications =
