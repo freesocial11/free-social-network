@@ -43,6 +43,8 @@ namespace mobSocial.Services.Helpers
 
         public static DateTime GetDateInUserTimeZone(DateTime sourceDate, DateTimeKind sourceDateTimeKind, User user)
         {
+            if (user == null)
+                return sourceDate;
             sourceDate = DateTime.SpecifyKind(sourceDate, sourceDateTimeKind);
             //get the timezone of mentioned user
             var userTimezoneId = user.GetPropertyValueAs<string>(PropertyNames.DefaultTimeZoneId);
