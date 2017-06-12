@@ -188,7 +188,7 @@ namespace mobSocial.WebApi.Controllers
 
                 var friendThumbnailUrl = _pictureService.GetPictureUrl(friendCustomer.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId));
                 if (string.IsNullOrEmpty(friendThumbnailUrl))
-                    friendThumbnailUrl = _mediaSettings.DefaultUserProfileCoverUrl;
+                    friendThumbnailUrl = _mediaSettings.DefaultUserProfileImageUrl;
 
                 model.Add(new UserFriendModel() {
                     DisplayName = friendCustomer.Name,
