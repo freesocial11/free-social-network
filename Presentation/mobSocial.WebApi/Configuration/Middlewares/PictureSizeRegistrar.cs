@@ -14,7 +14,10 @@ namespace mobSocial.WebApi.Configuration.Middlewares
         {
             app.Use(async (context, next) =>
             {
-                mobSocialEngine.SetupPictureSizes();
+                using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+                {
+                    mobSocialEngine.SetupPictureSizes();
+                }
                 await next();
             });
         }

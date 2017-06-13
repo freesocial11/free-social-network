@@ -19,30 +19,34 @@ namespace mobSocial.WebApi
         {
             //new configuration for owin
             var config = new HttpConfiguration();
-
-            app.UseInstallationVerifier();
-
-            //run owin startup configurations from plugins
-            OwinStartupManager.RunAllOwinConfigurations(app);
-
             //route registrations & other configurations
             WebApiConfig.Register(config);
 
-            app.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/" + WebApiConfig.ApiPrefix), builder =>
+            {
+                builder.UseInstallationVerifier();
 
-            app.UsePictureSizeRegistrar();
+                //run owin startup configurations from plugins
+                OwinStartupManager.RunAllOwinConfigurations(app);
 
-            app.UseMobAuthentication();
+               
+                //builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+
+                builder.UsePictureSizeRegistrar();
+
+                builder.UseMobAuthentication();
 
 #if DEBUG
-            app.UseErrorPage(new ErrorPageOptions());
+                builder.UseErrorPage(new ErrorPageOptions());
 #endif
-            var userIdProvider = new SignalRUserIdProvider();
-            GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
-            app.MapSignalR();
+                var userIdProvider = new SignalRUserIdProvider();
+                GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
+                builder.MapSignalR();
 
-            //webapi, last one always 
-            app.UseWebApi(config);
+                //webapi, last one always 
+                builder.UseWebApi(config);
+            });
+           
            
         }
     }

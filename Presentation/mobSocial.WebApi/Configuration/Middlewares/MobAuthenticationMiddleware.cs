@@ -1,4 +1,6 @@
 ﻿using System.Web;
+using DryIoc;
+using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Database;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using Owin;
@@ -14,18 +16,21 @@ namespace mobSocial.WebApi.Configuration.Middlewares
         {
             app.Use(async (context, next) =>
             {
-                if (ApplicationContext.Current.CurrentUser == null)
+                using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
                 {
-                    //avoid login page from this check, otherwise, we won't be able to login ever
-                    if (HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/login") ||
-                        HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/register"))
+                    if (ApplicationContext.Current.CurrentUser == null)
                     {
-                        await next();
-                        return;
+                        //avoid login page from this check, otherwise, we won't be able to login ever
+                        if (HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/login") ||
+                            HttpContext.Current.Request.Url.AbsolutePath.EndsWith("/register"))
+                        {
+                            await next();
+                            return;
 
+                        }
+                        HttpContext.Current.User = null;
+                        HttpContext.Current.GetOwinContext().Authentication.User = null;
                     }
-                    HttpContext.Current.User = null;
-                    HttpContext.Current.GetOwinContext().Authentication.User = null;
                 }
                 await next();
             });
