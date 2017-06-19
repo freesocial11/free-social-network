@@ -12,12 +12,13 @@ using mobSocial.Core.Infrastructure.Utils;
 using mobSocial.Core.Plugins;
 using mobSocial.Core.Startup;
 using mobSocial.Core.Tasks;
+using DryIoc.SignalR;
 
 namespace mobSocial.Core.Infrastructure.AppEngine
 {
     public class mobSocialEngine : IAppEngine
     {
-        public Container IocContainer { get; private set; }
+        public IContainer IocContainer { get; private set; }
 
         public static IList<PictureSize> PictureSizes { get; private set; }
 
@@ -66,7 +67,8 @@ namespace mobSocial.Core.Infrastructure.AppEngine
 
         public void SetupContainer()
         {
-            IocContainer = new Container(rules => rules.WithoutThrowIfDependencyHasShorterReuseLifespan(), new AsyncExecutionFlowScopeContext());
+            var assemblies = AssemblyLoader.GetAppDomainAssemblies().Where(x => x.FullName.StartsWith("mobSocial")).ToArray();
+            IocContainer = new Container(rules => rules.WithoutThrowIfDependencyHasShorterReuseLifespan(), new AsyncExecutionFlowScopeContext()).WithSignalR(assemblies.ToArray());
         }
 
         private void SetupDependencies(bool testMode = false)

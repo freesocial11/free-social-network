@@ -11,6 +11,7 @@ using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Diagnostics;
 
 [assembly: OwinStartup(typeof(OwinStartup))]
+
 namespace mobSocial.WebApi
 {
     public class OwinStartup
@@ -29,25 +30,27 @@ namespace mobSocial.WebApi
                 //run owin startup configurations from plugins
                 OwinStartupManager.RunAllOwinConfigurations(app);
 
-               
                 //builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
 
                 builder.UsePictureSizeRegistrar();
 
-                builder.UseMobAuthentication();
-
 #if DEBUG
                 builder.UseErrorPage(new ErrorPageOptions());
 #endif
-                var userIdProvider = new SignalRUserIdProvider();
-                GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
-                builder.MapSignalR();
+
 
                 //webapi, last one always 
                 builder.UseWebApi(config);
             });
-           
-           
+
+            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/signalr"), builder =>
+            {
+                builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+
+                var userIdProvider = new SignalRUserIdProvider();
+                GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
+                builder.MapSignalR();
+            });
         }
     }
 }

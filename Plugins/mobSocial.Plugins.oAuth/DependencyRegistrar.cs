@@ -15,7 +15,7 @@ namespace mobSocial.Plugins.OAuth
     {
         private const string ContextServiceKey = "mobSocial.Plugins.OAuth.DbContext";
 
-        public void RegisterDependencies(Container container)
+        public void RegisterDependencies(IContainer container)
         {
             container.Register<IClientService, ClientService>();
             container.Register<IAppTokenService, AppTokenService>();

@@ -4,7 +4,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
 {
     public interface IAppEngine
     {
-        Container IocContainer { get; }
+        IContainer IocContainer { get; }
 
         T Resolve<T>(bool returnDefaultIfNotResolved = false) where T : class;
 

@@ -25,7 +25,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
 {
     public class DependencyRegistrar : IDependencyRegistrar
     {
-        public void RegisterDependencies(Container container)
+        public void RegisterDependencies(IContainer container)
         {
             //http context
             container.RegisterInstance<HttpContextBase>(new HttpContextWrapper(HttpContext.Current) as HttpContextBase, new SingletonReuse());
@@ -80,7 +80,9 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.Register<IEventPublisherService, EventPublisherService>(reuse: Reuse.Singleton);
             //all consumers which are not interfaces
             //find all event consumer types
-            var allConsumerTypes = asm.SelectMany(x =>
+            var allConsumerTypes = asm
+                .Where(x => x.FullName.StartsWith("mobSocial"))
+                                        .SelectMany(x =>
                 {
                     try
                     {
