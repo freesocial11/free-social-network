@@ -396,7 +396,8 @@ namespace mobSocial.WebApi.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
+        [Route("get/countries")]
         public IHttpActionResult GetAllCountries()
         {
 
@@ -404,11 +405,12 @@ namespace mobSocial.WebApi.Controllers
             var model = new List<object>();
             countries.ForEach(x => model.Add(new {x.Id, x.Name }));
 
-            return Json(model);
+            return RespondSuccess(new { Countries = model });
         }
 
 
-        [HttpPost]
+        [HttpGet]
+        [Route("get/states")]
         public IHttpActionResult GetStateProvinces(int countryId)
         {
             var states = _stateService.Get(x => x.CountryId == countryId).ToList();
@@ -420,10 +422,11 @@ namespace mobSocial.WebApi.Controllers
 
 
 
-        [HttpPost]
-        public IHttpActionResult Search(string nameKeyword, string city, int? stateProvinceId, int? countryId)
+        [HttpGet]
+        [Route("get/all")]
+        public IHttpActionResult Search(string search = "", string city = "", int? stateProvinceId = null, int? countryId = null)
         {
-            var businessResults = _businessPageService.Search(nameKeyword, city, stateProvinceId, countryId);
+            var businessResults = _businessPageService.Search(search, city, stateProvinceId, countryId);
 
             var results = new List<object>();
             foreach (var item in businessResults)

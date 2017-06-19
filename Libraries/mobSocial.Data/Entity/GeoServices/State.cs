@@ -12,4 +12,7 @@ namespace mobSocial.Data.Entity.GeoServices
 
         public int DisplayOrder { get; set; }
     }
+
+    public class StateMap : BaseEntityConfiguration<State> { }
+
 }

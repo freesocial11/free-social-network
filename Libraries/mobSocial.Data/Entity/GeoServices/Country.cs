@@ -12,4 +12,6 @@ namespace mobSocial.Data.Entity.GeoServices
 
         public int DisplayOrder { get; set; }
     }
+
+    public class CountryMap : BaseEntityConfiguration<Country> { }
 }
