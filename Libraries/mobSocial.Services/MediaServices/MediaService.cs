@@ -101,9 +101,12 @@ namespace mobSocial.Services.MediaServices
 
         public string GetPictureUrl(Media picture, int width = 0, int height = 0, bool returnDefaultIfNotFound = false)
         {
+
             //check if picture is not null
             if (picture == null || picture.Id == 0)
-                return string.Empty;
+            {
+                return _generalSettings.ImageServerDomain + _mediaSettings.DefaultImageUrl;
+            }
 
             if (_mediaSettings.PictureSaveLocation == MediaSaveLocation.Database)
             {
@@ -124,6 +127,10 @@ namespace mobSocial.Services.MediaServices
             }
             //return the image url
             var imageServeUrl = expectedFile.Replace("~", _generalSettings.ImageServerDomain);
+            if (string.IsNullOrEmpty(imageServeUrl))
+            {
+                imageServeUrl = _generalSettings.ImageServerDomain + _mediaSettings.DefaultImageUrl;
+            }
             return imageServeUrl;
         }
 

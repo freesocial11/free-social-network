@@ -86,6 +86,11 @@ namespace mobSocial.Data.Entity.Settings
         /// </summary>
         public string DefaultSkillCoverUrl { get; set; }
 
+        /// <summary>
+        /// Default image that'll be used if a particular image is not found
+        /// </summary>
+        public string DefaultImageUrl { get; set; }
+
     }
 
 
