@@ -63,7 +63,14 @@ namespace mobSocial.Services.Extensions
         public static T GetPropertyValueAs<T>(this IHasEntityProperties entity, string propertyName, T defaultValue = default(T))
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
-            var typeName = entity.GetType().BaseType?.Name;
+            var type = entity.GetType();
+            if (type.Namespace == "System.Data.Entity.DynamicProxies")
+            {
+                type = type.BaseType;
+            }
+            var typeName = type?.Name; //check for proxy types
+            if (typeName == null)
+                return defaultValue;
             var entityProperty =  entityPropertyService.Get(
                     x => x.EntityName == typeName && x.EntityId == entity.Id && x.PropertyName == propertyName,
                     null).FirstOrDefault();
