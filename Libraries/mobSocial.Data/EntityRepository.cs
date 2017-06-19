@@ -46,9 +46,10 @@ namespace mobSocial.Data
         {
            _SetupContexts();
             var dbSet = _entityDbSet.AsQueryable();
+            dbSet = dbSet.Where(x => x.Id == id);
             dbSet = earlyLoad.Aggregate(dbSet, (current, el) => current.Include(el));
 
-            return dbSet.FirstOrDefault(x => x.Id == id);
+            return dbSet.FirstOrDefault();
         }
 
         public IQueryable<T> Get(Expression<Func<T, bool>> @where)
