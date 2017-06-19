@@ -101,9 +101,10 @@ namespace mobSocial.WebApi.Controllers
 
             if (model.Count < 15)
             {
+                var remainingCount = 15 - model.Count;
                 var friendsIds = _friendService.GetFriends(currentUser.Id, 1, int.MaxValue)
                     .Where(x => !allReceiverIds.Contains(x.FromCustomerId) && !allReceiverIds.Contains(x.ToCustomerId))
-                    .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId);
+                    .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId).Take(remainingCount).ToList();
 
                 var userModels = _userService.Get(x => friendsIds.Contains(x.Id)).ToList();
 
@@ -248,14 +249,14 @@ namespace mobSocial.WebApi.Controllers
             _conversationReplyService.Insert(reply);
 
             var model = reply.ToModel();
-            Hub.Clients.User(currentUser.Id.ToString()).conversationReply(model, conversation.Id);
+            Hub.Clients.User(currentUser.Id.ToString()).conversationReply(model, conversation.Id, toUserId);
 
             //change reply status for other receivers
             model.ReplyStatus = 0;
             //notify hubs except current user
             var conversationUserIds = conversation.GetUserIds().Select(x => x.ToString()).ToList();
             conversationUserIds.Remove(currentUser.Id.ToString());
-            Hub.Clients.Users(conversationUserIds).conversationReply(reply.ToModel(), conversation.Id);
+            Hub.Clients.Users(conversationUserIds).conversationReply(model, conversation.Id);
 
             return RespondSuccess();
         }

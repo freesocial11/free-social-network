@@ -265,7 +265,7 @@ namespace mobSocial.WebApi.Controllers
             }
             var currentUser = ApplicationContext.Current.CurrentUser;
             var friends =
-                _friendService.GetFriends(currentUser.Id, requestModel.Page, requestModel.Count, true).Where(x => x.Confirmed).ToList();
+                _friendService.GetFriends(currentUser.Id, requestModel.Page, int.MaxValue, true).Where(x => x.Confirmed).Take(requestModel.Count).ToList();
 
             //get user entities
             var userIds = friends.Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId).ToArray();
