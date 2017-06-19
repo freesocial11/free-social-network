@@ -225,6 +225,7 @@
       <DependentUpon>201706190904121_GeoServices.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\MigrationManager.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
     <Compile Include="Migrations\mobSocialDbMigrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
