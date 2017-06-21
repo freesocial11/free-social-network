@@ -6,6 +6,7 @@ using mobSocial.Data.Database;
 using mobSocial.Services.Installation;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Models.Installation;
+using mobSocial.Data.Migrations;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -74,6 +75,15 @@ namespace mobSocial.WebApi.Controllers
 
             var connectionSucceeds = DatabaseManager.DatabaseConnects(connectionString);
             return Response(new { Success = connectionSucceeds });
+        }
+
+        [Route("install/update")]
+        [HttpPost]
+        [Authorize]
+        public IHttpActionResult Update()
+        {
+            MigrationManager.UpdateDatabaseToLatestVersion();
+            return RespondSuccess();
         }
     }
 }
