@@ -163,7 +163,6 @@ namespace mobSocial.WebApi.Controllers
             return Json(new { Success = true, People = model });
         }
 
-        [Authorize]
         [HttpGet]
         [Route("getcustomerfriends")]
         public IHttpActionResult GetCustomerFriends(int customerId , int howMany = 0, bool random = false)

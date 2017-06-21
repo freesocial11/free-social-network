@@ -141,12 +141,11 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/{idOrUserName}/basic")]
         [HttpGet]
-        [Authorize]
         public async Task<IHttpActionResult> GetBasic(string idOrUserName)
         {
 
             //first get the user
-            var user = await GetUser(idOrUserName, true);
+            var user = await GetUser(idOrUserName);
             if (user == null)
                 return NotFound();
 
