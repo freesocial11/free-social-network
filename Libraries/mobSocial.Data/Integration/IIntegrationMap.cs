@@ -8,6 +8,6 @@ namespace mobSocial.Data.Integration
 
         Dictionary<string, string> SourceToDestinationColumnMapping { get; }
 
-        string WhereString { get; set; }
+        string WhereString { get; }
     }
 }

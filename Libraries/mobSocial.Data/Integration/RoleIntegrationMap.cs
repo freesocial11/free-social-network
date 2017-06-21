@@ -16,6 +16,6 @@ namespace mobSocial.Data.Integration
             {"IsActive", "IsActive" },
         };
 
-        public string WhereString { get; set; }
+        public string WhereString { get; }
     }
 }

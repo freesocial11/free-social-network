@@ -13,6 +13,6 @@ namespace mobSocial.Data.Integration
             {"UserId", "UserId"},
             {"RoleId", "RoleId"}
         };
-        public string WhereString { get; set; }
+        public string WhereString { get; }
     }
 }

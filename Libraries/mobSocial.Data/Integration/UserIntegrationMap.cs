@@ -30,6 +30,6 @@ namespace mobSocial.Data.Integration
             {"Deleted", "Deleted"}
         };
 
-        public string WhereString { get; set; }
+        public string WhereString { get; }
     }
 }
