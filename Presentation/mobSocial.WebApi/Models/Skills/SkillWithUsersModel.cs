@@ -29,5 +29,7 @@ namespace mobSocial.WebApi.Models.Skills
         public int LikeStatus { get; set; }
 
         public int TotalLikes { get; set; }
+
+        public bool HasSkill { get; set; }
     }
 }

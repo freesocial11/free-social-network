@@ -84,6 +84,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             model.TotalComments = commentService.GetCommentsCount(skill.Id, "skill");
             model.LikeStatus = likeService.GetCustomerLike<Skill>(currentUser.Id, skill.Id) == null ? 0 : 1;
             model.TotalLikes = likeService.GetLikeCount<Skill>(skill.Id);
+
+            model.HasSkill = userSkills.Any(x => x.UserId == currentUser.Id);
             return model;
         }
     }
