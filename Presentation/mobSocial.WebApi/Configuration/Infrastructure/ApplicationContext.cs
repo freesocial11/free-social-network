@@ -74,7 +74,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             //set current user if login succeeded
             if (loginStatus == LoginStatus.Success)
             {
-                _user = mobSocialEngine.ActiveEngine.Resolve<IUserService>().First(x => x.Email == email, earlyLoad: x=> x.UserRoles.Select(y => y.Role));
+                _user = mobSocialEngine.ActiveEngine.Resolve<IUserService>().GetCompleteUser(email);
             }
             return loginStatus;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Data.Entity.Users;
@@ -9,9 +10,34 @@ namespace mobSocial.Services.Users
     public class UserService : MobSocialEntityService<User>, IUserService
     {
         private readonly IDataRepository<Role> _roleRepository;
-        public UserService(IDataRepository<User> dataRepository, IDataRepository<Role> roleRepository) : base(dataRepository)
+        private readonly IDataRepository<UserRole> _userRoleRepository;
+
+        public UserService(IDataRepository<User> dataRepository, IDataRepository<Role> roleRepository, IDataRepository<UserRole> userRoleRepository) : base(dataRepository)
         {
             _roleRepository = roleRepository;
+            _userRoleRepository = userRoleRepository;
+        }
+
+        public User GetCompleteUser(int userId)
+        {
+            var user = Get(userId);
+            if (user == null)
+                return null;
+            //user roles
+            var userRoleQuery = _userRoleRepository.Get(x => x.UserId == userId, earlyLoad: x => x.Role);
+            user.UserRoles = userRoleQuery.ToList();
+            return user;
+        }
+
+        public User GetCompleteUser(string email)
+        {
+            var user = FirstOrDefault(x => x.Email == email);
+            if (user == null)
+                return null;
+            //user roles
+            var userId = user.Id;
+            user.UserRoles = _userRoleRepository.Get(x => x.UserId == userId, earlyLoad: x => x.Role).ToList();
+            return user;
         }
 
         public IList<User> SearchUsers(string searchText, bool excludeLoggedInUser, int page, int count)
