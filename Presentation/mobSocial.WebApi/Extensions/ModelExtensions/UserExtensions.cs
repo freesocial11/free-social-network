@@ -4,6 +4,7 @@ using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
+using mobSocial.Data.Enum;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.MediaServices;
@@ -43,7 +44,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             {
                 model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
                 model.FollowingCount = followService.Count(x => x.UserId == user.Id);
-                model.CanFollow = currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
+                model.CanFollow = currentUser != null && currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
                 if(model.CanFollow)
                     model.FollowStatus = followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
             }
@@ -52,7 +53,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             {
                 model.FriendCount =
                 friendService.Count(x => x.Confirmed && (x.FromCustomerId == user.Id || x.ToCustomerId == user.Id));
-                model.FriendStatus = friendService.GetFriendStatus(currentUser.Id, user.Id);
+                model.FriendStatus = currentUser != null ? friendService.GetFriendStatus(currentUser.Id, user.Id) : FriendStatus.None;
             }
 
             if (!string.IsNullOrEmpty(model.CoverImageUrl) && !string.IsNullOrEmpty(model.ProfileImageUrl))

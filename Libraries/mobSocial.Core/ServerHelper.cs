@@ -58,7 +58,7 @@ namespace mobSocial.Core
         public static string GetRelativePathFromLocalPath(string localPath)
         {
             var appPath = HttpContext.Current.Server.MapPath("~");
-            var res = $"~{localPath.Replace(appPath, "").Replace("\\", "/")}";
+            var res = $"~/{localPath.Replace(appPath, "").Replace("\\", "/")}";
             return res;
         }
         /// <summary>

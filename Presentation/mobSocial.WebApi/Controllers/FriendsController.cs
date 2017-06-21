@@ -226,7 +226,7 @@ namespace mobSocial.WebApi.Controllers
             {
                 var friendModel = new FriendPublicModel() {
                     Id = c.Id,
-                    DisplayName = c.Name.Trim(),
+                    DisplayName = (c.Name ?? c.Email).Trim(),
                     PictureUrl = _pictureService.GetPictureUrl(c.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), returnDefaultIfNotFound: true),
                     SeName = c.GetPermalink().Slug
                 };
