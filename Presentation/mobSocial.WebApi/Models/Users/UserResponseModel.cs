@@ -53,5 +53,7 @@ namespace mobSocial.WebApi.Models.Users
 
         public bool IsOnline { get; set; }
 
+        public string SeName { get; set; }
+
     }
 }

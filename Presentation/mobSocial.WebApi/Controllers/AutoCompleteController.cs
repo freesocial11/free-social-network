@@ -44,7 +44,7 @@ namespace mobSocial.WebApi.Controllers
             if (!ModelState.IsValid || requestModel == null)
                 return BadRequest();
 
-            if (requestModel.Count > 30)
+            if (requestModel.Count <= 0 || requestModel.Count > 30)
                 requestModel.Count = 30;
 
             var types = csvTypes.ToLowerInvariant().Split(',');//comma separated values (csv's)
@@ -58,6 +58,7 @@ namespace mobSocial.WebApi.Controllers
             {
                 searchRoles = new[] { SystemRoleNames.Registered };
             }
+            requestModel.Search = requestModel.Search ?? requestModel.SearchTerm ?? requestModel.Term;
             //are users requested?
             if (types.Any(x => x == "users"))
             {
@@ -75,8 +76,8 @@ namespace mobSocial.WebApi.Controllers
             //are skills requested?
             if (types.Any(x => x == "businesses"))
             {
-                var skills = _skillService.SearchSkills(requestModel.Search, 1, requestModel.Count);
-                model.Skills = skills.Select(x => x.ToModel());
+                var business = _businessPageService.Search(requestModel.Search, null, null, null);
+                model.Businesses = business.Select(x => x.ToModel());
             }
 
             var response = RespondSuccess(new { AutoComplete = model });
