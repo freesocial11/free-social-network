@@ -165,13 +165,15 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpGet]
         [Route("getcustomerfriends")]
-        public IHttpActionResult GetCustomerFriends(int customerId , int howMany = 0, bool random = false)
+        public IHttpActionResult GetCustomerFriends(int customerId , int howMany = 0, int page = 1, bool random = false)
         {
 
             if (customerId == 0)
                 customerId = ApplicationContext.Current.CurrentUser.Id;
+            if (howMany <= 0)
+                howMany = int.MaxValue;
 
-            var friends = _friendService.GetFriends(customerId).ToList();
+            var friends = _friendService.GetFriends(customerId, page, howMany).ToList();
 
             var model = new List<UserFriendModel>();
 
@@ -197,7 +199,9 @@ namespace mobSocial.WebApi.Controllers
 
             }
 
-            return Json(new { Success = true, Friends = model });
+            var sent = howMany * page;
+            var remaining = _friendService.GetTotalFriendCount(customerId) - sent;
+            return Json(new { Success = true, Friends = model, HaveMore = (remaining > 0) });
 
         }
       

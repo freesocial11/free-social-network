@@ -66,5 +66,10 @@ namespace mobSocial.Services.Social
         {
             return Get(x => x.FromCustomerId == customerId || x.ToCustomerId == customerId).ToList();
         }
+
+        public int GetTotalFriendCount(int customerId)
+        {
+            return Count(x => x.FromCustomerId == customerId || x.ToCustomerId == customerId);
+        }
     }
 }

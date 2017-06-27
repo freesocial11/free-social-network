@@ -19,5 +19,7 @@ namespace mobSocial.Services.Social
         IQueryable<Friend> GetFriends(int customerId, int page = 1, int count = 15, bool random = false);
 
         IList<Friend> GetAllCustomerFriends(int customerId);
+
+        int GetTotalFriendCount(int customerId);
     }
 }
