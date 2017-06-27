@@ -99,31 +99,29 @@ namespace mobSocial.WebApi.Controllers
             }
             var allReceiverIds = model.Where(x => x.ReceiverType == "User").Select(x => x.ReceiverId).ToList();
 
-            if (model.Count < 15)
+            //more friends to conversation?
+            var friendsIds = _friendService.GetFriends(currentUser.Id, 1, int.MaxValue)
+                .Where(x => !allReceiverIds.Contains(x.FromCustomerId) && !allReceiverIds.Contains(x.ToCustomerId))
+                .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId).ToList();
+
+            var userModels = _userService.Get(x => friendsIds.Contains(x.Id)).ToList();
+
+            foreach (var uModel in userModels)
             {
-                var remainingCount = 15 - model.Count;
-                var friendsIds = _friendService.GetFriends(currentUser.Id, 1, int.MaxValue)
-                    .Where(x => !allReceiverIds.Contains(x.FromCustomerId) && !allReceiverIds.Contains(x.ToCustomerId))
-                    .Select(x => x.FromCustomerId == currentUser.Id ? x.ToCustomerId : x.FromCustomerId).Take(remainingCount).ToList();
-
-                var userModels = _userService.Get(x => friendsIds.Contains(x.Id)).ToList();
-
-                foreach(var uModel in userModels)
+                var modelItem = new ConversationOverviewModel()
                 {
-                    var modelItem = new ConversationOverviewModel() {
-                        ConversationId = 0,
-                        UnreadCount = 0,
-                        ReceiverName = uModel.Name,
-                        ReceiverId = uModel.Id,
-                        ReceiverType = "User",
-                        ReceiverImageUrl = _mediaService.GetPictureUrl(uModel.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage)
-                    };
-                    if (string.IsNullOrEmpty(modelItem.ReceiverImageUrl))
-                        modelItem.ReceiverImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
-                    model.Add(modelItem);
-                }
-
+                    ConversationId = 0,
+                    UnreadCount = 0,
+                    ReceiverName = uModel.Name,
+                    ReceiverId = uModel.Id,
+                    ReceiverType = "User",
+                    ReceiverImageUrl = _mediaService.GetPictureUrl(uModel.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage)
+                };
+                if (string.IsNullOrEmpty(modelItem.ReceiverImageUrl))
+                    modelItem.ReceiverImageUrl = _mediaSettings.DefaultUserProfileImageUrl;
+                model.Add(modelItem);
             }
+
             return RespondSuccess(new
             {
                 Conversations = model
