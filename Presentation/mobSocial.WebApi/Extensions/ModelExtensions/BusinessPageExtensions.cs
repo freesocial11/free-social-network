@@ -1,4 +1,7 @@
-﻿using mobSocial.Data.Entity.BusinessPages;
+﻿using System.Linq;
+using mobSocial.Data.Entity.BusinessPages;
+using mobSocial.Services.Extensions;
+using mobSocial.Services.MediaServices;
 using mobSocial.WebApi.Models.BusinessPages;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
@@ -24,6 +27,17 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Description = businessPage.Description,
                 MetaKeywords = businessPage.MetaKeywords,
                 MetaDescription = businessPage.MetaDescription,
+            };
+            return model;
+        }
+
+        public static BusinessPageAutocompleteModel ToAutocompleteModel(this BusinessPage businessPage, IMediaService mediaService)
+        {
+            var model = new BusinessPageAutocompleteModel()
+            {
+                Name = businessPage.Name,
+                SeName = businessPage.GetPermalink().Slug,
+                Id = businessPage.Id
             };
             return model;
         }

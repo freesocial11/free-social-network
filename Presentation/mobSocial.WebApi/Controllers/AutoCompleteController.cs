@@ -76,8 +76,17 @@ namespace mobSocial.WebApi.Controllers
             //are skills requested?
             if (types.Any(x => x == "businesses"))
             {
-                var business = _businessPageService.Search(requestModel.Search, null, null, null);
-                model.Businesses = business.Select(x => x.ToModel());
+                var business = _businessPageService.Get(x => x.Name.StartsWith(requestModel.Search), page: 1,
+                    count: requestModel.Count).ToList();
+                //todo:because we don't have any pictures so far for business, we set default for all
+                //later we move this to extension method 
+                var pictureUrl = _mediaService.GetPictureUrl(null, returnDefaultIfNotFound: true);
+                var businesses = business.Select(x => x.ToAutocompleteModel(_mediaService)).ToList();
+                foreach (var b in businesses)
+                    b.ImageUrl = pictureUrl;
+
+                model.Businesses = businesses;
+
             }
 
             var response = RespondSuccess(new { AutoComplete = model });

@@ -304,6 +304,7 @@
     <Compile Include="Models\Battles\VideoBattleVotePublicModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantBoxModel.cs" />
     <Compile Include="Models\Battles\VideoParticipantPublicModel.cs" />
+    <Compile Include="Models\BusinessPages\BusinessPageAutocompleteModel.cs" />
     <Compile Include="Models\BusinessPages\BusinessPageCouponModel.cs" />
     <Compile Include="Models\BusinessPages\BusinessPageModel.cs" />
     <Compile Include="Models\BusinessPages\BusinessPageSearchModel.cs" />
