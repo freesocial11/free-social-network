@@ -45,8 +45,6 @@ namespace mobSocial.WebApi
 
             app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/signalr"), builder =>
             {
-                builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
-
                 var userIdProvider = new SignalRUserIdProvider();
                 GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
                 builder.MapSignalR();

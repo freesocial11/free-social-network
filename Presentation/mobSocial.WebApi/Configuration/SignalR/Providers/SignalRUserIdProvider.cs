@@ -1,4 +1,6 @@
-﻿using mobSocial.WebApi.Configuration.Infrastructure;
+﻿using DryIoc;
+using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using Microsoft.AspNet.SignalR;
 
 namespace mobSocial.WebApi.Configuration.SignalR.Providers
@@ -7,7 +9,10 @@ namespace mobSocial.WebApi.Configuration.SignalR.Providers
     {
         public string GetUserId(IRequest request)
         {
-            return ApplicationContext.Current.CurrentUser?.Id.ToString();
+            using (mobSocialEngine.ActiveEngine.IocContainer.OpenScope(Reuse.WebRequestScopeName))
+            {
+                return ApplicationContext.Current.CurrentUser?.Id.ToString();
+            }
         }
     }
 }
