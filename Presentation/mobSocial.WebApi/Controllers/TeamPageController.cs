@@ -139,7 +139,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("get/{id:int}")]
         public IHttpActionResult Get(int id)
         {
-            var teamPage = _teamPageService.Get(id);
+            var teamPage = _teamPageService.Get(id, earlyLoad: x => x.GroupPages.Select(y => y.Members));
             if (teamPage == null)
             {
                 return NotFound();
@@ -254,7 +254,9 @@ namespace mobSocial.WebApi.Controllers
                 Description = model.Description,
                 PayPalDonateUrl = model.PayPalDonateUrl,
                 DisplayOrder = model.DisplayOrder,
-                IsDefault = model.IsDefault
+                IsDefault = model.IsDefault,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow
             };
 
             _teamPageGroupService.Insert(group);
@@ -348,7 +350,7 @@ namespace mobSocial.WebApi.Controllers
                 return NotFound();
             }
             //if there are more than one group and it's the default group that's being deleted
-            if (group.IsDefault)
+            if (group.IsDefault && group.Members.Count > 0)
             {
                 if (team.GroupPages.Count > 1)
                 {
@@ -435,7 +437,7 @@ namespace mobSocial.WebApi.Controllers
                 });
 
             //does this team exist
-            var team = _teamPageService.Get(model.TeamId);
+            var team = _teamPageService.Get(model.TeamId, earlyLoad: x => x.GroupPages);
             if (team == null ||
                 (team.CreatedBy != ApplicationContext.Current.CurrentUser.Id && !ApplicationContext.Current.CurrentUser.IsAdministrator()))
             {
@@ -503,7 +505,7 @@ namespace mobSocial.WebApi.Controllers
         public IHttpActionResult DeleteGroupMember(int groupId, int memberId)
         {
             //first check if the group exist?
-            var group = _teamPageGroupService.Get(groupId);
+            var group = _teamPageGroupService.Get(groupId, c => c.Team);
             if (group == null)
             {
                 return NotFound();

@@ -26,7 +26,7 @@ namespace mobSocial.Services.TeamPages
             //first let's query the team id of the group
             var group = _groupPageRepository.Get(x => x.Id == groupId).FirstOrDefault();
             //query the team page
-            return @group == null ? null : Get(@group.TeamPageId);
+            return @group == null ? null : Get(@group.TeamPageId, x => x.GroupPages.Select(y => y.Members));
 
         }
 
