@@ -4,6 +4,7 @@ using System.Linq;
 using mobSocial.Core.Data;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.EntityProperties;
+using mobSocial.Data.Extensions;
 using mobSocial.Data.Interfaces;
 using mobSocial.Services.EntityProperties;
 using Newtonsoft.Json;
@@ -21,7 +22,8 @@ namespace mobSocial.Services.Extensions
         public static IList<EntityProperty> GetProperties<T>(this IHasEntityProperties<T> entity) where T: BaseEntity
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
-            return entityPropertyService.Get(x => x.EntityName == typeof(T).Name && x.EntityId == entity.Id, null).ToList();
+            var typeName = entity.GetUnproxiedTypeName();
+            return entityPropertyService.Get(x => x.EntityName == typeName && x.EntityId == entity.Id, null).ToList();
         }
         /// <summary>
         /// Gets the property with specified name for current entity
@@ -33,9 +35,10 @@ namespace mobSocial.Services.Extensions
         public static EntityProperty GetProperty<T>(this IHasEntityProperties<T> entity, string propertyName) where T : BaseEntity
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
+            var typeName = entity.GetUnproxiedTypeName();
             return
                 entityPropertyService.Get(
-                    x => x.EntityName == typeof(T).Name && x.EntityId == entity.Id && x.PropertyName == propertyName,
+                    x => x.EntityName == typeName && x.EntityId == entity.Id && x.PropertyName == propertyName,
                     null).FirstOrDefault();
         }
 
@@ -63,12 +66,7 @@ namespace mobSocial.Services.Extensions
         public static T GetPropertyValueAs<T>(this IHasEntityProperties entity, string propertyName, T defaultValue = default(T))
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
-            var type = entity.GetType();
-            if (type.Namespace == "System.Data.Entity.DynamicProxies")
-            {
-                type = type.BaseType;
-            }
-            var typeName = type?.Name; //check for proxy types
+            var typeName = entity.GetUnproxiedTypeName();
             if (typeName == null)
                 return defaultValue;
             var entityProperty =  entityPropertyService.Get(
@@ -86,11 +84,12 @@ namespace mobSocial.Services.Extensions
         public static void SetPropertyValue<T>(this IHasEntityProperties<T> entity, string propertyName, object value)
             where T : BaseEntity
         {
+            var typeName = entity.GetUnproxiedTypeName();
             //does this property exist?
             var property = GetProperty(entity, propertyName) ?? new EntityProperty()
             {
                 EntityId = entity.Id,
-                EntityName = typeof(T).Name,
+                EntityName = typeName,
                 PropertyName = propertyName
             };
 
@@ -107,10 +106,11 @@ namespace mobSocial.Services.Extensions
             where T : BaseEntity
         {
             var entityPropertyService = mobSocialEngine.ActiveEngine.Resolve<IEntityPropertyService>();
+            var typeName = entity.GetUnproxiedTypeName();
             if (propertyValue == null)
-                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.EntityId == entity.Id);
+                entityPropertyService.Delete(x => x.EntityName == typeName && x.PropertyName == propertyName && x.EntityId == entity.Id);
             else
-                entityPropertyService.Delete(x => x.EntityName == typeof(T).Name && x.PropertyName == propertyName && x.Value == propertyValue && x.EntityId == entity.Id);
+                entityPropertyService.Delete(x => x.EntityName == typeName && x.PropertyName == propertyName && x.Value == propertyValue && x.EntityId == entity.Id);
         }
     }
 }

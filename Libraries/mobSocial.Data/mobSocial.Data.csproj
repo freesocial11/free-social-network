@@ -75,6 +75,7 @@
     <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
     <Compile Include="Entity\Users\IRoleNameProvider.cs" />
     <Compile Include="Entity\Users\RoleNameProvider.cs" />
+    <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Integration\IntegrationManager.cs" />
     <Compile Include="Database\Provider\SqlCeDatabaseProvider.cs" />
     <Compile Include="Database\Provider\SqlServerDatabaseProvider.cs" />
