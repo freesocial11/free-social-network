@@ -430,6 +430,34 @@ namespace mobSocial.WebApi.Controllers
             return RespondSuccess();
         }
 
+        [Authorize]
+        [Route("configuration/post/{configurationType}/{configurationValue}")]
+        [HttpPost]
+        public IHttpActionResult PostConfiguration(UserConfigurationType configurationType, string configurationValue)
+        {
+            //get current user
+            var user = ApplicationContext.Current.CurrentUser;
+            user.SetPropertyValue(configurationType.ToString(), configurationValue);
+            return RespondSuccess();
+        }
+
+        [Authorize]
+        [Route("configuration/get")]
+        [HttpGet]
+        public IHttpActionResult GetConfiguration()
+        {
+            //get current user
+            var user = ApplicationContext.Current.CurrentUser;
+            var configurationNames = System.Enum.GetNames(typeof(UserConfigurationType));
+            //get all properties
+            var properties = user.GetProperties().Where(x => configurationNames.Contains(x.PropertyName));
+            var model = properties.Select(x => x.ToUserConfigurationModel());
+            return RespondSuccess(new
+            {
+                ConfigurationValues = model
+            });
+        }
+
         #region helpers
 
         private async Task<User> GetUser(string idOrUserName, bool loadRelated = false)

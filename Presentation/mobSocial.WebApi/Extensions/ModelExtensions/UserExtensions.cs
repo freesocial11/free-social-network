@@ -2,6 +2,7 @@
 using System.Linq;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Constants;
+using mobSocial.Data.Entity.EntityProperties;
 using mobSocial.Data.Entity.Settings;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
@@ -12,6 +13,7 @@ using mobSocial.Services.Notifications;
 using mobSocial.Services.Social;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Models.Users;
+using Newtonsoft.Json;
 
 namespace mobSocial.WebApi.Extensions.ModelExtensions
 {
@@ -20,7 +22,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
         public static UserResponseModel ToModel(this User user, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService = null, IFriendService friendService = null, INotificationService notificationService = null)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
-            var model = new UserResponseModel() {
+            var model = new UserResponseModel()
+            {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -46,7 +49,7 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 model.FollowerCount = followService.GetFollowerCount<User>(user.Id);
                 model.FollowingCount = followService.Count(x => x.UserId == user.Id);
                 model.CanFollow = currentUser != null && currentUser.Id != user.Id; //todo: Check if the current user can be followed or not according to user's personalized setting (to be implementedas well)
-                if(model.CanFollow)
+                if (model.CanFollow)
                     model.FollowStatus = followService.GetCustomerFollow<User>(currentUser.Id, user.Id) == null ? 0 : 1;
             }
 
@@ -71,14 +74,14 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 var now = DateTime.UtcNow;
                 var qNotifications =
                     notificationService.Get(x => x.UserId == currentUser.Id && x.PublishDateTime <= now,
-                        x => new {x.Id}, false, earlyLoad: x => x.NotificationEvent);
+                        x => new { x.Id }, false, earlyLoad: x => x.NotificationEvent);
 
                 var unreadCount = qNotifications.Count(x => !x.IsRead);
                 var notifications = qNotifications.Take(15).ToList();
                 model.Notifications = notifications.Select(x => x.ToModel()).ToList();
                 model.UnreadNotificationCount = unreadCount;
             }
-    
+
             //check if user is online or not
             model.IsOnline = true;
             return model;
@@ -88,7 +91,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
         {
             var userCoverId = user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId);
             var userProfileImageId = user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId);
-            var model = new UserEntityModel() {
+            var model = new UserEntityModel()
+            {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -117,7 +121,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
         {
             var userCoverId = user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId);
             var userProfileImageId = user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId);
-            var model = new UserEntityPublicModel() {
+            var model = new UserEntityPublicModel()
+            {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
@@ -130,6 +135,15 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             model.CoverImageUrl = userCoverId == 0 ? mediaSettings.DefaultUserProfileCoverUrl : mediaService.GetPictureUrl(userCoverId, PictureSizeNames.MediumCover) ?? mediaSettings.DefaultUserProfileCoverUrl;
             model.ProfileImageUrl = userProfileImageId == 0 ? mediaSettings.DefaultUserProfileImageUrl : mediaService.GetPictureUrl(userProfileImageId, PictureSizeNames.MediumProfileImage) ?? mediaSettings.DefaultUserProfileImageUrl;
             return model;
+        }
+
+        public static UserConfigurationModel ToUserConfigurationModel(this EntityProperty entityrProperty)
+        {
+            return new UserConfigurationModel()
+            {
+                PropertyName = entityrProperty.PropertyName,
+                PropertyValue = JsonConvert.DeserializeAnonymousType(entityrProperty.Value, "")
+            };
         }
     }
 }

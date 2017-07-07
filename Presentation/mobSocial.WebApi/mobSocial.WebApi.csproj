@@ -375,6 +375,7 @@
     <Compile Include="Models\Users\ChangePasswordModel.cs" />
     <Compile Include="Models\Users\RoleResponseModel.cs" />
     <Compile Include="Models\Users\UserActivationModel.cs" />
+    <Compile Include="Models\Users\UserConfigurationModel.cs" />
     <Compile Include="Models\Users\UserEntityPublicModel.cs" />
     <Compile Include="Models\Users\UserEntityModel.cs" />
     <Compile Include="Models\Users\UserGetModel.cs" />
