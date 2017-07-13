@@ -9,5 +9,7 @@ namespace mobSocial.WebApi.Models.Skills
         public int DisplayOrder { get; set; }
 
         public int UserId { get; set; }
+
+        public string SeName { get; set; }
     }
 }

@@ -74,7 +74,7 @@ namespace mobSocial.WebApi.Controllers
             int total;
             var skills = _skillService.GetAllSkills(out total, string.Empty, page, count);
             var model = skills.Select(x => x.ToModel()).ToList();
-            return RespondSuccess(new { Skills = model, Total = total });
+            return RespondSuccess(new { Skills = model, Total = total, Page = page, Count = count });
         }
 
         [HttpGet]
@@ -91,7 +91,6 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         [Route("get/{slug}")]
         public IHttpActionResult GetSkill(string slug)
         {

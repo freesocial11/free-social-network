@@ -20,7 +20,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 DisplayOrder = skill.DisplayOrder,
                 Name = skill.Name,
                 Id = skill.Id,
-                UserId = skill.UserId
+                UserId = skill.UserId,
+                SeName = skill.GetPermalink().ToString()
             };
             return model;
         }
@@ -76,16 +77,23 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             model.TotalUsers = userSkillService.Count(x => x.SkillId == skill.Id);
             model.FollowerCount = followService.GetFollowerCount<Skill>(skill.Id);
 
-            //does this user follow this skill?
-            var userFollow = followService.GetCustomerFollow<Skill>(currentUser.Id, skill.Id);
-            model.CanFollow = currentUser.Id != skill.UserId;
-            model.FollowStatus = userFollow == null ? 0 : 1;
+            if (currentUser != null)
+            {
+                //does this user follow this skill?
+                var userFollow = followService.GetCustomerFollow<Skill>(currentUser.Id, skill.Id);
+                model.CanFollow = currentUser.Id != skill.UserId;
+                model.FollowStatus = userFollow == null ? 0 : 1;
+
+                model.LikeStatus = likeService.GetCustomerLike<Skill>(currentUser.Id, skill.Id) == null ? 0 : 1;
+
+                model.HasSkill = userSkills.Any(x => x.UserId == currentUser.Id);
+            }
+
 
             model.TotalComments = commentService.GetCommentsCount(skill.Id, "skill");
-            model.LikeStatus = likeService.GetCustomerLike<Skill>(currentUser.Id, skill.Id) == null ? 0 : 1;
+            
             model.TotalLikes = likeService.GetLikeCount<Skill>(skill.Id);
 
-            model.HasSkill = userSkills.Any(x => x.UserId == currentUser.Id);
             return model;
         }
     }

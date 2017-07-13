@@ -441,13 +441,15 @@ namespace mobSocial.WebApi.Controllers
             return RespondSuccess();
         }
 
-        [Authorize]
         [Route("configuration/get")]
         [HttpGet]
         public IHttpActionResult GetConfiguration()
         {
             //get current user
             var user = ApplicationContext.Current.CurrentUser;
+            if (user == null)
+                return RespondSuccess();
+
             var configurationNames = System.Enum.GetNames(typeof(UserConfigurationType));
             //get all properties
             var properties = user.GetProperties().Where(x => configurationNames.Contains(x.PropertyName));
