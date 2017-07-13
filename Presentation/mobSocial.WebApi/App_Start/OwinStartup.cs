@@ -1,4 +1,6 @@
-﻿using System.Web.Http;
+﻿using System.Web.Configuration;
+using System.Web.Http;
+using System.Web.Http.Cors;
 using DryIoc.Owin;
 using DryIoc.WebApi.Owin;
 using mobSocial.Core.Infrastructure.AppEngine;
@@ -20,6 +22,16 @@ namespace mobSocial.WebApi
         {
             //new configuration for owin
             var config = new HttpConfiguration();
+            var enableCors = WebConfigurationManager.AppSettings["enableCors"] != null &&
+                             WebConfigurationManager.AppSettings["enableCors"].ToLower() == "true";
+
+            if (enableCors)
+            {
+                var origins = WebConfigurationManager.AppSettings["corsAllowedOrigins"] ?? "*";
+                var cors = new EnableCorsAttribute(origins, "*", "GET,POST,PUT,DELETE");
+                config.EnableCors(cors);
+            };
+           
             //route registrations & other configurations
             WebApiConfig.Register(config);
 
