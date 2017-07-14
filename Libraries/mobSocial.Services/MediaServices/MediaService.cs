@@ -105,7 +105,7 @@ namespace mobSocial.Services.MediaServices
             //check if picture is not null
             if (picture == null || picture.Id == 0)
             {
-                return _generalSettings.ImageServerDomain + _mediaSettings.DefaultImageUrl;
+                return "//" + WebHelper.GetUrlFromPath(_mediaSettings.DefaultImageUrl, _generalSettings.ImageServerDomain);
             }
 
             if (_mediaSettings.PictureSaveLocation == MediaSaveLocation.Database)
