@@ -61,7 +61,9 @@ window.mobSocial.run([
         $rootScope.currentUserIs = function(id) {
             return $rootScope.CurrentUser && $rootScope.CurrentUser.Id == id;
         }
-        $rootScope.login = function(returnUrl) {
+        $rootScope.login = function (returnUrl) {
+            if (window.location.pathname == "/login")
+                return;
             returnUrl = returnUrl || window.location.href;
             //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
             var a = document.createElement("a");
