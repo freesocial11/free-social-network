@@ -22,6 +22,7 @@ namespace mobSocial.WebApi
         public static void Register(HttpConfiguration configuration)
         {
             _httpConfiguration = configuration;
+            //_httpConfiguration.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             //setup attribute routes
             configuration.MapHttpAttributeRoutes(new CentralizedPrefixProvider(ApiPrefix));
 
