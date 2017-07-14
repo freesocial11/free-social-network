@@ -6,7 +6,7 @@
         };
         this.response = function (response) {
             if (response.data) {
-                if (response.data.dbnotinstalled) {
+                if (response.data.dbnotinstalled && window.location.pathname != '/install') {
                     window.location.href = "/install";
                     return;
                 }
