@@ -5,6 +5,7 @@ using System.Reflection;
 using mobSocial.Core;
 using mobSocial.Core.Exception;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Core.Plugins;
 using mobSocial.Data.Constants;
 using mobSocial.Data.Database;
 using mobSocial.Data.Database.Initializer;
@@ -17,6 +18,7 @@ using mobSocial.Data.Integration;
 using mobSocial.Data.Migrations;
 using mobSocial.Services.Emails;
 using mobSocial.Services.Notifications;
+using mobSocial.Services.Plugins;
 using mobSocial.Services.Security;
 using mobSocial.Services.Settings;
 using mobSocial.Services.Users;
@@ -25,6 +27,12 @@ namespace mobSocial.Services.Installation
 {
     public class InstallationService : IInstallationService
     {
+        private readonly IPluginInstallerService _pluginInstallerService;
+        public InstallationService(IPluginInstallerService pluginInstallerService)
+        {
+            _pluginInstallerService = pluginInstallerService;
+        }
+
         public void Install()
         {
             //DatabaseManager.SetDbInitializer(new CreateOrUpdateTables<DatabaseContext>());
@@ -70,6 +78,11 @@ namespace mobSocial.Services.Installation
 
             //notification emails
             SeedNotificationEvents();
+
+            //install all the plugins as well
+            var plugins = PluginEngine.Plugins.Where(x => !x.Installed);
+            foreach (var plugin in plugins)
+                _pluginInstallerService.Install(plugin);
 
             //update config file
             UpdateWebConfig();
@@ -161,7 +174,10 @@ namespace mobSocial.Services.Installation
                 VideoSavePath = "~/Content/Media/Uploads/Videos",
                 OtherMediaSaveLocation = MediaSaveLocation.FileSystem,
                 OtherMediaSavePath = "~/Content/Media/Uploads/Others",
-                DefaultUserProfileImageUrl = "/api/Content/Media/d_male.jpg"
+                DefaultUserProfileImageUrl = "~/Content/Media/d_male.jpg",
+                DefaultImageUrl = "~/Content/Media/noimage.jpg",
+                DefaultSkillCoverUrl = "~/Content/Media/d_cover.jpg",
+                DefaultUserProfileCoverUrl = "~/Content/Media/d_cover.jpg",
             });
 
             //system settings
