@@ -13,7 +13,7 @@
         }
         $rootScope.BlockUi = true;
         $http(config).then(function(response) {
-            if (success)
+            if (response && success)
                 success(response.data);
             $rootScope.BlockUi = false;
         }, function(response) {
