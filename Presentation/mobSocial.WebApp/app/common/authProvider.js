@@ -32,28 +32,36 @@
             };
         },
         getLoggedInUser: function () {
+            var defer = $q.defer();
             var self = this;
-            if (!freshLoadComplete && self.isLoggedIn() == true) {
+            if (!freshLoadComplete) {
                 //get user from server
                 webClientService.get("/api/users/get/me", null,
                     function (response) {
                         if (response.Success) {
                             self.markLoggedIn(response.ResponseData.User);
                             freshLoadComplete = true;
+                            defer.resolve(response.ResponseData.User);
                         }
                     });
             } else {
-                return localStorageService.get(userInfoKey);
+                defer.resolve(localStorageService.get(userInfoKey));
             }
+            return defer.promise;
         },
         isLoggedIn: function () {
             //Authentication logic here
-            if (localStorageService.get(loggedInUserKey)) {
-                return true;
-            } else {
-                //Else send a rejection
-                return $q.reject('Not Authenticated');
-            }
+            var defer = $q.defer();
+            this.getLoggedInUser().then(function (user) {
+                if (user != "") {
+                    defer.resolve(user);
+                }
+                else {
+                    return defer.reject('Not Authenticated');
+                }
+            });
+
+            return defer.promise;
         },
         logout: function() {
             localStorageService.set(loggedInUserKey, false);
