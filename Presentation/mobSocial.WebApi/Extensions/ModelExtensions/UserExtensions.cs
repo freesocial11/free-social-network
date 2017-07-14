@@ -31,8 +31,8 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 DateCreatedUtc = user.DateCreated,
                 DateCreatedLocal = DateTimeHelper.GetDateInUserTimeZone(user.DateCreated, DateTimeKind.Utc, user),
                 UserName = user.UserName,
-                CoverImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId), PictureSizeNames.MediumCover),
-                ProfileImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage),
+                CoverImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultCoverId), PictureSizeNames.MediumCover, true),
+                ProfileImageUrl = mediaService.GetPictureUrl(user.GetPropertyValueAs<int>(PropertyNames.DefaultPictureId), PictureSizeNames.MediumProfileImage, true),
                 Active = user.Active,
                 Educations = user.Educations?.Select(x => x.ToModel(mediaService)).ToList(),
                 SeName = user.GetPermalink()?.Slug
