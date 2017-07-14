@@ -34,15 +34,14 @@ namespace mobSocial.WebApi
            
             //route registrations & other configurations
             WebApiConfig.Register(config);
+            //run owin startup configurations from plugins
+            OwinStartupManager.RunAllOwinConfigurations(app);
 
             app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/" + WebApiConfig.ApiPrefix), builder =>
             {
                 builder.UseInstallationVerifier();
 
-                //run owin startup configurations from plugins
-                OwinStartupManager.RunAllOwinConfigurations(app);
-
-                //builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
+               //builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
 
                 builder.UsePictureSizeRegistrar();
 
