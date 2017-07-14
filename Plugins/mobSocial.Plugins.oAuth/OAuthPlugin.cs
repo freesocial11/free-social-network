@@ -10,6 +10,8 @@ namespace mobSocial.Plugins.OAuth
     //original at http://bitoftech.net/2014/07/16/enable-oauth-refresh-tokens-angularjs-app-using-asp-net-web-api-2-owin/
     public class OAuthPlugin : BasePlugin, IAuthenticationPlugin
     {
+        public override bool IsSystemPlugin => true;
+
         public override RouteData GetConfigurationPageRouteData()
         {
             return null;

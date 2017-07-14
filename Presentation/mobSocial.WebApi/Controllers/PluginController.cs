@@ -51,6 +51,12 @@ namespace mobSocial.WebApi.Controllers
                 return RespondFailure();
             }
 
+            if (pluginInfo.IsSystemPlugin)
+            {
+                //was it a correct plugin?
+                VerboseReporter.ReportError("The plugin can't be uninstalled", "plugin");
+                return RespondFailure();
+            }
             //uninstall the plugin
             _pluginInstallerService.Uninstall(pluginInfo);
 

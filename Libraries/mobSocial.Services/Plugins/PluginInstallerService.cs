@@ -17,6 +17,7 @@ namespace mobSocial.Services.Plugins
 
         public void Uninstall(PluginInfo pluginInfo)
         {
+            if (!pluginInfo.Installed || pluginInfo.IsSystemPlugin)
                 return;
             pluginInfo.InitializePluginType();
             var pluginType = pluginInfo.LoadPluginInstance<IPlugin>();
