@@ -1,4 +1,5 @@
 ﻿using mobSocial.Core.Plugins;
+using mobSocial.Services.Extensions;
 
 namespace mobSocial.Services.Plugins
 {
@@ -8,7 +9,7 @@ namespace mobSocial.Services.Plugins
         {
             if (pluginInfo.Installed)
                 return;
-
+            pluginInfo.InitializePluginType();
             var pluginType = pluginInfo.LoadPluginInstance<IPlugin>();
             if(pluginType != null)
                 pluginType.Install();
@@ -16,9 +17,8 @@ namespace mobSocial.Services.Plugins
 
         public void Uninstall(PluginInfo pluginInfo)
         {
-            if (!pluginInfo.Installed)
                 return;
-
+            pluginInfo.InitializePluginType();
             var pluginType = pluginInfo.LoadPluginInstance<IPlugin>();
             if (pluginType != null)
                 pluginType.Uninstall();

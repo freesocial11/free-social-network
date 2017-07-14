@@ -132,6 +132,7 @@
     <Compile Include="Extensions\PaymentProcessorExtensions.cs" />
     <Compile Include="Extensions\PermalinkExtensions.cs" />
     <Compile Include="Extensions\PictureExtensions.cs" />
+    <Compile Include="Extensions\PluginInfoExtensions.cs" />
     <Compile Include="Extensions\UserCapabilityExtensions.cs" />
     <Compile Include="Formatter\FormatterService.cs" />
     <Compile Include="GeoServices\CountryService.cs" />

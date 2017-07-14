@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DryIoc;
 using mobSocial.Core.Plugins;
+using mobSocial.Services.Extensions;
 
 namespace mobSocial.Services.Plugins
 {
@@ -12,12 +12,7 @@ namespace mobSocial.Services.Plugins
             var pluginInfo = PluginEngine.Plugins.FirstOrDefault(x => x.SystemName == systemName);
             if (pluginInfo != null)
             {
-                if (pluginInfo.PluginType == null)
-                {
-                    //we need to load the type of plugin
-                    var allTypes = pluginInfo.ShadowAssembly.GetLoadedTypes();
-                    pluginInfo.PluginType = allTypes.FirstOrDefault(x => typeof(IPlugin).IsAssignableFrom(x));
-                }
+                pluginInfo.InitializePluginType();
             }
             return pluginInfo;
             
