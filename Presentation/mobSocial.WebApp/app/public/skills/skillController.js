@@ -30,7 +30,7 @@
                    if (response.Success) {
                        skill = response.ResponseData.Skill;
                        $scope.skill = null;
-                       if (!isOld)
+                       if (!isOld){
                            $scope.skills = $scope.skills || [];
                            $scope.skills.push(skill);
                        }
