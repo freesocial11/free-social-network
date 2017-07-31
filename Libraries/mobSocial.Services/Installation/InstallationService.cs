@@ -155,8 +155,8 @@ namespace mobSocial.Services.Installation
             //general settings
             settingService.Save(new GeneralSettings()
             {
-                ImageServerDomain = string.Concat(installDomain, "/api"),
-                VideoServerDomain = string.Concat(installDomain, "/api"),
+                ImageServerDomain = "// " + string.Concat(installDomain, "/api"),
+                VideoServerDomain = "// " + string.Concat(installDomain, "/api"),
                 ApplicationApiRoot = string.Concat(installDomain, "/api"),
                 ApplicationUiDomain = installDomain,
                 ApplicationCookieDomain = installDomain
