@@ -182,6 +182,9 @@ namespace mobSocial.Services.MediaServices
             {
                 //get the directory path from the relative path
                 var directoryPath = ServerHelper.GetLocalPathFromRelativePath(_mediaSettings.PictureSavePath);
+                if (!Directory.Exists(directoryPath))
+                    Directory.CreateDirectory(directoryPath);
+
                 var fileExtension = PathUtility.GetFileExtensionFromContentType(picture.MimeType);
 
                 if (string.IsNullOrEmpty(picture.SystemName))
@@ -211,6 +214,9 @@ namespace mobSocial.Services.MediaServices
 
             //get the directory path from the relative path
             var directoryPath = ServerHelper.GetLocalPathFromRelativePath(_mediaSettings.VideoSavePath);
+            if (!Directory.Exists(directoryPath))
+                Directory.CreateDirectory(directoryPath);
+
             var fileExtension = PathUtility.GetFileExtensionFromContentType(video.MimeType);
 
             if (string.IsNullOrEmpty(video.SystemName))
