@@ -20,7 +20,7 @@
                             $scope.PostData.PostTypeName = "picture";
                             $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
                             $scope.PostPreview = {
-                                SmallImageUrl: response.ResponseData.Images[0].ImageUrl
+                                SmallImageUrl: response.ResponseData.Images[0].Url
                             };
                         }
                     });
@@ -60,10 +60,10 @@
                             $scope.PostData.PostTypeName = "video";
                             $scope.PostData.AdditionalAttributeValue = JSON.stringify(response);
                             $scope.PostPreview = {
-                                ThumbnailPath: response.ThumbnailUrl,
+                                ThumbnailPath: response.ResponseData.Media.ThumbnailUrl,
                                 VideoSource: [
                                     {
-                                        src: $sce.trustAsResourceUrl(response.VideoUrl),
+                                        src: $sce.trustAsResourceUrl(response.ResponseData.Media.Url),
                                         type: response.MimeType
                                     }
                                 ],

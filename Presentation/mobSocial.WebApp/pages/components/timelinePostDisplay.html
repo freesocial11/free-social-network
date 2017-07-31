@@ -11,7 +11,7 @@
                 } catch (e) {
                     return;
                 }
-                Post.SmallImageUrl = jsonValue.ResponseData.Images[0].ImageUrl;
+                Post.SmallImageUrl = jsonValue.ResponseData.Images[0].Url;
             });
             //add to filter function. this will execute when a picture type post is being shown
             $scope.FilterFunction['picture'] = function (Post) {
@@ -122,10 +122,10 @@
                 } catch (e) {
                     return;
                 }
-                jsonValue = jsonValue.ResponseData;
+                jsonValue = jsonValue.ResponseData.Media;
                 Post.ThumbnailUrl = jsonValue.ThumbnailUrl;
                 var source = [{
-                    src: $sce.trustAsResourceUrl(jsonValue.VideoUrl),
+                    src: $sce.trustAsResourceUrl(jsonValue.Url),
                     type: jsonValue.MimeType
                 }];
                 

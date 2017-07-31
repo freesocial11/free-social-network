@@ -194,7 +194,7 @@ namespace mobSocial.WebApi.Controllers
             _mediaService.Insert(media);
            return RespondSuccess(new
            {
-               Media = media.ToModel(_mediaService, _mediaSettings)
+               Media = media.ToModel(_mediaService, _mediaSettings, generalSettings: _generalSettings)
            });
         }
     }
