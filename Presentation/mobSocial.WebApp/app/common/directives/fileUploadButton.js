@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("fileUploadButton", ['FileUploader', '$compile', function (FileUploader, $compile) {
+﻿window.mobSocial.lazy.directive("fileUploadButton", ['FileUploader', '$compile', '$timeout', function (FileUploader, $compile, $timeout) {
     return {
         restrict: 'A',
         scope: false,
@@ -106,6 +106,10 @@
                     if ($("#" + imageSrc))
                         $("#" + imageSrc).attr("src", response.Url);
                     htmlProgress.html("Upload Complete");
+                    $timeout(function() {
+                            htmlProgress.fadeOut();
+                        },
+                        3000);
                     htmlProgress.removeClass("upload-progress");
                     htmlProgress.addClass("upload-complete");
                 }
