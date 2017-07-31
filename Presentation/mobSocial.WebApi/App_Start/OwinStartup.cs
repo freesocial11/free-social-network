@@ -37,7 +37,9 @@ namespace mobSocial.WebApi
             //run owin startup configurations from plugins
             OwinStartupManager.RunAllOwinConfigurations(app);
 
-            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/" + WebApiConfig.ApiPrefix), builder =>
+            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/" + WebApiConfig.ApiPrefix)
+                                && !x.Request.Uri.AbsolutePath.Contains($"/signalr")
+            , builder =>
             {
                 builder.UseInstallationVerifier();
 
@@ -54,11 +56,12 @@ namespace mobSocial.WebApi
                 builder.UseWebApi(config);
             });
 
-            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/signalr"), builder =>
+            app.MapWhen(x => x.Request.Uri.AbsolutePath.Contains($"/signalr"), builder =>
             {
                 var userIdProvider = new SignalRUserIdProvider();
                 GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);
-                builder.MapSignalR();
+                var hubConfiguration = new HubConfiguration {EnableDetailedErrors = true};
+                builder.MapSignalR(hubConfiguration);
             });
         }
     }
