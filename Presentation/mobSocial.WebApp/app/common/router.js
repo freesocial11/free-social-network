@@ -203,7 +203,7 @@
                  resolve: {
                      resolver: function (controllerProvider) {
                          return controllerProvider
-                             .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline", "education"]);
+                             .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline", "education", "skillPublic"]);
                      }
                  }
              })
