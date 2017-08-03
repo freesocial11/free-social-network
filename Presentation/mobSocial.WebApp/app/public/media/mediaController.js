@@ -8,7 +8,7 @@
         };
 
         $scope.getMedia = function (idOrUserName, type) {
-            const _executeOperation = function (idOrUserName) {
+            var _executeOperation = function (idOrUserName) {
                 var methodName = type == "videos" ? "getVideos" : "getPictures";
                 userService[methodName](idOrUserName,
                     $scope.options,

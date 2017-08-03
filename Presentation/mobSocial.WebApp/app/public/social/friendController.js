@@ -8,7 +8,7 @@
         };
 
         $scope.getFriends = function (idOrUserName) {
-            const _executeOperation = function(idOrUserName) {
+            var _executeOperation = function(idOrUserName) {
                 userService.getFriends(idOrUserName,
                     $scope.options,
                     function(response) {

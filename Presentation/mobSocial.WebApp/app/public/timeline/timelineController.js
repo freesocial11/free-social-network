@@ -100,7 +100,7 @@ window.mobSocial.lazy.controller("timelineController", [
         //ctor
         $scope.init = function () {
 
-            const _init = function (userId) {
+            var _init = function (userId) {
                 $scope.timelinePostsRequestModel = {
                     page: 0,
                     count: 15,

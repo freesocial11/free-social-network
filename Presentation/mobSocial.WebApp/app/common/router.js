@@ -7,7 +7,7 @@
     "$filterProvider",
     "$provide",
      function ($stateProvider, $urlRouterProvider, $locationProvider, localStorageServiceProvider, $controllerProvider, $compileProvider, $filterProvider, $provider) {
-         const adminPrefix = window.Configuration.adminUrlPathPrefix;
+         var adminPrefix = window.Configuration.adminUrlPathPrefix;
          window.mobSocial.lazy = {
              controller: $controllerProvider.register,
              directive: $compileProvider.directive,

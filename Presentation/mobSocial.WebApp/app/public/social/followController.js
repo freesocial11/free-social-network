@@ -8,7 +8,7 @@
         };
 
         $scope.getFollowers = function (idOrUserName) {
-            const _executeOperation = function(idOrUserName) {
+            var _executeOperation = function(idOrUserName) {
                 userService.getFollowers(idOrUserName,
                     $scope.options,
                     function(response) {
@@ -34,7 +34,7 @@
         }
 
         $scope.getFollowing = function (idOrUserName) {
-            const _executeOperation = function (idOrUserName) {
+            var _executeOperation = function (idOrUserName) {
                 userService.getFollowing(idOrUserName,
                     $scope.options,
                     function (response) {

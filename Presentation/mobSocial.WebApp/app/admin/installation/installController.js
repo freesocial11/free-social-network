@@ -1,7 +1,7 @@
 ﻿window.mobSocial.lazy.controller("installController",
 [
     "$scope", "installService", "$state", function ($scope, installService, $state) {
-        const wizardOrder = ['welcome', 'license', 'configuration', 'information', 'review-configuration', 'finish'];
+        var wizardOrder = ['welcome', 'license', 'configuration', 'information', 'review-configuration', 'finish'];
         $scope.activeStep = wizardOrder[0];
         $scope.stepIndex = 0;
         $scope.installRequest = {

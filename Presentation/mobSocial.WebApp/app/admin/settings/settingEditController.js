@@ -2,8 +2,8 @@
 [
     "$scope", "settingService", "$stateParams", "$state",
     function ($scope, settingService, $stateParams, $state) {
-        const settingType = $stateParams.settingType;
-        const settingIndex = {
+        var settingType = $stateParams.settingType;
+        var settingIndex = {
             "general": "GeneralSettings",
             "media": "MediaSettings",
             "security": "SecuritySettings",
@@ -33,12 +33,12 @@
         };
 
         $scope.save = function() {
-            const successHandler = function(response) {
+            var successHandler = function(response) {
                 if (response.Success) {
                     
                 }
             };
-            const errorHandler = function(response) {
+            var errorHandler = function(response) {
 
             };
             switch(settingType) {

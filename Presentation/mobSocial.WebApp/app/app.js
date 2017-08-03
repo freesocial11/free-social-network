@@ -125,7 +125,7 @@ window.mobSocial.run([
                 checker = $interval(function() {
                         if ($scope.$parent[objectNameToLookFor]) {
                             $interval.cancel(checker);
-                            const returnValue = $scope.$parent[objectNameToLookFor];
+                            var returnValue = $scope.$parent[objectNameToLookFor];
                             deferred.resolve(returnValue);
                         } else {
                             return;
@@ -146,7 +146,7 @@ window.mobSocial.run([
          * Updates videogular source
          */
         $rootScope.updatedVideoSource = function($api, url, mimeType) {
-            const source = [
+            var source = [
                 {
                     src: $sce.trustAsResourceUrl(url),
                     type: mimeType
