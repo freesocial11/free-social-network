@@ -4,7 +4,7 @@
             <!-- Add the bg color to the header using any of the bg-* classes -->
             <div class="widget-user-header bg-primary">
                 <h3 class="widget-user-username text-center">
-                    {{skill.SkillName}}
+                    <a ui-sref="layoutMobSocial.skill({ slug : skill.SeName})">{{skill.Name}}</a>
                 </h3>
                 <h5 class="widget-user-desc">
                     {{skill.Description}}
