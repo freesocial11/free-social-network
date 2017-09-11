@@ -56,7 +56,8 @@ namespace mobSocial.Services.OAuth.Provider
         {
             var hashedTokenId = OAuthHelper.GetHash(context.Token);
 
-            _tokens.TryGetValue(hashedTokenId, out AppToken appToken);
+            AppToken appToken;
+            _tokens.TryGetValue(hashedTokenId, out appToken);
             if (appToken != null)
             {
                 //Get protectedTicket from refreshToken class
