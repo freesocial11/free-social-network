@@ -11,10 +11,15 @@ namespace mobSocial.Core.Infrastructure.Utils
         {
             get
             {
-                lock (padlock)
+                if (instance == null)
                 {
-                    return instance ?? (instance = Activator.CreateInstance<T>());
+                    lock (padlock)
+                    {
+                        return instance ?? (instance = Activator.CreateInstance<T>());
+                    }
                 }
+                return instance;
+
             }
         } 
     }
