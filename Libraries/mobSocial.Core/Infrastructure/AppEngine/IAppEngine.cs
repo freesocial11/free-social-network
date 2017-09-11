@@ -6,6 +6,8 @@ namespace mobSocial.Core.Infrastructure.AppEngine
     {
         IContainer IocContainer { get; }
 
+        IContainer MvcContainer { get; }
+
         T Resolve<T>(bool returnDefaultIfNotResolved = false) where T : class;
 
         T RegisterAndResolve<T>(object instance, bool instantiateIfNull = true, IReuse reuse = null) where T : class;

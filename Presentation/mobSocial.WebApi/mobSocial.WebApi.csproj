@@ -211,6 +211,7 @@
     <Compile Include="Configuration\Mvc\Models\RootRequestModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootResponseModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootModel.cs" />
+    <Compile Include="Configuration\Mvc\Results\HtmlActionResult.cs" />
     <Compile Include="Configuration\Mvc\Results\IApiCallResult.cs" />
     <Compile Include="Configuration\Mvc\Results\JsonpResult.cs" />
     <Compile Include="Configuration\Mvc\RootApiWithHubController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Configuration\Mvc\UI\Resource.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourcePlacementType.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourceRegistrationType.cs" />
+    <Compile Include="Configuration\Mvc\UI\ViewRenderer.cs" />
     <Compile Include="Configuration\Routing\CentralizedPrefixProvider.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
     <Compile Include="Configuration\Security\Attributes\AdminAuthorizeAttribute.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Controllers\InstallController.cs" />
     <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
+    <Compile Include="Controllers\OAuthController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PluginController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
@@ -283,6 +286,7 @@
     <Compile Include="Extensions\ModelExtensions\SkillExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\TeamPageExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\UserExtensions.cs" />
+    <Compile Include="Extensions\OwinExtensions.cs" />
     <Compile Include="Extensions\SponsorExtensions.cs" />
     <Compile Include="Extensions\UtilityExtensions.cs" />
     <Compile Include="Global.asax.cs">
@@ -436,6 +440,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="mobSocial.WebApi.wpp.targets" />
+    <Content Include="Views\OAuth\Authorize.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\OAuth\AuthorizeError.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\web.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>

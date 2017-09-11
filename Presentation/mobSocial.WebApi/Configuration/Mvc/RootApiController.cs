@@ -4,6 +4,7 @@ using System.Web.Http;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.VerboseReporter;
 using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Configuration.Mvc.Results;
 
 namespace mobSocial.WebApi.Configuration.Mvc
 {
@@ -77,6 +78,11 @@ namespace mobSocial.WebApi.Configuration.Mvc
         protected new IHttpActionResult BadRequest()
         {
             return base.BadRequest(string.Join(",", ModelState.Values.SelectMany(x => x.Errors.Select(y => y.ErrorMessage))));
+        }
+
+        public IHttpActionResult View(string view, object model = null)
+        {
+            return new HtmlActionResult(view, model);
         }
     }
 }

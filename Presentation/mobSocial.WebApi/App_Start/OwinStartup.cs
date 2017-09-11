@@ -9,6 +9,7 @@ using Owin;
 using mobSocial.WebApi;
 using mobSocial.WebApi.Configuration.Middlewares;
 using mobSocial.WebApi.Configuration.SignalR.Providers;
+using mobSocial.WebApi.Extensions;
 using Microsoft.AspNet.SignalR;
 using Microsoft.Owin.Diagnostics;
 
@@ -34,13 +35,13 @@ namespace mobSocial.WebApi
            
             //route registrations & other configurations
             WebApiConfig.Register(config);
+
             //run owin startup configurations from plugins
             OwinStartupManager.RunAllOwinConfigurations(app);
 
-            app.MapWhen(x => x.Request.Uri.AbsolutePath.StartsWith("/" + WebApiConfig.ApiPrefix)
-                                && !x.Request.Uri.AbsolutePath.Contains($"/signalr")
-            , builder =>
+            app.MapWhen(x => x.Request.IsApiEndPointRequest() , builder =>
             {
+
                 builder.UseInstallationVerifier();
 
                //builder.UseDryIocOwinMiddleware(mobSocialEngine.ActiveEngine.IocContainer);
@@ -50,13 +51,11 @@ namespace mobSocial.WebApi
 #if DEBUG
                 builder.UseErrorPage(new ErrorPageOptions());
 #endif
-
-
                 //webapi, last one always 
                 builder.UseWebApi(config);
             });
 
-            app.MapWhen(x => x.Request.Uri.AbsolutePath.Contains($"/signalr"), builder =>
+            app.MapWhen(x => x.Request.IsSignalRRequest(), builder =>
             {
                 var userIdProvider = new SignalRUserIdProvider();
                 GlobalHost.DependencyResolver.Register(typeof(IUserIdProvider), () => userIdProvider);

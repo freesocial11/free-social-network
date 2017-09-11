@@ -3,7 +3,8 @@
     this._connect = function (method, url, params, success, error) {
         var config = {
             method: method,
-            url: url
+            url: url,
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
         };
         if (method === "GET" || method === "DELETE")
             config["params"] = params;

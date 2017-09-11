@@ -14,6 +14,7 @@ using mobSocial.Data.Database;
 using mobSocial.Data.Database.Provider;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Authentication;
+using mobSocial.Services.OAuth;
 using mobSocial.Services.Settings;
 using mobSocial.Services.VerboseReporter;
 using mobSocial.WebApi.Configuration.Database;
@@ -103,7 +104,7 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             container.Register<IUserIdProvider, SignalRUserIdProvider>();
 
             //register authentication service inwebrequest
-            container.Register<IAuthenticationService, AuthenticationService>(reuse: Reuse.InWebRequest, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+            container.Register<IAuthenticationService, OAuthAuthenticationService>(reuse: Reuse.InWebRequest, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
 
             //overridable providers
             container.Register<IRoleNameProvider, RoleNameProvider>(reuse: Reuse.Singleton);

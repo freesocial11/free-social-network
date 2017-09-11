@@ -31,6 +31,9 @@ namespace mobSocial.Data
         private void _SetupContexts()
         {
             var scopedContainer = mobSocialEngine.ActiveEngine.IocContainer;
+            if (scopedContainer.GetCurrentScope() == null)
+                //this might be an mvc request
+                scopedContainer = mobSocialEngine.ActiveEngine.MvcContainer;
             _databaseContext = _contextServiceKey == string.Empty ? scopedContainer.Resolve<IDatabaseContext>() : scopedContainer.Resolve<IDatabaseContext>(serviceKey: _contextServiceKey);
 
             _entityDbSet = _databaseContext.Set<T>();

@@ -73,8 +73,12 @@
     <Compile Include="Database\IDatabaseSettings.cs" />
     <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
     <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
+    <Compile Include="Entity\OAuth\AppToken.cs" />
+    <Compile Include="Entity\OAuth\OAuthClient.cs" />
     <Compile Include="Entity\Users\IRoleNameProvider.cs" />
     <Compile Include="Entity\Users\RoleNameProvider.cs" />
+    <Compile Include="Enum\ApplicationType.cs" />
+    <Compile Include="Enum\TokenType.cs" />
     <Compile Include="Enum\UserConfigurationType.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Integration\IntegrationManager.cs" />

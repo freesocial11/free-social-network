@@ -20,11 +20,22 @@ namespace mobSocial.Core.Infrastructure.AppEngine
     {
         public IContainer IocContainer { get; private set; }
 
+        public IContainer MvcContainer { get; private set; }
+
         public static IList<PictureSize> PictureSizes { get; private set; }
 
         public T Resolve<T>(bool returnDefaultIfNotResolved = false) where T : class
         {
-            return IocContainer.Resolve<T>(returnDefaultIfNotResolved ? IfUnresolved.ReturnDefault : IfUnresolved.Throw);
+            T tInstance;
+            try
+            {
+                tInstance = IocContainer.Resolve<T>(IfUnresolved.Throw);
+            }
+            catch
+            {
+                tInstance = MvcContainer.Resolve<T>(returnDefaultIfNotResolved ? IfUnresolved.ReturnDefault : IfUnresolved.Throw);
+            }
+            return tInstance;
         }
 
         public T RegisterAndResolve<T>(object instance = null, bool instantiateIfNull = true, IReuse reuse = null) where T : class
@@ -39,7 +50,10 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             var typedInstance = Resolve<T>(true);
             if (typedInstance == null)
             {
-                IocContainer.RegisterInstance<T>(instance as T, reuse, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+                if(IocContainer.GetCurrentScope() != null)
+                    IocContainer.RegisterInstance<T>(instance as T, reuse, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
+                if(MvcContainer.GetCurrentScope() != null)
+                    MvcContainer.RegisterInstance<T>(instance as T, reuse, ifAlreadyRegistered: IfAlreadyRegistered.Replace);
                 typedInstance = instance as T;
             }
             return typedInstance;
@@ -63,6 +77,7 @@ namespace mobSocial.Core.Infrastructure.AppEngine
                 StartTaskManager();
             }
 
+            SetupMvcContainer();
         }
 
         public void SetupContainer()
@@ -71,6 +86,10 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             IocContainer = new Container(rules => rules.WithoutThrowIfDependencyHasShorterReuseLifespan(), new AsyncExecutionFlowScopeContext()).WithSignalR(assemblies.ToArray());
         }
 
+        public void SetupMvcContainer()
+        {
+            MvcContainer = IocContainer.WithMvc(scopeContext: new HttpContextScopeContext());
+        }
         private void SetupDependencies(bool testMode = false)
         {
             //first the self
@@ -86,10 +105,6 @@ namespace mobSocial.Core.Infrastructure.AppEngine
             foreach (var di in dependencyInstances)
                 //register individual instances in that order
                 di.RegisterDependencies(IocContainer);
-
-            //and it's resolver
-            if (!testMode)
-                IocContainer.WithMvc();
         }
 
         private void RunStartupTasks()
