@@ -1,40 +1,32 @@
-﻿using mobSocial.Core.Data;
+﻿using System.ComponentModel.DataAnnotations;
 using mobSocial.Data.Enum;
+using mobSocial.WebApi.Configuration.Mvc.Models;
 
-namespace mobSocial.Data.Entity.OAuth
+namespace mobSocial.WebApi.Models.Applications
 {
-    public class OAuthApplication : BaseEntity
+    public class ApplicationPostModel : RootEntityModel
     {
-        public string Guid { get; set; }
-
-        public string Secret { get; set; }
-
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string ApplicationUrl { get; set; }
 
         public string PrivacyPolicyUrl { get; set; }
 
         public string TermsUrl { get; set; }
 
+        [Required]
         public string RedirectUrl { get; set; }
 
+        [Required]
         public ApplicationType ApplicationType { get; set; }
 
         public bool Active { get; set; }
 
-        public int RefreshTokenLifeTime { get; set; }
-
         public string AllowedOrigin { get; set; }
-
-        public int RequestLimitPerHour { get; set; }
-
-        public int UserId { get; set; }
-    }
-
-    public class OAuthApplicationMap : BaseEntityConfiguration<OAuthApplication>
-    {
     }
 }

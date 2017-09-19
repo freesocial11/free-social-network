@@ -1,13 +1,13 @@
-﻿using mobSocial.Core.Data;
-using mobSocial.Data.Enum;
+﻿using mobSocial.Data.Enum;
+using mobSocial.WebApi.Configuration.Mvc.Models;
 
-namespace mobSocial.Data.Entity.OAuth
+namespace mobSocial.WebApi.Models.Applications
 {
-    public class OAuthApplication : BaseEntity
+    public class ApplicationModel : RootEntityModel
     {
-        public string Guid { get; set; }
+        public string ClientId { get; set; }
 
-        public string Secret { get; set; }
+        public string ClientSecret { get; set; }
 
         public string Name { get; set; }
 
@@ -25,16 +25,8 @@ namespace mobSocial.Data.Entity.OAuth
 
         public bool Active { get; set; }
 
-        public int RefreshTokenLifeTime { get; set; }
-
         public string AllowedOrigin { get; set; }
 
         public int RequestLimitPerHour { get; set; }
-
-        public int UserId { get; set; }
-    }
-
-    public class OAuthApplicationMap : BaseEntityConfiguration<OAuthApplication>
-    {
     }
 }

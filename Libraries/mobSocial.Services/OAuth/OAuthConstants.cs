@@ -17,5 +17,7 @@
         public const int AccessTokenExpirationSecondsForNonNativeApplications = 10 /*minutes*/ * 60 /*seconds*/;
 
         public const int RefreshTokenExpirationSeconds = 1200;
+
+        public const int ClientSecretLength = 50;
     }
 }

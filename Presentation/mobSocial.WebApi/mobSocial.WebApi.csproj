@@ -240,6 +240,7 @@
     <Compile Include="Configuration\Tasks\DatabaseSetupTask.cs" />
     <Compile Include="Configuration\Tasks\EmailSchedulerTask.cs" />
     <Compile Include="Configuration\ViewEngines\mobSocialRazorProviderViewEngine.cs" />
+    <Compile Include="Controllers\ApplicationController.cs" />
     <Compile Include="Controllers\ArtistPageController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\AutoCompleteController.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Enum\Features.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\BusinessPageExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\ConversationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
@@ -294,6 +296,9 @@
     </Compile>
     <Compile Include="Models\Abstract\AbstractPageModel.cs" />
     <Compile Include="Models\Addresses\AddressModel.cs" />
+    <Compile Include="Models\Applications\ApplicationMiniModel.cs" />
+    <Compile Include="Models\Applications\ApplicationModel.cs" />
+    <Compile Include="Models\Applications\ApplicationPostModel.cs" />
     <Compile Include="Models\ArtistPages\ArtistPageModel.cs" />
     <Compile Include="Models\ArtistPages\ArtistPagePaymentModel.cs" />
     <Compile Include="Models\Authentication\LoginModel.cs" />
