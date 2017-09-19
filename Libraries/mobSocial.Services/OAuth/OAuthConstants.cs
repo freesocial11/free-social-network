@@ -12,7 +12,9 @@
 
         public const string LogoutPath = "/logout";
 
-        public const int AccessTokenExpirationSeconds = 60;
+        public const int AccessTokenExpirationSecondsForNativeApplications = 60 /*days*/ * 24 /*hours*/ * 60 /*minutes*/ * 60 /*seconds*/;
+
+        public const int AccessTokenExpirationSecondsForNonNativeApplications = 10 /*minutes*/ * 60 /*seconds*/;
 
         public const int RefreshTokenExpirationSeconds = 1200;
     }

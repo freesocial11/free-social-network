@@ -32,51 +32,16 @@ namespace mobSocial.Services.OAuth.App_Start
                         if (!isRedirectionAllowed)
                             return;
 
-                        isRedirectionAllowed = ctx.OwinContext.Authentication.User.Identity.IsAuthenticated;
-                        if (!isRedirectionAllowed)
+                        var isAuthenticated = ctx.OwinContext.Authentication.User.Identity.IsAuthenticated;
+                        if (!isAuthenticated)
                         {
-                            ctx.RedirectUri = "/login?ReturnUrl=" + HttpUtility.UrlEncode(ctx.Request.Uri.PathAndQuery);
-                            ctx.Response.Redirect(ctx.RedirectUri);
-                            return;
-                        }
-                        /*
-                        //if it's an ajax request or it's not an api call 
-                        var generalSettings = mobSocialEngine.ActiveEngine.Resolve<GeneralSettings>();
-                        //is api call
-                        var apiRoot = generalSettings.ApplicationApiRoot;
-
-                        var hostName = (ctx.Request.Headers.Get("Host") ?? "");
-
-                        //oauth root
-                        var oAuthRoot = apiRoot + OAuthConstants.AuthorizeEndPointPath;
-
-                        var currentRoot = hostName + ctx.Request.Uri.AbsolutePath; //we are trying to recreate the root from current url and headers
-
-                        isRedirectionAllowed = currentRoot.StartsWith(oAuthRoot); //it's authorization page, so we'll need to redirect
-
-                        if(!isRedirectionAllowed)
-                            //so if the current url root starts with apiroot, it's an api end point and redirection is not allowed
-                            isRedirectionAllowed = !currentRoot.StartsWith(apiRoot);
-
-                        if (!isRedirectionAllowed)
-                            return;
-
-                        //check if it's a login page. for login page, we redirect to a different domain, (the front end application domain i.e.)
-                        Uri absoluteUri;
-                        if (Uri.TryCreate(ctx.RedirectUri, UriKind.Absolute, out absoluteUri))
-                        {
-                            var path = PathString.FromUriComponent(absoluteUri);
-                            if (path == ctx.OwinContext.Request.PathBase + ctx.Options.LoginPath)
+                            //if it's an authorize page request, then only we'll redirect, otherwise, it's best to send the response in json
+                            if (ctx.Request.Uri.AbsolutePath.Contains(OAuthConstants.AuthorizeEndPointPath))
                             {
-                                //it's a login path, so let's change the url
-                                //TODO: check for https
-                                var url = "http://" + generalSettings.ApplicationUiDomain + "/login";
-                                ctx.RedirectUri = url + new QueryString(ctx.Options.ReturnUrlParameter, ctx.Request.Uri.AbsoluteUri);
+                                ctx.RedirectUri = "/login?ReturnUrl=" + HttpUtility.UrlEncode(ctx.Request.Uri.PathAndQuery);
+                                ctx.Response.Redirect(ctx.RedirectUri);
                             }
-                                    
                         }
-
-                        ctx.Response.Redirect(ctx.RedirectUri);*/
                     }
                 }
             });
@@ -90,7 +55,10 @@ namespace mobSocial.Services.OAuth.App_Start
                 ExpireTimeSpan = TimeSpan.FromMinutes(5),
             });
 
-            options = new OAuthBearerAuthenticationOptions();
+            options = new OAuthBearerAuthenticationOptions()
+            {
+                Provider = new ApplicationBearerAuthenticationProvider()
+            };
 
             app.UseOAuthBearerAuthentication(options);
 
@@ -102,11 +70,12 @@ namespace mobSocial.Services.OAuth.App_Start
 #endif
                 TokenEndpointPath = new PathString(OAuthConstants.TokenEndPointPath),
                 AuthorizeEndpointPath = new PathString(OAuthConstants.AuthorizeEndPointPath),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes((double)OAuthConstants.AccessTokenExpirationSeconds / 60),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes((double)OAuthConstants.AccessTokenExpirationSecondsForNativeApplications / 60),
                 Provider = new ApplicationOAuthServerProvider(),
                 RefreshTokenProvider = new ApplicationRefreshTokenProvider(),
                 AuthorizationCodeProvider = new ApplicationAuthorizationCodeProvider(),
-                ApplicationCanDisplayErrors = true
+                ApplicationCanDisplayErrors = true,
+                AccessTokenProvider = new ApplicationAccessTokenProvider()
             };
 
             // Token Generation

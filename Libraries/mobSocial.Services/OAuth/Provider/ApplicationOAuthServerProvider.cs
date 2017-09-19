@@ -19,7 +19,7 @@ namespace mobSocial.Services.OAuth.Provider
         {
             string clientId;
             string clientSecret;
-            OAuthClient client = null;
+            OAuthApplication client = null;
 
             if (!context.TryGetBasicCredentials(out clientId, out clientSecret))
             {
@@ -32,7 +32,7 @@ namespace mobSocial.Services.OAuth.Provider
                 return Task.FromResult<object>(null);
             }
 
-            var clientService = mobSocialEngine.ActiveEngine.Resolve<IClientService>();
+            var clientService = mobSocialEngine.ActiveEngine.Resolve<IApplicationService>();
             client = clientService.FirstOrDefault(x => x.Guid == clientId);
 
             if (client == null)
@@ -144,18 +144,18 @@ namespace mobSocial.Services.OAuth.Provider
 
         public override Task ValidateClientRedirectUri(OAuthValidateClientRedirectUriContext context)
         {
-            var clientService = mobSocialEngine.ActiveEngine.Resolve<IClientService>();
+            var clientService = mobSocialEngine.ActiveEngine.Resolve<IApplicationService>();
 
             var client = clientService.FirstOrDefault(x => x.Guid == context.ClientId);
             if (client != null)
-                context.Validated(client.RedirectUri);
+                context.Validated(client.RedirectUrl);
 
             return Task.FromResult<object>(null);
         }
 
         public override Task ValidateAuthorizeRequest(OAuthValidateAuthorizeRequestContext context)
         {
-            var clientService = mobSocialEngine.ActiveEngine.Resolve<IClientService>();
+            var clientService = mobSocialEngine.ActiveEngine.Resolve<IApplicationService>();
             var client = clientService.FirstOrDefault(x => x.Guid == context.AuthorizeRequest.ClientId);
 
             context.OwinContext.Set<string>("as:client_id", client.Guid);
@@ -163,11 +163,6 @@ namespace mobSocial.Services.OAuth.Provider
 
             context.Validated();
             return Task.FromResult<object>(null);
-        }
-
-        public override Task AuthorizeEndpoint(OAuthAuthorizeEndpointContext context)
-        {
-            return base.AuthorizeEndpoint(context);
         }
     }
 }

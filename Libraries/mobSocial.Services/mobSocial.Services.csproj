@@ -184,12 +184,14 @@
     <Compile Include="Notifications\NotificationService.cs" />
     <Compile Include="OAuth\AppTokenService.cs" />
     <Compile Include="OAuth\App_Start\OwinStartup.cs" />
-    <Compile Include="OAuth\ClientService.cs" />
+    <Compile Include="OAuth\ApplicationService.cs" />
     <Compile Include="OAuth\IAppTokenService.cs" />
-    <Compile Include="OAuth\IClientService.cs" />
+    <Compile Include="OAuth\IApplicationService.cs" />
     <Compile Include="OAuth\OAuthAuthenticationService.cs" />
     <Compile Include="OAuth\OAuthConstants.cs" />
+    <Compile Include="OAuth\Provider\ApplicationAccessTokenProvider.cs" />
     <Compile Include="OAuth\Provider\ApplicationAuthorizationCodeProvider.cs" />
+    <Compile Include="OAuth\Provider\ApplicationBearerAuthenticationProvider.cs" />
     <Compile Include="OAuth\Provider\ApplicationCookieManager.cs" />
     <Compile Include="OAuth\Provider\ApplicationOAuthServerProvider.cs" />
     <Compile Include="OAuth\Provider\ApplicationRefreshTokenProvider.cs" />

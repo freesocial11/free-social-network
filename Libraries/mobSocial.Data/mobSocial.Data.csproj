@@ -74,7 +74,7 @@
     <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
     <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
     <Compile Include="Entity\OAuth\AppToken.cs" />
-    <Compile Include="Entity\OAuth\OAuthClient.cs" />
+    <Compile Include="Entity\OAuth\OAuthApplication.cs" />
     <Compile Include="Entity\Users\IRoleNameProvider.cs" />
     <Compile Include="Entity\Users\RoleNameProvider.cs" />
     <Compile Include="Enum\ApplicationType.cs" />
@@ -230,6 +230,10 @@
     <Compile Include="Migrations\201706190904121_GeoServices.Designer.cs">
       <DependentUpon>201706190904121_GeoServices.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709180938569_OAuthApplication.cs" />
+    <Compile Include="Migrations\201709180938569_OAuthApplication.Designer.cs">
+      <DependentUpon>201709180938569_OAuthApplication.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationManager.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
@@ -253,6 +257,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706190904121_GeoServices.resx">
       <DependentUpon>201706190904121_GeoServices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709180938569_OAuthApplication.resx">
+      <DependentUpon>201709180938569_OAuthApplication.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
