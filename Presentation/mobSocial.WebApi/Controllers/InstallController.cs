@@ -10,6 +10,7 @@ using mobSocial.Data.Migrations;
 
 namespace mobSocial.WebApi.Controllers
 {
+    [RoutePrefix("install")]
     public class InstallController : RootApiController
     {
         private readonly IInstallationService _installationService;
@@ -20,7 +21,7 @@ namespace mobSocial.WebApi.Controllers
         }
 
 
-        [Route("install")]
+        [Route("~/install")]
         [HttpPost]
         public IHttpActionResult Install(InstallationRequestModel model)
         {
@@ -59,7 +60,7 @@ namespace mobSocial.WebApi.Controllers
             return Response(new { Success = true });
         }
 
-        [Route("install/test-connection")]
+        [Route("test-connection")]
         [HttpPost]
         public IHttpActionResult TestConnection(InstallationRequestModel model)
         {
@@ -77,7 +78,7 @@ namespace mobSocial.WebApi.Controllers
             return Response(new { Success = connectionSucceeds });
         }
 
-        [Route("install/update")]
+        [Route("update")]
         [HttpPost]
         [Authorize]
         public IHttpActionResult Update()
