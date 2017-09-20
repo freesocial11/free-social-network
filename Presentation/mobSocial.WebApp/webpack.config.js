@@ -137,6 +137,10 @@ module.exports = {
         skillAdmin: [
             "./app/common/services/skillService.js",
             "./app/admin/skills/skillController.js"
+        ],
+        applicationPublic: [
+            "./app/common/services/applicationService.js",
+            "./app/public/application/applicationController.js"
         ]
     },
     output: {

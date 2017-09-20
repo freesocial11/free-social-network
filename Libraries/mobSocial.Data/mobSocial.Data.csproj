@@ -234,6 +234,10 @@
     <Compile Include="Migrations\201709180938569_OAuthApplication.Designer.cs">
       <DependentUpon>201709180938569_OAuthApplication.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709191448303_OAuthApplicationUpgradeOne.cs" />
+    <Compile Include="Migrations\201709191448303_OAuthApplicationUpgradeOne.Designer.cs">
+      <DependentUpon>201709191448303_OAuthApplicationUpgradeOne.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationManager.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
@@ -260,6 +264,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201709180938569_OAuthApplication.resx">
       <DependentUpon>201709180938569_OAuthApplication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709191448303_OAuthApplicationUpgradeOne.resx">
+      <DependentUpon>201709191448303_OAuthApplicationUpgradeOne.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

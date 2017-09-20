@@ -20,4 +20,12 @@
     this.regenerateSecret = function (id, success, error) {
         webClientService.put(apiEndPoint + "/put/secret/" + id, null, success, error);
     }
+
+    this.getLogins = function(success, error) {
+        webClientService.get(apiEndPoint + "/get/logins", null, success, error);
+    }
+
+    this.removeLogin = function(id, success, error) {
+        webClientService.delete(apiEndPoint + "/delete/login/" + id, null, success, error);
+    }
 }]);

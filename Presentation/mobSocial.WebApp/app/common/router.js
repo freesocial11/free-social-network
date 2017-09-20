@@ -290,6 +290,60 @@
                      }
                  }
              });
+         $stateProvider
+             .state("layoutApplication",
+                 {
+                     abstract: true,
+                     url: "/apps",
+                     templateUrl: "pages/layouts/_layout-application.html"
+                 })
+             .state("layoutApplication.twoColumns",
+                 {
+                     abstract: true,
+                     templateUrl: "pages/layouts/_layout-mobsocial-two-columns.html",
+                     resolve: {
+                         resolver: function (controllerProvider) {
+                             return controllerProvider
+                                 .resolveBundles(["applicationPublic"]);
+                         }
+                     }
+             })
+             .state("layoutApplication.twoColumns.listApplications",
+                 {
+                     url: "",
+                     views: {
+                         "left" : {
+                             templateUrl: "pages/applications/application.navigation.html"
+                         },
+                         "right" : {
+                             templateUrl: "pages/applications/application.list.html"
+                         }
+                     }
+             })
+             .state("layoutApplication.twoColumns.editApplication",
+                 {
+                     url: "/edit/?id",
+                     views: {
+                         "left": {
+                             templateUrl: "pages/applications/application.navigation.html"
+                         },
+                         "right": {
+                             templateUrl: "pages/applications/application.edit.html"
+                         }
+                     }
+             })
+             .state("layoutApplication.twoColumns.logins",
+                 {
+                     url: "",
+                     views: {
+                         "left": {
+                             templateUrl: "pages/applications/application.navigation.html"
+                         },
+                         "right": {
+                             templateUrl: "pages/applications/application.logins.html"
+                         }
+                     }
+                 });
          $stateProvider.state("layoutZero.404",
          {
              templateUrl: "pages/common/404.html"

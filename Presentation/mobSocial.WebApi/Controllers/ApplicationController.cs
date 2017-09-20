@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using mobSocial.Data.Entity.OAuth;
 using mobSocial.Services.Extensions;
@@ -29,10 +31,10 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/all")]
         [HttpGet]
-        public IHttpActionResult GetAll()
+        public async Task<IHttpActionResult> GetAll()
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
-            var applications = _applicationService.Get(x => x.UserId == currentUser.Id).ToList();
+            var applications = await _applicationService.Get(x => x.UserId == currentUser.Id).ToListAsync();
             var model = applications.Select(x => x.ToMiniModel());
             return RespondSuccess(new
             {
@@ -85,6 +87,7 @@ namespace mobSocial.WebApi.Controllers
             //update values
             application.Name = requestModel.Name;
             application.Active = requestModel.Active;
+            application.ApplicationUrl = requestModel.ApplicationUrl;
             application.RedirectUrl = requestModel.RedirectUrl;
             application.PrivacyPolicyUrl = requestModel.PrivacyPolicyUrl;
             application.TermsUrl = requestModel.TermsUrl;
@@ -99,6 +102,7 @@ namespace mobSocial.WebApi.Controllers
                 _applicationService.Update(application);
 
             var model = application.ToModel();
+            VerboseReporter.ReportSuccess("Application saved succesfully!", "post_application");
             return RespondSuccess(new {
                 Application = model
             });
@@ -143,6 +147,38 @@ namespace mobSocial.WebApi.Controllers
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
             return application.UserId == currentUser.Id || currentUser.IsAdministrator();
+        }
+
+        [Route("get/logins")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetLogins()
+        {
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var currentUserGuid = currentUser.Guid.ToString();
+            var appTokens = await _appTokenService.Get(x => x.Guid == currentUserGuid).ToListAsync();
+            var distinctClients = appTokens.Select(x => x.ClientId).Distinct();
+
+            //get clients now
+            var clients = await _applicationService.Get(x => distinctClients.Contains(x.Guid)).ToListAsync();
+            var model = clients.Select(x => x.ToLoginModel());
+            return RespondSuccess(new
+            {
+                Logins = model
+            });
+        }
+
+        [HttpDelete]
+        [Route("delete/login/{id:int}")]
+        public IHttpActionResult DeleteLogin(int id)
+        {
+            var currentUser = ApplicationContext.Current.CurrentUser;
+            var currentUserGuid = currentUser.Guid.ToString();
+            var application = _applicationService.Get(id);
+            if (application == null || !CanCurrentUserEdit(application))
+                return NotFound();
+
+            _appTokenService.Delete(x => x.Guid == currentUserGuid && x.ClientId == application.Guid);
+            return RespondSuccess();
         }
     }
 }

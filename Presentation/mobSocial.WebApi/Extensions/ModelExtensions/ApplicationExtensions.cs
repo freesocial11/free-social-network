@@ -36,5 +36,15 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
             };
             return model;
         }
+
+        public static ApplicationLoginModel ToLoginModel(this OAuthApplication application)
+        {
+            var model = new ApplicationLoginModel() {
+                Id = application.Id,
+                Name = application.Name,
+                ApplicationUrl = application.ApplicationUrl
+            };
+            return model;
+        }
     }
 }

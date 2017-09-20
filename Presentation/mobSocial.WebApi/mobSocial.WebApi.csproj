@@ -296,6 +296,7 @@
     </Compile>
     <Compile Include="Models\Abstract\AbstractPageModel.cs" />
     <Compile Include="Models\Addresses\AddressModel.cs" />
+    <Compile Include="Models\Applications\ApplicationLoginModel.cs" />
     <Compile Include="Models\Applications\ApplicationMiniModel.cs" />
     <Compile Include="Models\Applications\ApplicationModel.cs" />
     <Compile Include="Models\Applications\ApplicationPostModel.cs" />

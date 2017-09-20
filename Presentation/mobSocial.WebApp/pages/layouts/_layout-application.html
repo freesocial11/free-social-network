@@ -1,0 +1,100 @@
+﻿<header class="main-header">
+    <nav class="navbar navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand"><b>mob</b>Social</a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                    <i class="fa fa-bars"></i>
+                </button>
+            </div>
+         
+            <!-- Navbar Right Menu -->
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown notifications-menu">
+                        <!-- Menu toggle button -->
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="fa fa-user-o"></i>
+                            <span class="label label-success" ng-if="PendingFriendRequestsCount() > 0">
+                                {{PendingFriendRequestsCount()}}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="header">You have {{PendingFriendRequestsCount()}} friend request(s)</li>
+                            <li>
+                                <!-- inner menu: contains the messages -->
+                                <ul class="menu">
+                                    <li ng-repeat="notification in CurrentUser.Notifications">
+                                        <span ng-if="notification.EventName == 'UserSentFriendRequest'" style="padding: 10px; display: block;" onclick="preventClosure(event)" class="friend-notification-block">
+                                            <img ng-src="{{notification.InitiatorImageUrl}}" class="img-sm img-circle margin-r-5" />
+                                            <a ui-sref="layoutMobSocial.userprofile.tabs({ idOrUserName:  notification.EntityId })">{{notification.InitiatorDisplayName}}</a> wants to be friends with you.
+                                            <p>
+                                                <friend-button class="friend-button" friendstatus="notification.FriendStatus" customerid="notification.InitiatorId"></friend-button>
+                                            </p>
+                                        </span>
+                                    </li>
+                                    <!-- end notification -->
+                                </ul>
+                                <!-- /.menu -->
+                                <script type="text/javascript">
+                                    function preventClosure(e) {
+                                        e.stopPropagation();
+                                    }
+                                </script>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- /.messages-menu -->
+                    <!-- User Account Menu -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" target="_self" data-toggle="dropdown">
+                            <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="user-image" alt="User Image">
+                            <span class="hidden-xs">{{CurrentUser.Name}}</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <!-- User image -->
+                            <li class="user-header">
+                                <img ng-src="{{CurrentUser.ProfileImageUrl}}" class="img-circle"
+                                     alt="User Image">
+
+                                <p>
+                                    {{CurrentUser.Name}}
+                                    <small>Member since {{CurrentUser.DateCreatedUtc}}</small>
+                                </p>
+                            </li>
+                            <!-- Menu Body -->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Followers</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Sales</a>
+                                    </div>
+                                    <div class="col-xs-4 text-center">
+                                        <a href="#">Friends</a>
+                                    </div>
+                                </div>
+                                <!-- /.row -->
+                            </li>
+                            <!-- Menu Footer-->
+                            <li class="user-footer">
+                                <div class="pull-left">
+                                    <a ui-sref="layoutMobSocial.twoColumns.editProfile({ tab: null })" href="#" class="btn btn-default btn-flat">Edit</a>
+                                </div>
+                                <div class="pull-right" ng-controller="loginController">
+                                    <a href="#" class="btn btn-default btn-flat" ng-click="logout()">Sign out</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-custom-menu -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+</header>
+
+<div ui-view></div>
