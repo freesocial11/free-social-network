@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using mobSocial.Core.Infrastructure.AppEngine;
-using mobSocial.Services.Helpers;
+using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using Microsoft.Owin.Security.OAuth;
 
@@ -15,13 +15,15 @@ namespace mobSocial.Services.OAuth.Provider
         {
             if (!string.IsNullOrEmpty(context.Token))
             {
-                var tokenHash = OAuthHelper.GetHash(context.Token);
+                var crypotographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
+                var tokenHash = crypotographyService.Encrypt(context.Token);
                 var tokenService = mobSocialEngine.ActiveEngine.Resolve<IAppTokenService>();
                 //get the token and check if it has been revoked?
                 var token = tokenService.FirstOrDefault(x => x.ProtectedTicket == tokenHash);
                 if (token == null || token.ExpiresUtc < DateTime.UtcNow)
                 {
-                    tokenService.Delete(token);
+                    if(token != null)
+                        tokenService.Delete(token);
                     context.Token = null;
                 }
                 else

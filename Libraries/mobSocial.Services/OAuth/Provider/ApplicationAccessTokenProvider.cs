@@ -6,6 +6,7 @@ using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.OAuth;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Helpers;
+using mobSocial.Services.Security;
 using Microsoft.Owin.Security.Infrastructure;
 
 namespace mobSocial.Services.OAuth.Provider
@@ -53,7 +54,8 @@ namespace mobSocial.Services.OAuth.Provider
             context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
 
             var accessToken = context.SerializeTicket();
-            token.ProtectedTicket = OAuthHelper.GetHash(accessToken);
+            var crypotographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
+            token.ProtectedTicket = crypotographyService.Encrypt(accessToken);
             if (token.Id > 0)
                 tokenService.Update(token);
             else
