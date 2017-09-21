@@ -225,6 +225,7 @@
     <Compile Include="Configuration\Mvc\UI\ResourcePlacementType.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourceRegistrationType.cs" />
     <Compile Include="Configuration\Mvc\UI\ViewRenderer.cs" />
+    <Compile Include="Configuration\OAuth\OAuthScopes.cs" />
     <Compile Include="Configuration\Routing\CentralizedPrefixProvider.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
     <Compile Include="Configuration\Security\Attributes\AdminAuthorizeAttribute.cs" />
@@ -296,6 +297,7 @@
     </Compile>
     <Compile Include="Models\Abstract\AbstractPageModel.cs" />
     <Compile Include="Models\Addresses\AddressModel.cs" />
+    <Compile Include="Models\Applications\ApplicationAuthorizeModel.cs" />
     <Compile Include="Models\Applications\ApplicationLoginModel.cs" />
     <Compile Include="Models\Applications\ApplicationMiniModel.cs" />
     <Compile Include="Models\Applications\ApplicationModel.cs" />

@@ -295,7 +295,12 @@
                  {
                      abstract: true,
                      url: "/apps",
-                     templateUrl: "pages/layouts/_layout-application.html"
+                     templateUrl: "pages/layouts/_layout-application.html",
+                     resolve: {
+                         auth: function (authProvider) {
+                             return authProvider.isLoggedIn();
+                         }
+                     },
                  })
              .state("layoutApplication.twoColumns",
                  {
@@ -343,6 +348,11 @@
                              templateUrl: "pages/applications/application.logins.html"
                          }
                      }
+             })
+             .state("layoutApplication.authorization",
+                 {
+                     url: "/oauth2/authorize",
+                     templateUrl: "pages/applications/application.authorization.html"
                  });
          $stateProvider.state("layoutZero.404",
          {

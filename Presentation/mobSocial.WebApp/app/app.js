@@ -68,7 +68,7 @@ window.mobSocial.run([
             //because the returnUrl may be absolute, it's better to explicitly reference the path from url for proper functioning
             var a = document.createElement("a");
             a.href = returnUrl;
-            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(a.pathname);
+            window.location.href = "/login?ReturnUrl=" + encodeURIComponent(a.pathname + a.search);
         };
 
         $rootScope.displayErrors = function(contextName) {

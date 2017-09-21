@@ -1,10 +1,48 @@
-﻿
+﻿@model mobSocial.WebApi.Models.Applications.ApplicationAuthorizeModel
 @{
     ViewBag.Title = "Authorize";
 }
-
-<h2>Authorize</h2>
-<form method="post">
-    <input name="authorize" value="true" type="hidden"/>
-    <input type="submit" value="Allow"/>
+@if (!Model.AlreadyAuthorized)
+{
+    <h3 class="no-padding no-margin">@Model.ApplicationName is requesting access to your account.</h3>
+    <p>The application would like to:</p>
+    <ul>
+        @foreach (var modelScope in Model.Scopes)
+        {
+            <li>
+                <p>@modelScope.Description</p>
+            </li>
+        }
+    </ul>
+    <p>The application <strong class="text-danger">will not</strong> be able to:
+    </p>
+    <ul>
+        <li>View your password</li>
+    </ul>
+}
+else
+{
+    <h4 class="no-padding no-margin">Redirecting back to @Model.ApplicationName ...</h4>
+}
+<form method="post" id="authForm">
+    @if (!Model.AlreadyAuthorized)
+    {
+        <div class="text-center">
+            <input type="submit" value="Allow" class="btn btn-primary"/>
+            <a class="btn btn-default" href="@(Model.RedirectUrl)?error=access_denied">Deny</a>
+        </div>
+    }
+    
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var url = "/api/oauth2/authorize" + window.location.search;
+            jQuery("#authForm").attr("action", url);
+            @if (Model.AlreadyAuthorized)
+            {
+                <text>
+                    jQuery("#authForm").submit();
+                </text>
+            }
+        });
+    </script>
 </form>

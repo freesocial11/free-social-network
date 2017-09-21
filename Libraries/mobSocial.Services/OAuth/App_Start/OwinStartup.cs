@@ -14,7 +14,7 @@ namespace mobSocial.Services.OAuth.App_Start
 {
     public class OwinStartup : IOwinStartupTask
     {
-        private static OAuthBearerAuthenticationOptions options;
+        public static OAuthBearerAuthenticationOptions BearerOptions;
         public void Configuration(IAppBuilder app)
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions {
@@ -55,12 +55,12 @@ namespace mobSocial.Services.OAuth.App_Start
                 ExpireTimeSpan = TimeSpan.FromMinutes(5),
             });
 
-            options = new OAuthBearerAuthenticationOptions()
+            BearerOptions = new OAuthBearerAuthenticationOptions()
             {
                 Provider = new ApplicationBearerAuthenticationProvider()
             };
 
-            app.UseOAuthBearerAuthentication(options);
+            app.UseOAuthBearerAuthentication(BearerOptions);
 
 
             var oAuthServerOptions = new OAuthAuthorizationServerOptions() {
