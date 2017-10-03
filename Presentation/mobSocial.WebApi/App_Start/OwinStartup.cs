@@ -25,7 +25,7 @@ namespace mobSocial.WebApi
             var config = new HttpConfiguration();
             var enableCors = WebConfigurationManager.AppSettings["enableCors"] != null &&
                              WebConfigurationManager.AppSettings["enableCors"].ToLower() == "true";
-
+            SwaggerConfig.Register(config);
             if (enableCors)
             {
                 var origins = WebConfigurationManager.AppSettings["corsAllowedOrigins"] ?? "*";
