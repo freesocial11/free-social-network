@@ -1,9 +1,10 @@
 ﻿using System;
+using mobSocial.Core;
 using mobSocial.Core.Data;
 
 namespace mobSocial.Data.Entity.Social
 {
-    public class Friend : BaseEntity
+    public class Friend : BaseEntity, IPerApplicationEntity
     {
         public int FromCustomerId { get; set; }
         public int ToCustomerId { get; set; }
@@ -18,6 +19,7 @@ namespace mobSocial.Data.Entity.Social
             NotificationCount = 0;
         }
 
+        public int ApplicationId { get; set; }
     }
 
     public class FriendMap : BaseEntityConfiguration<Friend> { }

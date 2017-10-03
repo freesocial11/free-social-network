@@ -1,4 +1,6 @@
-﻿using System.Web.Configuration;
+﻿using System.Web;
+using System.Web.Configuration;
+using Microsoft.Owin;
 
 namespace mobSocial.Core
 {
@@ -37,6 +39,9 @@ namespace mobSocial.Core
             SetConfigurationValue(settingName, set ? "true" : "false");
         }
 
-
+        public static IOwinContext GetCurrentOwinContext()
+        {
+            return HttpContext.Current.GetOwinContext();
+        }
     }
 }

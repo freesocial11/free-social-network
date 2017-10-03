@@ -2,7 +2,9 @@
 using System.Web;
 using DryIoc;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Entity.Currency;
+using mobSocial.Data.Entity.OAuth;
 using mobSocial.Data.Entity.Users;
 using mobSocial.Data.Enum;
 using mobSocial.Services.Authentication;
@@ -24,6 +26,8 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
         /// Stores the active currency
         /// </summary>
         private Currency _currency;
+
+        private OAuthApplication _currentApplication;
 
         public ApplicationContext()
         {
@@ -50,6 +54,15 @@ namespace mobSocial.WebApi.Configuration.Infrastructure
             get
             {
                 return _currency;
+            }
+        }
+
+        public OAuthApplication CurrentOAuthApplication
+        {
+            get
+            {
+                return CurrentOwinContext.Get<OAuthApplication>(OwinEnvironmentVariableNames.ActiveClient);//set by bearer token provider in services
+                
             }
         }
         /// <summary>

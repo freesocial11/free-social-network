@@ -1,9 +1,10 @@
 ﻿using System;
+using mobSocial.Core;
 using mobSocial.Core.Data;
 
 namespace mobSocial.Data.Entity.Timeline
 {
-    public class TimelinePost : BaseEntity
+    public class TimelinePost : BaseEntity, IPerApplicationEntity
     {
         public int OwnerId { get; set; }
 
@@ -32,6 +33,8 @@ namespace mobSocial.Data.Entity.Timeline
         public string InlineTags { get; set; }
 
         public string ExternalTags { get; set; }
+
+        public int ApplicationId { get; set; }
     }
     public class TimelinePostMap: BaseEntityConfiguration<TimelinePost> { }
 }

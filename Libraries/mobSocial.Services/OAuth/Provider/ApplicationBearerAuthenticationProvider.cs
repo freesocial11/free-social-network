@@ -3,6 +3,8 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Constants;
+using mobSocial.Data.Entity.OAuth;
 using mobSocial.Services.Security;
 using mobSocial.Services.Users;
 using Microsoft.Owin.Security.OAuth;
@@ -45,9 +47,10 @@ namespace mobSocial.Services.OAuth.Provider
             context.Ticket.Properties.Dictionary.TryGetValue("client_id", out string clientid);
             var reject = string.IsNullOrEmpty(clientid);
 
+            OAuthApplication client = null;
             if (!reject)
             {
-                var client = applicationService.FirstOrDefault(x => x.Guid == clientid && x.Active);
+                client = applicationService.FirstOrDefault(x => x.Guid == clientid && x.Active);
                 reject = client == null;
             }
 
@@ -76,7 +79,8 @@ namespace mobSocial.Services.OAuth.Provider
                 context.Rejected();
                 return Task.FromResult(0);
             }
-         
+            //set active client to use down the line
+            context.OwinContext.Set(OwinEnvironmentVariableNames.ActiveClient, client);
             return base.ValidateIdentity(context);
         }
     }

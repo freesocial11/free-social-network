@@ -91,6 +91,7 @@
     <Compile Include="Data\IDataRepository.cs" />
     <Compile Include="Data\ISoftDeletable.cs" />
     <Compile Include="Helpers\ExpressionHelpers.cs" />
+    <Compile Include="IPerApplicationEntity.cs" />
     <Compile Include="Infrastructure\DependencyManagement\DryIoc\AsyncExecutionFlowScopeContext.cs" />
     <Compile Include="Infrastructure\DependencyManagement\DryIoc\Container.cs" />
     <Compile Include="Infrastructure\DependencyManagement\DryIoc\ImTools.cs" />

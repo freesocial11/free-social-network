@@ -7,10 +7,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using DryIoc;
+using mobSocial.Core;
 using mobSocial.Core.Data;
 using mobSocial.Core.Helpers;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Data.Constants;
 using mobSocial.Data.Database;
+using mobSocial.Data.Entity.OAuth;
 
 namespace mobSocial.Data
 {
@@ -58,14 +61,14 @@ namespace mobSocial.Data
         public IQueryable<T> Get(Expression<Func<T, bool>> @where)
         {
             _SetupContexts();
-            where = AppendSoftDeletableCondition(where);
+            where = AppendAdditionalConditions(where);
             return _entityDbSet.Where(where);
         }
 
         public IQueryable<T> Get<TProperty>(Expression<Func<T, bool>> @where, params Expression<Func<T, TProperty>>[] earlyLoad)
         {
             _SetupContexts();
-            where = AppendSoftDeletableCondition(where);
+            where = AppendAdditionalConditions(where);
             var dbSet = _entityDbSet.AsQueryable();
             dbSet = earlyLoad.Aggregate(dbSet, (current, el) => current.Include(el));
             return dbSet.Where(where);
@@ -74,7 +77,7 @@ namespace mobSocial.Data
         public int Count(Expression<Func<T, bool>> @where)
         {
             _SetupContexts();
-            where = AppendSoftDeletableCondition(where);
+            where = AppendAdditionalConditions(where);
             return _entityDbSet.Count(where);
         }
 
@@ -96,6 +99,11 @@ namespace mobSocial.Data
 
             try
             {
+                var applicationEntity = entity as IPerApplicationEntity;
+                if (applicationEntity != null)
+                {
+                    applicationEntity.ApplicationId = GetCurrentOAuthApplication().Id;
+                }
                 _entityDbSet.Add(entity);
                 _databaseContext.SaveChanges();
                 if (reloadNavigationProperties)
@@ -180,7 +188,14 @@ namespace mobSocial.Data
             }
         }
 
-        private Expression<Func<T, bool>> AppendSoftDeletableCondition(Expression<Func<T, bool>> where)
+        private OAuthApplication GetCurrentOAuthApplication()
+        {
+            var owinContext = ApplicationHelper.GetCurrentOwinContext();
+            var application = owinContext.Get<OAuthApplication>(OwinEnvironmentVariableNames.ActiveClient);
+            return application;
+        }
+
+        private Expression<Func<T, bool>> AppendAdditionalConditions(Expression<Func<T, bool>> where)
         {
             if (typeof(ISoftDeletable).IsAssignableFrom(typeof(T)))
             {
@@ -193,6 +208,23 @@ namespace mobSocial.Data
                 //combine these to create a single expression
                 where = ExpressionHelpers.CombineAnd<T>(where, deletedWhere);
             }
+
+            if (typeof(IPerApplicationEntity).IsAssignableFrom(typeof(T)))
+            {
+              
+                var applicationId = GetCurrentOAuthApplication()?.Id ?? 0;
+
+                //the parameter
+                var param = Expression.Parameter(typeof(T), "x");
+                var applicationIdWhere =
+                    Expression.Lambda<Func<T, bool>>(
+                        Expression.Equal(Expression.Property(param, "ApplicationId"), Expression.Constant(applicationId)), param);
+
+                //combine these to create a single expression
+                where = ExpressionHelpers.CombineAnd<T>(where, applicationIdWhere);
+            }
+
+
             return where;
         }
 
