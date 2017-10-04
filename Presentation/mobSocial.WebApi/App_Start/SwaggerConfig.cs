@@ -2,6 +2,8 @@ using System.Web.Http;
 using Swashbuckle.Application;
 using System.Linq;
 using mobSocial.Core;
+using mobSocial.Services.OAuth;
+using System.Web.Configuration;
 
 namespace mobSocial.WebApi
 {
@@ -68,8 +70,8 @@ namespace mobSocial.WebApi
                         c.OAuth2("oauth2")
                             .Description("OAuth2 Implicit Grant")
                             .Flow("implicit")
-                            .AuthorizationUrl("http://petstore.swagger.wordnik.com/api/oauth/dialog")
-                            .TokenUrl("https://tempuri.org/token")
+                            .AuthorizationUrl(OAuthConstants.AuthorizeEndPointPath)
+                            .TokenUrl(OAuthConstants.TokenEndPointPath)
                             .Scopes(scopes =>
                             {
                                 scopes.Add("read", "Read access to protected resources");
@@ -236,10 +238,10 @@ namespace mobSocial.WebApi
                         // the Swagger 2.0 specification, you can enable UI support as shown below.
                         //
                         c.EnableOAuth2Support(
-                            clientId: "test-client-id",
-                            clientSecret: null,
-                            realm: "test-realm",
-                            appName: "Swagger UI"
+                            clientId: WebConfigurationManager.AppSettings["swaggerOAuthAppId"] ?? "",
+                            clientSecret: WebConfigurationManager.AppSettings["swaggerOAuthClientSecret"] ?? "",
+                            realm: "demo",
+                            appName: "mobSocial API Playground"
                             //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
                         );
 

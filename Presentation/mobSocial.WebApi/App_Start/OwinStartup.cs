@@ -25,14 +25,18 @@ namespace mobSocial.WebApi
             var config = new HttpConfiguration();
             var enableCors = WebConfigurationManager.AppSettings["enableCors"] != null &&
                              WebConfigurationManager.AppSettings["enableCors"].ToLower() == "true";
-            SwaggerConfig.Register(config);
             if (enableCors)
             {
                 var origins = WebConfigurationManager.AppSettings["corsAllowedOrigins"] ?? "*";
                 var cors = new EnableCorsAttribute(origins, "*", "GET,POST,PUT,DELETE");
                 config.EnableCors(cors);
             };
-           
+
+            var enableSwagger = WebConfigurationManager.AppSettings["enableSwagger"] != null &&
+                             WebConfigurationManager.AppSettings["enableSwagger"].ToLower() == "true";
+            if (enableSwagger)
+                SwaggerConfig.Register(config);
+
             //route registrations & other configurations
             WebApiConfig.Register(config);
 
