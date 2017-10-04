@@ -348,12 +348,7 @@
                              templateUrl: "pages/applications/application.logins.html"
                          }
                      }
-             })
-             .state("layoutApplication.authorization",
-                 {
-                     url: "/oauth2/authorize",
-                     templateUrl: "pages/applications/application.authorization.html"
-                 });
+             });
          $stateProvider.state("layoutZero.404",
          {
              templateUrl: "pages/common/404.html"

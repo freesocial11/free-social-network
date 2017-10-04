@@ -38,7 +38,8 @@ namespace mobSocial.Services.OAuth.App_Start
                             //if it's an authorize page request, then only we'll redirect, otherwise, it's best to send the response in json
                             if (ctx.Request.Uri.AbsolutePath.Contains(OAuthConstants.AuthorizeEndPointPath))
                             {
-                                ctx.RedirectUri = "/login?ReturnUrl=" + HttpUtility.UrlEncode(ctx.Request.Uri.PathAndQuery);
+                                var generalSettings = mobSocialEngine.ActiveEngine.Resolve<GeneralSettings>();
+                                ctx.RedirectUri = generalSettings.ApplicationUiDomain + "/login?ReturnUrl=" + HttpUtility.UrlEncode(ctx.Request.Uri.PathAndQuery);
                                 ctx.Response.Redirect(ctx.RedirectUri);
                             }
                         }
