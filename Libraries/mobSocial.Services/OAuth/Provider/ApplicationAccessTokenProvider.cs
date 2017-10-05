@@ -21,14 +21,25 @@ namespace mobSocial.Services.OAuth.Provider
             {
                 return;
             }
-            var applicationService = mobSocialEngine.ActiveEngine.Resolve<IApplicationService>();
-            var client = applicationService.FirstOrDefault(x => x.Guid == clientid && x.Active);
-            if (client == null)
-                return;
 
-            var tokenLifeTime = client.ApplicationType == ApplicationType.Native
+            //for implicit grants, we won't be saving the access tokens as the request has alrady ended
+            var isImplicitGrant = context.Request.Query.Get("response_type") == "token"; //according to oauth spec response_type is token for implicit grant
+            var tokenLifeTime = 0;
+            OAuthApplication client = null;
+            if (!isImplicitGrant)
+            {
+                var applicationService = mobSocialEngine.ActiveEngine.Resolve<IApplicationService>();
+                client = applicationService.FirstOrDefault(x => x.Guid == clientid && x.Active);
+                if (client == null)
+                    return;
+
+            }
+            tokenLifeTime = client?.ApplicationType == ApplicationType.Native
                 ? (365 * 24 * 60) //a one year valid access token unless revoked
-                : OAuthConstants.AccessTokenExpirationSecondsForNonNativeApplications / 60;// for javascript applications
+                : OAuthConstants.AccessTokenExpirationSecondsForNonNativeApplications /
+                  60; // for javascript applications
+
+
 
             var guid = context.Ticket.Identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             var email = context.Ticket.Identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
@@ -37,11 +48,16 @@ namespace mobSocial.Services.OAuth.Provider
                 return;
             }
 
-            var tokenService = mobSocialEngine.ActiveEngine.Resolve<IAppTokenService>();
-            var token = tokenService.FirstOrDefault(x => x.Guid == guid && x.ClientId == clientid);
-
-            token = token ?? new AppToken()
+            AppToken token = null;
+            IAppTokenService tokenService = null;
+            if (!isImplicitGrant)
             {
+                tokenService = mobSocialEngine.ActiveEngine.Resolve<IAppTokenService>();
+                token = tokenService.FirstOrDefault(x => x.Guid == guid && x.ClientId == clientid);
+            }
+
+
+            token = token ?? new AppToken() {
                 Guid = guid,
                 ClientId = clientid,
                 Subject = email ?? guid,
@@ -54,15 +70,18 @@ namespace mobSocial.Services.OAuth.Provider
             context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
 
             var accessToken = context.SerializeTicket();
-            var crypotographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
-            token.ProtectedTicket = crypotographyService.Encrypt(accessToken);
-            if (token.Id > 0)
-                tokenService.Update(token);
-            else
-            {
-                tokenService.Insert(token);
-            }
 
+            if (!isImplicitGrant)
+            {
+                var crypotographyService = mobSocialEngine.ActiveEngine.Resolve<ICryptographyService>();
+                token.ProtectedTicket = crypotographyService.Encrypt(accessToken);
+                if (token.Id > 0)
+                    tokenService.Update(token);
+                else
+                {
+                    tokenService.Insert(token);
+                }
+            }
             context.SetToken(accessToken);
         }
 
@@ -73,13 +92,13 @@ namespace mobSocial.Services.OAuth.Provider
             return Task.FromResult(0);
         }
 
-        
+
         public void Receive(AuthenticationTokenReceiveContext context)
         {
-           
+
         }
 
-        
+
         public Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
             Receive(context);

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Helpers;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.OAuth;
@@ -81,7 +82,7 @@ namespace mobSocial.WebApi.Controllers
                 }
             }
 
-            if (Request.HttpMethod == "POST")
+            if (Request.HttpMethod == "POST" || skipAuthorizePage)
             {
                 var authentication = context.Authentication;
                 var ticket = authentication.AuthenticateAsync("Application").Result;
@@ -93,9 +94,14 @@ namespace mobSocial.WebApi.Controllers
                     identity.AddClaim(new Claim("urn:oauth:scope", scope.ScopeName));
                 }
                 authentication.SignIn(identity);
+                return Content("");
             }
 
-            var application = _applicationService.First(x => x.Guid == clientId);
+            var application = _applicationService.FirstOrDefault(x => x.Guid == clientId);
+            if (application == null)
+            {
+                return View("OAuth/AuthorizeError");
+            }
             //get tokens
             var model = new ApplicationAuthorizeModel()
             {
