@@ -30,7 +30,7 @@ namespace mobSocial.WebApi
                 (
                     name: "DefaultApi",
                     routeTemplate: ApiPrefix + (string.IsNullOrEmpty(ApiPrefix) ? "" : "/") + "{controller}/{id}",
-                    defaults: new {id = RouteParameter.Optional}
+                    defaults: new {id = RouteParameter.Optional, controller = "Default"}
                 );
 
             

@@ -204,6 +204,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Configuration\Database\DatabaseContextManager.cs" />
     <Compile Include="Configuration\Database\DatabaseSettings.cs" />
+    <Compile Include="Configuration\Globals.cs" />
     <Compile Include="Configuration\Infrastructure\ApplicationContext.cs" />
     <Compile Include="Configuration\Infrastructure\DependencyRegistrar.cs" />
     <Compile Include="Configuration\Infrastructure\PictureSizeRegistrar.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\ConversationController.cs" />
+    <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\EmailAccountController.cs" />
     <Compile Include="Controllers\EmailTemplateController.cs" />
