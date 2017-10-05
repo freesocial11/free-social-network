@@ -4,6 +4,10 @@ using System.Linq;
 using mobSocial.Core;
 using mobSocial.Services.OAuth;
 using System.Web.Configuration;
+using System.Web;
+using System;
+using System.Net.Http;
+using mobSocial.WebApi.Configuration.OAuth;
 
 namespace mobSocial.WebApi
 {
@@ -20,8 +24,11 @@ namespace mobSocial.WebApi
                         // However, there may be situations (e.g. proxy and load-balanced environments) where this does not
                         // resolve correctly. You can workaround this by providing your own code to determine the root URL.
                         //
-                        //c.RootUrl(req => GetRootUrlFromAppConfig());
-
+                        c.RootUrl(req =>
+                        {
+                            var pathBase = req.GetOwinContext().Get<string>("owin.RequestPathBase");
+                            return new Uri(req.RequestUri, pathBase).ToString();
+                        });
                         // If schemes are not explicitly provided in a Swagger 2.0 document, then the scheme used to access
                         // the docs is taken as the default. If your API supports multiple schemes and you want to be explicit
                         // about them, you can use the "Schemes" option as shown below.
@@ -70,12 +77,14 @@ namespace mobSocial.WebApi
                         c.OAuth2("oauth2")
                             .Description("OAuth2 Implicit Grant")
                             .Flow("implicit")
-                            .AuthorizationUrl(OAuthConstants.AuthorizeEndPointPath)
-                            .TokenUrl(OAuthConstants.TokenEndPointPath)
+                            .AuthorizationUrl(HttpContext.Current.Request.ApplicationPath + OAuthConstants.AuthorizeEndPointPath)
+                            .TokenUrl(HttpContext.Current.Request.ApplicationPath + OAuthConstants.TokenEndPointPath)
                             .Scopes(scopes =>
                             {
-                                scopes.Add("read", "Read access to protected resources");
-                                scopes.Add("write", "Write access to protected resources");
+                                foreach (var oAuthScope in OAuthScopes.AllScopes)
+                                {
+                                    scopes.Add(oAuthScope.ScopeName, oAuthScope.Description);
+                                }
                             });
 
                         // Set this flag to omit descriptions for any actions decorated with the Obsolete attribute
@@ -241,8 +250,9 @@ namespace mobSocial.WebApi
                             clientId: WebConfigurationManager.AppSettings["swaggerOAuthAppId"] ?? "",
                             clientSecret: WebConfigurationManager.AppSettings["swaggerOAuthClientSecret"] ?? "",
                             realm: "demo",
-                            appName: "mobSocial API Playground"
-                            //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
+                            appName: "mobSocial API Playground",
+                            scopeSeperator:","
+                        //additionalQueryStringParams: new Dictionary<string, string>() { { "foo", "bar" } }
                         );
 
                         // If your API supports ApiKey, you can override the default values.

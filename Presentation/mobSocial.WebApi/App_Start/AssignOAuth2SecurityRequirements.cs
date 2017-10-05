@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.Description;
+using mobSocial.WebApi.Configuration.OAuth;
 using Swashbuckle.Swagger;
 
 namespace mobSocial.WebApi
@@ -16,18 +17,14 @@ namespace mobSocial.WebApi
                 return; // must be an anonymous method
 
 
-            //var scopes = apiDescription.ActionDescriptor.GetFilterPipeline()
-            //    .Select(filterInfo => filterInfo.Instance)
-            //    .OfType<AllowAnonymousAttribute>()
-            //    .SelectMany(attr => attr.Roles.Split(','))
-            //    .Distinct();
+            var scopes = OAuthScopes.AllScopes.Select(x => x.ScopeName).ToList();
 
             if (operation.security == null)
                 operation.security = new List<IDictionary<string, IEnumerable<string>>>();
 
             var oAuthRequirements = new Dictionary<string, IEnumerable<string>>
             {
-                {"oauth2", new List<string> {"sampleapi"}}
+                {"oauth2", scopes}
             };
 
             operation.security.Add(oAuthRequirements);
