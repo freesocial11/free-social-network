@@ -97,6 +97,8 @@ namespace mobSocial.WebApi.Configuration.OAuth
             var allowedPermissions = new[] { "r", "rw", "rwd" };
             foreach (var scopeName in scopeNames)
             {
+                if (string.IsNullOrEmpty(scopeName))
+                    continue;
                 var scopeParts = scopeName.Split('-');
                 if (scopeParts.Length < 2)
                     return null; //there is something wrong with the passed scope terminating...
