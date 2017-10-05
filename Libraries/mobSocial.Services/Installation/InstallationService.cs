@@ -157,8 +157,8 @@ namespace mobSocial.Services.Installation
             {
                 ImageServerDomain = "//" + string.Concat(installDomain, "/api"),
                 VideoServerDomain = "//" + string.Concat(installDomain, "/api"),
-                ApplicationApiRoot = string.Concat(installDomain, "/api"),
-                ApplicationUiDomain = installDomain,
+                ApplicationApiRoot = "//" + string.Concat(installDomain, "/api"),
+                ApplicationUiDomain = "//" + installDomain,
                 ApplicationCookieDomain = installDomain
             });
 
