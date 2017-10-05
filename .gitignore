@@ -247,7 +247,9 @@ ModelManifest.xml
 # Configuration files
 Presentation\mobSocial.WebApi\App_Data\*.config
 Presentation/mobSocial.WebApi/App_Data/*.config
-Presentation/mobSocial.WebApi/Content/Media/Uploads/
 Presentation/mobSocial.WebApp/bundle.js
 Presentation/mobSocial.WebApp/bundle.js.map
 Presentation/mobSocial.WebApp/scripts/bundles/
+Presentation/mobSocial.WebApi/Content/Media/Uploads/Images/*.jpg
+Presentation/mobSocial.WebApi/Content/Media/Uploads/Videos/*.mp4
+Presentation/mobSocial.WebApi/Content/Media/Uploads/Images/*.png
