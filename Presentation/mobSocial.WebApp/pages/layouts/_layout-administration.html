@@ -316,14 +316,14 @@
                 </a>
             </li>
             <li class="treeview" ng-class='{"active": $state.includes("layoutAdministration.users.list") || $state.includes("layoutAdministration.users.edit.basic")}'>
-                <a href="" ui-sref="layoutAdministration.users.list" ui-sref-opts="{reload: true}">
+                <a href="" ui-sref="layoutAdministration.users.list">
                     <i class="fa fa-users"></i> <span>Users</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li ng-class='{"active": $state.includes("layoutAdministration.users.list")}'><a ui-sref="layoutAdministration.users.list" ui-sref-opts="{reload: true}"><i class="fa fa-users"></i> Manage Users</a></li>
+                    <li ng-class='{"active": $state.includes("layoutAdministration.users.list")}'><a ui-sref="layoutAdministration.users.list"><i class="fa fa-users"></i> Manage Users</a></li>
                     <li ng-class='{"active": $state.includes("layoutAdministration.users.edit.basic", { id:0 })}'><a ui-sref="layoutAdministration.users.edit.basic({ id:0 })"><i class="fa fa-user-plus"></i> Add User</a></li>
                 </ul>
             </li>

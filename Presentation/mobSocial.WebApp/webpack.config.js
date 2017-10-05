@@ -1,7 +1,6 @@
-/// <binding Clean='Run - Development' />
 "use strict";
 var webpack = require("webpack"),
-    minimize = process.argv.indexOf('--minimize') !== -1,
+    minimize = process.env.NODE_ENV == 'production',
     plugins = [];
 
 plugins.push(new webpack.optimize.CommonsChunkPlugin("scripts/bundles/init.js"));

@@ -33,9 +33,9 @@
                  templateUrl: "pages/common/register.html",
                  url: "/register",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider", function (controllerProvider) {
                          return controllerProvider.resolveBundles(["register"]);
-                     }
+                     }]
                  },
                  controller: "registerController"
              })
@@ -44,9 +44,9 @@
                  templateUrl: "pages/common/activate.html",
                  url: "/activate?code",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider", function (controllerProvider) {
                          return controllerProvider.resolveBundles(["register"]);
-                     }
+                     }]
                  },
                  controller: "registerController"
              })
@@ -56,9 +56,9 @@
                  url: "/install",
                  controller: "installController",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider", function (controllerProvider) {
                          return controllerProvider.resolveBundles(["install"]);
-                     }
+                     }]
                  }
              });
          $stateProvider
@@ -66,9 +66,9 @@
              {
                  abstract: true,
                  resolve: {
-                     auth: function(authProvider) {
+                     auth: ["authProvider", function(authProvider) {
                          return authProvider.isLoggedIn();
-                     }
+                     }]
                  },
                  templateUrl: "pages/layouts/_layout-administration.html"
              })
@@ -83,14 +83,14 @@
                  url: adminPrefix + "/users",
                  template: "<div ui-view></div>",
                  resolve: {
-                     resolver: function(controllerProvider) {
+                     resolver: ["controllerProvider",function(controllerProvider) {
                          return controllerProvider.resolveBundles(["fileUpload", "users"]);
-                     }
+                     }]
                  }
              })
              .state("layoutAdministration.users.list",
              {
-                 url: "",
+                 url: '',
                  templateUrl: "pages/users/users.list.html",
                  controller: "userController"
              })
@@ -115,9 +115,9 @@
              {
                  url: adminPrefix + "/settings/:settingType",
                  templateUrl: function(stateParams) {
-                     return "pages/settings/" + stateParams.settingType + "Settings.edit.html"
+                     return "pages/settings/" + stateParams.settingType + "Settings.edit.html";
                  },
-                 controllerProvider: function($stateParams) {
+                 controllerProvider: ["$stateParams",function($stateParams) {
                      if (!$stateParams.settingType)
                          return "settingEditController";
                      switch ($stateParams.settingType) {
@@ -125,11 +125,11 @@
                          return "settingEditController";
 
                      }
-                 },
+                 }],
                  resolve: {
-                     resolver: function(controllerProvider) {
+                     resolver: ["controllerProvider",function(controllerProvider) {
                          return controllerProvider.resolveBundles(["settings"]);
-                     }
+                     }]
                  }
              })
              .state("layoutAdministration.emails",
@@ -138,9 +138,9 @@
                  url: adminPrefix + "/emails",
                  template: "<div ui-view></div>",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider.resolveBundles(["emailAccounts"]);
-                     }
+                     }]
                  }
              })
              .state("layoutAdministration.emails.accountlist",
@@ -173,9 +173,9 @@
                  url: adminPrefix + "/skills",
                  template: "<div ui-view></div>",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider.resolveBundles(["skillAdmin"]);
-                     }
+                     }]
                  }
              })
             .state("layoutAdministration.skills.list",
@@ -190,9 +190,9 @@
              {
                  abstract: true,
                  resolve: {
-                     auth: function (authProvider) {
+                     auth: ["authProvider",function (authProvider) {
                          return authProvider.isLoggedIn();
-                     }
+                     }]
                  },
                  templateUrl: "pages/layouts/_layout-mobsocial.html"
              })
@@ -201,10 +201,10 @@
                  url: "/",
                  templateUrl: "pages/users/activity.html",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
                              .resolveBundles(["videogular", "social", "fileUpload", "users", "timeline", "education", "skillPublic"]);
-                     }
+                     }]
                  }
              })
              .state("layoutMobSocial.userprofile",
@@ -213,31 +213,31 @@
                  url: "/u/:idOrUserName?tab",
                  templateUrl: "pages/users/user.profile.html",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
                              .resolveBundles(["videogular", "social", "media", "fileUpload", "users", "timeline", "skillPublic"]);
-                     }
+                     }]
                  }
              })
              .state("layoutMobSocial.userprofile.tabs",
              {
                  url: "",
-                 templateUrl: function ($stateParams, state) {
+                 templateUrl: ['$stateParams', function ($stateParams) {
                      if ([undefined, "main", "pictures", "videos", "friends", "followers", "following", "skills"].indexOf($stateParams.tab) == -1) {
                          return "pages/common/404.html";
                      }
                      return "pages/users/user.profile." + ($stateParams.tab || "main") + ".html";
-                 }
+                 }]
              })
             .state("layoutMobSocial.skill",
              {
                  url: "/skill/:slug",
                  templateUrl: "pages/skills/skill.single.html",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
                              .resolveBundles(["videogular", "social", "media", "fileUpload", "skillPublic"]);
-                     }
+                     }]
                  },
                  controller: "skillController"
              });
@@ -252,29 +252,29 @@
              {
                  url: "/edit-profile/?tab",
                  resolve: {
-                     resolver: function (controllerProvider) {
+                     resolver: ["controllerProvider",function (controllerProvider) {
                          return controllerProvider
                              .resolveBundles(["videogular", "fileUpload", "media", "users", "education", "skillPublic"]);
-                     }
+                     }]
                  },
                  views: {
                      "left": {
                          templateUrl: "pages/users/user.profile.edit.navigation.html"
                      },
                      "right": {
-                         templateUrl: function ($stateParams, state) {
+                         templateUrl: ["$stateParams" ,function ($stateParams) {
                              if ([undefined, "basic", "education", "skills"].indexOf($stateParams.tab) == -1) {
                                  return "pages/common/404.html";
                              }
                              return "pages/users/user.profile.edit." + ($stateParams.tab || "basic") + ".html";
-                         },
+                         }],
                          resolve: {
-                             resolver: function (controllerProvider) {
+                             resolver: ["controllerProvider",function (controllerProvider) {
                                  return controllerProvider
                                      .resolveBundles(["education", "skillPublic"]);
-                             }
+                             }]
                          },
-                         controllerProvider: function($stateParams) {
+                         controllerProvider: ["$stateParams",function($stateParams) {
                              if (!$stateParams.tab)
                                  return "userEditController";
                              switch($stateParams.tab) {
@@ -286,7 +286,7 @@
                                      return "skillController";
 
                              }
-                         }
+                         }]
                      }
                  }
              });
@@ -297,9 +297,9 @@
                      url: "/apps",
                      templateUrl: "pages/layouts/_layout-application.html",
                      resolve: {
-                         auth: function (authProvider) {
+                         auth: ["authProvider",function (authProvider) {
                              return authProvider.isLoggedIn();
-                         }
+                         }]
                      },
                  })
              .state("layoutApplication.twoColumns",
@@ -307,10 +307,10 @@
                      abstract: true,
                      templateUrl: "pages/layouts/_layout-mobsocial-two-columns.html",
                      resolve: {
-                         resolver: function (controllerProvider) {
+                         resolver: ["controllerProvider",function (controllerProvider) {
                              return controllerProvider
                                  .resolveBundles(["applicationPublic"]);
-                         }
+                         }]
                      }
              })
              .state("layoutApplication.twoColumns.listApplications",
