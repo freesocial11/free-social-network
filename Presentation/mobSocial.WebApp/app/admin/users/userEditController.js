@@ -1,5 +1,14 @@
 ﻿window.mobSocial.lazy.controller("userEditController", [
-   "$scope", "userService", "$stateParams", "$state", "authProvider", "$rootScope", function ($scope, userService, $stateParams, $state, authProvider, $rootScope) {
+   "$scope", "userService", "$stateParams", "$state", "authProvider", "$rootScope", "roleService", function ($scope, userService, $stateParams, $state, authProvider, $rootScope, roleService) {
+
+       roleService.get(function (response) {
+            if (response.Success) {
+                var roles = response.ResponseData.Roles;
+                $scope.AvailableRoles = roles;
+            }
+            
+
+        });
 
        $scope.get = function () {
            var userId = $stateParams.id || $rootScope.CurrentUser.Id;

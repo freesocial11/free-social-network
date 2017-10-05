@@ -1,4 +1,4 @@
-﻿window.mobSocial.service("roleService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
+﻿window.mobSocial.lazy.service("roleService", ["globalApiEndPoint", "webClientService", "$http", function (globalApiEndPoint, webClientService, $http) {
 
     var apiEndPoint = globalApiEndPoint + "/roles";
     // get

@@ -89,6 +89,7 @@ module.exports = {
         ],
         users: [
             "./app/common/services/userService.js",
+            "./app/common/services/roleService.js",
             "./app/admin/users/userController.js",
             "./app/admin/users/userEditController.js",
             "./app/public/users/userProfileController.js"

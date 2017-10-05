@@ -24,7 +24,7 @@
                 <label for="roles" class="col-md-2 control-label">Roles</label>
                 <div class="col-md-10">
                     <select id="roles" class="select2 form-control" multiple="multiple" ng-model="user.RoleIds" ng-required>
-                        <option ng-selected="{{user.RoleIds.indexOf(role.Id) > -1}}" ng-repeat="role in user.AvailableRoles" ng-value="role.Id">{{role.RoleName}}</option>
+                        <option ng-selected="{{user.RoleIds.indexOf(role.Id) > -1}}" ng-repeat="role in AvailableRoles" ng-value="role.Id">{{role.RoleName}}</option>
                     </select>
                 </div>
             </div>
