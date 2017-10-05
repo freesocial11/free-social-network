@@ -247,7 +247,7 @@ namespace mobSocial.WebApi.Controllers
         public IHttpActionResult Post(UserEntityModel entityModel)
         {
             User user;
-            user = entityModel.Id == 0 ? new User() : _userService.Get(entityModel.Id);
+            user = entityModel.Id == 0 ? new User() : _userService.Get(entityModel.Id, earlyLoad: x => x.UserRoles);
 
             if (user == null)
                 return NotFound();
@@ -272,7 +272,7 @@ namespace mobSocial.WebApi.Controllers
             }
 
             //we should have at least one role
-            if (entityModel.RoleIds.Count == 0)
+            if (entityModel.RoleIds == null || entityModel.RoleIds.Count == 0)
             {
                 VerboseReporter.ReportError("At least one role must be assigned to the user", "post_user");
                 return RespondFailure();
@@ -298,7 +298,7 @@ namespace mobSocial.WebApi.Controllers
             user.DateUpdated = DateTime.UtcNow;
             user.Name = string.Concat(user.FirstName, " ", user.LastName);
             user.UserName = entityModel.UserName;
-
+            
             if (!string.IsNullOrEmpty(entityModel.Password)) // update password if provided
             {
                 if (string.IsNullOrEmpty(user.PasswordSalt))
@@ -306,13 +306,19 @@ namespace mobSocial.WebApi.Controllers
                 user.Password = _cryptographyService.GetHashedPassword(entityModel.Password, user.PasswordSalt,
                     _securitySettings.DefaultPasswordStorageFormat);
             }
-
-            _userService.Update(user);
+            if (user.Id == 0)
+            {
+                user.DateCreated = DateTime.UtcNow;
+                user.Guid = Guid.NewGuid();
+                _userService.Insert(user);
+            }
+            else
+                _userService.Update(user);
 
             //assign the roles now
             var roles = _roleService.Get(x => x.IsActive);
             //current roles
-            var currentRoleIds = user.UserRoles.Select(x => x.RoleId).ToList();
+            var currentRoleIds = user.UserRoles?.Select(x => x.RoleId).ToList() ?? new List<int>();
             //roles to unassign
             var rolesToUnassign = currentRoleIds.Except(entityModel.RoleIds);
             foreach (var roleId in rolesToUnassign)

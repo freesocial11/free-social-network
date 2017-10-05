@@ -12,7 +12,7 @@
 
        $scope.get = function () {
            var userId = $stateParams.id || $rootScope.CurrentUser.Id;
-           if (!userId)
+           if (!userId || userId == 0)
                return;
            userService.getById(userId,
                function (response) {
