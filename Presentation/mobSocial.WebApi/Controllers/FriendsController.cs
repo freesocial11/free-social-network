@@ -227,6 +227,8 @@ namespace mobSocial.WebApi.Controllers
 
             foreach (var c in customers)
             {
+                if (model.ExcludeLoggedInUser && c.Id == currentUser.Id)
+                    continue;
                 var friendModel = new FriendPublicModel() {
                     Id = c.Id,
                     DisplayName = (c.Name ?? c.Email).Trim(),
