@@ -27,7 +27,7 @@ using NReco.VideoConverter;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("timeline")]
+    [RoutePrefix("timelines")]
     public class TimelineController : RootApiController
     {
         private readonly ITimelineService _timelineService;

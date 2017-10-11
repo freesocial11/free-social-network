@@ -26,7 +26,7 @@ using Microsoft.Owin;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("payment")]
+    [RoutePrefix("payments")]
     public class PaymentController : RootApiController
     {
         private readonly IUserPaymentMethodService _paymentMethodService;

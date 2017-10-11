@@ -23,7 +23,7 @@ using mobSocial.Data.Constants;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("conversation")]
+    [RoutePrefix("conversations")]
     [Authorize]
     public class ConversationController : RootApiWithHubController<ConversationHub>
     {
@@ -197,6 +197,8 @@ namespace mobSocial.WebApi.Controllers
         {
             const string contextName = "conversation_post";
             var currentUser = ApplicationContext.Current.CurrentUser;
+            if (currentUser == null)
+                throw new Exception("user not found");
             if (currentUser.Id == toUserId)
             {
                 return RespondFailure("Can't have conversation with one's self", contextName);

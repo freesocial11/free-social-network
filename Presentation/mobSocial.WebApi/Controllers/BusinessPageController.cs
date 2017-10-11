@@ -18,7 +18,7 @@ using mobSocial.WebApi.Models.BusinessPages;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("businesspage")]
+    [RoutePrefix("businesspages")]
     public class BusinessPageController : RootApiController
     {
         private readonly IUserService _userService;

@@ -30,7 +30,7 @@ using Newtonsoft.Json.Linq;
 namespace mobSocial.WebApi.Controllers
 {
 
-    [RoutePrefix("api/artists")]
+    [RoutePrefix("artistpages")]
     public partial class ArtistPageController : RootApiController
     {
         #region variables

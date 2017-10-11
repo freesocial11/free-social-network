@@ -13,7 +13,7 @@ using mobSocial.WebApi.Models.Education;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("education")]
+    [RoutePrefix("educations")]
     public class EducationController : RootApiController
     {
         #region fields

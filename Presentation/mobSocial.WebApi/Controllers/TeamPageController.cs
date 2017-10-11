@@ -22,7 +22,7 @@ using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("teampage")]
+    [RoutePrefix("teampages")]
     public class TeamPageApiController : RootApiController
     {
         private readonly ITeamPageService _teamPageService;

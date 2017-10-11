@@ -14,7 +14,7 @@ using mobSocial.WebApi.Models.Applications;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("apps")]
+    [RoutePrefix("applications")]
     [Authorize]
     public class ApplicationController : RootApiController
     {

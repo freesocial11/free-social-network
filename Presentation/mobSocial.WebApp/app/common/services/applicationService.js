@@ -1,5 +1,5 @@
 ﻿window.mobSocial.lazy.service("applicationService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
-    var apiEndPoint = globalApiEndPoint + "/apps";
+    var apiEndPoint = globalApiEndPoint + "/applications";
     // get
     this.get = function (success, error) {
         webClientService.get(apiEndPoint + "/get/all", null, success, error);

@@ -5,7 +5,7 @@ using mobSocial.WebApi.Models.Plugin;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("plugin")]
+    [RoutePrefix("plugins")]
     public class PluginController : RootApiController
     {
         private readonly IPluginInstallerService _pluginInstallerService;

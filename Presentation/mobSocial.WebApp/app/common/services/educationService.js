@@ -1,5 +1,5 @@
 ﻿window.mobSocial.lazy.service("educationService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
-    var apiEndPoint = globalApiEndPoint + "/education";
+    var apiEndPoint = globalApiEndPoint + "/educations";
     this.post = function (educationEntityModel, success, error) {
         webClientService.post(apiEndPoint + "/post", educationEntityModel, success, error);
     };

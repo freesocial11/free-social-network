@@ -11,7 +11,7 @@ using mobSocial.WebApi.Models.EntityProperty;
 
 namespace mobSocial.WebApi.Controllers
 {
-    [RoutePrefix("entityproperty")]
+    [RoutePrefix("entityproperties")]
     public class EntityPropertyController : RootApiController
     {
         private readonly IMediaService _mediaService;

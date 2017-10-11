@@ -1,6 +1,6 @@
 ﻿window.mobSocial.lazy.service("timelineService", ["globalApiEndPoint", "webClientService", function (globalApiEndPoint, webClientService) {
 
-    var apiEndPoint = globalApiEndPoint + "/timeline";
+    var apiEndPoint = globalApiEndPoint + "/timelines";
 
     this.PostToTimeline = function (post, success, error) {
         webClientService.post(apiEndPoint + "/post", post, success, error);
