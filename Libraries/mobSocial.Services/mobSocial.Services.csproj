@@ -182,9 +182,11 @@
     <Compile Include="Notifications\INotificationService.cs" />
     <Compile Include="Notifications\NotificationEventService.cs" />
     <Compile Include="Notifications\NotificationService.cs" />
+    <Compile Include="OAuth\ApplicationUsageService.cs" />
     <Compile Include="OAuth\AppTokenService.cs" />
     <Compile Include="OAuth\App_Start\OwinStartup.cs" />
     <Compile Include="OAuth\ApplicationService.cs" />
+    <Compile Include="OAuth\IApplicationUsageService.cs" />
     <Compile Include="OAuth\IAppTokenService.cs" />
     <Compile Include="OAuth\IApplicationService.cs" />
     <Compile Include="OAuth\OAuthAuthenticationService.cs" />

@@ -80,6 +80,7 @@
     <Compile Include="Database\IDatabaseSettings.cs" />
     <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
     <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
+    <Compile Include="Entity\OAuth\ApplicationUsage.cs" />
     <Compile Include="Entity\OAuth\AppToken.cs" />
     <Compile Include="Entity\OAuth\OAuthApplication.cs" />
     <Compile Include="Entity\Users\IRoleNameProvider.cs" />
@@ -249,6 +250,10 @@
     <Compile Include="Migrations\201710031100108_PerApplicationEntity.Designer.cs">
       <DependentUpon>201710031100108_PerApplicationEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710231212595_ApplicationUsageTracking.cs" />
+    <Compile Include="Migrations\201710231212595_ApplicationUsageTracking.Designer.cs">
+      <DependentUpon>201710231212595_ApplicationUsageTracking.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationManager.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
@@ -281,6 +286,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710031100108_PerApplicationEntity.resx">
       <DependentUpon>201710031100108_PerApplicationEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710231212595_ApplicationUsageTracking.resx">
+      <DependentUpon>201710231212595_ApplicationUsageTracking.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

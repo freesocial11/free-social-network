@@ -23,6 +23,7 @@ namespace mobSocial.WebApi
         {
             //new configuration for owin
             var config = new HttpConfiguration();
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             var enableCors = WebConfigurationManager.AppSettings["enableCors"] != null &&
                              WebConfigurationManager.AppSettings["enableCors"].ToLower() == "true";
             if (enableCors)
@@ -55,6 +56,7 @@ namespace mobSocial.WebApi
 #if DEBUG
                 builder.UseErrorPage(new ErrorPageOptions());
 #endif
+                builder.TrackApiUsage();
                 //webapi, last one always 
                 builder.UseWebApi(config);
             });

@@ -211,6 +211,7 @@
     <Compile Include="Configuration\Middlewares\InstallationVerifierMiddleware.cs" />
     <Compile Include="Configuration\Middlewares\MobAuthenticationMiddleware.cs" />
     <Compile Include="Configuration\Middlewares\PictureSizeRegistrar.cs" />
+    <Compile Include="Configuration\Middlewares\UsageTrackerMiddleware.cs" />
     <Compile Include="Configuration\Mvc\Models\RootEntityModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootPageModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootRequestModel.cs" />
