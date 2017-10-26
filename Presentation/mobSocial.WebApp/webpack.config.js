@@ -45,6 +45,7 @@ module.exports = {
             "./app/common/services/autoCompleteService.js",
             "./app/common/services/notificationService.js",
             "./app/common/services/conversationService.js",
+            "./app/common/helpers/arrayHelper.js",
             //directives
             "./app/common/directives/blockUi.js",
             "./app/common/directives/iCheck.js",
@@ -141,6 +142,13 @@ module.exports = {
         applicationPublic: [
             "./app/common/services/applicationService.js",
             "./app/public/application/applicationController.js"
+        ],
+        customField: [
+            "./app/common/customFieldProvider.js",
+            "./app/common/services/customFieldService.js",
+            "./app/public/customfields/customFieldEditorDirective.js",
+            "./app/common/directives/customField.js",
+            "./app/public/customfields/customFieldController.js"
         ]
     },
     output: {

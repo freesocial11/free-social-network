@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.VerboseReporter;
@@ -84,6 +86,11 @@ namespace mobSocial.WebApi.Configuration.Mvc
         public IHttpActionResult View(string view, object model = null)
         {
             return new HtmlActionResult(view, model);
+        }
+
+        public IHttpActionResult Respond(HttpStatusCode code)
+        {
+            return ResponseMessage(new HttpResponseMessage(code));
         }
     }
 }

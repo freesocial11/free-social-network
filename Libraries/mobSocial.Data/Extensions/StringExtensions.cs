@@ -77,5 +77,11 @@ namespace mobSocial.Data.Extensions
             }
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
+
+        public static bool IsNullEmptyOrWhiteSpace(this string str)
+        {
+            str = str.Trim();
+            return string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
+        }
     }
 }

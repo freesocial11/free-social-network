@@ -80,12 +80,15 @@
     <Compile Include="Database\IDatabaseSettings.cs" />
     <Compile Include="Database\Initializer\CreateOrUpdateTables.cs" />
     <Compile Include="Database\Initializer\PostInstallationTasks.cs" />
+    <Compile Include="Entity\CustomFields\CustomField.cs" />
     <Compile Include="Entity\OAuth\ApplicationUsage.cs" />
     <Compile Include="Entity\OAuth\AppToken.cs" />
     <Compile Include="Entity\OAuth\OAuthApplication.cs" />
     <Compile Include="Entity\Users\IRoleNameProvider.cs" />
     <Compile Include="Entity\Users\RoleNameProvider.cs" />
     <Compile Include="Enum\ApplicationType.cs" />
+    <Compile Include="Enum\CustomFieldType.cs" />
+    <Compile Include="Enum\CustomFieldValidationResult.cs" />
     <Compile Include="Enum\TokenType.cs" />
     <Compile Include="Enum\UserConfigurationType.cs" />
     <Compile Include="Extensions\EntityExtensions.cs" />

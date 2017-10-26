@@ -125,6 +125,8 @@
     <Compile Include="Conversations\IConversationService.cs" />
     <Compile Include="Credits\CreditService.cs" />
     <Compile Include="Credits\ICreditService.cs" />
+    <Compile Include="CustomFields\CustomFieldService.cs" />
+    <Compile Include="CustomFields\ICustomFieldService.cs" />
     <Compile Include="Education\EducationService.cs" />
     <Compile Include="Education\IEducationService.cs" />
     <Compile Include="Education\ISchoolService.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="EventPages\IEventPageAttendanceService.cs" />
     <Compile Include="EventPages\IEventPageHotelService.cs" />
     <Compile Include="EventPages\IEventPageService.cs" />
+    <Compile Include="Extensions\CustomFieldExtensions.cs" />
     <Compile Include="Extensions\EntityPropertyExtensions.cs" />
     <Compile Include="Extensions\NotificationExtensions.cs" />
     <Compile Include="Extensions\PaymentProcessorExtensions.cs" />

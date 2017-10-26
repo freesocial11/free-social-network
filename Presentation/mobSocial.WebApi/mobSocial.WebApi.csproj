@@ -212,6 +212,7 @@
     <Compile Include="Configuration\Middlewares\MobAuthenticationMiddleware.cs" />
     <Compile Include="Configuration\Middlewares\PictureSizeRegistrar.cs" />
     <Compile Include="Configuration\Middlewares\UsageTrackerMiddleware.cs" />
+    <Compile Include="Configuration\Mvc\Models\RootCustomFieldModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootEntityModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootPageModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootRequestModel.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="Configuration\Mvc\UI\ResourcePlacementType.cs" />
     <Compile Include="Configuration\Mvc\UI\ResourceRegistrationType.cs" />
     <Compile Include="Configuration\Mvc\UI\ViewRenderer.cs" />
+    <Compile Include="Configuration\Mvc\Models\WithCustomFieldsModel.cs" />
     <Compile Include="Configuration\OAuth\OAuthScopes.cs" />
     <Compile Include="Configuration\Routing\CentralizedPrefixProvider.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
@@ -255,6 +257,7 @@
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\ControllerUtil.cs" />
     <Compile Include="Controllers\ConversationController.cs" />
+    <Compile Include="Controllers\CustomFieldController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\EducationController.cs" />
     <Compile Include="Controllers\EmailAccountController.cs" />
@@ -288,6 +291,7 @@
     <Compile Include="Extensions\ModelExtensions\ConversationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EducationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\EmailExtensions.cs" />
+    <Compile Include="Extensions\ModelExtensions\CustomFieldExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\MediaExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\NotificationExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\RoleExtensions.cs" />
@@ -302,6 +306,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\EntityHelpers.cs" />
     <Compile Include="Models\Abstract\AbstractPageModel.cs" />
     <Compile Include="Models\Addresses\AddressModel.cs" />
     <Compile Include="Models\Applications\ApplicationAuthorizeModel.cs" />
@@ -336,6 +341,9 @@
     <Compile Include="Models\Conversation\ConversationRequestModel.cs" />
     <Compile Include="Models\Conversation\ConversationResponseModel.cs" />
     <Compile Include="Models\Credits\PurchaseCreditModel.cs" />
+    <Compile Include="Models\CustomFields\CustomFieldItemModel.cs" />
+    <Compile Include="Models\CustomFields\CustomFieldModel.cs" />
+    <Compile Include="Models\CustomFields\CustomFieldResponseModel.cs" />
     <Compile Include="Models\Education\EducationEntityModel.cs" />
     <Compile Include="Models\Education\EducationResponseModel.cs" />
     <Compile Include="Models\Education\SchoolEntityModel.cs" />
