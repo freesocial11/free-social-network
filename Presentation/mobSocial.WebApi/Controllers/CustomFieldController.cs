@@ -150,8 +150,6 @@ namespace mobSocial.WebApi.Controllers
 
             customField.DisplayOrder = entityModel.DisplayOrder;
             customField.Label = entityModel.Label;
-            customField.Visible = entityModel.Visible;
-
             customField.Required = entityModel.Required;
             customField.Visible = entityModel.Visible;
             customField.FieldGeneratorMarkup = entityModel.FieldGeneratorMarkup;
@@ -159,7 +157,7 @@ namespace mobSocial.WebApi.Controllers
             customField.DefaultValue = entityModel.DefaultValue;
             customField.ParentFieldId = entityModel.ParentFieldId;
             customField.AvailableValues = entityModel.AvailableValues;
-
+            customField.Description = entityModel.Description;
             if (customField.Id == 0)
                 _customFieldService.Insert(customField);
             else

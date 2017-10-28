@@ -4,11 +4,12 @@
         templateUrl: "/pages/components/customField.html",
         replace: true,
         scope: {
-            customField: "=extrafield"
+            customField: "=customfield"
         },
         link: function ($scope, elem, attr) {
             $scope.fieldUId = Date.now();
-            $scope.selectedValues = $scope.customField.Value.split("|");
+            if ($scope.customField.Value)
+                $scope.selectedValues = $scope.customField.Value.split("|");
 
             $scope.generateField = function() {
                 $timeout(function() {
@@ -57,8 +58,9 @@
             }
 
             $scope.$watch("selectedValues",
-                function() {
-                    $scope.customField.Value = $scope.selectedValues.join("|");
+                function () {
+                    if ($scope.selectedValues)
+                        $scope.customField.Value = $scope.selectedValues.join("|");
                 });
         }
 

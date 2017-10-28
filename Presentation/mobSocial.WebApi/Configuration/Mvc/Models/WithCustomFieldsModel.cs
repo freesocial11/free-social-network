@@ -21,7 +21,7 @@ namespace mobSocial.WebApi.Configuration.Mvc.Models
 
             var dbCustomFields = customFieldService.Get(x => x.EntityName == entityName).ToList();
 
-            //current user is agent or registered user?
+            //current user is registered user?
             var currentUser = ApplicationContext.Current.CurrentUser;
 
             foreach (var dbExField in dbCustomFields)

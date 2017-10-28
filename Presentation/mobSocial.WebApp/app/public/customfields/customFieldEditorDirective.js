@@ -6,11 +6,13 @@
         scope: {
             customField: "=customfield",
             entityName: "=entityname",
-            oncancel: "&oncancel"
+            oncancel: "&oncancel",
+            onsave: "&onsave"
         },
         link: function ($scope, elem, attr) {
             $scope.fieldTypes = customFieldProvider.fieldTypes;
-            $scope.customField.FieldType = $scope.customField.FieldType.toString();
+            if ($scope.customField.FieldType)
+                $scope.customField.FieldType = $scope.customField.FieldType.toString();
             $scope.getFieldTypeName = function(id) {
                 return customFieldProvider.getFieldTypeName(id);
             }
@@ -19,7 +21,11 @@
                 customFieldService.postSingle($scope.entityName,
                     $scope.customField,
                     function(response) {
-
+                        if (response.Success) {
+                            $scope.customField = null;
+                            if ($scope.onsave)
+                                $scope.onsave();
+                        }
                     });
             }
 

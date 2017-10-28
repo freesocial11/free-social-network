@@ -257,6 +257,10 @@
     <Compile Include="Migrations\201710231212595_ApplicationUsageTracking.Designer.cs">
       <DependentUpon>201710231212595_ApplicationUsageTracking.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710280954032_CustomFieldsSupport.cs" />
+    <Compile Include="Migrations\201710280954032_CustomFieldsSupport.Designer.cs">
+      <DependentUpon>201710280954032_CustomFieldsSupport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MigrationManager.cs" />
     <Compile Include="Migrations\MigrationsContextFactory.cs" />
@@ -292,6 +296,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710231212595_ApplicationUsageTracking.resx">
       <DependentUpon>201710231212595_ApplicationUsageTracking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710280954032_CustomFieldsSupport.resx">
+      <DependentUpon>201710280954032_CustomFieldsSupport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

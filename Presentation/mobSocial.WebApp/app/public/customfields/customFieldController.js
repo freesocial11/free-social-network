@@ -3,7 +3,7 @@
     "$scope", "customFieldService", "customFieldProvider", "$state", function ($scope, customFieldService, customFieldProvider, $state) {
 
         $scope.entityData = {
-            entityName: $state.params.entityName
+            entityName: $state.params.type + "-" + $state.params.id
         };
 
         $scope.getFieldTypeName = function (id) {
@@ -37,6 +37,9 @@
             $scope.customField = null;
         }
 
+        $scope.save = function() {
+            $scope.cancelEdit();
+        }
         $scope.delete = function (id) {
         
         }

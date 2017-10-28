@@ -348,7 +348,31 @@
                              templateUrl: "pages/applications/application.logins.html"
                          }
                      }
-             });
+             })
+             .state("layoutApplication.twoColumns.listCustomFields",
+                 {
+                     url: "/:id/custom-fields/:type",
+                     resolve: {
+                         resolver: ["controllerProvider", function (controllerProvider) {
+                             return controllerProvider
+                                 .resolveBundles(["customField"]);
+                         }]
+                     },
+                     views: {
+                         "left": {
+                             templateUrl: "pages/applications/application.customfields.navigation.html",
+                             controller: ["applicationService", "$scope", "$state", function(applicationService, $scope, $state) {
+                                 applicationService.getById($state.params.id,
+                                     function(response) {
+                                         $scope.application = response.ResponseData.Application;
+                                     });
+                             }]
+                         },
+                         "right": {
+                             templateUrl: "pages/applications/application.customfields.list.html"
+                         }
+                     }
+                 });
          $stateProvider.state("layoutZero.404",
          {
              templateUrl: "pages/common/404.html"
