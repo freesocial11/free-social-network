@@ -1,4 +1,4 @@
-﻿window.mobSocial.lazy.directive("customFieldEditor", ['customFieldService', '$window', 'customFieldProvider', function (customFieldService, $window, customFieldProvider) {
+﻿window.mobSocial.lazy.directive("customFieldEditor", ['customFieldService', '$window', 'customFieldProvider', '$state', function (customFieldService, $window, customFieldProvider, $state) {
     return {
         restrict: "E",
         templateUrl: "/pages/components/customFieldEditor.html",
@@ -17,7 +17,8 @@
                 return customFieldProvider.getFieldTypeName(id);
             }
 
-            $scope.save = function() {
+            $scope.save = function () {
+                $scope.customField.applicationId = $state.params.id;
                 customFieldService.postSingle($scope.entityName,
                     $scope.customField,
                     function(response) {

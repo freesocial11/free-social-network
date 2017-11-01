@@ -14,11 +14,11 @@
         webClientService.delete(apiEndPoint + "/delete/" + id, null, success, error);
     }
 
-    this.getAllFields = function(entityName, success, error) {
-        webClientService.get(apiEndPoint + "/" + entityName + "/get/all", null, success, error);
+    this.getAllFields = function(entityName, applicationId, success, error) {
+        webClientService.get(apiEndPoint + "/" + entityName + "/get/all", {applicationId : applicationId}, success, error);
     }
 
-    this.getDisplayableFields = function (entityName, success, error) {
-        webClientService.get(apiEndPoint + "/" + entityName + "/get/displayable", null, success, error);
+    this.getDisplayableFields = function (entityName, applicationId, success, error) {
+        webClientService.get(apiEndPoint + "/" + entityName + "/get/displayable", { applicationId: applicationId }, success, error);
     }
 }]);

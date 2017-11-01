@@ -1,9 +1,10 @@
 ﻿window.mobSocial.lazy.controller("customFieldController",
 [
-    "$scope", "customFieldService", "customFieldProvider", "$state", function ($scope, customFieldService, customFieldProvider, $state) {
+    "$scope", "customFieldService", "customFieldProvider", "$state", "arrayHelper", function ($scope, customFieldService, customFieldProvider, $state, arrayHelper) {
 
         $scope.entityData = {
-            entityName: $state.params.type + "-" + $state.params.id
+            entityName: $state.params.type,
+            applicationId: $state.params.id
         };
 
         $scope.getFieldTypeName = function (id) {
@@ -11,7 +12,7 @@
         }
 
         $scope.getCustomFields = function () {
-            customFieldService.getAllFields($scope.entityData.entityName,
+            customFieldService.getAllFields($scope.entityData.entityName, $scope.entityData.applicationId,
                 function (response) {
                     if (response.Success) {
                         $scope.customFields = response.ResponseData.CustomFields;
@@ -28,9 +29,21 @@
                     IsEditable: true,
                     Required: true,
                     Visible: true,
+                    ApplicationId : $state.params.id
                 };
 
             $scope.customField = customField;
+        }
+
+        $scope.deleteField = function (customField) {
+            if (!confirm("Are you sure you wish to delete this field?"))
+                return;
+            customFieldService.delete(customField.Id,
+                function (response) {
+                    if (response.Success) {
+                        $scope.customFields = arrayHelper.deleteObject($scope.customFields, "Id", customField.Id);
+                    }
+                });
         }
 
         $scope.cancelEdit = function () {
@@ -39,6 +52,7 @@
 
         $scope.save = function() {
             $scope.cancelEdit();
+            $scope.getCustomFields();
         }
         $scope.delete = function (id) {
         

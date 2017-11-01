@@ -32,5 +32,7 @@ namespace mobSocial.WebApi.Models.CustomFields
         public string MaximumValue { get; set; }
 
         public string AvailableValues { get; set; }
+
+        public int ApplicationId { get; set; }
     }
 }
