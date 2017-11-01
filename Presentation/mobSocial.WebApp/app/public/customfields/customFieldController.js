@@ -54,9 +54,5 @@
             $scope.cancelEdit();
             $scope.getCustomFields();
         }
-        $scope.delete = function (id) {
-        
-        }
-
     }
 ]);
