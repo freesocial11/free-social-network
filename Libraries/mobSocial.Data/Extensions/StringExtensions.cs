@@ -80,7 +80,7 @@ namespace mobSocial.Data.Extensions
 
         public static bool IsNullEmptyOrWhiteSpace(this string str)
         {
-            str = str.Trim();
+            str = str?.Trim();
             return string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
         }
     }
