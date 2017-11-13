@@ -32,5 +32,7 @@ namespace mobSocial.WebApi.Models.CustomFields
         public string AvailableValues { get; set; }
 
         public string Value { get; set; }
+
+        public string SystemName { get; set; }
     }
 }

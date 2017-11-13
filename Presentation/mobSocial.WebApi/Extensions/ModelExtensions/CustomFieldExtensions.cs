@@ -26,7 +26,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 Label = customField.Label,
                 MaximumValue = customField.MaximumValue,
                 MinimumValue = customField.MinimumValue,
-                AvailableValues = customField.AvailableValues
+                AvailableValues = customField.AvailableValues,
+                SystemName = customField.SystemName,
+                Value = customField.DefaultValue
             };
             return model;
         }
@@ -49,7 +51,9 @@ namespace mobSocial.WebApi.Extensions.ModelExtensions
                 MaximumValue = customField.MaximumValue,
                 MinimumValue = customField.MinimumValue,
                 AvailableValues = customField.AvailableValues,
-                Value = value
+                Value = value,
+                SystemName = customField.SystemName,
+                ApplicationId = customField.ApplicationId
             };
             return model;
         }

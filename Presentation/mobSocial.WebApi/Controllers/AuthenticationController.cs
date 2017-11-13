@@ -12,11 +12,13 @@ using mobSocial.Services.EntityProperties;
 using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.Services.Notifications;
+using mobSocial.Services.OAuth;
 using mobSocial.Services.Security;
 using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Authentication;
 using mobSocial.WebApi.Models.Users;
@@ -42,12 +44,13 @@ namespace mobSocial.WebApi.Controllers
         private readonly UrlSettings _urlSettings;
         private readonly IEntityPropertyService _entityPropertyService;
         private readonly INotificationService _notificationService;
+        private readonly IApplicationService _applicationService;
         #endregion
 
         #region ctor
 
         public AuthenticationController(IUserService userService,
-            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService, IEmailSender emailSender, UrlSettings urlSettings, IEntityPropertyService entityPropertyService, INotificationService notificationService)
+            ICryptographyService cryptographyService, IMediaService mediaService, MediaSettings mediaSettings, IFollowService followService, IFriendService friendService, IUserRegistrationService userRegistrationService, SecuritySettings securitySettings, UserSettings userSettings, IRoleService roleService, IEmailSender emailSender, UrlSettings urlSettings, IEntityPropertyService entityPropertyService, INotificationService notificationService, IApplicationService applicationService)
         {
             _userService = userService;
             _cryptographyService = cryptographyService;
@@ -63,6 +66,7 @@ namespace mobSocial.WebApi.Controllers
             _urlSettings = urlSettings;
             _entityPropertyService = entityPropertyService;
             _notificationService = notificationService;
+            _applicationService = applicationService;
         }
 
         #endregion
@@ -151,6 +155,65 @@ namespace mobSocial.WebApi.Controllers
             //assign role to the user
             _roleService.AssignRoleToUser(SystemRoleNames.Registered, user);
 
+            //so we are done, send a notification to user and admin
+            _emailSender.SendUserRegisteredMessage(user);
+            var responseMessage = "Your account has been successfully created.";
+            if (_userSettings.UserRegistrationDefaultMode == RegistrationMode.WithActivationEmail)
+            {
+                SendActivationEmail(user);
+                responseMessage += " Email verification is required before you can login. Please check your inbox for activation link.";
+            }
+            return RespondSuccess(responseMessage, contextName);
+        }
+
+        [HttpPost]
+        [Route("register2")]
+        public IHttpActionResult Register2(WithCustomFieldsModel<RegisterModel> requestModel)
+        {
+            const string contextName = "register";
+            var registerModel = requestModel.Model;
+
+            var application = _applicationService.FirstOrDefault(x => x.Guid == requestModel.Model.ClientId);
+            if(application == null)
+                return RespondFailure("Unknown client application", contextName);
+
+            if (!requestModel.ValidateCustomFieldsForEntity<User>(application.Id))
+                return RespondFailure("Some of the required fields are missing to complete the registration", contextName);
+
+            if (string.Compare(registerModel.Password, registerModel.ConfirmPassword, StringComparison.InvariantCulture) != 0)
+                return RespondFailure("The passwords do not match", contextName);
+
+            if (!registerModel.Agreement)
+                return RespondFailure("You must agree to the terms & conditions to complete the registration", contextName);
+
+            //we can now try to register this user
+            //so create a new object
+            var user = new User() {
+                Email = registerModel.Email,
+                FirstName = registerModel.FirstName,
+                LastName = registerModel.LastName,
+                Name = $"{registerModel.FirstName} {registerModel.LastName}",
+                Password = registerModel.Password,
+                DateCreated = DateTime.UtcNow,
+                DateUpdated = DateTime.UtcNow,
+                IsSystemAccount = false,
+                ReferrerId = registerModel.ReferrerId,
+                Guid = Guid.NewGuid(),
+                Active = _userSettings.UserRegistrationDefaultMode == RegistrationMode.Immediate
+            };
+            //register this user
+            var registrationStatus = _userRegistrationService.Register(user, _securitySettings.DefaultPasswordStorageFormat);
+            if (registrationStatus == UserRegistrationStatus.FailedAsEmailAlreadyExists)
+                return RespondFailure("A user with this email is already registered", contextName);
+
+            //assign role to the user
+            _roleService.AssignRoleToUser(SystemRoleNames.Registered, user);
+
+            //save the custom fields as entity properties
+            foreach (var cs in requestModel.SubmittedCustomFields)
+            {
+                user.SetPropertyValue(cs.FieldName, cs.FieldValue);
+            }
             //so we are done, send a notification to user and admin
             _emailSender.SendUserRegisteredMessage(user);
             var responseMessage = "Your account has been successfully created.";

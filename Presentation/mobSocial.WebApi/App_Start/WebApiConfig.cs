@@ -2,6 +2,7 @@
 using System.Web.Http;
 using DryIoc.WebApi;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.WebApi.Configuration.Mvc.Formatters;
 using mobSocial.WebApi.Configuration.Routing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -42,6 +43,7 @@ namespace mobSocial.WebApi
             formatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             formatter.SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
             
+            configuration.Formatters.Insert(0, new CustomFieldFormatter());
         }
 
     }

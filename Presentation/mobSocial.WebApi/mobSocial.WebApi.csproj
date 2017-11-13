@@ -212,6 +212,7 @@
     <Compile Include="Configuration\Middlewares\MobAuthenticationMiddleware.cs" />
     <Compile Include="Configuration\Middlewares\PictureSizeRegistrar.cs" />
     <Compile Include="Configuration\Middlewares\UsageTrackerMiddleware.cs" />
+    <Compile Include="Configuration\Mvc\Formatters\CustomFieldFormatter.cs" />
     <Compile Include="Configuration\Mvc\Models\RootCustomFieldModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootEntityModel.cs" />
     <Compile Include="Configuration\Mvc\Models\RootPageModel.cs" />

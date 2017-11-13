@@ -18,34 +18,37 @@ namespace mobSocial.Services.Extensions
 
         public static string CustomFieldNameFormat = $"{CustomFieldsRequestKey}_{0}";
 
-        public static CustomFieldValidationResult ValidateValueForUser(this CustomField extraField, string fieldValue, User user)
+        public static CustomFieldValidationResult ValidateValueForUser(this CustomField customField, string fieldValue, User user)
         {
-            var required = extraField.Required;
+            var required = customField.Required;
 
             if (required && fieldValue.IsNullEmptyOrWhiteSpace())
                 return CustomFieldValidationResult.EmptyValueForRequiredField;
 
-            var visible = extraField.Visible;
+            var visible = customField.Visible;
 
             if (!visible)
                 return CustomFieldValidationResult.NonEditableField;
 
-            switch (extraField.FieldType)
+            switch (customField.FieldType)
             {
+                case CustomFieldType.Text:
+                case CustomFieldType.TextArea:
+                    return CustomFieldValidationResult.ValidField;
                 case CustomFieldType.Number:
                     if(!fieldValue.IsNumeric())
                         return CustomFieldValidationResult.InvalidValueForFieldType;
 
-                    if (extraField.MinimumValue.IsNumeric())
+                    if (customField.MinimumValue.IsNumeric())
                     {
-                        if (extraField.MinimumValue.GetInteger(false) > fieldValue.GetInteger(false))
+                        if (customField.MinimumValue.GetInteger(false) > fieldValue.GetInteger(false))
                         {
                             return CustomFieldValidationResult.OutOfRangeValue;
                         }
                     }
-                    if (extraField.MaximumValue.IsNumeric())
+                    if (customField.MaximumValue.IsNumeric())
                     {
-                        if (extraField.MaximumValue.GetInteger(false) < fieldValue.GetInteger(false))
+                        if (customField.MaximumValue.GetInteger(false) < fieldValue.GetInteger(false))
                         {
                             return CustomFieldValidationResult.OutOfRangeValue;
                         }
@@ -59,16 +62,16 @@ namespace mobSocial.Services.Extensions
                     if (!fieldValue.IsDateTime())
                         return CustomFieldValidationResult.InvalidValueForFieldType;
 
-                    if (extraField.MinimumValue.IsDateTime())
+                    if (customField.MinimumValue.IsDateTime())
                     {
-                        if (extraField.MinimumValue.GetDateTime(false) > fieldValue.GetDateTime(false))
+                        if (customField.MinimumValue.GetDateTime(false) > fieldValue.GetDateTime(false))
                         {
                             return CustomFieldValidationResult.OutOfRangeValue;
                         }
                     }
-                    if (extraField.MaximumValue.IsDateTime())
+                    if (customField.MaximumValue.IsDateTime())
                     {
-                        if (extraField.MaximumValue.GetDateTime(false) < fieldValue.GetDateTime(false))
+                        if (customField.MaximumValue.GetDateTime(false) < fieldValue.GetDateTime(false))
                         {
                             return CustomFieldValidationResult.OutOfRangeValue;
                         }
@@ -88,38 +91,32 @@ namespace mobSocial.Services.Extensions
                     break;
                 case CustomFieldType.FileUpload:
                     break;
-                default:
-                    return CustomFieldValidationResult.UnknownError;
             }
 
             return CustomFieldValidationResult.ValidField;
         }
 
-        public static string GetDbFieldName(this CustomField extraField)
-        {
-            return string.Format(CustomFieldNameFormat, extraField.Id);
-        }
-
         public static IList<Tuple<CustomField, string>> GetCustomFields<T>(this IHasEntityProperties<T> entity) where T : BaseEntity
         {
             var entityProperties = entity.GetProperties();
-            var extraFieldService = mobSocialEngine.ActiveEngine.Resolve<ICustomFieldService>();
+            var customFieldService = mobSocialEngine.ActiveEngine.Resolve<ICustomFieldService>();
             var entityName = typeof(T).Name;
-            var typeCustomFields = extraFieldService.Get(x => x.EntityName == entityName).ToList();
+            var typeCustomFields = customFieldService.Get(x => x.EntityName == entityName).ToList();
 
-            var extraFieldList = new List<Tuple<CustomField, string>>();
+            var customFieldList = new List<Tuple<CustomField, string>>();
 
-            foreach (var ef in typeCustomFields) {
-                var fieldName = ef.GetDbFieldName();
+            foreach (var ef in typeCustomFields)
+            {
+                var fieldName = ef.SystemName;
                 var ep = entityProperties.FirstOrDefault(x => x.EntityName == entityName && x.PropertyName == fieldName);
                 var fieldValue = ef.DefaultValue;
                 if (ep != null)
                 {
                     fieldValue = ep.Value;
                 }
-                extraFieldList.Add(new Tuple<CustomField, string>(ef, fieldValue));
+                customFieldList.Add(new Tuple<CustomField, string>(ef, fieldValue));
             }
-            return extraFieldList;
+            return customFieldList;
         }
     }
 }

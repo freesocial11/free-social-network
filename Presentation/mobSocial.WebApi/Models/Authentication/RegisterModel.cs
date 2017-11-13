@@ -24,5 +24,7 @@ namespace mobSocial.WebApi.Models.Authentication
         public bool Agreement { get; set; }
 
         public int ReferrerId { get; set; }
+
+        public string ClientId { get; set; }
     }
 }

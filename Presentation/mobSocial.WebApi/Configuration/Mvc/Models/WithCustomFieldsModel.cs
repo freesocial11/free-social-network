@@ -14,21 +14,25 @@ namespace mobSocial.WebApi.Configuration.Mvc.Models
     {
         public TModelType Model { get; set; }
 
-        public bool ValidateCustomFieldsForEntity<T>() where T : BaseEntity
+        public bool ValidateCustomFieldsForEntity<T>(int applicationId) where T : BaseEntity
         {
             var customFieldService = mobSocialEngine.ActiveEngine.Resolve<ICustomFieldService>();
             var entityName = typeof(T).Name;
 
-            var dbCustomFields = customFieldService.Get(x => x.EntityName == entityName).ToList();
+            var dbCustomFields = customFieldService.Get(x => x.EntityName == entityName && x.ApplicationId == applicationId).ToList();
 
             //current user is registered user?
             var currentUser = ApplicationContext.Current.CurrentUser;
+
+            //remove all the custom fields which are non existant
+            var dbCustomFieldNames = dbCustomFields.Select(x => x.SystemName);
+            SubmittedCustomFields = SubmittedCustomFields.Where(x => dbCustomFieldNames.Contains(x.FieldName)).ToList();
 
             foreach (var dbExField in dbCustomFields)
             {
                 var displayableFieldLabel = dbExField.Label;
 
-                var expectedFieldName = dbExField.GetDbFieldName();
+                var expectedFieldName = dbExField.SystemName;
 
                 var sExField = SubmittedCustomFields.FirstOrDefault(x => x.FieldName == expectedFieldName);
                 if (sExField == null)

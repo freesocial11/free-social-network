@@ -38,6 +38,8 @@ namespace mobSocial.Data.Entity.CustomFields
         public bool Deleted { get; set; }
 
         public int ApplicationId { get; set; }
+
+        public string SystemName { get; set; }
     }
 
     public class CustomFieldMap : BaseEntityConfiguration<CustomField> { }

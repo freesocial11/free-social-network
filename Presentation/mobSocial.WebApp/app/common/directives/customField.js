@@ -8,6 +8,7 @@
         },
         link: function ($scope, elem, attr) {
             $scope.fieldUId = Date.now();
+            $scope.selectedValues = [];
             if ($scope.customField.Value)
                 $scope.selectedValues = $scope.customField.Value.split("|");
 
@@ -59,9 +60,12 @@
 
             $scope.$watch("selectedValues",
                 function () {
-                    if ($scope.selectedValues)
+                    if ($scope.selectedValues) {
+                        //distinct values
+                        $scope.selectedValues.filter(function (value, index) { return $scope.selectedValues.indexOf(value) == index });
                         $scope.customField.Value = $scope.selectedValues.join("|");
-                });
+                    }
+                }, true);
         }
 
     }

@@ -33,6 +33,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpGet]
         [Route("{entityName}/get/all")]
+        [Authorize]
         public async Task<IHttpActionResult> GetAllFields(string entityName, int applicationId = 0)
         {
             //check if application is owned by the logged in user
@@ -56,13 +57,14 @@ namespace mobSocial.WebApi.Controllers
         [Route("{entityName}/get/displayable")]
         public async Task<IHttpActionResult> GetDisplayableFields(string entityName, string applicationId = "")
         {
-            var currentApp = ApplicationContext.Current.CurrentOAuthApplication;
-            var currentAppId = currentApp?.Id ?? 0;
+            var currentAppId = 0;
             if (!string.IsNullOrEmpty(applicationId))
             {
                 var application = _applicationService.FirstOrDefault(x => x.Guid == applicationId);
-                if (currentApp == null || application == null || currentApp.Guid != applicationId)
+                if (application == null)
                     return Respond(HttpStatusCode.NotFound);
+
+                currentAppId = application.Id;
             }
 
             List<CustomFieldModel> model = null;
@@ -70,7 +72,7 @@ namespace mobSocial.WebApi.Controllers
             var customFields = await _customFieldService
                 .Get(x => x.EntityName == entityName &&
                           x.ApplicationId == currentAppId &&
-                          x.Visible == true, orderBy: x => x.DisplayOrder)
+                          x.Visible == true, orderBy: x => new { x.DisplayOrder })
                 .ToListAsync();
             model = customFields.Select(x => x.ToEntityModel()).ToList();
 
@@ -82,6 +84,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpPost]
         [Route("{entityName}/post")]
+        [Authorize]
         public IHttpActionResult Post(string entityName, CustomFieldModel[] entityModels, int applicationId = 0)
         {
             if (entityModels == null)
@@ -131,7 +134,7 @@ namespace mobSocial.WebApi.Controllers
                 customField.DefaultValue = em.DefaultValue;
                 customField.ParentFieldId = em.ParentFieldId;
                 customField.AvailableValues = em.AvailableValues;
-
+                customField.SystemName = em.SystemName;
                 if (customField.Id == 0)
                     _customFieldService.Insert(customField);
                 else
@@ -145,6 +148,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpPost]
         [Route("{entityName}/post/single")]
+        [Authorize]
         public IHttpActionResult PostSingle(string entityName, CustomFieldModel entityModel)
         {
             if (entityModel == null)
@@ -184,6 +188,7 @@ namespace mobSocial.WebApi.Controllers
             customField.ParentFieldId = entityModel.ParentFieldId;
             customField.AvailableValues = entityModel.AvailableValues;
             customField.Description = entityModel.Description;
+            customField.SystemName = entityModel.SystemName;
             if (customField.Id == 0)
                 _customFieldService.Insert(customField);
             else
@@ -194,6 +199,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpDelete]
         [Route("delete/{customFieldId:int}")]
+        [Authorize]
         public IHttpActionResult Delete(int customFieldId)
         {
             //check if the field exists
