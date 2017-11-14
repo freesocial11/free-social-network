@@ -23,11 +23,12 @@ namespace mobSocial.WebApi.Configuration.OAuth
 
         public const string DefaultScope = "basicinfo-r";
         public const string FullPermissionScope = "everything-rwd";
+        public const string EmailR = "email-r";
 
         private static readonly Dictionary<string, string> ScopeList = new Dictionary<string, string>()
         {
             {DefaultScope, "Read your basic information such as First Name and Last Name" },
-            {"email-r", "Read your email address"},
+            {EmailR, "Read your email address"},
             {"dob-r", "Read your date of birth"},
             {"friends-r", "Get list of your friends"},
             {"friends-rw", "Add a user as your friend"},

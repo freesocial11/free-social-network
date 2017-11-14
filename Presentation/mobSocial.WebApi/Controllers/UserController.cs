@@ -20,7 +20,9 @@ using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Configuration.Mvc.Models;
+using mobSocial.WebApi.Configuration.OAuth;
 using mobSocial.WebApi.Configuration.Security.Attributes;
+using mobSocial.WebApi.Extensions;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Media;
 using mobSocial.WebApi.Models.Users;
@@ -84,10 +86,17 @@ namespace mobSocial.WebApi.Controllers
         [Route("get/me")]
         [HttpGet]
         [Authorize]
-        public IHttpActionResult Get()
+        public IHttpActionResult Get(bool includeEmail = false)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
             var model = currentUser.ToModel(_mediaService, _mediaSettings, _followService, _friendService, _notificationService);
+            if (includeEmail)
+            {
+                if (ApplicationHasScope(OAuthScopes.EmailR))
+                {
+                    model.Email = currentUser.Email;
+                }
+            }
             return RespondSuccess(new {
                 User = model
             });

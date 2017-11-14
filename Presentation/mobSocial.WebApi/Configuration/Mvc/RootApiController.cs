@@ -5,8 +5,10 @@ using System.Net.Http;
 using System.Web.Http;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Services.VerboseReporter;
+using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Configuration.Mvc.Results;
+using mobSocial.WebApi.Extensions;
 
 namespace mobSocial.WebApi.Configuration.Mvc
 {
@@ -91,6 +93,14 @@ namespace mobSocial.WebApi.Configuration.Mvc
         public IHttpActionResult Respond(HttpStatusCode code)
         {
             return ResponseMessage(new HttpResponseMessage(code));
+        }
+        /// <summary>
+        /// Checks if current application has given scope
+        /// </summary>
+        public bool ApplicationHasScope(string scope, bool allowForNullApplications = false)
+        {
+            var currentApplication = ApplicationContext.Current.CurrentOAuthApplication;
+            return currentApplication.HasScope(scope, allowForNullApplications);
         }
     }
 }

@@ -285,6 +285,7 @@
     <Compile Include="Controllers\VideoBattleController.cs" />
     <Compile Include="Controllers\WebProxyController.cs" />
     <Compile Include="Enum\Features.cs" />
+    <Compile Include="Extensions\ApplicationExtensions.cs" />
     <Compile Include="Extensions\BattleExtensions.cs" />
     <Compile Include="Extensions\JsonResultExtensions.cs" />
     <Compile Include="Extensions\ModelExtensions\ApplicationExtensions.cs" />

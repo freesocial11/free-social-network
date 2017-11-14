@@ -55,5 +55,7 @@ namespace mobSocial.WebApi.Models.Users
 
         public string SeName { get; set; }
 
+        public string Email { get; set; }
+
     }
 }
