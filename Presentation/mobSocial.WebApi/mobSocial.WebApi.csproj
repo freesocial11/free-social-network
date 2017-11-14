@@ -308,6 +308,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EntityHelpers.cs" />
+    <Compile Include="Helpers\OAuthHelpers.cs" />
     <Compile Include="Models\Abstract\AbstractPageModel.cs" />
     <Compile Include="Models\Addresses\AddressModel.cs" />
     <Compile Include="Models\Applications\ApplicationAuthorizeModel.cs" />

@@ -5,11 +5,13 @@ using System.Web.Helpers;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Services.Helpers;
 using mobSocial.Services.OAuth;
 using mobSocial.Services.Security;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Helpers;
 using mobSocial.WebApi.Models.Applications;
 
 namespace mobSocial.WebApi.Controllers
@@ -63,11 +65,7 @@ namespace mobSocial.WebApi.Controllers
             if (currentToken != null)
             {
                 //decrypt the token
-                var savedAccessToken = _cryptographyService.Decrypt(currentToken.ProtectedTicket);
-                var dataFormat = Services.OAuth.App_Start.OwinStartup.BearerOptions.AccessTokenFormat;
-                var savedTicket = dataFormat.Unprotect(savedAccessToken);
-                var savedScopes = savedTicket.Identity.Claims.Where(x => x.Type == "urn:oauth:scope")
-                    .Select(x => x.Value).ToArray();
+                var savedScopes = OAuthHelpers.GetCurrentScopes(currentToken);
                 var requestedScopeNames = requestedScopes.Select(x => x.ScopeName);
                 //so which are scopes we need to save again?
                 var unsavedScopes = requestedScopeNames.Except(savedScopes).ToArray();
