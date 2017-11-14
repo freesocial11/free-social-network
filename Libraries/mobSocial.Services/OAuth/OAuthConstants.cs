@@ -18,6 +18,8 @@
 
         public const int RefreshTokenExpirationSeconds = 1200;
 
+        public const int AuthorizationCodeExpirationSeconds = 5 * 60; //5 minutes
+
         public const int ClientSecretLength = 50;
     }
 }

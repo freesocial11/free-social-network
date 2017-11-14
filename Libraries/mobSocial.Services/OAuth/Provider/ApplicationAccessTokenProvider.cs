@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.OAuth;
 using mobSocial.Data.Enum;
-using mobSocial.Services.Helpers;
 using mobSocial.Services.Security;
 using Microsoft.Owin.Security.Infrastructure;
 
@@ -22,7 +21,7 @@ namespace mobSocial.Services.OAuth.Provider
                 return;
             }
 
-            //for implicit grants, we won't be saving the access tokens as the request has alrady ended
+            //for implicit grants, we won't be saving the access tokens as the request has alrady ended //https://tools.ietf.org/html/rfc6749
             var isImplicitGrant = context.Request.Query.Get("response_type") == "token"; //according to oauth spec response_type is token for implicit grant
             var tokenLifeTime = 0;
             OAuthApplication client = null;

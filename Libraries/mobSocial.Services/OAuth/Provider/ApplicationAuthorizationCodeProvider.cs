@@ -27,7 +27,7 @@ namespace mobSocial.Services.OAuth.Provider
             var appTokenId = Guid.NewGuid().ToString("n");
 
 
-            var tokenLifeTime = context.OwinContext.Get<string>("as:clientAccessTokenLifeTime");
+            var tokenLifeTime = OAuthConstants.AuthorizationCodeExpirationSeconds / 60;
             var guid = context.Ticket.Identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             var email = context.Ticket.Identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
             if (string.IsNullOrEmpty(guid))
