@@ -24,37 +24,69 @@ namespace mobSocial.WebApi.Configuration.OAuth
         public const string DefaultScope = "basicinfo-r";
         public const string FullPermissionScope = "everything-rwd";
         public const string EmailR = "email-r";
+        public const string DobR = "dob-r";
+        public const string FriendsR = "friends-r";
+        public const string FriendsRW = "friends-rw";
+        public const string FriendsRWD = "friends-rwd";
+        public const string FollowersR = "followers-r";
+        public const string FollowersRW = "followers-rw";
+        public const string FollowersRWD = "followers-rwd";
+        public const string TimelineR = "timeline-r";
+        public const string TimelineRW = "timeline-rw";
+        public const string TimelineRWD = "timeline-rwd";
+        public const string NotificationsR = "notifications-r";
+        public const string NotificationsRW = "notifications-rw";
+        public const string NotificationsRWD = "notifications-rwd";
+        public const string SkillsR = "skills-r";
+        public const string SkillsRW = "skills-rw";
+        public const string SkillsRWD = "skills-rwd";
+        public const string ProfileRW = "profile-rw";
+        public const string ConversationsR = "conversations-r";
+        public const string ConversationsRW = "conversations-rw";
+        public const string ConversationsRWD = "conversations-rwd";
+        public const string EducationsR = "educations-r";
+        public const string EducationsRW = "educations-rw";
+        public const string EducationsRWD = "educations-rwd";
+        public const string PrivateAttributesR = "private-attributes-r";
+        public const string PrivateAttributesRW = "private-attributes-rw";
+        public const string PrivateAttributesRWD = "private-attributes-rwd";
+        public const string ApplicationsR = "applications-r";
+        public const string ApplicationsRW = "applications-rw";
+        public const string ApplicationsRWD = "applications-rwd";
 
         private static readonly Dictionary<string, string> ScopeList = new Dictionary<string, string>()
         {
             {DefaultScope, "Read your basic information such as First Name and Last Name" },
             {EmailR, "Read your email address"},
-            {"dob-r", "Read your date of birth"},
-            {"friends-r", "Get list of your friends"},
-            {"friends-rw", "Add a user as your friend"},
-            {"friends-rwd", "View and manage your friends"},
-            {"followers-r", "Get list of your followers"},
-            {"followers-rw", "Add a user as a follow"},
-            {"followers-rwd", "View and manage your followers"},
-            {"timeline-r", "Read your timeline posts"},
-            {"timeline-rw", "Write new posts to your timeline"},
-            {"timeline-rwd", "View and manage your timeline"},
-            {"notifications-r", "Read your recent notifications"},
-            {"notifications-rw", "Write notifications for you"},
-            {"notifications-rwd", "View and manage your notifications"},
-            {"skills-r", "Read your skills"},
-            {"skills-rw", "Write and modify your skills"},
-            {"skills-rwd", "View and manage your skills"},
-            {"profile-rw", "Modify your profile information except Email"},
-            {"conversations-r", "Read your conversations"},
-            {"conversations-rw", "Write your conversations and messages"},
-            {"conversations-rwd", "View and manage your conversations"},
-            {"educations-r", "Read your education info"},
-            {"educations-rw", "Modify your education info"},
-            {"educations-rwd", "View and manage your educations"},
-            {"pa-r", "Read your private attributes e.g. Size, Favorite Color etc."},
-            {"pa-rw", "Write new private attributes or overwrite previous attributes"},
-            {"pa-rwd", "View and manage your private attributes"},
+            {DobR, "Read your date of birth"},
+            {FriendsR, "Get list of your friends"},
+            {FriendsRW, "Add a user as your friend"},
+            {FriendsRWD, "View and manage your friends"},
+            {FollowersR, "Get list of your followers"},
+            {FollowersRW, "Add a user as a follow"},
+            {FollowersRWD, "View and manage your followers"},
+            {TimelineR, "Read your timeline posts"},
+            {TimelineRW, "Write new posts to your timeline"},
+            {TimelineRWD, "View and manage your timeline"},
+            {NotificationsR, "Read your recent notifications"},
+            {NotificationsRW, "Write notifications for you"},
+            {NotificationsRWD, "View and manage your notifications"},
+            {SkillsR, "Read your skills"},
+            {SkillsRW, "Write and modify your skills"},
+            {SkillsRWD, "View and manage your skills"},
+            {ProfileRW, "Modify your profile information except Email"},
+            {ConversationsR, "Read your conversations"},
+            {ConversationsRW, "Write your conversations and messages"},
+            {ConversationsRWD, "View and manage your conversations"},
+            {EducationsR, "Read your education info"},
+            {EducationsRW, "Modify your education info"},
+            {EducationsRWD, "View and manage your educations"},
+            {PrivateAttributesR, "Read your private attributes e.g. Size, Favorite Color etc."},
+            {PrivateAttributesRW, "Write new private attributes or overwrite previous attributes"},
+            {PrivateAttributesRWD, "View and manage your private attributes"},
+            {ApplicationsR, "Read your OAuth applications"},
+            {ApplicationsRW, "Read, Create or Modify your OAuth applications"},
+            {ApplicationsRWD, "View and manage your OAuth applications"},
             {FullPermissionScope, "Do anything on your behalf"},
 
         };
