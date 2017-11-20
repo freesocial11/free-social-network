@@ -9,6 +9,8 @@ using mobSocial.Services.OAuth;
 using mobSocial.Services.Security;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Applications;
 
@@ -31,6 +33,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/all")]
         [HttpGet]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsR)]
         public async Task<IHttpActionResult> GetAll()
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -44,6 +47,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/{id:int}")]
         [HttpGet]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsR)]
         public IHttpActionResult Get(int id)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -59,6 +63,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpPost]
         [Route("post")]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsRW)]
         public IHttpActionResult Post(ApplicationPostModel requestModel)
         {
             if (!ModelState.IsValid)
@@ -111,6 +116,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpDelete]
         [Route("delete/{id:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsRWD)]
         public IHttpActionResult Delete(int id)
         {
             var application = _applicationService.Get(id);
@@ -125,6 +131,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpPut]
         [Route("put/secret/{id:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsRW)]
         public IHttpActionResult UpdateSecret(int id)
         {
             var application = _applicationService.Get(id);
@@ -151,6 +158,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get/logins")]
         [HttpGet]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsR)]
         public async Task<IHttpActionResult> GetLogins()
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -169,6 +177,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpDelete]
         [Route("delete/login/{id:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.ApplicationsRWD)]
         public IHttpActionResult DeleteLogin(int id)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;

@@ -237,6 +237,7 @@
     <Compile Include="Configuration\OAuth\OAuthScopes.cs" />
     <Compile Include="Configuration\Routing\CentralizedPrefixProvider.cs" />
     <Compile Include="Configuration\Routing\GenericRoute.cs" />
+    <Compile Include="Configuration\Security\Attributes\ScopeAuthorizeAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\AdminAuthorizeAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\RequireFeatureEnabledAttribute.cs" />
     <Compile Include="Configuration\Security\Attributes\CapabilityRequiredAttribute.cs" />

@@ -8,6 +8,8 @@ using mobSocial.Services.Extensions;
 using mobSocial.Services.MediaServices;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Education;
 
@@ -67,6 +69,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("post")]
         [HttpPost]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.EducationsRW)]
         public IHttpActionResult Post(EducationEntityModel entityModel)
         {
             if(!ModelState.IsValid)
@@ -94,6 +97,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("put")]
         [HttpPut]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.EducationsRW)]
         public IHttpActionResult Put(EducationEntityModel entityModel)
         {
             if (!ModelState.IsValid)
@@ -123,6 +127,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("delete/{id:int}")]
         [HttpDelete]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.EducationsRWD)]
         public IHttpActionResult Delete(int id)
         {
             //get the education
