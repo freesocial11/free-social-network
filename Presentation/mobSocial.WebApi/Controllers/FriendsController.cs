@@ -15,6 +15,8 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Social;
 
@@ -47,6 +49,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("addfriend/{friendId:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsRW)]
         public IHttpActionResult AddFriend(int friendId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -86,6 +89,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("confirmfriend/{friendId:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsRW)]
         public IHttpActionResult ConfirmFriend(int friendId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -115,6 +119,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [Route("declinefriend/{friendId:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsRW)]
         public IHttpActionResult DeclineFriend(int friendId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -139,6 +144,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpGet]
         [Authorize]
         [Route("getfriendrequests")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsR)]
         public IHttpActionResult GetFriendRequests()
         {
             var friendRequests = _friendService.GetFriendRequests(ApplicationContext.Current.CurrentUser.Id);
@@ -165,6 +171,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpGet]
         [Route("getcustomerfriends")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsR)]
         public IHttpActionResult GetCustomerFriends(int customerId , int howMany = 0, int page = 1, bool random = false)
         {
 
@@ -208,6 +215,7 @@ namespace mobSocial.WebApi.Controllers
 
         [HttpGet]
         [Route("searchpeople")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsR)]
         public IHttpActionResult SearchPeople([FromUri] FriendSearchModel model)
         {
 
@@ -256,6 +264,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpGet]
         [Authorize]
         [Route("get")]
+        [ScopeAuthorize(Scope = OAuthScopes.FriendsR)]
         public IHttpActionResult GetFriends([FromUri] FriendSearchModel requestModel)
         {
             if (requestModel == null || !ModelState.IsValid)

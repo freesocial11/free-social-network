@@ -15,6 +15,8 @@ using mobSocial.Services.Timeline;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Social;
 using Newtonsoft.Json;
@@ -47,6 +49,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("post")]
         [HttpPost]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.CommentsRW)]
         public IHttpActionResult Post(UserCommentModel model)
         {
             if (!ModelState.IsValid)
@@ -70,6 +73,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("get")]
         [HttpGet]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.CommentsR)]
         public IHttpActionResult Get([FromUri] UserCommentRequestModel model)
         {
             if (!ModelState.IsValid)
@@ -100,6 +104,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("delete/{commentId:int}")]
         [HttpDelete]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.CommentsRWD)]
         public IHttpActionResult Delete(int commentId)
         {
             //only administrator or comment owner can delete the comment, so first let's retrieve the comment

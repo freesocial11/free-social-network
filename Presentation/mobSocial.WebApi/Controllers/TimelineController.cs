@@ -21,6 +21,8 @@ using mobSocial.Services.Timeline;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Models.Timeline;
 using Newtonsoft.Json;
 using NReco.VideoConverter;
@@ -63,6 +65,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("post")]
         [HttpPost]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.TimelineRW)]
         public IHttpActionResult Post(TimelinePostModel model)
         {
             if (!ModelState.IsValid)
@@ -100,6 +103,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("get")]
         [HttpGet]
+        [ScopeAuthorize(Scope = OAuthScopes.TimelineR)]
         public IHttpActionResult Get([FromUri] TimelinePostsRequestModel model)
         {
             var customerId = model.CustomerId;
@@ -165,6 +169,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [Route("delete/{timelinePostId:int}")]
         [HttpDelete]
+        [ScopeAuthorize(Scope = OAuthScopes.TimelineRWD)]
         public IHttpActionResult Delete(int timelinePostId)
         {
             //first get the timeline post
@@ -186,6 +191,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [Route("uploadpictures")]
         [HttpPost]
+        [ScopeAuthorize(Scope = OAuthScopes.TimelineRW)]
         public IHttpActionResult UploadPictures()
         {
             var files = HttpContext.Current.Request.Files;
@@ -241,6 +247,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [Route("uploadvideo")]
         [HttpPost]
+        [ScopeAuthorize(Scope = OAuthScopes.TimelineRW)]
         public IHttpActionResult UploadVideo()
         {
             var files = HttpContext.Current.Request.Files;

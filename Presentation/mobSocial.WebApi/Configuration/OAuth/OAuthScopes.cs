@@ -34,12 +34,16 @@ namespace mobSocial.WebApi.Configuration.OAuth
         public const string TimelineR = "timeline-r";
         public const string TimelineRW = "timeline-rw";
         public const string TimelineRWD = "timeline-rwd";
+        public const string CommentsR = "comments-r";
+        public const string CommentsRW = "comments-rw";
+        public const string CommentsRWD = "comments-rwd";
         public const string NotificationsR = "notifications-r";
         public const string NotificationsRW = "notifications-rw";
         public const string NotificationsRWD = "notifications-rwd";
         public const string SkillsR = "skills-r";
         public const string SkillsRW = "skills-rw";
         public const string SkillsRWD = "skills-rwd";
+        public const string ProfileR = "profile-r";
         public const string ProfileRW = "profile-rw";
         public const string ConversationsR = "conversations-r";
         public const string ConversationsRW = "conversations-rw";
@@ -53,6 +57,13 @@ namespace mobSocial.WebApi.Configuration.OAuth
         public const string ApplicationsR = "applications-r";
         public const string ApplicationsRW = "applications-rw";
         public const string ApplicationsRWD = "applications-rwd";
+        public const string EntityPropertyRWD = "entity-property-rwd";
+        public const string FollowUnfollow = "follow-unfollow-rwd";
+        public const string LikeUnlike = "like-unlike-rwd";
+        public const string MediaR = "media-r";
+        public const string MediaRW = "media-rw";
+        public const string MediaRWD = "media-rwd";
+        public const string ProfilePwdW = "pwd-rwd";
 
         private static readonly Dictionary<string, string> ScopeList = new Dictionary<string, string>()
         {
@@ -71,10 +82,14 @@ namespace mobSocial.WebApi.Configuration.OAuth
             {NotificationsR, "Read your recent notifications"},
             {NotificationsRW, "Write notifications for you"},
             {NotificationsRWD, "View and manage your notifications"},
+            {CommentsR, "Read your comments"},
+            {CommentsRW, "Write comments on your behalf"},
+            {CommentsRWD, "View and manage your comments"},
             {SkillsR, "Read your skills"},
             {SkillsRW, "Write and modify your skills"},
             {SkillsRWD, "View and manage your skills"},
             {ProfileRW, "Modify your profile information except Email"},
+            {ProfilePwdW, "Modify your profile password"},
             {ConversationsR, "Read your conversations"},
             {ConversationsRW, "Write your conversations and messages"},
             {ConversationsRWD, "View and manage your conversations"},
@@ -87,6 +102,10 @@ namespace mobSocial.WebApi.Configuration.OAuth
             {ApplicationsR, "Read your OAuth applications"},
             {ApplicationsRW, "Read, Create or Modify your OAuth applications"},
             {ApplicationsRWD, "View and manage your OAuth applications"},
+            {MediaR, "Read your media"},
+            {MediaRW, "Read, Create or Modify your media"},
+            {MediaRWD, "View and manage your media"},
+            {EntityPropertyRWD, "View and manage custom properties for resources"},
             {FullPermissionScope, "Do anything on your behalf"},
 
         };

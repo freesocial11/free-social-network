@@ -15,6 +15,8 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Media;
 
@@ -46,6 +48,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpGet]
         [Authorize]
         [Route("get/{id:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.MediaR)]
         public IHttpActionResult Get(int id)
         {
             var media = _mediaService.Get(id);
@@ -89,6 +92,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [Route("uploadpictures")]
         [HttpPost]
+        [ScopeAuthorize(Scope = OAuthScopes.MediaRW)]
         public IHttpActionResult UploadPictures()
         {
             var files = HttpContext.Current.Request.Files;
@@ -143,6 +147,7 @@ namespace mobSocial.WebApi.Controllers
         [Authorize]
         [Route("uploadvideo")]
         [HttpPost]
+        [ScopeAuthorize(Scope = OAuthScopes.MediaRW)]
         public IHttpActionResult UploadVideo()
         {
             var files = HttpContext.Current.Request.Files;

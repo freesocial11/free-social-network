@@ -8,6 +8,8 @@ using mobSocial.Services.Extensions;
 using mobSocial.Services.Notifications;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -23,6 +25,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("put")]
         [HttpPut]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.NotificationsRW)]
         public IHttpActionResult MarkNotificationsRead(int[] notificationIds)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -48,6 +51,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("delete/{id:int}")]
         [HttpDelete]
+        [ScopeAuthorize(Scope = OAuthScopes.NotificationsRWD)]
         public IHttpActionResult Delete(int id)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;

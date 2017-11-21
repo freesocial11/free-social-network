@@ -7,10 +7,14 @@ using mobSocial.Data.Entity.Users;
 using mobSocial.Services.Social;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 
 namespace mobSocial.WebApi.Controllers
 {
     [RoutePrefix("social")]
+    [Authorize]
+    [ScopeAuthorize(Scope = OAuthScopes.LikeUnlike)]
     public class LikeController : RootApiController
     {
         
@@ -23,7 +27,6 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("like/{entityName}/{id:int}")]
         public IHttpActionResult Like(string entityName, int id)
         {
@@ -53,7 +56,6 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("unlike/{entityName}/{id:int}")]
         public IHttpActionResult Unlike(string entityName, int id)
         {

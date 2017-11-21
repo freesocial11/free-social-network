@@ -22,9 +22,7 @@ using mobSocial.WebApi.Configuration.Mvc;
 using mobSocial.WebApi.Configuration.Mvc.Models;
 using mobSocial.WebApi.Configuration.OAuth;
 using mobSocial.WebApi.Configuration.Security.Attributes;
-using mobSocial.WebApi.Extensions;
 using mobSocial.WebApi.Extensions.ModelExtensions;
-using mobSocial.WebApi.Models.Media;
 using mobSocial.WebApi.Models.Users;
 
 namespace mobSocial.WebApi.Controllers
@@ -365,6 +363,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPut]
         [Authorize]
         [Route("put")]
+        [ScopeAuthorize(Scope = OAuthScopes.ProfileRW)]
         public IHttpActionResult Put(UserEntityPublicModel entityModel)
         {
             var user = _userService.Get(entityModel.Id);
@@ -415,6 +414,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPut]
         [Authorize]
         [Route("put/change-password")]
+        [ScopeAuthorize(Scope = OAuthScopes.ProfilePwdW)]
         public IHttpActionResult Put(ChangePasswordModel model)
         {
             var password = model.Password;
@@ -458,6 +458,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("configuration/get")]
         [HttpGet]
+        [ScopeAuthorize(Scope = OAuthScopes.ProfileR)]
         public IHttpActionResult GetConfiguration()
         {
             //get current user

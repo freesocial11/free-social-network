@@ -12,6 +12,8 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Skills;
 
@@ -71,8 +73,7 @@ namespace mobSocial.WebApi.Controllers
         [Route("get/all")]
         public IHttpActionResult GetSystemSkills(int page = 1, int count = 15)
         {
-            int total;
-            var skills = _skillService.GetAllSkills(out total, string.Empty, page, count);
+            var skills = _skillService.GetAllSkills(out int total, string.Empty, page, count);
             var model = skills.Select(x => x.ToModel()).ToList();
             return RespondSuccess(new { Skills = model, Total = total, Page = page, Count = count });
         }
@@ -132,6 +133,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         [Authorize]
         [Route("post")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRW)]
         public IHttpActionResult Post(UserSkillEntityModel model)
         {
             if (!ModelState.IsValid)
@@ -207,6 +209,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         [Authorize]
         [Route("media/post")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRW)]
         public IHttpActionResult Post(UserSkillEntityMediaModel model)
         {
             if (model.MediaId == 0 || model.UserSkillId == 0)
@@ -235,6 +238,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         [Authorize]
         [Route("featured-media")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRW)]
         public IHttpActionResult Post(SetFeaturedMediaModel requestModel)
         {
             var skillId = requestModel.SkillId;
@@ -268,6 +272,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpDelete]
         [Authorize]
         [Route("user/media/delete/{userSkillId}/{mediaId}")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRWD)]
         public IHttpActionResult DeleteMedia(int userSkillId, int mediaId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -296,6 +301,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpDelete]
         [Authorize]
         [Route("delete/{skillId:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRWD)]
         public IHttpActionResult Delete(int skillId)
         {
            
@@ -317,6 +323,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpDelete]
         [Authorize]
         [Route("users/delete/{userSkillId:int}")]
+        [ScopeAuthorize(Scope = OAuthScopes.SkillsRWD)]
         public IHttpActionResult DeleteUserSkill(int userSkillId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;

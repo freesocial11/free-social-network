@@ -7,6 +7,8 @@ using mobSocial.Services.MediaServices;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 using mobSocial.WebApi.Models.EntityProperty;
 
 namespace mobSocial.WebApi.Controllers
@@ -25,6 +27,7 @@ namespace mobSocial.WebApi.Controllers
         [HttpPost]
         [Route("post")]
         [Authorize]
+        [ScopeAuthorize(Scope = OAuthScopes.EntityPropertyRWD)]
         public IHttpActionResult Post(EntityPropertyModel requestModel)
         {
             var entityName = requestModel.EntityName;

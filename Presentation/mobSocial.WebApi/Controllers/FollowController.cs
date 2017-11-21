@@ -11,10 +11,14 @@ using mobSocial.Services.Social;
 using mobSocial.Services.Users;
 using mobSocial.WebApi.Configuration.Infrastructure;
 using mobSocial.WebApi.Configuration.Mvc;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 
 namespace mobSocial.WebApi.Controllers
 {
     [RoutePrefix("social")]
+    [Authorize]
+    [ScopeAuthorize(Scope = OAuthScopes.FollowUnfollow)]
     public class FollowController : RootApiController
     {
         
@@ -31,7 +35,6 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("follow/{entityName}/{id:int}")]
         public IHttpActionResult Follow(string entityName, int id)
         {
@@ -57,7 +60,6 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         [Route("unfollow/{entityName}/{id:int}")]
         public IHttpActionResult Unfollow(string entityName, int id)
         {

@@ -20,6 +20,8 @@ using mobSocial.WebApi.Configuration.SignalR.Hubs;
 using mobSocial.WebApi.Extensions.ModelExtensions;
 using mobSocial.WebApi.Models.Conversation;
 using mobSocial.Data.Constants;
+using mobSocial.WebApi.Configuration.OAuth;
+using mobSocial.WebApi.Configuration.Security.Attributes;
 
 namespace mobSocial.WebApi.Controllers
 {
@@ -45,6 +47,7 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [Route("get")]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsR)]
         public IHttpActionResult Get([FromUri] ConversationRequestModel requestModel)
         {
             //get the conversation
@@ -55,6 +58,7 @@ namespace mobSocial.WebApi.Controllers
             });
         }
         [Route("get/all")]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsR)]
         public async Task<IHttpActionResult> Get()
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -130,6 +134,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("reply/read/put")]
         [HttpPut]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsRW)]
         public IHttpActionResult MarkRead(int[] replyIds)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -151,6 +156,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("read/put")]
         [HttpPut]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsRW)]
         public IHttpActionResult MarkRead(int conversationId)
         {
             var currentUser = ApplicationContext.Current.CurrentUser;
@@ -175,6 +181,7 @@ namespace mobSocial.WebApi.Controllers
         }
 
         [Route("reply/delete")]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsRWD)]
         public IHttpActionResult DeleteReply(int replyId)
         {
             //let's query the reply first
@@ -193,6 +200,7 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("post/{toUserId:int}")]
         [HttpPost]
+        [ScopeAuthorize(Scope = OAuthScopes.ConversationsRW)]
         public IHttpActionResult Post(int toUserId, ConversationEntityModel requestModel)
         {
             const string contextName = "conversation_post";
