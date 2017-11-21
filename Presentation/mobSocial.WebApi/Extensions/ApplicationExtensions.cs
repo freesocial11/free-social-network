@@ -4,6 +4,7 @@ using mobSocial.Core.Infrastructure.AppEngine;
 using mobSocial.Data.Entity.OAuth;
 using mobSocial.Services.OAuth;
 using mobSocial.WebApi.Configuration.Infrastructure;
+using mobSocial.WebApi.Configuration.OAuth;
 using mobSocial.WebApi.Helpers;
 
 namespace mobSocial.WebApi.Extensions
@@ -14,7 +15,7 @@ namespace mobSocial.WebApi.Extensions
         {
             if (application == null && allowForNullApplications)
                 return true;
-            return application != null && application.GetScopes().Any(x => x == scope);
+            return application != null && application.GetScopes().Any(x => x == OAuthScopes.FullPermissionScope || x == scope);
         }
 
         public static string[] GetScopes(this OAuthApplication application)
