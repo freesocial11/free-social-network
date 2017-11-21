@@ -75,8 +75,14 @@ namespace mobSocial.Services.Extensions
 
             if (entityProperty == null)
                 return defaultValue;
-
-            return JsonConvert.DeserializeAnonymousType(entityProperty.Value, defaultValue);
+            try
+            {
+                return JsonConvert.DeserializeAnonymousType(entityProperty.Value, defaultValue);
+            }
+            catch
+            {
+                return (T) Convert.ChangeType(entityProperty.Value, typeof(T));
+            }
         }
         /// <summary>
         /// Sets the property value of the provided entity
