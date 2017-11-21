@@ -458,7 +458,6 @@ namespace mobSocial.WebApi.Controllers
 
         [Route("configuration/get")]
         [HttpGet]
-        [ScopeAuthorize(Scope = OAuthScopes.ProfileR)]
         public IHttpActionResult GetConfiguration()
         {
             //get current user
