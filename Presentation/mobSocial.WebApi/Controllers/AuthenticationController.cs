@@ -214,6 +214,9 @@ namespace mobSocial.WebApi.Controllers
             {
                 user.SetPropertyValue(cs.FieldName, cs.FieldValue);
             }
+
+            //save the application id as well
+            user.SetPropertyValue("ClientId", requestModel.Model.ClientId);
             //so we are done, send a notification to user and admin
             _emailSender.SendUserRegisteredMessage(user);
             var responseMessage = "Your account has been successfully created.";

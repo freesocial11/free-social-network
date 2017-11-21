@@ -5,6 +5,7 @@ using System.Web.Helpers;
 using System.Web.Http.Results;
 using System.Web.Mvc;
 using mobSocial.Core.Infrastructure.AppEngine;
+using mobSocial.Services.Extensions;
 using mobSocial.Services.Helpers;
 using mobSocial.Services.OAuth;
 using mobSocial.Services.Security;
@@ -44,6 +45,7 @@ namespace mobSocial.WebApi.Controllers
                 ApplicationContext.Current.CurrentOwinContext.Authentication.Challenge("Application");
                 return new HttpUnauthorizedResult();
             }
+            var userApplicationId = currentUser.GetPropertyValueAs<string>("ClientId");
             var context = ApplicationContext.Current.CurrentOwinContext;
             //let's find out existing scopes / permissions already granted
             //if the requested permissions are same are granted permissions, we just need to simply redirect the user back, 
@@ -60,6 +62,15 @@ namespace mobSocial.WebApi.Controllers
             var currentToken =
                 _appTokenService.FirstOrDefault(x => x.Guid == currentUser.Guid.ToString() && x.ClientId == clientId);
             var skipAuthorizePage = false;
+            if (userApplicationId == clientId)
+            {
+                //full scope should be given to the registering application //don't show the consent screen either
+                if (requestedScopes.All(x => x.ScopeName != OAuthScopes.FullPermissionScope))
+                {
+                    requestedScopes.Clear();
+                    requestedScopes.Add(OAuthScopes.Get(OAuthScopes.FullPermissionScope));
+                }
+            }
 
             IEnumerable<OAuthScopes.OAuthScope> allScopes = requestedScopes;
             if (currentToken != null)
@@ -79,6 +90,8 @@ namespace mobSocial.WebApi.Controllers
                     allScopes = allScopes.Concat(newScopes);
                 }
             }
+            skipAuthorizePage = skipAuthorizePage || (userApplicationId == clientId);
+            
 
             if (Request.HttpMethod == "POST" || skipAuthorizePage)
             {
