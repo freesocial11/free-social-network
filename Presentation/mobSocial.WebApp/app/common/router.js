@@ -222,11 +222,13 @@
              .state("layoutMobSocial.userprofile.tabs",
              {
                  url: "",
-                 templateUrl: ['$stateParams', function ($stateParams) {
+                 templateProvider: ['$stateParams', '$templateFactory', function ($stateParams, $templateFactory) {
                      if ([undefined, "main", "pictures", "videos", "friends", "followers", "following", "skills"].indexOf($stateParams.tab) == -1) {
-                         return "pages/common/404.html";
+                         return $templateFactory.fromUrl("pages/common/404.html");
                      }
-                     return "pages/users/user.profile." + ($stateParams.tab || "main") + ".html";
+                     return $templateFactory.fromUrl("pages/users/user.profile." +
+                         ($stateParams.tab || "main") +
+                         ".html");
                  }]
              })
             .state("layoutMobSocial.skill",
@@ -262,11 +264,11 @@
                          templateUrl: "pages/users/user.profile.edit.navigation.html"
                      },
                      "right": {
-                         templateUrl: ["$stateParams" ,function ($stateParams) {
-                             if ([undefined, "basic", "education", "skills"].indexOf($stateParams.tab) == -1) {
-                                 return "pages/common/404.html";
+                         templateProvider: ["$state", "$templateFactory", function ($state, $templateFactory) {
+                             if ([undefined, "basic", "education", "skills"].indexOf($state.tab) == -1) {
+                                 return $templateFactory.fromUrl("pages/common/404.html");
                              }
-                             return "pages/users/user.profile.edit." + ($stateParams.tab || "basic") + ".html";
+                             return $templateFactory.fromUrl("pages/users/user.profile.edit." + ($state.params.tab || "basic") + ".html");
                          }],
                          resolve: {
                              resolver: ["controllerProvider",function (controllerProvider) {
@@ -274,10 +276,10 @@
                                      .resolveBundles(["education", "skillPublic"]);
                              }]
                          },
-                         controllerProvider: ["$stateParams",function($stateParams) {
-                             if (!$stateParams.tab)
+                         controllerProvider: ["$state",function($state) {
+                             if (!$state.params.tab)
                                  return "userEditController";
-                             switch($stateParams.tab) {
+                             switch($state.params.tab) {
                                  case "basic":
                                      return "userEditController";
                                  case "education":
